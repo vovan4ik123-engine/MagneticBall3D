@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.magneticBall3D.app"
+    compileSdk 34
+    ndkVersion "26.2.11394342"
+    
+    defaultConfig {
+        applicationId "com.magneticBall3D.app"
+        
+        minSdk 29 // Android 10 (2019 year).
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_static" // , "-DCMAKE_BUILD_TYPE=Release"
+                // cppFlags "-fexceptions", "-frtti", "-std=c++1z"
+                abiFilters 'arm64-v8a'  // 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+            }
+        }
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
+    applicationVariants.all { variant ->
+        tasks["merge${variant.name.capitalize()}Assets"]
+            .dependsOn("externalNativeBuild${variant.name.capitalize()}")
+    }
+    
+    if (!project.hasProperty('EXCLUDE_NATIVE_LIBS')) {
+        sourceSets.main {
+            jniLibs.srcDir 'libs'
+        }
+        externalNativeBuild {
+            cmake {
+                path 'jni/CMakeLists.txt'
+            }
+        }
+    }
+    
+    lint {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
