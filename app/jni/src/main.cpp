@@ -8,6 +8,8 @@ int main(int argc, char* argv[])
 
     Beryll::GameLoop::create(Beryll::ScreenOrientation::MOBILE_PORTRAIT);
 
+    //Beryll::GameLoop::setFPSLimit(25.0f);
+
     //Beryll::Camera::setCameraFov(45.0f);
     Beryll::Camera::setProjectionNearClipPlane(1.0f);
     Beryll::Camera::setProjectionFarClipPlane(1000.0f);
