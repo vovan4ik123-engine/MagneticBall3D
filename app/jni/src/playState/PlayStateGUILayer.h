@@ -14,6 +14,15 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
+        std::shared_ptr<Beryll::SliderHorizontal> sliderFPS;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderFriction;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderDamping;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraDistance;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraRotSpeed;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraRotStartSpeed;
+
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
