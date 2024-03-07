@@ -42,9 +42,9 @@ namespace MagneticBall3D
         glm::mat4 m_sunLightVPMatrix;
         glm::vec3 m_sunLightDir;
 
-        glm::vec3 m_cameraOffset{-1.0f, 0.2f, 0.0f};
+        glm::vec3 m_cameraOffset{-1.0f, 0.3f, 0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_maxCameraDistance = 65.0f;
+        const float m_maxCameraDistance = 90.0f;
         float m_cameraDistance = m_maxCameraDistance;
 
         // Control player.

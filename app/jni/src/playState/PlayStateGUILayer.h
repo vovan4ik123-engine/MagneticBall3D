@@ -15,13 +15,12 @@ namespace MagneticBall3D
         void draw() override;
 
         std::shared_ptr<Beryll::SliderHorizontal> sliderFPS;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderFriction;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderDamping;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderPGrav;
         std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
         std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraDistance;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraRotSpeed;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderCameraRotStartSpeed;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderGGrav;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderCamDist;
+
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;

@@ -16,21 +16,25 @@ namespace MagneticBall3D
         m_guiObjects.push_back(sliderFPS);
         sliderFPS->setValue(200.0f);
 
-//        sliderFriction = std::make_shared<Beryll::SliderHorizontal>("Friction", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 100);
-//        m_guiObjects.push_back(sliderFriction);
-//        sliderFriction->setValue(100.0f);
+        sliderPGrav = std::make_shared<Beryll::SliderHorizontal>("p grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, -30, 10);
+        m_guiObjects.push_back(sliderPGrav);
+        sliderPGrav->setValue(-3.0f);
 
-//        sliderDamping = std::make_shared<Beryll::SliderHorizontal>("Damping", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 0, 1);
-//        m_guiObjects.push_back(sliderDamping);
-//        sliderDamping->setValue(0.0f);
-//
-//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 1);
-//        m_guiObjects.push_back(sliderImpulse);
-//        sliderImpulse->setValue(0.1f);
-//
-//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 18, 40, 2, 0, 1);
-//        m_guiObjects.push_back(sliderTorque);
-//        sliderTorque->setValue(0.6f);
+        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 0, 1);
+        m_guiObjects.push_back(sliderImpulse);
+        sliderImpulse->setValue(0.3f);
+
+        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 1);
+        m_guiObjects.push_back(sliderTorque);
+        sliderTorque->setValue(0.3f);
+
+        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 18, 40, 2, 10, 250);
+        m_guiObjects.push_back(sliderGGrav);
+        sliderGGrav->setValue(90.0f);
+
+        sliderCamDist = std::make_shared<Beryll::SliderHorizontal>("cam dist", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 21, 40, 2, 50, 200);
+        m_guiObjects.push_back(sliderCamDist);
+        sliderCamDist->setValue(90.0f);
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()

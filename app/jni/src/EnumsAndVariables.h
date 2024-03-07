@@ -15,6 +15,10 @@ namespace EnumsAndVariables
     constexpr float minPlayerSpeedToCameraFollow = 7.0f;
     constexpr float playerImpulseFactor = 0.1f;
     constexpr float playerTorqueFactor = 0.6f;
-    constexpr float playerDamping = 0.0f;
-    constexpr float playerFriction = 100.0f;
+    constexpr float playerDamping = 0.2f;
+    constexpr float playerFriction = 50.0f;
+    constexpr float playerMass = 10.0f;
+
+    constexpr float garbageDamping = 0.2f;
+    constexpr float garbageMass = 0.001f;
 }

@@ -14,7 +14,8 @@ int main(int argc, char* argv[])
     Beryll::Camera::setProjectionNearClipPlane(1.0f);
     Beryll::Camera::setProjectionFarClipPlane(1000.0f);
 
-    Beryll::Physics::setResolution(2);
+    Beryll::Physics::setResolution(1);
+    Beryll::Physics::setMinAcceptableFPS(10.0f);
 
     std::shared_ptr<MagneticBall3D::PlayStateGUILayer> GUILayer = std::make_shared<MagneticBall3D::PlayStateGUILayer>();
     std::shared_ptr<MagneticBall3D::PlayStateSceneLayer> sceneLayer = std::make_shared<MagneticBall3D::PlayStateSceneLayer>(GUILayer);
