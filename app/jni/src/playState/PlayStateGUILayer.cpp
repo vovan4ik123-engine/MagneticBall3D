@@ -12,29 +12,17 @@ namespace MagneticBall3D
         m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 3);
         m_guiObjects.push_back(m_statistics2);
 
-        sliderFPS = std::make_shared<Beryll::SliderHorizontal>("FPS", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 10, 200);
-        m_guiObjects.push_back(sliderFPS);
-        sliderFPS->setValue(200.0f);
-
-        sliderPGrav = std::make_shared<Beryll::SliderHorizontal>("p grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, -30, 10);
-        m_guiObjects.push_back(sliderPGrav);
-        sliderPGrav->setValue(-3.0f);
-
-        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 0, 1);
+        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderImpulse);
         sliderImpulse->setValue(0.3f);
 
-        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 1);
+        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderTorque);
-        sliderTorque->setValue(0.3f);
+        sliderTorque->setValue(0.5f);
 
-        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 18, 40, 2, 10, 250);
+        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 10, 250);
         m_guiObjects.push_back(sliderGGrav);
-        sliderGGrav->setValue(90.0f);
-
-        sliderCamDist = std::make_shared<Beryll::SliderHorizontal>("cam dist", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 21, 40, 2, 50, 200);
-        m_guiObjects.push_back(sliderCamDist);
-        sliderCamDist->setValue(90.0f);
+        sliderGGrav->setValue(150.0f);
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()

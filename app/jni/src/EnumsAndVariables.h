@@ -9,16 +9,20 @@ namespace EnumsAndVariables
         static const inline std::string COUSINE = "fonts/cousine.ttf";
     };
 
-    // Physics params.
-    constexpr float playerMaxSpeed = 70.0f;
+    // Camera.
     constexpr float cameraRotationMaxSpeed = glm::half_pi<float>() * 1.3f; // Radians in sec.
     constexpr float minPlayerSpeedToCameraFollow = 7.0f;
-    constexpr float playerImpulseFactor = 0.1f;
-    constexpr float playerTorqueFactor = 0.6f;
+
+    // Physics params.
+    constexpr float playerMagneticRadius = 35.0f;
+    constexpr float playerImpulseFactor = 0.25f;
+    constexpr float playerTorqueFactor = 0.5f;
     constexpr float playerDamping = 0.2f;
-    constexpr float playerFriction = 50.0f;
+    constexpr float playerFriction = 40.0f;
     constexpr float playerMass = 10.0f;
 
     constexpr float garbageDamping = 0.2f;
     constexpr float garbageMass = 0.001f;
+
+    constexpr float staticEnvFriction = 60.0f;
 }

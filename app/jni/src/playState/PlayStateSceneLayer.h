@@ -23,15 +23,16 @@ namespace MagneticBall3D
 
         // Logic.
         void controlPlayer();
-        void rotateCamera();
+        void rotateCameraToPlayerMoveDir();
+        void rotateCameraOnBuilding();
 
     private:
         std::shared_ptr<PlayStateGUILayer> m_gui;
 
         std::shared_ptr<Beryll::SimpleCollidingObject> m_player;
-        std::shared_ptr<Beryll::SimpleCollidingObject> m_ground;
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allGarbage;
+        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
 
         // Shaders.
@@ -42,10 +43,11 @@ namespace MagneticBall3D
         glm::mat4 m_sunLightVPMatrix;
         glm::vec3 m_sunLightDir;
 
-        glm::vec3 m_cameraOffset{-1.0f, 0.3f, 0.0f};
+        glm::vec3 m_cameraOffset{-1.0f, 0.2f, 0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_maxCameraDistance = 90.0f;
+        const float m_maxCameraDistance = 120.0f;
         float m_cameraDistance = m_maxCameraDistance;
+        float m_addToCameraDistance = 0.0f;
 
         // Control player.
         int m_fingerDownID = -1;
@@ -54,5 +56,6 @@ namespace MagneticBall3D
         glm::vec3 m_playerMoveDir{0.0f};
         float m_playerMoveSpeed{0.0f};
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
+        glm::vec3 m_screenSwipeDir{0.0f};
     };
 }
