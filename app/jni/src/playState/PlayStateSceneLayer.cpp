@@ -16,11 +16,7 @@ namespace MagneticBall3D
         loadShaders();
         loadSunPosition(glm::vec3(200.0f, 200.0f, 20.0f), 500.0f, 500.0f, 500.0f);
 
-        m_cameraFront = m_player->getOrigin();
-        m_cameraFront.y += 15.0f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
-        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * (m_cameraDistance + m_addToCameraDistance));
-        Beryll::Camera::setCameraFrontPos(m_cameraFront);
+        handleCamera();
 
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
@@ -35,32 +31,7 @@ namespace MagneticBall3D
     void PlayStateSceneLayer::updateBeforePhysics()
     {
         controlPlayer();
-
-        int objectsInMagneticRadius = 0;
-
-        for(const auto& obj : m_allGarbage)
-        {
-            if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
-            {
-                ++objectsInMagneticRadius;
-
-                glm::vec3 grav = glm::normalize(m_player->getOrigin() - obj->getOrigin()) * m_gui->sliderGGrav->getValue();
-                if(Beryll::Physics::getIsCollision(m_player->getID(), obj->getID()))
-                {
-                    obj->setGravity(-(grav * 0.5f), false, false);
-                }
-                else
-                {
-                    obj->setGravity(grav, false, true);
-                }
-            }
-            else
-            {
-                obj->setGravity(glm::vec3(0.0f, -10.0f, 0.0f), false, false);
-            }
-        }
-
-        m_addToCameraDistance = objectsInMagneticRadius * 0.15f;
+        updateGarbageGravity();
 
 //        if(m_gui->sliderFPS->getIsValueChanging())
 //            Beryll::GameLoop::setFPSLimit(m_gui->sliderFPS->getValue());
@@ -79,49 +50,10 @@ namespace MagneticBall3D
             }
         }
 
-        // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
-        m_playerMoveSpeed = glm::length(m_player->getLinearVelocity());
-        if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
-        {
-            m_playerMoveSpeed = 0.0f;
-            m_playerMoveDir = glm::vec3{0.0f};
-        }
-        else
-        {
-            m_playerMoveDir = glm::normalize(m_player->getLinearVelocity());
-        }
-        //BR_INFO("moveDir X:%f Y:%f Z:%f", m_playerMoveDir.x, m_playerMoveDir.y, m_playerMoveDir.z);
-
-        for(const auto& obj : m_allGarbage)
-        {
-            if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < 12.0f)
-            {
-                const glm::vec3 linVelocity = obj->getLinearVelocity();
-                const glm::vec3 objMoveDir = glm::normalize(linVelocity);
-                const float objSpeed = glm::length(linVelocity);
-                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getOrigin() - obj->getOrigin());
-
-                if(objSpeed > m_playerMoveSpeed * 2.0f && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.53f) // > 30 degrees.
-                {
-                    obj->resetVelocities();
-                }
-            }
-        }
-
-        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
-            rotateCameraToPlayerMoveDir();
-        else
-            rotateCameraOnBuilding();
-
-        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::BUILDING))
-            m_player->setGravity(glm::vec3(0.0f, -5.0f, 0.0f));
-        else
-            m_player->setGravity(glm::vec3(0.0f, -20.0f, 0.0f));
-
-        m_cameraFront = m_player->getOrigin();
-        m_cameraFront.y += 15.0f;
-        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * (m_cameraDistance + m_addToCameraDistance));
-        Beryll::Camera::setCameraFrontPos(m_cameraFront);
+        updatePlayerGravity();
+        checkPlayerSpeed();
+        // Last call before draw.
+        handleCamera();
     }
 
     void PlayStateSceneLayer::draw()
@@ -185,7 +117,7 @@ namespace MagneticBall3D
         m_simpleObjForShadowMap.push_back(m_player);
 
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
-        m_player->setGravity(glm::vec3(0.0f, -20.0f, 0.0f));
+        m_player->setGravity(EnumsAndVariables::playerGravityOnGround);
         m_player->setFriction(EnumsAndVariables::playerFriction);
         m_player->setDamping(EnumsAndVariables::playerDamping, EnumsAndVariables::playerDamping);
 
@@ -208,7 +140,8 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::CAMERA |
+                                                                                       Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : objects1)
@@ -350,7 +283,7 @@ namespace MagneticBall3D
             playerMassToGarbageMassRation = 1.0f / playerMassToGarbageMassRation;
             for(const auto& obj : m_allGarbage)
             {
-                if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < 20.0f)
+                if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
                 {
                     obj->applyCentralImpulse((m_screenSwipeDir * m_gui->sliderImpulse->getValue()) * playerMassToGarbageMassRation);
                 }
@@ -361,6 +294,120 @@ namespace MagneticBall3D
             impulseLeft = glm::normalize(impulseLeft) * impulseLength;
             m_player->applyTorqueImpulse(impulseLeft * m_gui->sliderTorque->getValue());
         }
+    }
+
+    void PlayStateSceneLayer::updateGarbageGravity()
+    {
+        m_objectsInMagneticRadius = 0;
+
+        for(const auto& obj : m_allGarbage)
+        {
+            if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+            {
+                ++m_objectsInMagneticRadius;
+
+                glm::vec3 grav = glm::normalize(m_player->getOrigin() - obj->getOrigin()) * m_gui->sliderGGrav->getValue();
+                if(Beryll::Physics::getIsCollision(m_player->getID(), obj->getID()))
+                {
+                    obj->setGravity(-(grav * 0.5f), false, false);
+                }
+                else
+                {
+                    obj->setGravity(grav, false, true);
+                }
+
+                // Stop garbage if it stats rotating around player too fast.
+                const glm::vec3 linVelocity = obj->getLinearVelocity();
+                const glm::vec3 objMoveDir = glm::normalize(linVelocity);
+                const float objSpeed = glm::length(linVelocity);
+                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getOrigin() - obj->getOrigin());
+
+                if(objSpeed > m_playerMoveSpeed * 2.0f && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
+                {
+                    obj->resetVelocities();
+                }
+            }
+            else
+            {
+                obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
+            }
+        }
+    }
+
+    void PlayStateSceneLayer::updatePlayerGravity()
+    {
+        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::BUILDING))
+        {
+            m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
+            m_player->setGravity(EnumsAndVariables::playerGravityOnBuilding);
+        }
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
+        {
+            m_player->setGravity(EnumsAndVariables::playerGravityOnGround);
+        }
+        else if(m_lastTimeOnBuilding + m_applyGravityDelay < Beryll::TimeStep::getSecFromStart())
+        {
+            //m_player->setGravity(EnumsAndVariables::playerGravityOnAir);
+            m_player->setGravity(glm::vec3(0.0f, m_gui->sliderPGrav->getValue(), 0.0f));
+        }
+    }
+
+    void PlayStateSceneLayer::checkPlayerSpeed()
+    {
+        // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
+        m_playerMoveSpeed = glm::length(m_player->getLinearVelocity());
+        if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
+        {
+            m_playerMoveSpeed = 0.0f;
+            m_playerMoveDir = glm::vec3{0.0f};
+        }
+        else
+        {
+            m_playerMoveDir = glm::normalize(m_player->getLinearVelocity());
+        }
+        //BR_INFO("moveDir X:%f Y:%f Z:%f", m_playerMoveDir.x, m_playerMoveDir.y, m_playerMoveDir.z);
+    }
+
+    void PlayStateSceneLayer::handleCamera()
+    {
+        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
+            rotateCameraToPlayerMoveDir();
+        else
+            rotateCameraOnBuilding();
+
+        m_cameraFront = m_player->getOrigin();
+        m_cameraFront.y += 15.0f;
+
+        float maxCameraDistance = m_startCameraDistance + m_objectsInMagneticRadius * 0.15f;
+        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
+
+        // Check camera ray collisions.
+        Beryll::RayClosestHit rayClosestHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
+                                                                                 cameraPosForRay,
+                                                                                 Beryll::CollisionGroups::CAMERA,
+                                                                                 Beryll::CollisionGroups::BUILDING);
+
+        if(rayClosestHit)
+        {
+            float hitDistance = glm::max(glm::length(m_cameraFront - rayClosestHit.hitPoint), 5.0f);
+            if(hitDistance < maxCameraDistance)
+            {
+                m_cameraDistance = hitDistance;
+            }
+        }
+        else
+        {
+            if(m_cameraDistance < maxCameraDistance)
+            {
+                m_cameraDistance += EnumsAndVariables::cameraZoomMaxSpeed * Beryll::TimeStep::getTimeStepSec();
+            }
+        }
+
+        if(m_cameraDistance > maxCameraDistance)
+            m_cameraDistance = maxCameraDistance;
+
+        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
+        Beryll::Camera::setCameraFrontPos(m_cameraFront);
     }
 
     void PlayStateSceneLayer::rotateCameraToPlayerMoveDir()
@@ -400,7 +447,7 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::rotateCameraOnBuilding()
     {
-        if(glm::length(m_screenSwipeDir) < 250.0f)
+        if(glm::length(m_screenSwipeDir) < 180.0f)
             return;
 
         const glm::vec3 screenSwipeBackXZ = -glm::normalize(glm::vec3(m_screenSwipeDir.x, 0.0f, m_screenSwipeDir.z));

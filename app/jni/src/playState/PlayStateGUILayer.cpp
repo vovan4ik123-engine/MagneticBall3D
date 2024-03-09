@@ -14,15 +14,19 @@ namespace MagneticBall3D
 
         sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderImpulse);
-        sliderImpulse->setValue(0.3f);
+        sliderImpulse->setValue(0.25f);
 
         sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderTorque);
         sliderTorque->setValue(0.5f);
 
-        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 10, 250);
+        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 50, 500);
         m_guiObjects.push_back(sliderGGrav);
-        sliderGGrav->setValue(150.0f);
+        sliderGGrav->setValue(300.0f);
+
+        sliderPGrav = std::make_shared<Beryll::SliderHorizontal>("p air", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, -90, 10);
+        m_guiObjects.push_back(sliderPGrav);
+        sliderPGrav->setValue(-50.0f);
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()

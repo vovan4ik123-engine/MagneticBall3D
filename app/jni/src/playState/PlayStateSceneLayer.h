@@ -21,8 +21,14 @@ namespace MagneticBall3D
         void loadShaders();
         void loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
-        // Logic.
+        // Before physics.
         void controlPlayer();
+        void updateGarbageGravity();
+
+        // After physics.
+        void updatePlayerGravity();
+        void checkPlayerSpeed();
+        void handleCamera();
         void rotateCameraToPlayerMoveDir();
         void rotateCameraOnBuilding();
 
@@ -43,11 +49,10 @@ namespace MagneticBall3D
         glm::mat4 m_sunLightVPMatrix;
         glm::vec3 m_sunLightDir;
 
-        glm::vec3 m_cameraOffset{-1.0f, 0.2f, 0.0f};
+        glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.2f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_maxCameraDistance = 120.0f;
-        float m_cameraDistance = m_maxCameraDistance;
-        float m_addToCameraDistance = 0.0f;
+        const float m_startCameraDistance = 120.0f; // For player without garbage.
+        float m_cameraDistance = m_startCameraDistance;
 
         // Control player.
         int m_fingerDownID = -1;
@@ -57,5 +62,8 @@ namespace MagneticBall3D
         float m_playerMoveSpeed{0.0f};
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
         glm::vec3 m_screenSwipeDir{0.0f};
+        float m_lastTimeOnBuilding = 0.0f; // Sec.
+        const float m_applyGravityDelay = 0.3f; // Sec. For player after he stop collide with buildings.
+        int m_objectsInMagneticRadius = 0;
     };
 }
