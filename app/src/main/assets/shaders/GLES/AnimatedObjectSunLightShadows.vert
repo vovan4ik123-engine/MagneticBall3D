@@ -8,13 +8,24 @@ layout(location = 2) in vec2 inTextureCoords;
 layout(location = 3) in ivec4 inBoneIDs; // INT pointer here
 layout(location = 4) in vec4 inWeights;
 
+out vec2 textureCoords;
+out vec3 normal;
+out vec3 fragPos;
+out vec4 fragPosLightPerspective;
+
 const int MAX_BONES = 31; // 31 bones should be enough for most models
 
 uniform mat4 bonesMatrices[MAX_BONES];
 uniform mat4 MVPMatrix;
+uniform mat4 MVPLightMatrix;
+uniform mat4 modelMatrix;
+uniform mat3 normalMatrix;
 
 void main()
 {
+    textureCoords = inTextureCoords;
+    normal = normalize(normalMatrix * inNormal);
+
     mat4 boneTransf;
 
     boneTransf[0][0] = bonesMatrices[inBoneIDs[0]][0][0] * inWeights[0];
@@ -35,5 +46,12 @@ void main()
 
     boneTransf[3][3] = bonesMatrices[inBoneIDs[0]][3][3] * inWeights[0];
 
-    gl_Position = MVPMatrix * boneTransf * vec4(inPosition, 1.0f);
+    vec4 posTransformed = boneTransf * vec4(inPosition, 1.0f);
+
+    fragPos = (modelMatrix * posTransformed).xyz;
+    fragPosLightPerspective = MVPLightMatrix * posTransformed; // transform to view space then to clip space
+    // Perspective divide to transform vertex vrom clip space to NDC(-1.0f 1.0f), then to (0.0f 1.0f)
+    fragPosLightPerspective.xyz = (fragPosLightPerspective.xyz / fragPosLightPerspective.w) * 0.5f + 0.5f;
+
+    gl_Position = MVPMatrix * posTransformed;
 }

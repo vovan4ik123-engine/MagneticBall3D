@@ -18,6 +18,7 @@ namespace MagneticBall3D
         // Load.
         void loadPlayerAndStaticEnv();
         void loadDynamicEnv();
+        void loadAnimatedModels();
         void loadShaders();
         void loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
@@ -39,11 +40,16 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allGarbage;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
+        std::vector<std::shared_ptr<Beryll::AnimatedCollidingCharacter>> m_allAnimated;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
+        std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
+
+        std::function<void(std::vector<std::shared_ptr<Beryll::SceneObject>>&, int, int)> m_updateAfterPhysics;
 
         // Shaders.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadowsNormals;
+        std::shared_ptr<Beryll::Shader> m_animatedObjSunLightShadows;
         std::unique_ptr<Beryll::ShadowMap> m_shadowMap;
 
         glm::mat4 m_sunLightVPMatrix;

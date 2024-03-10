@@ -26,6 +26,8 @@ int main(int argc, char* argv[])
     playState->layerStack.pushOverlay(GUILayer);
 
     Beryll::GameStateMachine::pushState(playState);
+
+    Beryll::Renderer::enableFaceCulling();
         
     Beryll::GameLoop::run();
 

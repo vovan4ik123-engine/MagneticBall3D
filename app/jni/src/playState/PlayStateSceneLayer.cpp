@@ -13,10 +13,25 @@ namespace MagneticBall3D
 
         loadPlayerAndStaticEnv();
         loadDynamicEnv();
+        loadAnimatedModels();
         loadShaders();
         loadSunPosition(glm::vec3(200.0f, 200.0f, 20.0f), 500.0f, 500.0f, 500.0f);
 
         handleCamera();
+
+        m_updateAfterPhysics = [](std::vector<std::shared_ptr<Beryll::SceneObject>>& v, int begin, int end) -> void // -> void = return type.
+        {
+            for(int i = begin; i < end; ++i)
+            {
+                if(v[i]->getIsEnabledUpdate())
+                {
+                    v[i]->updateAfterPhysics();
+
+                    if(v[i]->getOrigin().y < -500.0f)
+                        v[i]->disableForEver();
+                }
+            }
+        };
 
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
@@ -35,6 +50,25 @@ namespace MagneticBall3D
 
 //        if(m_gui->sliderFPS->getIsValueChanging())
 //            Beryll::GameLoop::setFPSLimit(m_gui->sliderFPS->getValue());
+
+        if(m_gui->sliderEnemy->getIsValueChanging())
+        {
+            for(int i = 0; i < m_allAnimated.size(); ++i)
+            {
+                if(i < int(m_gui->sliderEnemy->getValue()))
+                {
+                    m_allAnimated[i]->enableDraw();
+                    m_allAnimated[i]->enableUpdate();
+                    m_allAnimated[i]->enableCollisionMesh();
+                }
+                else
+                {
+                    m_allAnimated[i]->disableDraw();
+                    m_allAnimated[i]->disableUpdate();
+                    m_allAnimated[i]->disableCollisionMesh();
+                }
+            }
+        }
     }
 
     void PlayStateSceneLayer::updateAfterPhysics()
@@ -50,6 +84,8 @@ namespace MagneticBall3D
             }
         }
 
+        //Beryll::AsyncRun::Run(m_allSceneObjects, m_updateAfterPhysics);
+
         updatePlayerGravity();
         checkPlayerSpeed();
         // Last call before draw.
@@ -60,9 +96,9 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
-        Beryll::Renderer::disableFaceCulling();
-        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
-        Beryll::Renderer::enableFaceCulling();
+        //Beryll::Renderer::disableFaceCulling();
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
+        //Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
         glm::mat4 modelMatrix{1.0f};
@@ -94,11 +130,32 @@ namespace MagneticBall3D
 
         for(const auto& staticObj : m_allStaticEnv)
         {
-            modelMatrix = staticObj->getModelMatrix();
-            m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
-            m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
-            m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-            Beryll::Renderer::drawObject(staticObj, modelMatrix, m_simpleObjSunLightShadows);
+            if(staticObj->getIsEnabledDraw())
+            {
+                modelMatrix = staticObj->getModelMatrix();
+                m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(staticObj, modelMatrix, m_simpleObjSunLightShadows);
+            }
+        }
+
+        m_animatedObjSunLightShadows->bind();
+        m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
+        m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_animatedObjSunLightShadows->set1Float("ambientLight", 0.5f);
+        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 5.0f);
+
+        for(const auto& animObj : m_allAnimated)
+        {
+            if(animObj->getIsEnabledDraw())
+            {
+                modelMatrix = animObj->getModelMatrix();
+                m_animatedObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+                m_animatedObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_animatedObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLightShadows);
+            }
         }
     }
 
@@ -210,6 +267,55 @@ namespace MagneticBall3D
         }
     }
 
+    void PlayStateSceneLayer::loadAnimatedModels()
+    {
+        float xPos = -50.0f;
+        float distanceBetweenUnits = 20.0f;
+
+        for(int x = 0; x < 20; ++x)
+        {
+            float zPos = -50.0f;
+            for(int z = 0; z < 20; ++z)
+            {
+                auto unit = std::make_shared<Beryll::AnimatedCollidingCharacter>("models3D/AnimCollFootman1.fbx",
+                                                                                 0.0f,
+                                                                                 false,
+                                                                                 Beryll::CollisionFlags::STATIC,
+                                                                                 Beryll::CollisionGroups::CONSTRUCTION_1,
+                                                                                 Beryll::CollisionGroups::CONSTRUCTION_1,
+                                                                                 Beryll::SceneObjectGroups::CONSTRUCTION_1);
+
+                unit->setOrigin(glm::vec3(xPos, unit->getController().getFromOriginToBottom(), zPos));
+                unit->setCurrentAnimationByIndex(3, false, false);
+                unit->setDefaultAnimationByIndex(3);
+
+                m_allSceneObjects.push_back(unit);
+                m_allAnimated.push_back(unit);
+                m_animatedObjForShadowMap.push_back(unit);
+
+                zPos -= distanceBetweenUnits;
+            }
+
+            xPos -= distanceBetweenUnits;
+        }
+
+        for(int i = 0; i < m_allAnimated.size(); ++i)
+        {
+            if(i < int(m_gui->sliderEnemy->getValue()))
+            {
+                m_allAnimated[i]->enableDraw();
+                m_allAnimated[i]->enableUpdate();
+                m_allAnimated[i]->enableCollisionMesh();
+            }
+            else
+            {
+                m_allAnimated[i]->disableDraw();
+                m_allAnimated[i]->disableUpdate();
+                m_allAnimated[i]->disableCollisionMesh();
+            }
+        }
+    }
+
     void PlayStateSceneLayer::loadShaders()
     {
         m_simpleObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadows.vert",
@@ -224,6 +330,12 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
         m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
         m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
+
+        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
+                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
+        m_animatedObjSunLightShadows->bind();
+        m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
+        m_animatedObjSunLightShadows->activateShadowMapTexture();
 
         m_shadowMap = Beryll::Renderer::createShadowMap((1024 * 4) - 1, (1024 * 4) - 1);
     }
