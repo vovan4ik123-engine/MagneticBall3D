@@ -17,7 +17,10 @@ add_library(main SHARED main.cpp
 
                         # Play state.
                         playState/PlayStateGUILayer.cpp
-                        playState/PlayStateSceneLayer.cpp)
+                        playState/PlayStateSceneLayer.cpp
+
+                        # Pathfinding
+                        pathfinding/AStar.cpp)
 
 target_include_directories(main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

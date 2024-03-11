@@ -1,0 +1,142 @@
+#include "AStar.h"
+
+namespace MagneticBall3D
+{
+    AStar::AStar(int mapLeftX, int mapRightX, int mapBottomY, int mapUpperY, int nodeDistance)
+    {
+        m_mapLeftX = mapLeftX;
+        m_mapRightX = mapRightX;
+        m_mapBottomY = mapBottomY;
+        m_mapUpperY = mapUpperY;
+
+        m_walls.reserve(1000);
+        m_allNodesCreated.reserve(400);
+
+        m_nDist = nodeDistance;
+
+        m_directions = {{0, m_nDist}, {m_nDist, 0}, {0, -m_nDist}, {-m_nDist, 0},
+                        {-m_nDist, -m_nDist}, {m_nDist, m_nDist}, {-m_nDist, m_nDist}, {m_nDist, -m_nDist}};
+        m_directionsSize = m_directions.size();
+    }
+
+    AStar::~AStar()
+    {
+
+    }
+
+    void AStar::addWall(glm::ivec2 wall)
+    {
+        if(std::find(m_walls.begin(), m_walls.end(), wall) == m_walls.end())
+        {
+            m_walls.push_back(wall);
+        }
+    }
+
+    bool AStar::isCollisionWithWall(glm::ivec2 coords)
+    {
+        if(coords.x < m_mapLeftX || coords.x > m_mapRightX ||
+           coords.y < m_mapBottomY || coords.y > m_mapUpperY ||
+           std::find(m_walls.begin(), m_walls.end(), coords) != m_walls.end())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    std::vector<glm::ivec2> AStar::findPath(glm::ivec2 start, glm::ivec2 end, int pathNodeMaxCount)
+    {
+        m_allNodesCreated.emplace_back(start, nullptr);
+        Node* current = nullptr;
+        int openSetCount = 1;
+
+        while(openSetCount > 0)
+        {
+            current = nullptr;
+            for(Node& n : m_allNodesCreated)
+            {
+                if(current == nullptr && n.nodeInOpenSet)
+                {
+                    current = &n;
+                }
+                else if(n.nodeInOpenSet && n.F <= current->F)
+                {
+                    current = &n;
+                }
+            }
+
+            if(current->coordinates == end || current == nullptr)
+                break;
+
+            current->nodeInOpenSet = false;
+            --openSetCount;
+
+            for(int i = 0; i < m_directionsSize; ++i)
+            {
+                glm::ivec2 newCoordinates(current->coordinates + m_directions[i]);
+
+                if(isCollisionWithWall(newCoordinates))
+                    continue;
+
+                int totalCost = current->G + ((i < 4) ? m_costMovePerpendicular : m_costMoveDiagonal);
+
+                Node* successor = findNode(m_allNodesCreated, newCoordinates);
+
+                if(successor && !successor->nodeInOpenSet)
+                {
+                    continue;
+                }
+                else if(successor == nullptr)
+                {
+                    m_allNodesCreated.emplace_back(newCoordinates, current);
+                    ++openSetCount;
+
+                    successor = &m_allNodesCreated[m_allNodesCreated.size() - 1];
+                    successor->G = totalCost;
+                    successor->H = estimateRoad(successor->coordinates, end);
+                    successor->F = successor->G + successor->H;
+                    successor->nodesCountInChain = current->nodesCountInChain + 1;
+                }
+                else if(totalCost < successor->G)
+                {
+                    successor->parent = current;
+                    successor->G = totalCost;
+                    // successor->H should be same.
+                    successor->F = successor->G + successor->H;
+                    successor->nodesCountInChain = current->nodesCountInChain + 1;
+                }
+
+                if(pathNodeMaxCount != -1 && successor->nodesCountInChain >= pathNodeMaxCount)
+                {
+                    // Chain already long enough. Stop search.
+                    current = successor;
+                    openSetCount = 0;
+                    break;
+                }
+            }
+        }
+
+        std::vector<glm::ivec2> path;
+        while(current != nullptr)
+        {
+            path.push_back(current->coordinates);
+            current = current->parent;
+        }
+
+        m_allNodesCreated.clear();
+
+        std::reverse(path.begin(), path.end());
+        return path;
+    }
+
+    Node* AStar::findNode(std::vector<Node>& nodes, glm::ivec2 coords)
+    {
+        for(Node& node : nodes)
+        {
+            if(node.coordinates == coords)
+                return &node;
+        }
+
+        return nullptr;
+    }
+}

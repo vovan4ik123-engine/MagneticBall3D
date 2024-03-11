@@ -1,5 +1,6 @@
 #include "PlayStateSceneLayer.h"
 #include "EnumsAndVariables.h"
+#include "pathfinding/AStar.h"
 
 namespace MagneticBall3D
 {
@@ -12,8 +13,8 @@ namespace MagneticBall3D
         Beryll::Physics::hardRemoveAllObjects();
 
         loadPlayerAndStaticEnv();
-        loadDynamicEnv();
-        loadAnimatedModels();
+        //loadDynamicEnv();
+        //loadAnimatedModels();
         loadShaders();
         loadSunPosition(glm::vec3(200.0f, 200.0f, 20.0f), 500.0f, 500.0f, 500.0f);
 
@@ -32,6 +33,27 @@ namespace MagneticBall3D
                 }
             }
         };
+
+        AStar pathFinder{-250, 250, -250, 250, 10};
+        pathFinder.addWall({-10, 20});
+        pathFinder.addWall({0, 20});
+        pathFinder.addWall({10, 20});
+        pathFinder.addWall({20, 20});
+        pathFinder.addWall({30, 20});
+        pathFinder.addWall({40, 20});
+        pathFinder.addWall({40, 10});
+        pathFinder.addWall({40, 0});
+        pathFinder.addWall({40, -10});
+        pathFinder.addWall({40, -20});
+        pathFinder.addWall({40, -30});
+
+
+        std::vector<glm::ivec2> path = pathFinder.findPath({-0, -0}, {250, 250}, 10);
+
+        for(const auto& point : path)
+        {
+            BR_INFO("point in path 1 %d %d", point.x, point.y);
+        }
 
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
