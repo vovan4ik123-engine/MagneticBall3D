@@ -2,6 +2,8 @@
 
 #include "EngineHeaders.h"
 #include "PlayStateGUILayer.h"
+#include "enemies/AnimatedCollidingEnemy.h"
+#include "pathfinding/AStar.h"
 
 namespace MagneticBall3D
 {
@@ -28,7 +30,9 @@ namespace MagneticBall3D
 
         // After physics.
         void updatePlayerGravity();
-        void checkPlayerSpeed();
+        void updatePlayerSpeed();
+        void updatePathfindingAndSpawnEnemies();
+        void killEnemies();
         void handleCamera();
         void rotateCameraToPlayerMoveDir();
         void rotateCameraOnBuilding();
@@ -40,7 +44,7 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allGarbage;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
-        std::vector<std::shared_ptr<Beryll::AnimatedCollidingCharacter>> m_allAnimated;
+        std::vector<std::shared_ptr<AnimatedCollidingEnemy>> m_allAnimatedEnemies;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 
@@ -57,7 +61,7 @@ namespace MagneticBall3D
 
         glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.2f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 120.0f; // For player without garbage.
+        const float m_startCameraDistance = 220.0f; // For player without garbage.
         float m_cameraDistance = m_startCameraDistance;
 
         // Control player.
@@ -71,5 +75,12 @@ namespace MagneticBall3D
         float m_lastTimeOnBuilding = 0.0f; // Sec.
         const float m_applyGravityDelay = 0.3f; // Sec. For player after he stop collide with buildings.
         int m_objectsInMagneticRadius = 0;
+
+        // Pathfinding.
+        AStar m_pathFinder{-250, 250, -250, 250, 5};
+        std::vector<glm::ivec2> m_allowedPointsToMoveXZ; // Points for enemy movements.
+        glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
+        std::vector<glm::ivec2> m_allowedPointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
+        int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.
     };
 }

@@ -48,8 +48,7 @@ namespace MagneticBall3D
         int estimateRoad(glm::ivec2 start, glm::ivec2 end)
         {
             // Manhattan method to estimate road cost from start to end.
-            glm::ivec2 delta{std::abs(start.x - end.x), std::abs(start.y - end.y)};
-            return (delta.x + delta.y) * m_costMovePerpendicular;
+            return (std::abs(start.x - end.x) + std::abs(start.y - end.y)) * m_costMovePerpendicular;
         }
 
         Node* findNode(std::vector<Node>& nodes, glm::ivec2 coords);
