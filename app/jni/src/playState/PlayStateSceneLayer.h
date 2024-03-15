@@ -34,8 +34,6 @@ namespace MagneticBall3D
         void updatePathfindingAndSpawnEnemies();
         void killEnemies();
         void handleCamera();
-        void rotateCameraToPlayerMoveDir();
-        void rotateCameraOnBuilding();
 
     private:
         std::shared_ptr<PlayStateGUILayer> m_gui;

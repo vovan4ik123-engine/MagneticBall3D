@@ -10,9 +10,10 @@ namespace EnumsAndVariables
     };
 
     // Camera.
-    constexpr inline float cameraRotationMaxSpeed = glm::half_pi<float>() * 0.8f; // Radians in sec.
+    constexpr inline float cameraRotationMaxSpeed = glm::pi<float>() * 0.4f; // Radians in sec.
     constexpr inline float cameraZoomMaxSpeed = 30.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
+    constexpr inline float cameraYAccordingPlayerY = 0.05f; // Multiply by player.y and add to m_cameraOffset.y.
 
     // Physics params.
     constexpr inline float playerMagneticRadius = 35.0f;

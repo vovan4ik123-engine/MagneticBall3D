@@ -105,6 +105,26 @@ namespace MagneticBall3D
                 }
             }
         }
+
+        if(m_gui->buttonA->getIsPressed())
+        {
+            const float powerToOneKg = 100.0f;
+
+            m_player->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getCollisionMass(), 0.0f));
+
+            for(const auto& obj : m_allGarbage)
+            {
+                if(!obj->getIsEnabledUpdate())
+                    continue;
+
+                if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+                {
+                    obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * obj->getCollisionMass(), 0.0f));
+                }
+            }
+        }
+
+        BR_INFO("m_player Y %f", m_player->getOrigin().y);
     }
 
     void PlayStateSceneLayer::updateAfterPhysics()
@@ -665,10 +685,42 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::handleCamera()
     {
+        const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
+        glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
+
         if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
-            rotateCameraToPlayerMoveDir();
+        {
+            if(m_playerMoveSpeed > EnumsAndVariables::minPlayerSpeedToCameraFollow)
+                desiredCameraBackXZ = -glm::normalize(glm::vec3(m_playerMoveDir.x, 0.0f, m_playerMoveDir.z));
+        }
         else
-            rotateCameraOnBuilding();
+        {
+            if(glm::length(m_screenSwipeDir) > 200.0f)
+                desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipeDir.x, 0.0f, m_screenSwipeDir.z));
+        }
+
+        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
+        {
+            const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
+
+            const float angleDifference = glm::angle(rotation);
+            if(angleDifference > 0.035f) // More than 2 degrees.
+            {
+                const glm::vec3 axis = glm::normalize(glm::axis(rotation));
+
+                float maxAngleToRotate = EnumsAndVariables::cameraRotationMaxSpeed * Beryll::TimeStep::getTimeStepSec();
+                if(angleDifference < maxAngleToRotate)
+                    maxAngleToRotate = angleDifference;
+
+                const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f}, maxAngleToRotate, axis);
+                m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
+            }
+        }
+
+        m_cameraOffset.y = 0.0f;
+        m_cameraOffset = glm::normalize(m_cameraOffset);
+        m_cameraOffset.y = m_gui->sliderCameraY->getValue() * m_player->getOrigin().y;
+        m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getOrigin();
         m_cameraFront.y += 15.0f;
@@ -703,75 +755,5 @@ namespace MagneticBall3D
 
         Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
-    }
-
-    void PlayStateSceneLayer::rotateCameraToPlayerMoveDir()
-    {
-        if(m_playerMoveSpeed < EnumsAndVariables::minPlayerSpeedToCameraFollow)
-            return;
-
-        const glm::vec3 playerBackXZ = -glm::normalize(glm::vec3(m_playerMoveDir.x, 0.0f, m_playerMoveDir.z));
-        if(glm::any(glm::isnan(playerBackXZ)))
-            return;
-        //BR_INFO("playerMoveBackXZ X:%f Y:%f Z:%f", playerBackXZ.x, playerBackXZ.y, playerBackXZ.z);
-
-        const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
-        if(glm::any(glm::isnan(cameraBackXZ)))
-            return;
-        //BR_INFO("cameraBackXZ X:%f Y:%f Z:%f", cameraBackXZ.x, cameraBackXZ.y, cameraBackXZ.z);
-
-        const glm::quat rotation = glm::rotation(cameraBackXZ, playerBackXZ);
-
-        const float angleDifference = glm::angle(rotation);
-        if(angleDifference < 0.035f) // Less than 2 degrees.
-            return;
-
-        const glm::vec3 axis = glm::normalize(glm::axis(rotation));
-
-        float maxAngleToRotate = EnumsAndVariables::cameraRotationMaxSpeed * Beryll::TimeStep::getTimeStepSec();
-        if(angleDifference < maxAngleToRotate)
-            maxAngleToRotate = angleDifference;
-        const glm::mat4 rotateMatr = glm::rotate(glm::mat4{1.0f}, maxAngleToRotate, axis);
-
-        m_cameraOffset = rotateMatr * glm::vec4(cameraBackXZ, 1.0f);
-        m_cameraOffset.y = 0.0f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.2f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
-    }
-
-    void PlayStateSceneLayer::rotateCameraOnBuilding()
-    {
-        if(glm::length(m_screenSwipeDir) < 180.0f)
-            return;
-
-        const glm::vec3 screenSwipeBackXZ = -glm::normalize(glm::vec3(m_screenSwipeDir.x, 0.0f, m_screenSwipeDir.z));
-        if(glm::any(glm::isnan(screenSwipeBackXZ)))
-            return;
-        //BR_INFO("playerMoveBackXZ X:%f Y:%f Z:%f", playerBackXZ.x, playerBackXZ.y, playerBackXZ.z);
-
-        const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
-        if(glm::any(glm::isnan(cameraBackXZ)))
-            return;
-        //BR_INFO("cameraBackXZ X:%f Y:%f Z:%f", cameraBackXZ.x, cameraBackXZ.y, cameraBackXZ.z);
-
-        const glm::quat rotation = glm::rotation(cameraBackXZ, screenSwipeBackXZ);
-
-        const float angleDifference = glm::angle(rotation);
-        if(angleDifference < 0.035f) // Less than 2 degrees.
-            return;
-
-        const glm::vec3 axis = glm::normalize(glm::axis(rotation));
-
-        float maxAngleToRotate = EnumsAndVariables::cameraRotationMaxSpeed * Beryll::TimeStep::getTimeStepSec();
-        if(angleDifference < maxAngleToRotate)
-            maxAngleToRotate = angleDifference;
-        const glm::mat4 rotateMatr = glm::rotate(glm::mat4{1.0f}, maxAngleToRotate, axis);
-
-        m_cameraOffset = rotateMatr * glm::vec4(cameraBackXZ, 1.0f);
-        m_cameraOffset.y = 0.0f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.2f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
     }
 }

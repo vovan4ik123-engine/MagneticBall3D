@@ -31,6 +31,14 @@ namespace MagneticBall3D
         sliderGarbage = std::make_shared<Beryll::SliderHorizontal>("garbage", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 18, 40, 2, 0, 500);
         m_guiObjects.push_back(sliderGarbage);
         sliderGarbage->setValue(500.0f);
+
+        sliderCameraY = std::make_shared<Beryll::SliderHorizontal>("Cam Y", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 21, 40, 2, 0.0f, 0.1f);
+        m_guiObjects.push_back(sliderCameraY);
+        sliderCameraY->setValue(0.025f);
+
+        buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 2, 80, 90, 20, 10);
+        m_guiObjects.push_back(buttonA);
+
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
