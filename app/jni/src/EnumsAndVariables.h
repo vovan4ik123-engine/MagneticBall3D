@@ -10,12 +10,11 @@ namespace EnumsAndVariables
     };
 
     // Camera.
-    constexpr inline float cameraRotationMaxSpeed = glm::pi<float>() * 0.4f; // Radians in sec.
     constexpr inline float cameraZoomMaxSpeed = 30.0f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
-    constexpr inline float cameraYAccordingPlayerY = 0.05f; // Multiply by player.y and add to m_cameraOffset.y.
+    constexpr inline float minPlayerSpeedToCameraFollow = 1.0f;
+    constexpr inline float cameraYAccordingPlayerY = 0.025f; // Multiply by player.y and add to m_cameraOffset.y.
 
-    // Physics params.
+    // Player.
     constexpr inline float playerMagneticRadius = 35.0f;
     constexpr inline float playerImpulseFactor = 0.25f;
     constexpr inline float playerTorqueFactor = 0.5f;
@@ -25,15 +24,19 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -25.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
 
+    // Garbage.
     constexpr inline float garbageDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
+    constexpr inline int garbageMaxCountInMagneticRadius = 200;
 
     constexpr inline float staticEnvFriction = 40.0f;
 
     // Enemies.
-    inline int maxActiveEnemiesCount = 1;
-    constexpr inline int maxPathfindingInOneFrame = 20;
+    inline int maxActiveEnemiesCount = 500;
+    constexpr inline int maxPathfindingInOneFrame = 25;
     inline int currentPathfindingEnemyIndex = 0;
+    constexpr inline float minDistanceToSpawnEnemies = 150.0f;
 }

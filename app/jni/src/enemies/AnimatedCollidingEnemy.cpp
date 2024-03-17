@@ -31,19 +31,19 @@ namespace MagneticBall3D
     {
         if(glm::distance(m_origin, playerOrigin) > attackDistance)
         {
-            m_state = EnemyState::MOVE;
+            m_unitState = UnitState::MOVE;
         }
         else
         {
-            m_state = EnemyState::ATTACK;
+            m_unitState = UnitState::ATTACK;
         }
 
-        if(m_state == EnemyState::MOVE)
+        if(m_unitState == UnitState::MOVE)
         {
             // Dont use pathArray if enemy see player. Just move all time to player (currentPointToMove3DFloats set outside).
             getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
 
-            if(!getController().getIsMoving() && !seePlayer)
+            if(!getController().getIsMoving())
             {
                 //BR_INFO("%s", "NOT   moving");
 
@@ -59,7 +59,7 @@ namespace MagneticBall3D
                 }
             }
         }
-        else if(m_state == EnemyState::ATTACK)
+        else if(m_unitState == UnitState::ATTACK)
         {
             // Handle outside class. On scene.
         }
@@ -72,6 +72,7 @@ namespace MagneticBall3D
         enableCollisionMesh();
 
         ++AnimatedCollidingEnemy::m_activeEnemiesCount;
+        m_isEnabled = true;
     }
 
     void AnimatedCollidingEnemy::disableEnemy()
@@ -82,5 +83,7 @@ namespace MagneticBall3D
 
         if(AnimatedCollidingEnemy::m_activeEnemiesCount > 0)
             --AnimatedCollidingEnemy::m_activeEnemiesCount;
+
+        m_isEnabled = false;
     }
 }

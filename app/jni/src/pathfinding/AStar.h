@@ -26,7 +26,9 @@ namespace MagneticBall3D
         AStar(int mapLeftX, int mapRightX, int mapBottomY, int mapUpperY, int nodeDistance);
         ~AStar();
 
-        void addWall(glm::ivec2 wall);
+        void addWallPosition(glm::ivec2 wall);
+        void addBlockedPosition(glm::ivec2 pos);
+        void clearBlockedPositions() { m_blockedPositions.clear(); }
         std::vector<glm::ivec2> findPath(glm::ivec2 start, glm::ivec2 end, int pathNodeMaxCount = -1); // -1 = return all nodes from start to end.
 
     private:
@@ -43,6 +45,7 @@ namespace MagneticBall3D
         int m_mapUpperY = 0;
 
         std::vector<glm::ivec2> m_walls;
+        std::vector<glm::ivec2> m_blockedPositions;
         std::vector<Node> m_allNodesCreated; // Create objects on stack.
 
         int estimateRoad(glm::ivec2 start, glm::ivec2 end)
@@ -52,6 +55,6 @@ namespace MagneticBall3D
         }
 
         Node* findNode(std::vector<Node>& nodes, glm::ivec2 coords);
-        bool isCollisionWithWall(glm::ivec2 coords);
+        bool isCollisionWithWallOrBlocked(glm::ivec2 coords);
     };
 }

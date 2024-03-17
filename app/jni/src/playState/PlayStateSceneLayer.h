@@ -4,6 +4,8 @@
 #include "PlayStateGUILayer.h"
 #include "enemies/AnimatedCollidingEnemy.h"
 #include "pathfinding/AStar.h"
+#include "player/Player.h"
+#include "garbage/Garbage.h"
 
 namespace MagneticBall3D
 {
@@ -29,7 +31,7 @@ namespace MagneticBall3D
         void updateGarbageGravity();
 
         // After physics.
-        void updatePlayerGravity();
+        void updateGravity();
         void updatePlayerSpeed();
         void updatePathfindingAndSpawnEnemies();
         void killEnemies();
@@ -38,11 +40,11 @@ namespace MagneticBall3D
     private:
         std::shared_ptr<PlayStateGUILayer> m_gui;
 
-        std::shared_ptr<Beryll::SimpleCollidingObject> m_player;
-        std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
-        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allGarbage;
-        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
+        std::shared_ptr<Player> m_player;
+        std::vector<Garbage> m_allGarbageWrappers; // Garbage contains Beryll::SimpleCollidingObject inside.
         std::vector<std::shared_ptr<AnimatedCollidingEnemy>> m_allAnimatedEnemies;
+        std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
+        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 
@@ -71,12 +73,12 @@ namespace MagneticBall3D
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
         glm::vec3 m_screenSwipeDir{0.0f};
         float m_lastTimeOnBuilding = 0.0f; // Sec.
-        const float m_applyGravityDelay = 0.3f; // Sec. For player after he stop collide with buildings.
+        const float m_applyGravityDelay = 0.25f; // Sec. For player after he stop collide with buildings.
         int m_objectsInMagneticRadius = 0;
 
         // Pathfinding.
         AStar m_pathFinder{-250, 250, -250, 250, 5};
-        std::vector<glm::ivec2> m_allowedPointsToMoveXZ; // Points for enemy movements.
+        std::vector<glm::ivec2> m_pathGridXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_allowedPointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
         int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.

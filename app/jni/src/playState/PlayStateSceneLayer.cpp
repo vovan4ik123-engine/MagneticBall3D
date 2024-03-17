@@ -36,21 +36,21 @@ namespace MagneticBall3D
         std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/Walls.fbx");
         for(const auto& wall : walls)
         {
-            m_pathFinder.addWall({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+            m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
         BR_INFO("walls.size() %d", walls.size());
 
         std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/AllowedPositions.fbx");
-        m_allowedPointsToMoveXZ.reserve(allowedPoints.size());
+        m_pathGridXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
-            m_allowedPointsToMoveXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+            m_pathGridXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
         }
 
-        m_allowedPointsToSpawnEnemies.reserve(m_allowedPointsToMoveXZ.size());
+        m_allowedPointsToSpawnEnemies.reserve(m_pathGridXZ.size());
 
-        BR_INFO("m_allowedPointsToMoveXZ.size() %d", m_allowedPointsToMoveXZ.size());
+        BR_INFO("m_pathGridXZ.size() %d", m_pathGridXZ.size());
 
 //        std::vector<glm::ivec2> path = m_pathFinder.findPath({0, 0}, {60, 0});
 //
@@ -74,7 +74,7 @@ namespace MagneticBall3D
     {
         controlPlayer();
         updateGarbageGravity();
-        for(auto enemy : m_allAnimatedEnemies)
+        for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate())
             {
@@ -89,19 +89,15 @@ namespace MagneticBall3D
 
         if(m_gui->sliderGarbage->getIsValueChanging())
         {
-            for(int i = 0; i < m_allGarbage.size(); ++i)
+            for(int i = 0; i < m_allGarbageWrappers.size(); ++i)
             {
                 if(i < int(m_gui->sliderGarbage->getValue()))
                 {
-                    m_allGarbage[i]->enableDraw();
-                    m_allGarbage[i]->enableUpdate();
-                    m_allGarbage[i]->enableCollisionMesh();
+                    m_allGarbageWrappers[i].enableGarbage();
                 }
                 else
                 {
-                    m_allGarbage[i]->disableDraw();
-                    m_allGarbage[i]->disableUpdate();
-                    m_allGarbage[i]->disableCollisionMesh();
+                    m_allGarbageWrappers[i].disableGarbage();
                 }
             }
         }
@@ -112,19 +108,17 @@ namespace MagneticBall3D
 
             m_player->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getCollisionMass(), 0.0f));
 
-            for(const auto& obj : m_allGarbage)
+            for(const auto& wrapper : m_allGarbageWrappers)
             {
-                if(!obj->getIsEnabledUpdate())
+                if(!wrapper.obj->getIsEnabledUpdate())
                     continue;
 
-                if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+                if(glm::distance(m_player->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
                 {
-                    obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * obj->getCollisionMass(), 0.0f));
+                    wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
                 }
             }
         }
-
-        BR_INFO("m_player Y %f", m_player->getOrigin().y);
     }
 
     void PlayStateSceneLayer::updateAfterPhysics()
@@ -141,10 +135,10 @@ namespace MagneticBall3D
                     so->disableForEver();
 
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
-                   so->getSceneObjectGroup() == Beryll::SceneObjectGroups::DYNAMIC_ENVIRONMENT)
+                   so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(glm::distance(m_player->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.5f))
+                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.6f))
                         so->enableDraw();
                     else
                         so->disableDraw();
@@ -154,7 +148,7 @@ namespace MagneticBall3D
 
         //Beryll::AsyncRun::Run(m_allSceneObjects, m_updateAfterPhysics);
 
-        updatePlayerGravity();
+        updateGravity();
         updatePlayerSpeed();
         updatePathfindingAndSpawnEnemies();
         killEnemies();
@@ -185,15 +179,15 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
         Beryll::Renderer::drawObject(m_player, modelMatrix, m_simpleObjSunLightShadows);
 
-        for(const auto& obj : m_allGarbage)
+        for(const auto& wrapper : m_allGarbageWrappers)
         {
-            if(obj->getIsEnabledDraw())
+            if(wrapper.obj->getIsEnabledDraw())
             {
-                modelMatrix = obj->getModelMatrix();
+                modelMatrix = wrapper.obj->getModelMatrix();
                 m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
                 m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
                 m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-                Beryll::Renderer::drawObject(obj, modelMatrix, m_simpleObjSunLightShadows);
+                Beryll::Renderer::drawObject(wrapper.obj, modelMatrix, m_simpleObjSunLightShadows);
             }
         }
 
@@ -230,14 +224,14 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::loadPlayerAndStaticEnv()
     {
-        m_player = std::make_shared<Beryll::SimpleCollidingObject>("models3D/player/Player.fbx",
-                                                                   EnumsAndVariables::playerMass,
-                                                                   true,
-                                                                   Beryll::CollisionFlags::DYNAMIC,
-                                                                   Beryll::CollisionGroups::PLAYER,
-                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                   Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
-                                                                   Beryll::SceneObjectGroups::PLAYER);
+        m_player = std::make_shared<Player>("models3D/player/Player.fbx",
+                                            EnumsAndVariables::playerMass,
+                                            true,
+                                            Beryll::CollisionFlags::DYNAMIC,
+                                            Beryll::CollisionGroups::PLAYER,
+                                            Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                            Beryll::CollisionGroups::GARBAGE,
+                                            Beryll::SceneObjectGroups::PLAYER);
 
         m_allSceneObjects.push_back(m_player);
         m_simpleObjForShadowMap.push_back(m_player);
@@ -253,7 +247,7 @@ namespace MagneticBall3D
                                                                    false,
                                                                    Beryll::CollisionFlags::STATIC,
                                                                    Beryll::CollisionGroups::GROUND,
-                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
+                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
                                                                    Beryll::SceneObjectGroups::GROUND);
 
         m_allSceneObjects.push_back(ground);
@@ -266,8 +260,8 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::CAMERA |
-                                                                                       Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT | Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : objects1)
@@ -285,15 +279,16 @@ namespace MagneticBall3D
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
+                                                                                       Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
-                                                                                       Beryll::SceneObjectGroups::DYNAMIC_ENVIRONMENT);
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects1)
         {
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 10);
+
             m_allSceneObjects.push_back(obj);
-            m_allGarbage.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
 
             obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
@@ -303,15 +298,16 @@ namespace MagneticBall3D
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
+                                                                                       Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
-                                                                                       Beryll::SceneObjectGroups::DYNAMIC_ENVIRONMENT);
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects2)
         {
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 10);
+
             m_allSceneObjects.push_back(obj);
-            m_allGarbage.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
 
             obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
@@ -321,15 +317,16 @@ namespace MagneticBall3D
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
+                                                                                       Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::DYNAMIC_ENVIRONMENT,
-                                                                                       Beryll::SceneObjectGroups::DYNAMIC_ENVIRONMENT);
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects3)
         {
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 10);
+
             m_allSceneObjects.push_back(obj);
-            m_allGarbage.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
 
             obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
@@ -436,14 +433,14 @@ namespace MagneticBall3D
 
             float playerMassToGarbageMassRation = EnumsAndVariables::playerMass / EnumsAndVariables::garbageMass;
             playerMassToGarbageMassRation = 1.0f / playerMassToGarbageMassRation;
-            for(const auto& obj : m_allGarbage)
+            for(const auto& wrapper : m_allGarbageWrappers)
             {
-                if(!obj->getIsEnabledUpdate())
+                if(!wrapper.obj->getIsEnabledUpdate())
                     continue;
 
-                if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+                if(glm::distance(m_player->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
                 {
-                    obj->applyCentralImpulse((m_screenSwipeDir * m_gui->sliderImpulse->getValue()) * playerMassToGarbageMassRation);
+                    wrapper.obj->applyCentralImpulse((m_screenSwipeDir * m_gui->sliderImpulse->getValue()) * playerMassToGarbageMassRation);
                 }
             }
 
@@ -458,44 +455,44 @@ namespace MagneticBall3D
     {
         m_objectsInMagneticRadius = 0;
 
-        for(const auto& obj : m_allGarbage)
+        for(const auto& wrapper : m_allGarbageWrappers)
         {
-            if(!obj->getIsEnabledUpdate())
+            if(!wrapper.obj->getIsEnabledUpdate())
                 continue;
 
-            if(glm::distance(m_player->getOrigin(), obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+            if(glm::distance(m_player->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
             {
                 ++m_objectsInMagneticRadius;
 
-                glm::vec3 grav = glm::normalize(m_player->getOrigin() - obj->getOrigin()) * m_gui->sliderGGrav->getValue();
-                if(Beryll::Physics::getIsCollision(m_player->getID(), obj->getID()))
+                glm::vec3 grav = glm::normalize(m_player->getOrigin() - wrapper.obj->getOrigin()) * m_gui->sliderGGrav->getValue();
+                if(Beryll::Physics::getIsCollision(m_player->getID(), wrapper.obj->getID()))
                 {
-                    obj->setGravity(-(grav * 0.5f), false, false);
+                    wrapper.obj->setGravity(-(grav * 0.5f), false, false);
                 }
                 else
                 {
-                    obj->setGravity(grav, false, true);
+                    wrapper.obj->setGravity(grav, false, true);
                 }
 
                 // Stop garbage if it stats rotating around player too fast.
-                const glm::vec3 linVelocity = obj->getLinearVelocity();
+                const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
                 const glm::vec3 objMoveDir = glm::normalize(linVelocity);
                 const float objSpeed = glm::length(linVelocity);
-                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getOrigin() - obj->getOrigin());
+                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getOrigin() - wrapper.obj->getOrigin());
 
                 if(objSpeed > m_playerMoveSpeed * 2.0f && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                 {
-                    obj->resetVelocities();
+                    wrapper.obj->resetVelocities();
                 }
             }
             else
             {
-                obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
+                wrapper.obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
             }
         }
     }
 
-    void PlayStateSceneLayer::updatePlayerGravity()
+    void PlayStateSceneLayer::updateGravity()
     {
         if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
         {
@@ -506,6 +503,10 @@ namespace MagneticBall3D
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
             m_player->setGravity(EnumsAndVariables::playerGravityOnBuilding);
         }
+//        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::JUMPPAD))
+//        {
+//            m_player->setGravity(EnumsAndVariables::playerGravityOnAir);
+//        }
         else if(m_lastTimeOnBuilding + m_applyGravityDelay < Beryll::TimeStep::getSecFromStart())
         {
             m_player->setGravity(EnumsAndVariables::playerGravityOnAir);
@@ -530,7 +531,10 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::updatePathfindingAndSpawnEnemies()
     {
-        // In first frame find closest point to player and all available to spawn enemies. Spawn enemies.
+        // In first frame:
+        // 1. find closest point to player.
+        // 2. find closest points to spawn enemies.
+        // 3. spawn enemies.
         if(m_pathFindingIteration == 0)
         {
             ++m_pathFindingIteration; // Go to next iteration in next frame.
@@ -541,17 +545,19 @@ namespace MagneticBall3D
             float distanceToClosestPoint = std::numeric_limits<float>::max();
             float distanceToCurrent = 0.0f;
 
-            for(const glm::ivec2& point : m_allowedPointsToMoveXZ)
+            for(const glm::ivec2& point : m_pathGridXZ)
             {
-                distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(point.x, point.y));
+                distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(point));
 
+                // 1.
                 if(distanceToCurrent < distanceToClosestPoint)
                 {
                     distanceToClosestPoint = distanceToCurrent;
                     m_playerClosestAllowedPos = point;
                 }
 
-                if(distanceToCurrent > 150.0f)
+                // 2.
+                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnEnemies)
                 {
                     // We can spawn enemy at this point.
                     m_allowedPointsToSpawnEnemies.push_back(point);
@@ -560,12 +566,12 @@ namespace MagneticBall3D
 
             BR_ASSERT((!m_allowedPointsToSpawnEnemies.empty()), "%s", "m_allowedPointsToSpawnEnemies empty.");
 
-            // Spawn enemies.
+            // 3.
             int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - AnimatedCollidingEnemy::getActiveCount();
             int spawnedCount = 0;
             if(countToSpawn > 0)
             {
-                for(auto enemy : m_allAnimatedEnemies)
+                for(const auto& enemy : m_allAnimatedEnemies)
                 {
                     if(!enemy->getIsEnabledUpdate())
                     {
@@ -599,11 +605,18 @@ namespace MagneticBall3D
                 }
             }
         }
-        // In second frame calculate path.
+        // In second frame:
+        // 1. clear blocked positions.
         else if(m_pathFindingIteration == 1)
         {
-            m_pathFindingIteration = 0; // Start from start again in next frame.
+            ++m_pathFindingIteration;
 
+            m_pathFinder.clearBlockedPositions();
+        }
+        // In third frame:
+        // 1. calculate path.
+        else if(m_pathFindingIteration == 2)
+        {
             int enemiesUpdated = 0;
             int& i = EnumsAndVariables::currentPathfindingEnemyIndex;
             for( ; i < m_allAnimatedEnemies.size(); ++i)
@@ -613,67 +626,32 @@ namespace MagneticBall3D
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate())
                 {
-                    // First canst ray to check if enemy see player.
-                    Beryll::RayClosestHit rayCollisionBithBuilding = Beryll::Physics::castRayClosestHit(m_allAnimatedEnemies[i]->getOrigin(),
-                                                                                                        m_player->getOrigin(),
-                                                                                                        Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
-                                                                                                        Beryll::CollisionGroups::BUILDING);
+                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
+                    m_allAnimatedEnemies[i]->indexInPathArray = 0;
+                    m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
+                    m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,
+                                                                                    m_allAnimatedEnemies[i]->getController().getFromOriginToBottom(),
+                                                                                    m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.y);
 
-                    if(rayCollisionBithBuilding) // Enemy dont see player now. Move according A Star path.
-                    {
-                        glm::ivec2 currentPointToMove = m_allAnimatedEnemies[i]->currentPointToMove2DIntegers;
-
-                        if(m_allAnimatedEnemies[i]->seePlayer) // Saw player previous frame but stop see from now.
-                        {
-                            //BR_INFO("%s", "Saw player previous frame but stop see from now.");
-                            // Find closest point to enemy. And find path from that point.
-                            glm::vec2 enemyPosXZ{m_allAnimatedEnemies[i]->getOrigin().x, m_allAnimatedEnemies[i]->getOrigin().z};
-                            float distanceToClosestPoint = std::numeric_limits<float>::max();
-                            float distanceToCurrent = 0.0f;
-
-                            for(const glm::ivec2& point : m_allowedPointsToMoveXZ)
-                            {
-                                distanceToCurrent = glm::distance(enemyPosXZ, glm::vec2(point.x, point.y));
-
-                                if(distanceToCurrent < distanceToClosestPoint)
-                                {
-                                    distanceToClosestPoint = distanceToCurrent;
-                                    currentPointToMove = point;
-                                }
-                            }
-                        }
-
-                        m_allAnimatedEnemies[i]->seePlayer = false;
-
-                        m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(currentPointToMove, m_playerClosestAllowedPos, 7);
-                        m_allAnimatedEnemies[i]->indexInPathArray = 0;
-                        m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
-                        m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,
-                                                                                        m_allAnimatedEnemies[i]->getController().getFromOriginToBottom(),
-                                                                                        m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.y);
-                    }
-                    else // Enemy see player now. Move directly to closest allowed point to player.
-                    {
-                        m_allAnimatedEnemies[i]->seePlayer = true;
-
-                        m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_playerClosestAllowedPos.x,
-                                                                                        m_allAnimatedEnemies[i]->getController().getFromOriginToBottom(),
-                                                                                        m_playerClosestAllowedPos.y);
-                    }
+                    m_pathFinder.addBlockedPosition(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers);
 
                     ++enemiesUpdated;
                 }
             }
 
             if(EnumsAndVariables::currentPathfindingEnemyIndex >= m_allAnimatedEnemies.size() -1)
+            {
+                // All enemies were updated.
                 EnumsAndVariables::currentPathfindingEnemyIndex = 0;
+                m_pathFindingIteration = 0; // Start from start again in next frame.
+            }
 
         }
     }
 
     void PlayStateSceneLayer::killEnemies()
     {
-        for(auto enemy : m_allAnimatedEnemies)
+        for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getOrigin()) < 10.0f)
             {
@@ -692,6 +670,8 @@ namespace MagneticBall3D
         {
             if(m_playerMoveSpeed > EnumsAndVariables::minPlayerSpeedToCameraFollow)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_playerMoveDir.x, 0.0f, m_playerMoveDir.z));
+
+            m_screenSwipeDir = glm::vec3{0.0f};
         }
         else
         {
@@ -706,20 +686,16 @@ namespace MagneticBall3D
             const float angleDifference = glm::angle(rotation);
             if(angleDifference > 0.035f) // More than 2 degrees.
             {
-                const glm::vec3 axis = glm::normalize(glm::axis(rotation));
-
-                float maxAngleToRotate = EnumsAndVariables::cameraRotationMaxSpeed * Beryll::TimeStep::getTimeStepSec();
-                if(angleDifference < maxAngleToRotate)
-                    maxAngleToRotate = angleDifference;
-
-                const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f}, maxAngleToRotate, axis);
+                const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
+                                                               angleDifference * 0.06f + 0.007f,
+                                                               glm::normalize(glm::axis(rotation)));
                 m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
             }
         }
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = m_gui->sliderCameraY->getValue() * m_player->getOrigin().y;
+        m_cameraOffset.y = 0.0625f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getOrigin().y;
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getOrigin();
@@ -731,7 +707,7 @@ namespace MagneticBall3D
         // Check camera ray collisions.
         Beryll::RayClosestHit rayClosestHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
                                                                                  cameraPosForRay,
-                                                                                 Beryll::CollisionGroups::CAMERA,
+                                                                                 Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
                                                                                  Beryll::CollisionGroups::BUILDING);
 
         if(rayClosestHit)

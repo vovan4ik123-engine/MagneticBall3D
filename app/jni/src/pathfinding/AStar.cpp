@@ -10,6 +10,7 @@ namespace MagneticBall3D
         m_mapUpperY = mapUpperY;
 
         m_walls.reserve(1000);
+        m_blockedPositions.reserve(700);
         m_allNodesCreated.reserve(400);
 
         m_nDist = nodeDistance;
@@ -24,7 +25,7 @@ namespace MagneticBall3D
 
     }
 
-    void AStar::addWall(glm::ivec2 wall)
+    void AStar::addWallPosition(glm::ivec2 wall)
     {
         if(std::find(m_walls.begin(), m_walls.end(), wall) == m_walls.end())
         {
@@ -32,9 +33,18 @@ namespace MagneticBall3D
         }
     }
 
-    bool AStar::isCollisionWithWall(glm::ivec2 coords)
+    void AStar::addBlockedPosition(glm::ivec2 pos)
     {
-        if(coords.x < m_mapLeftX || coords.x > m_mapRightX ||
+        if(std::find(m_blockedPositions.begin(), m_blockedPositions.end(), pos) == m_blockedPositions.end())
+        {
+            m_blockedPositions.push_back(pos);
+        }
+    }
+
+    bool AStar::isCollisionWithWallOrBlocked(glm::ivec2 coords)
+    {
+        if(std::find(m_blockedPositions.begin(), m_blockedPositions.end(), coords) != m_blockedPositions.end() ||
+           coords.x < m_mapLeftX || coords.x > m_mapRightX ||
            coords.y < m_mapBottomY || coords.y > m_mapUpperY ||
            std::find(m_walls.begin(), m_walls.end(), coords) != m_walls.end())
         {
@@ -46,6 +56,9 @@ namespace MagneticBall3D
 
     std::vector<glm::ivec2> AStar::findPath(glm::ivec2 start, glm::ivec2 end, int pathNodeMaxCount)
     {
+        if(isCollisionWithWallOrBlocked(start))
+            return {start};
+
         m_allNodesCreated.emplace_back(start, nullptr);
         Node* current = nullptr;
         int openSetCount = 1;
@@ -75,7 +88,7 @@ namespace MagneticBall3D
             {
                 glm::ivec2 newCoordinates(current->coordinates + m_directions[i]);
 
-                if(isCollisionWithWall(newCoordinates))
+                if(isCollisionWithWallOrBlocked(newCoordinates))
                     continue;
 
                 int totalCost = current->G + ((i < 4) ? m_costMovePerpendicular : m_costMoveDiagonal);
@@ -111,6 +124,14 @@ namespace MagneticBall3D
                     // Chain already long enough. Stop search.
                     current = successor;
                     openSetCount = 0;
+
+//                    if(glm::distance(glm::vec2(current->coordinates), glm::vec2(end)) > glm::distance(glm::vec2(start), glm::vec2(end)))
+//                    {
+//                        // If after search we moved away from end stay at start.
+//                        m_allNodesCreated.clear();
+//                        return {start};
+//                    }
+
                     break;
                 }
             }

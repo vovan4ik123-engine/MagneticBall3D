@@ -22,10 +22,9 @@ add_library(main SHARED main.cpp
                         # Pathfinding
                         pathfinding/AStar.cpp
 
-                        # Enemies
                         enemies/AnimatedCollidingEnemy.cpp
-
-                        #
+                        player/Player.cpp
+                        garbage/Garbage.cpp
                         
         )
 
