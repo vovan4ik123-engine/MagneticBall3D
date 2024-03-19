@@ -11,9 +11,9 @@ add_compile_options(-fexceptions -frtti)
 
 add_library(main SHARED main.cpp
 
-                        # Menu
+                        # Menu.
 
-                        # Maps
+                        # Maps.
 
                         # Play state.
                         playState/PlayStateGUILayer.cpp
@@ -22,11 +22,15 @@ add_library(main SHARED main.cpp
                         # Pathfinding
                         pathfinding/AStar.cpp
 
-                        enemies/AnimatedCollidingEnemy.cpp
                         player/Player.cpp
                         garbage/Garbage.cpp
-                        
-        )
+
+                        # Enemies.
+                        enemies/BaseEnemy.cpp
+                        enemies/CopWithPistol.cpp
+                        enemies/CopWithGrenadeLauncher.cpp
+                        enemies/Sniper.cpp
+            )
 
 target_include_directories(main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

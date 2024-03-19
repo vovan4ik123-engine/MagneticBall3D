@@ -124,14 +124,6 @@ namespace MagneticBall3D
                     // Chain already long enough. Stop search.
                     current = successor;
                     openSetCount = 0;
-
-//                    if(glm::distance(glm::vec2(current->coordinates), glm::vec2(end)) > glm::distance(glm::vec2(start), glm::vec2(end)))
-//                    {
-//                        // If after search we moved away from end stay at start.
-//                        m_allNodesCreated.clear();
-//                        return {start};
-//                    }
-
                     break;
                 }
             }

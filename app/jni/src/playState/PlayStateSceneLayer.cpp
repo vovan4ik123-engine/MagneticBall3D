@@ -1,5 +1,7 @@
 #include "PlayStateSceneLayer.h"
 #include "EnumsAndVariables.h"
+#include "enemies/CopWithPistol.h"
+#include "enemies/CopWithGrenadeLauncher.h"
 
 namespace MagneticBall3D
 {
@@ -12,8 +14,8 @@ namespace MagneticBall3D
         Beryll::Physics::hardRemoveAllObjects();
 
         loadPlayerAndStaticEnv();
-        loadDynamicEnv();
-        loadAnimatedModels();
+        loadGarbage();
+        loadEnemies();
         loadShaders();
         loadSunPosition(glm::vec3(200.0f, 200.0f, 20.0f), 500.0f, 500.0f, 500.0f);
 
@@ -82,6 +84,16 @@ namespace MagneticBall3D
             }
         }
 
+        for(auto& garbage : m_allGarbageWrappers)
+        {
+            if(garbage.getIsEnabled())
+            {
+                garbage.update();
+            }
+        }
+
+        handleEnemiesAttacks();
+
 //        if(m_gui->sliderFPS->getIsValueChanging())
 //            Beryll::GameLoop::setFPSLimit(m_gui->sliderFPS->getValue());
 
@@ -138,7 +150,7 @@ namespace MagneticBall3D
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(glm::distance(m_player->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.6f))
+                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.8f))
                         so->enableDraw();
                     else
                         so->disableDraw();
@@ -220,6 +232,9 @@ namespace MagneticBall3D
                 Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLightShadows);
             }
         }
+
+        //m_skyBox->draw();
+        Beryll::ParticleSystem::draw();
     }
 
     void PlayStateSceneLayer::loadPlayerAndStaticEnv()
@@ -230,7 +245,7 @@ namespace MagneticBall3D
                                             Beryll::CollisionFlags::DYNAMIC,
                                             Beryll::CollisionGroups::PLAYER,
                                             Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                            Beryll::CollisionGroups::GARBAGE,
+                                            Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
                                             Beryll::SceneObjectGroups::PLAYER);
 
         m_allSceneObjects.push_back(m_player);
@@ -261,7 +276,7 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : objects1)
@@ -273,7 +288,7 @@ namespace MagneticBall3D
         }
     }
 
-    void PlayStateSceneLayer::loadDynamicEnv()
+    void PlayStateSceneLayer::loadGarbage()
     {
         const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Garbage3.fbx",
                                                                                        EnumsAndVariables::garbageMass,
@@ -281,7 +296,8 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::DYNAMIC,
                                                                                        Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                        Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects1)
@@ -300,7 +316,8 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::DYNAMIC,
                                                                                        Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                        Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects2)
@@ -319,7 +336,8 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::DYNAMIC,
                                                                                        Beryll::CollisionGroups::GARBAGE,
                                                                                        Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                        Beryll::SceneObjectGroups::GARBAGE);
 
         for(const auto& obj : objects3)
@@ -333,26 +351,41 @@ namespace MagneticBall3D
         }
     }
 
-    void PlayStateSceneLayer::loadAnimatedModels()
+    void PlayStateSceneLayer::loadEnemies()
     {
-        for(int x = 0; x < 500; ++x)
+        for(int x = 0; x < 250; ++x)
         {
-            auto unit = std::make_shared<AnimatedCollidingEnemy>("models3D/AnimCollFootman1.fbx",
-                                                                 0.0f,
-                                                                 false,
-                                                                 Beryll::CollisionFlags::STATIC,
-                                                                 Beryll::CollisionGroups::NONE,
-                                                                 Beryll::CollisionGroups::NONE,
-                                                                 Beryll::SceneObjectGroups::ENEMY);
+            auto unit = std::make_shared<CopWithPistol>("models3D/AnimCollFootman1.fbx",
+                                                    0.0f,
+                                                    false,
+                                                    Beryll::CollisionFlags::STATIC,
+                                                    Beryll::CollisionGroups::NONE,
+                                                    Beryll::CollisionGroups::NONE,
+                                                    Beryll::SceneObjectGroups::ENEMY);
 
-            unit->setCurrentAnimationByIndex(3, false, false);
-            unit->setDefaultAnimationByIndex(3);
+            unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE);
             unit->getController().moveSpeed = 20.0f;
 
             m_allSceneObjects.push_back(unit);
             m_allAnimatedEnemies.push_back(unit);
             m_animatedObjForShadowMap.push_back(unit);
 
+            auto unit2 = std::make_shared<CopWithGrenadeLauncher>("models3D/StoneThrower.fbx",
+                                                        0.0f,
+                                                        false,
+                                                        Beryll::CollisionFlags::STATIC,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::SceneObjectGroups::ENEMY);
+
+            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE);
+            unit2->getController().moveSpeed = 20.0f;
+
+            m_allSceneObjects.push_back(unit2);
+            m_allAnimatedEnemies.push_back(unit2);
+            m_animatedObjForShadowMap.push_back(unit2);
         }
     }
 
@@ -532,9 +565,8 @@ namespace MagneticBall3D
     void PlayStateSceneLayer::updatePathfindingAndSpawnEnemies()
     {
         // In first frame:
-        // 1. find closest point to player.
-        // 2. find closest points to spawn enemies.
-        // 3. spawn enemies.
+        // 1. Find closest point to player.
+        // 2. Find allowed points to spawn enemies.
         if(m_pathFindingIteration == 0)
         {
             ++m_pathFindingIteration; // Go to next iteration in next frame.
@@ -565,9 +597,19 @@ namespace MagneticBall3D
             }
 
             BR_ASSERT((!m_allowedPointsToSpawnEnemies.empty()), "%s", "m_allowedPointsToSpawnEnemies empty.");
+        }
+        // In second frame:
+        // 1. Clear blocked positions.
+        // 2. Spawn enemies.
+        else if(m_pathFindingIteration == 1)
+        {
+            ++m_pathFindingIteration;
 
-            // 3.
-            int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - AnimatedCollidingEnemy::getActiveCount();
+            // 1.
+            m_pathFinder.clearBlockedPositions();
+
+            // 2.
+            int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - BaseEnemy::getActiveCount();
             int spawnedCount = 0;
             if(countToSpawn > 0)
             {
@@ -584,7 +626,7 @@ namespace MagneticBall3D
                                                spawnPoint2D.y};
                         enemy->setOrigin(spawnPoint3D);
 
-                        enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 7);
+                        enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
                         if(enemy->pathArray.size() > 1)
                             enemy->indexInPathArray = 1;
                         else
@@ -605,16 +647,8 @@ namespace MagneticBall3D
                 }
             }
         }
-        // In second frame:
-        // 1. clear blocked positions.
-        else if(m_pathFindingIteration == 1)
-        {
-            ++m_pathFindingIteration;
-
-            m_pathFinder.clearBlockedPositions();
-        }
         // In third frame:
-        // 1. calculate path.
+        // 1. Update paths for enemies.
         else if(m_pathFindingIteration == 2)
         {
             int enemiesUpdated = 0;
@@ -626,7 +660,7 @@ namespace MagneticBall3D
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate())
                 {
-                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
+                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 6);
                     m_allAnimatedEnemies[i]->indexInPathArray = 0;
                     m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
                     m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,
@@ -647,6 +681,104 @@ namespace MagneticBall3D
             }
 
         }
+    }
+
+    void PlayStateSceneLayer::handleEnemiesAttacks()
+    {
+        for(const auto& enemy : m_allAnimatedEnemies)
+        {
+            if(enemy->getIsEnabledUpdate() && enemy->unitState == UnitState::CAN_ATTACK)
+            {
+                glm::vec3 from = enemy->getOrigin();
+                from.y += enemy->getController().getFromOriginToTop() * 0.5f;
+                glm::vec3 target = m_player->getOrigin();
+                target.y += 1.5f;
+                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from,
+                                                                                     target,
+                                                                                     Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                     Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE);
+
+                if(rayAttack)
+                {
+                    // Spam particles.
+                    if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_ONE)
+                    {
+                        emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
+                                          glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), 1);
+                    }
+                    else if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_RADIUS)
+                    {
+                        emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
+                                          glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), 1);
+
+                        emitParticlesExplosion(rayAttack.hitPoint, 10, 0.5f, 0.5f,
+                                               glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), 1);
+                    }
+
+                    enemy->attack(m_player->getOrigin());
+
+                    if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                    {
+                        // Player attacked.
+                        BR_INFO("%s", "Player attacked");
+
+                    }
+                    else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
+                    {
+                        // Garbage under attack =).
+                        if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_ONE)
+                        {
+                            BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
+                            for(auto& wrapper : m_allGarbageWrappers)
+                            {
+                                if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID())
+                                {
+                                    wrapper.hp -= enemy->getDamage();
+                                    break;
+                                }
+                            }
+                        }
+                        else if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_RADIUS)
+                        {
+                            BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_RADIUS");
+                            for(auto& wrapper : m_allGarbageWrappers)
+                            {
+                                if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID() &&
+                                   glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->getDamageRadius())
+                                {
+                                    wrapper.hp -= enemy->getDamage();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void PlayStateSceneLayer::emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
+                                                const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime)
+    {
+        glm::vec3 dir = glm::normalize(to - from);
+        float distance = glm::distance(to, from);
+        const float spamOffsetMeters = 1.5f;
+        glm::vec3 spamPoint{0.0f};
+        for(float i = 0.0f; i < distance; i += spamOffsetMeters)
+        {
+            spamPoint = from + (dir * i);
+
+            Beryll::ParticleSystem::EmitCubesFromCenter(1, lifeTime, sizeBegin, sizeEnd,
+                                                        colorBegin, colorEnd,
+                                                        spamPoint, glm::vec3(0.0f), 0);
+        }
+    }
+
+    void PlayStateSceneLayer::emitParticlesExplosion(const glm::vec3& orig, const int count, const float sizeBegin, const float sizeEnd,
+                                                     const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime)
+    {
+        Beryll::ParticleSystem::EmitCubesFromCenter(count, lifeTime, sizeBegin, sizeEnd,
+                                                    colorBegin, colorEnd,
+                                                    orig, glm::vec3(0.0f), 10);
     }
 
     void PlayStateSceneLayer::killEnemies()
@@ -687,7 +819,7 @@ namespace MagneticBall3D
             if(angleDifference > 0.035f) // More than 2 degrees.
             {
                 const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
-                                                               angleDifference * 0.06f + 0.007f,
+                                                               angleDifference * 0.03f + 0.007f,
                                                                glm::normalize(glm::axis(rotation)));
                 m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
             }
@@ -695,13 +827,13 @@ namespace MagneticBall3D
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.0625f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getOrigin().y;
+        m_cameraOffset.y = 0.15f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getOrigin().y;
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getOrigin();
         m_cameraFront.y += 15.0f;
 
-        float maxCameraDistance = m_startCameraDistance + m_objectsInMagneticRadius * 0.2f;
+        float maxCameraDistance = m_startCameraDistance + m_objectsInMagneticRadius * 0.15f;
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.

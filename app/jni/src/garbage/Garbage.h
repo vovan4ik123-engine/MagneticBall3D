@@ -7,7 +7,12 @@ namespace MagneticBall3D
     enum class GarbageType
     {
         NONE,
-        DEFAULT // Appeared on map after loading.
+        // Appears on map after loading.
+        DEFAULT,
+        // Appears after killing specific type of enemy.
+        COP_WITH_PISTOL,
+        COP_WITH_GRENADE_LAUNCHER,
+        SNIPER
     };
 
     class Garbage

@@ -26,7 +26,7 @@ namespace MagneticBall3D
 
         sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 500);
         m_guiObjects.push_back(sliderEnemy);
-        sliderEnemy->setValue(30.0f);
+        sliderEnemy->setValue(1.0f);
 
         sliderGarbage = std::make_shared<Beryll::SliderHorizontal>("garbage", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 18, 40, 2, 0, 500);
         m_guiObjects.push_back(sliderGarbage);

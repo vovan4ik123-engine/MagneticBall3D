@@ -2,7 +2,7 @@
 
 #include "EngineHeaders.h"
 #include "PlayStateGUILayer.h"
-#include "enemies/AnimatedCollidingEnemy.h"
+#include "enemies/BaseEnemy.h"
 #include "pathfinding/AStar.h"
 #include "player/Player.h"
 #include "garbage/Garbage.h"
@@ -21,8 +21,8 @@ namespace MagneticBall3D
 
         // Load.
         void loadPlayerAndStaticEnv();
-        void loadDynamicEnv();
-        void loadAnimatedModels();
+        void loadGarbage();
+        void loadEnemies();
         void loadShaders();
         void loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
@@ -34,6 +34,11 @@ namespace MagneticBall3D
         void updateGravity();
         void updatePlayerSpeed();
         void updatePathfindingAndSpawnEnemies();
+        void handleEnemiesAttacks();
+        void emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
+                               const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
+        void emitParticlesExplosion(const glm::vec3& orig, const int count, const float sizeBegin, const float sizeEnd,
+                                    const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
         void killEnemies();
         void handleCamera();
 
@@ -42,7 +47,7 @@ namespace MagneticBall3D
 
         std::shared_ptr<Player> m_player;
         std::vector<Garbage> m_allGarbageWrappers; // Garbage contains Beryll::SimpleCollidingObject inside.
-        std::vector<std::shared_ptr<AnimatedCollidingEnemy>> m_allAnimatedEnemies;
+        std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
         std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
@@ -61,7 +66,7 @@ namespace MagneticBall3D
 
         glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.2f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 220.0f; // For player without garbage.
+        const float m_startCameraDistance = 160.0f; // For player without garbage.
         float m_cameraDistance = m_startCameraDistance;
 
         // Control player.

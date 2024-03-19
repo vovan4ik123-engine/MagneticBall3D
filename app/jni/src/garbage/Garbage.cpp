@@ -19,7 +19,10 @@ namespace MagneticBall3D
     void Garbage::update()
     {
         if(hp <= 0)
+        {
+            BR_INFO("%s", "garbage if(hp <= 0)");
             disableGarbage();
+        }
     }
 
     void Garbage::enableGarbage()

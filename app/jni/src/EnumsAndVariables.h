@@ -9,9 +9,16 @@ namespace EnumsAndVariables
         static const inline std::string COUSINE = "fonts/cousine.ttf";
     };
 
+    struct AnimationIndexes
+    {
+        static const inline int ATTACK = 0;
+        static const inline int IDLE = 2;
+        static const inline int RUN = 3;
+    };
+
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 30.0f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 1.0f;
+    constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
     constexpr inline float cameraYAccordingPlayerY = 0.025f; // Multiply by player.y and add to m_cameraOffset.y.
 
     // Player.
@@ -36,7 +43,7 @@ namespace EnumsAndVariables
 
     // Enemies.
     inline int maxActiveEnemiesCount = 500;
-    constexpr inline int maxPathfindingInOneFrame = 25;
+    constexpr inline int maxPathfindingInOneFrame = 20;
     inline int currentPathfindingEnemyIndex = 0;
     constexpr inline float minDistanceToSpawnEnemies = 150.0f;
 }
