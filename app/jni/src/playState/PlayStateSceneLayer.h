@@ -31,7 +31,7 @@ namespace MagneticBall3D
         void updateGarbageGravity();
 
         // After physics.
-        void updateGravity();
+        void updatePlayerGravity();
         void updatePlayerSpeed();
         void updatePathfindingAndSpawnEnemies();
         void handleEnemiesAttacks();
@@ -79,7 +79,6 @@ namespace MagneticBall3D
         glm::vec3 m_screenSwipeDir{0.0f};
         float m_lastTimeOnBuilding = 0.0f; // Sec.
         const float m_applyGravityDelay = 0.25f; // Sec. For player after he stop collide with buildings.
-        int m_objectsInMagneticRadius = 0;
 
         // Pathfinding.
         AStar m_pathFinder{-250, 250, -250, 250, 5};

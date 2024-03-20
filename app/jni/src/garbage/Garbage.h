@@ -11,8 +11,11 @@ namespace MagneticBall3D
         DEFAULT,
         // Appears after killing specific type of enemy.
         COP_WITH_PISTOL,
+        PISTOL,
         COP_WITH_GRENADE_LAUNCHER,
-        SNIPER
+        GRENADE_LAUNCHER,
+        SNIPER,
+        SNIPER_GUN
     };
 
     class Garbage
@@ -30,14 +33,14 @@ namespace MagneticBall3D
         GarbageType getType() { return m_type; }
 
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
-        static int garbageCountInMagneticRadius;
-        bool isInMagneticRadius = false;
+        bool isMagnetized = false;
 
-        int hp = 0;
+        int currentHP = 0;
 
     private:
-        bool m_isEnabled = false;
+        bool m_isEnabled = true;
         static int m_activeGarbageCount;
         GarbageType m_type = GarbageType::NONE;
+        const int m_maxHP = 0;
     };
 }

@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
 
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
-    //Beryll::Physics::setContactSolverIterations(5);
 
     std::shared_ptr<MagneticBall3D::PlayStateGUILayer> GUILayer = std::make_shared<MagneticBall3D::PlayStateGUILayer>();
     std::shared_ptr<MagneticBall3D::PlayStateSceneLayer> sceneLayer = std::make_shared<MagneticBall3D::PlayStateSceneLayer>(GUILayer);

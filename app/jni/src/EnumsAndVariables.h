@@ -37,13 +37,15 @@ namespace EnumsAndVariables
     constexpr inline float garbageDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
-    constexpr inline int garbageMaxCountInMagneticRadius = 200;
+    constexpr inline int garbageMaxCountMagnetized = 350;
+    inline int garbageCountMagnetized = 0;
 
     constexpr inline float staticEnvFriction = 40.0f;
 
     // Enemies.
     inline int maxActiveEnemiesCount = 500;
-    constexpr inline int maxPathfindingInOneFrame = 20;
+    constexpr inline int maxPathfindingInOneFrame = 10;
     inline int currentPathfindingEnemyIndex = 0;
     constexpr inline float minDistanceToSpawnEnemies = 150.0f;
+    inline float radiusToKillEnemies = 15.0f; // Also amount of garbage to kill should be considered with that.
 }

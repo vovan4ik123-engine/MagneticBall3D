@@ -65,7 +65,7 @@ namespace MagneticBall3D
     protected:
         static int m_activeEnemiesCount;
         bool m_isEnabled = false;
-        UnitType m_UnitType = UnitType::NONE; // Initialise in subclass ???
+        UnitType m_UnitType = UnitType::NONE;
         AttackType m_attackType = AttackType::NONE;
 
         // Attack data.
