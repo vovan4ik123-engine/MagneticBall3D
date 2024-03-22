@@ -14,19 +14,19 @@ namespace MagneticBall3D
 
         sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("Impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderImpulse);
-        sliderImpulse->setValue(0.13f);
+        sliderImpulse->setValue(0.15f);
 
         sliderTorque = std::make_shared<Beryll::SliderHorizontal>("Torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderTorque);
-        sliderTorque->setValue(0.5f);
+        sliderTorque->setValue(0.15f);
 
-        sliderGGrav = std::make_shared<Beryll::SliderHorizontal>("g grav", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 50, 500);
-        m_guiObjects.push_back(sliderGGrav);
-        sliderGGrav->setValue(300.0f);
-
-        sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 500);
+        sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 12, 40, 2, 0, 500);
         m_guiObjects.push_back(sliderEnemy);
         sliderEnemy->setValue(1.0f);
+
+        sliderSpeed = std::make_shared<Beryll::SliderHorizontal>("speed", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 15, 40, 2, 0, 200);
+        m_guiObjects.push_back(sliderSpeed);
+        sliderSpeed->setValue(100.0f);
 
         buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 2, 80, 90, 20, 10);
         m_guiObjects.push_back(buttonA);

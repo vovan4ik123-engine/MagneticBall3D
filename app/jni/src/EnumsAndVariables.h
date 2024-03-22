@@ -23,24 +23,30 @@ namespace EnumsAndVariables
 
     // Player.
     constexpr inline float playerMagneticRadius = 35.0f;
-    constexpr inline float playerImpulseFactor = 0.25f;
-    constexpr inline float playerTorqueFactor = 0.5f;
-    constexpr inline float playerDamping = 0.2f;
+    inline float playerImpulseFactor = 0.13f;
+    inline float playerTorqueFactor = 0.5f;
+    constexpr inline float playerDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -25.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
+    inline float playerMaxSpeedXZ = 20.0f;
 
     // Garbage.
-    constexpr inline float garbageDamping = 0.2f;
+    constexpr inline float garbageDamping = 0.1f;
     constexpr inline float garbageMass = 0.001f;
+    constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
+    // If player speed > 0.0f increase gravity power linearly with player speed.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.5f; // * by player speed and add to garbage gravity.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetized = 350;
     inline int garbageCountMagnetized = 0;
 
     constexpr inline float staticEnvFriction = 40.0f;
+    constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
+
 
     // Enemies.
     inline int maxActiveEnemiesCount = 500;

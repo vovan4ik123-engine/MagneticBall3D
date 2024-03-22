@@ -27,14 +27,12 @@ namespace MagneticBall3D
         void loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
         // Before physics.
-        void controlPlayer();
-        void updateGarbageGravity();
-
-        // After physics.
-        void updatePlayerGravity();
-        void updatePlayerSpeed();
+        void handleScreenSwipe();
+        void magnetizeGarbageAndUpdateGravity();
         void updatePathfindingAndSpawnEnemies();
         void handleEnemiesAttacks();
+
+        // After physics.
         void emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
                                const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
         void emitParticlesExplosion(const glm::vec3& orig, const int count, const float sizeBegin, const float sizeEnd,
@@ -69,16 +67,12 @@ namespace MagneticBall3D
         const float m_startCameraDistance = 160.0f; // For player without garbage.
         float m_cameraDistance = m_startCameraDistance;
 
-        // Control player.
+        // Screen swipe.
         int m_fingerDownID = -1;
         glm::vec2 m_fingerDownPos{0.0f};
         glm::vec2 m_fingerUpPos{0.0f};
-        glm::vec3 m_playerMoveDir{0.0f};
-        float m_playerMoveSpeed{0.0f};
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
-        glm::vec3 m_screenSwipeDir{0.0f};
-        float m_lastTimeOnBuilding = 0.0f; // Sec.
-        const float m_applyGravityDelay = 0.25f; // Sec. For player after he stop collide with buildings.
+        glm::vec3 m_screenSwipe3D{0.0f};
 
         // Pathfinding.
         AStar m_pathFinder{-250, 250, -250, 250, 5};

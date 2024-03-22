@@ -74,6 +74,9 @@ namespace MagneticBall3D
         float m_damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float m_lastAttackTime = 0.0f; // Sec.
         float m_timeBetweenAttacks = 0.0f; // Sec.
+        float m_delayBeforeFirstAttack = 1.0f; // When entering in attack radius.
+        float m_timeEnterInAttackRadius = 0.0f;
+        bool m_enterInAttackRadius = false; // When was outside attack radius and enter inside attack radius.
 
         int m_garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
         float m_reducePlayerSpeedWhenDie = 0.0f;
