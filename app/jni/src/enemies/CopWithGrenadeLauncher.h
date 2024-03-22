@@ -17,7 +17,6 @@ namespace MagneticBall3D
                                Beryll::SceneObjectGroups sceneGroup);
         ~CopWithGrenadeLauncher() override;
 
-        void update(const glm::vec3& playerOrigin) override;
-        void attack(const glm::vec3& playerOrigin) override;
+        void toMakeClassAbstract() override {};
     };
 }

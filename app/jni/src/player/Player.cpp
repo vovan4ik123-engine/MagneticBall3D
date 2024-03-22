@@ -40,18 +40,29 @@ namespace MagneticBall3D
         {
             m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
         }
+
+        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
+            m_isMeteor = true;
+        else
+            m_isMeteor = false;
     }
 
     void Player::updateGravity()
     {
-        if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::GROUND))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::BUILDING))
         {
-            setGravity(EnumsAndVariables::playerGravityOnGround);
-        }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::BUILDING))
-        {
+            m_isOnGround = false;
+            m_isOnBuilding = true;
+            m_isOnAir = false;
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
             setGravity(EnumsAndVariables::playerGravityOnBuilding);
+        }
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::GROUND))
+        {
+            m_isOnGround = true;
+            m_isOnBuilding = false;
+            m_isOnAir = false;
+            setGravity(EnumsAndVariables::playerGravityOnGround);
         }
 //        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::JUMPPAD))
 //        {
@@ -59,6 +70,9 @@ namespace MagneticBall3D
 //        }
         else if(m_lastTimeOnBuilding + m_applyGravityDelay < Beryll::TimeStep::getSecFromStart())
         {
+            m_isOnGround = false;
+            m_isOnBuilding = false;
+            m_isOnAir = true;
             setGravity(EnumsAndVariables::playerGravityOnAir);
         }
     }
@@ -105,8 +119,16 @@ namespace MagneticBall3D
         return impulseFactor;
     }
 
-    void Player::reduceSpeed(const float speedToReduce)
+    void Player::reduceSpeed(float speedToReduce)
     {
+        if(speedToReduce == 0.0f)
+            return;
+
+        // When player move as meteor his speed will reduced 50% less from normal reduction.
+        // That mean stop meteor is 2 times harder than stop normal player.
+        //if(m_isMeteor)
+        //    speedToReduce *= 0.5f;
+
         if(speedToReduce >= m_playerMoveSpeed)
         {
             m_playerMoveSpeed = 0.0f;

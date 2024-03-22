@@ -23,8 +23,8 @@ namespace EnumsAndVariables
 
     // Player.
     constexpr inline float playerMagneticRadius = 35.0f;
-    inline float playerImpulseFactor = 0.13f;
-    inline float playerTorqueFactor = 0.5f;
+    inline float playerImpulseFactorOnGround = 0.15f;
+    inline float playerTorqueFactorOnGround = 0.1f;
     constexpr inline float playerDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
@@ -33,6 +33,7 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
     inline float playerMaxSpeedXZ = 20.0f;
+    constexpr inline float playerSpeedForMeteor = 30.0f;
 
     // Garbage.
     constexpr inline float garbageDamping = 0.1f;

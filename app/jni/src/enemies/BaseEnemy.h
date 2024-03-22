@@ -6,7 +6,7 @@ namespace MagneticBall3D
 {
     enum class UnitState
     {
-        MOVE, CAN_ATTACK, IDLE
+        MOVE, CAN_ATTACK, IDLE, ATTACKING
     };
 
     enum class UnitType
@@ -38,8 +38,12 @@ namespace MagneticBall3D
         ~BaseEnemy() override;
 
 
-        virtual void update(const glm::vec3& playerOrigin) = 0;
-        virtual void attack(const glm::vec3& playerOrigin) = 0;
+        virtual void toMakeClassAbstract() = 0;
+
+        // Good fit for movable range enemies. For other types you will probably override these two methods.
+        virtual void update(const glm::vec3& playerOrigin);
+        virtual void attack(const glm::vec3& playerOrigin);
+
         void enableEnemy();
         void disableEnemy();
         bool getIsEnabled() { return m_isEnabled; }
@@ -52,6 +56,7 @@ namespace MagneticBall3D
         int getGarbageAmountToDie() { return m_garbageAmountToDie; }
         float getPlayerSpeedReduceWhenDie() { return m_reducePlayerSpeedWhenDie; }
         bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < Beryll::TimeStep::getSecFromStart(); }
+        bool getIsDelayBeforeFirstAttack() { return (m_timeEnterInAttackRadius + m_delayBeforeFirstAttack) > Beryll::TimeStep::getSecFromStart(); }
         bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); };
 
         // Pathfinding.
@@ -74,7 +79,7 @@ namespace MagneticBall3D
         float m_damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float m_lastAttackTime = 0.0f; // Sec.
         float m_timeBetweenAttacks = 0.0f; // Sec.
-        float m_delayBeforeFirstAttack = 1.0f; // When entering in attack radius.
+        float m_delayBeforeFirstAttack = 1.0f; // When entering into attack radius and preparing to first shoot.
         float m_timeEnterInAttackRadius = 0.0f;
         bool m_enterInAttackRadius = false; // When was outside attack radius and enter inside attack radius.
 

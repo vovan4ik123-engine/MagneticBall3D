@@ -100,8 +100,8 @@ namespace MagneticBall3D
 
         EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
         EnumsAndVariables::playerMaxSpeedXZ = m_gui->sliderSpeed->getValue();
-        EnumsAndVariables::playerImpulseFactor = m_gui->sliderImpulse->getValue();
-        EnumsAndVariables::playerTorqueFactor = m_gui->sliderTorque->getValue();
+        EnumsAndVariables::playerImpulseFactorOnGround = m_gui->sliderImpulse->getValue();
+        EnumsAndVariables::playerTorqueFactorOnGround = m_gui->sliderTorque->getValue();
 
         if(m_gui->buttonA->getIsPressed())
         {
@@ -453,14 +453,26 @@ namespace MagneticBall3D
             m_screenSwipe3D = glm::normalize(cameraRotFromStartDir * glm::normalize(m_screenSwipe3D));
             m_screenSwipe3D *= screenSwipeLength;
 
-            float factorImpulseApplied = m_player->handleScreenSwipe(m_screenSwipe3D * EnumsAndVariables::playerImpulseFactor,
-                                                                     m_screenSwipe3D * EnumsAndVariables::playerTorqueFactor);
+            glm::vec3 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
+            glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
+            if(m_player->getIsOnBuilding())
+            {
+                powerForImpulse *= 0.7f;
+                powerForTorque *= 3.0f;
+            }
+            else if(m_player->getIsOnAir())
+            {
+                powerForImpulse *= 0.2f;
+                powerForTorque *= 2.0f;
+            }
+
+            float factorImpulseApplied = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
             // Apply impulse to garbage too.
-            glm::vec3 impulseForGarbage = (m_screenSwipe3D * EnumsAndVariables::playerImpulseFactor) * factorImpulseApplied * EnumsAndVariables::playerMassToGarbageMassRatio;
+            glm::vec3 impulseForGarbage = powerForImpulse * factorImpulseApplied * EnumsAndVariables::playerMassToGarbageMassRatio;
             // We apply only impulse for garbage. But for player were applied impulse + torque.
             // This compensate player speed increased by torque.
-            impulseForGarbage *= 1.25f;
+            impulseForGarbage *= 1.2f;
             for(const auto& wrapper : m_allGarbageWrappers)
             {
                 if(wrapper.isMagnetized)
@@ -510,9 +522,11 @@ namespace MagneticBall3D
             {
                 glm::vec3 gravDir = glm::normalize(m_player->getOrigin() - wrapper.obj->getOrigin());
                 float gravPower = EnumsAndVariables::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVariables::garbageGravityIncreasedByPlayerSpeed);
+                if(gravPower > 550.0f)
+                    gravPower = 550.0f;
                 if(Beryll::Physics::getIsCollision(m_player->getID(), wrapper.obj->getID()))
                 {
-                    wrapper.obj->setGravity(-(gravDir * gravPower * 0.1f), false, false);
+                    wrapper.obj->setGravity(-(gravDir * gravPower * 0.05f), false, false);
                 }
                 else
                 {
