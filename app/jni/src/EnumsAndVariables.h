@@ -39,8 +39,9 @@ namespace EnumsAndVariables
     constexpr inline float garbageDamping = 0.1f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMaxGravityPower = 600.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.5f; // * by player speed and add to garbage gravity.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbage gravity.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetized = 350;
     inline int garbageCountMagnetized = 0;

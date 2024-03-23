@@ -3,22 +3,10 @@
 
 namespace MagneticBall3D
 {
-    Player::Player(const char* filePath,
-                   float collisionMassKg,
-                   bool wantCollisionCallBack,
-                   Beryll::CollisionFlags collFlag,
-                   Beryll::CollisionGroups collGroup,
-                   Beryll::CollisionGroups collMask,
-                   Beryll::SceneObjectGroups sceneGroup)
-                   : SimpleCollidingObject(filePath,
-                                           collisionMassKg,
-                                           wantCollisionCallBack,
-                                           collFlag,
-                                           collGroup,
-                                           collMask,
-                                           sceneGroup)
+    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam)
     {
-
+        m_obj = std::move(so);
+        m_diameter = diam;
     }
 
     Player::~Player()
@@ -29,7 +17,7 @@ namespace MagneticBall3D
     void Player::updateSpeed()
     {
         // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
-        m_playerLinearVelocity = getLinearVelocity();
+        m_playerLinearVelocity = m_obj->getLinearVelocity();
         m_playerMoveSpeed = glm::length(m_playerLinearVelocity);
         if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
         {
@@ -41,6 +29,7 @@ namespace MagneticBall3D
             m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
         }
 
+        // Handle meteor.
         if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
             m_isMeteor = true;
         else
@@ -49,20 +38,20 @@ namespace MagneticBall3D
 
     void Player::updateGravity()
     {
-        if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::BUILDING))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
             m_isOnGround = false;
             m_isOnBuilding = true;
             m_isOnAir = false;
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
-            setGravity(EnumsAndVariables::playerGravityOnBuilding);
+            m_obj->setGravity(EnumsAndVariables::playerGravityOnBuilding);
         }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_ID, Beryll::CollisionGroups::GROUND))
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
             m_isOnGround = true;
             m_isOnBuilding = false;
             m_isOnAir = false;
-            setGravity(EnumsAndVariables::playerGravityOnGround);
+            m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
         }
 //        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::JUMPPAD))
 //        {
@@ -73,7 +62,7 @@ namespace MagneticBall3D
             m_isOnGround = false;
             m_isOnBuilding = false;
             m_isOnAir = true;
-            setGravity(EnumsAndVariables::playerGravityOnAir);
+            m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
         }
     }
 
@@ -89,7 +78,7 @@ namespace MagneticBall3D
             return 0.0f;
 
         //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
-        glm::vec3 newLinearVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_collisionMass));
+        glm::vec3 newLinearVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
         newLinearVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newLinearVelocityXZ);
 
@@ -102,7 +91,7 @@ namespace MagneticBall3D
             impulseFactor = newSpeedLimit / newSpeedAdded;
         }
 
-        applyCentralImpulse(swipeForImpulse * impulseFactor);
+        m_obj->applyCentralImpulse(swipeForImpulse * impulseFactor);
         updateSpeed();
 
         // We applied less than initial impulse and already reach max speed. Dont need apply torque.
@@ -114,20 +103,20 @@ namespace MagneticBall3D
         // Torque applied along right/left vector from impulse.
         glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForTorque));
         impulseLeft = glm::normalize(impulseLeft) * glm::length(swipeForTorque);
-        applyTorqueImpulse(impulseLeft);
+        m_obj->applyTorqueImpulse(impulseLeft);
 
         return impulseFactor;
     }
 
     void Player::reduceSpeed(float speedToReduce)
     {
-        if(speedToReduce == 0.0f)
+        if(speedToReduce <= 0.0f)
             return;
 
         // When player move as meteor his speed will reduced 50% less from normal reduction.
         // That mean stop meteor is 2 times harder than stop normal player.
-        //if(m_isMeteor)
-        //    speedToReduce *= 0.5f;
+        if(m_isMeteor)
+            speedToReduce *= 0.5f;
 
         if(speedToReduce >= m_playerMoveSpeed)
         {
@@ -135,7 +124,7 @@ namespace MagneticBall3D
             m_playerMoveDir = glm::vec3{0.0f};
             m_playerLinearVelocity = glm::vec3{0.0f};
 
-            setLinearVelocity(m_playerLinearVelocity);
+            m_obj->setLinearVelocity(m_playerLinearVelocity);
         }
         else
         {
@@ -143,7 +132,23 @@ namespace MagneticBall3D
             // m_playerMoveDir = glm::normalize(m_playerLinearVelocity); should be same.
             m_playerLinearVelocity = m_playerMoveDir * m_playerMoveSpeed;
 
-            setLinearVelocity(m_playerLinearVelocity);
+            m_obj->setLinearVelocity(m_playerLinearVelocity);
         }
+    }
+
+    void Player::spamMeteorParticles()
+    {
+        if(m_playerMoveSpeed == 0.0f || m_spamParticlesTime + m_spamParticlesDelay >= Beryll::TimeStep::getMilliSecFromStart())
+            return;
+
+        m_spamParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
+
+        // Spawn fire before ball.
+        glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * m_diameter)};
+        float sizeBegin = m_diameter + EnumsAndVariables::garbageCountMagnetized * 0.012f;
+
+        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.4f,
+                                                    {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
+                                                    orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
     }
 }

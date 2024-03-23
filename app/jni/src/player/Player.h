@@ -4,17 +4,11 @@
 
 namespace MagneticBall3D
 {
-    class Player : public Beryll::SimpleCollidingObject
+    class Player
     {
     public:
         Player() = delete;
-        Player(const char* filePath,  // Common params.
-               float collisionMassKg,    // Physics params.
-               bool wantCollisionCallBack,
-               Beryll::CollisionFlags collFlag,
-               Beryll::CollisionGroups collGroup,
-               Beryll::CollisionGroups collMask,
-               Beryll::SceneObjectGroups sceneGroup);
+        Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam);
         ~Player();
 
 
@@ -32,8 +26,15 @@ namespace MagneticBall3D
         bool getIsOnBuilding() { return m_isOnBuilding; }
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsMeteor() { return m_isMeteor; }
+        void spamMeteorParticles();
+
+        const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
+        void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam) { m_obj = std::move(so); m_diameter = diam; }
 
     private:
+        std::shared_ptr<Beryll::SimpleCollidingObject> m_obj;
+        float m_diameter = 0.0f;
+
         glm::vec3 m_playerMoveDir{0.0f};
         float m_playerMoveSpeed{0.0f};
         glm::vec3 m_playerLinearVelocity{0.0f};
@@ -43,5 +44,7 @@ namespace MagneticBall3D
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;
         bool m_isMeteor = false;
+        uint64_t m_spamParticlesTime = 0; // Millisec.
+        uint64_t m_spamParticlesDelay = 40; // Millisec.
     };
 }

@@ -81,7 +81,7 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledUpdate())
             {
-                enemy->update(m_player->getOrigin());
+                enemy->update(m_player->getObj()->getOrigin());
             }
         }
 
@@ -107,7 +107,7 @@ namespace MagneticBall3D
         {
             const float powerToOneKg = 100.0f;
 
-            m_player->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getCollisionMass(), 0.0f));
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
 
             for(const auto& wrapper : m_allGarbageWrappers)
             {
@@ -133,7 +133,7 @@ namespace MagneticBall3D
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
-                    if(glm::distance(m_player->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
+                    if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
                        Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.8f))
                         so->enableDraw();
                     else
@@ -168,11 +168,13 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
 
 
-        modelMatrix = m_player->getModelMatrix();
+        modelMatrix = m_player->getObj()->getModelMatrix();
         m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
         m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
         m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-        Beryll::Renderer::drawObject(m_player, modelMatrix, m_simpleObjSunLightShadows);
+        Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
+        if(m_player->getIsMeteor())
+            m_player->spamMeteorParticles();
 
         for(const auto& wrapper : m_allGarbageWrappers)
         {
@@ -222,22 +224,23 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::loadPlayerAndStaticEnv()
     {
-        m_player = std::make_shared<Player>("models3D/player/Player.fbx",
-                                            EnumsAndVariables::playerMass,
-                                            true,
-                                            Beryll::CollisionFlags::DYNAMIC,
-                                            Beryll::CollisionGroups::PLAYER,
-                                            Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                            Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
-                                            Beryll::SceneObjectGroups::PLAYER);
+        const auto playerBall = std::make_shared<Beryll::SimpleCollidingObject>("models3D/player/Player.fbx",
+                                                                                EnumsAndVariables::playerMass,
+                                                                                true,
+                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                Beryll::CollisionGroups::PLAYER,
+                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                Beryll::SceneObjectGroups::PLAYER);
 
-        m_allSceneObjects.push_back(m_player);
-        m_simpleObjForShadowMap.push_back(m_player);
+        m_allSceneObjects.push_back(playerBall);
+        m_simpleObjForShadowMap.push_back(playerBall);
+        m_player = std::make_shared<Player>(playerBall, 4.0f);
 
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
-        m_player->setGravity(EnumsAndVariables::playerGravityOnGround);
-        m_player->setFriction(EnumsAndVariables::playerFriction);
-        m_player->setDamping(EnumsAndVariables::playerDamping, EnumsAndVariables::playerDamping);
+        m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);
+        m_player->getObj()->setFriction(EnumsAndVariables::playerFriction);
+        m_player->getObj()->setDamping(EnumsAndVariables::playerDamping, EnumsAndVariables::playerDamping);
 
         // Static env.
         const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/Ground.fbx",
@@ -339,7 +342,7 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::loadEnemies()
     {
-        for(int x = 0; x < 250; ++x)
+        for(int x = 0; x < 300; ++x)
         {
             auto unit = std::make_shared<CopWithPistol>("models3D/AnimCollFootman1.fbx",
                                                     0.0f,
@@ -462,7 +465,7 @@ namespace MagneticBall3D
             }
             else if(m_player->getIsOnAir())
             {
-                powerForImpulse *= 0.2f;
+                powerForImpulse *= 0.4f;
                 powerForTorque *= 2.0f;
             }
 
@@ -489,7 +492,7 @@ namespace MagneticBall3D
         for(auto& wrapper : m_allGarbageWrappers)
         {
             if(wrapper.getIsEnabled() && wrapper.isMagnetized &&
-               glm::distance(m_player->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
             {
                 ++EnumsAndVariables::garbageCountMagnetized;
             }
@@ -505,7 +508,7 @@ namespace MagneticBall3D
             for(auto& wrapper : m_allGarbageWrappers)
             {
                 if(wrapper.getIsEnabled() && !wrapper.isMagnetized &&
-                   glm::distance(m_player->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+                   glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
                 {
                     ++EnumsAndVariables::garbageCountMagnetized;
                     wrapper.isMagnetized = true;
@@ -516,15 +519,16 @@ namespace MagneticBall3D
             }
         }
 
+        float gravPower = EnumsAndVariables::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVariables::garbageGravityIncreasedByPlayerSpeed);
+        if(gravPower > EnumsAndVariables::garbageMaxGravityPower)
+            gravPower = EnumsAndVariables::garbageMaxGravityPower;
+
         for(auto& wrapper : m_allGarbageWrappers)
         {
             if(wrapper.isMagnetized)
             {
-                glm::vec3 gravDir = glm::normalize(m_player->getOrigin() - wrapper.obj->getOrigin());
-                float gravPower = EnumsAndVariables::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVariables::garbageGravityIncreasedByPlayerSpeed);
-                if(gravPower > 550.0f)
-                    gravPower = 550.0f;
-                if(Beryll::Physics::getIsCollision(m_player->getID(), wrapper.obj->getID()))
+                glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+                if(Beryll::Physics::getIsCollision(m_player->getObj()->getID(), wrapper.obj->getID()))
                 {
                     wrapper.obj->setGravity(-(gravDir * gravPower * 0.05f), false, false);
                 }
@@ -537,7 +541,7 @@ namespace MagneticBall3D
                 const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
                 const glm::vec3 objMoveDir = glm::normalize(linVelocity);
                 const float objSpeed = glm::length(linVelocity);
-                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getOrigin() - wrapper.obj->getOrigin());
+                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
 
                 if(objSpeed > m_player->getMoveSpeed() * 2.0f && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                 {
@@ -562,7 +566,7 @@ namespace MagneticBall3D
 
             m_allowedPointsToSpawnEnemies.clear();
 
-            glm::vec2 playerPosXZ{m_player->getOrigin().x, m_player->getOrigin().z};
+            glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
             float distanceToClosestPoint = std::numeric_limits<float>::max();
             float distanceToCurrent = 0.0f;
 
@@ -680,8 +684,8 @@ namespace MagneticBall3D
             {
                 glm::vec3 from = enemy->getOrigin();
                 from.y += enemy->getController().getFromOriginToTop() * 0.5f;
-                glm::vec3 target = m_player->getOrigin();
-                target.y += 1.5f;
+                glm::vec3 target = m_player->getObj()->getOrigin();
+                target.y += 1.8f;
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from,
                                                                                      target,
                                                                                      Beryll::CollisionGroups::ENEMY_ATTACK,
@@ -704,7 +708,7 @@ namespace MagneticBall3D
                                                glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), 1);
                     }
 
-                    enemy->attack(m_player->getOrigin());
+                    enemy->attack(m_player->getObj()->getOrigin());
 
                     if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
                     {
@@ -750,7 +754,7 @@ namespace MagneticBall3D
     {
         glm::vec3 dir = glm::normalize(to - from);
         float distance = glm::distance(to, from);
-        const float spamOffsetMeters = 1.0f;
+        const float spamOffsetMeters = 0.6f;
         glm::vec3 spamPoint{0.0f};
         for(float i = 0.0f; i < distance; i += spamOffsetMeters)
         {
@@ -775,7 +779,7 @@ namespace MagneticBall3D
         float speedToReduce = 0.0f;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
-            if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getOrigin()) < EnumsAndVariables::radiusToKillEnemies)
+            if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::radiusToKillEnemies)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
@@ -804,10 +808,7 @@ namespace MagneticBall3D
             }
         }
 
-        if(speedToReduce > 0.0f)
-        {
-            m_player->reduceSpeed(speedToReduce);
-        }
+        m_player->reduceSpeed(speedToReduce);
     }
 
     void PlayStateSceneLayer::handleCamera()
@@ -815,7 +816,7 @@ namespace MagneticBall3D
         const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
 
-        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::GROUND))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getObj()->getID(), Beryll::CollisionGroups::GROUND))
         {
             if(m_player->getMoveSpeed() > EnumsAndVariables::minPlayerSpeedToCameraFollow)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_player->getMoveDir().x, 0.0f, m_player->getMoveDir().z));
@@ -844,10 +845,10 @@ namespace MagneticBall3D
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.15f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getOrigin().y;
+        m_cameraOffset.y = 0.15f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y;
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
-        m_cameraFront = m_player->getOrigin();
+        m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 15.0f;
 
         float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.15f;
