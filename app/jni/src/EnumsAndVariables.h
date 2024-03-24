@@ -25,7 +25,7 @@ namespace EnumsAndVariables
     constexpr inline float playerMagneticRadius = 35.0f;
     inline float playerImpulseFactorOnGround = 0.15f;
     inline float playerTorqueFactorOnGround = 0.1f;
-    constexpr inline float playerDamping = 0.1f;
+    constexpr inline float playerDamping = 0.25f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
@@ -36,7 +36,7 @@ namespace EnumsAndVariables
     constexpr inline float playerSpeedForMeteor = 30.0f;
 
     // Garbage.
-    constexpr inline float garbageDamping = 0.1f;
+    constexpr inline float garbageDamping = 0.25f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 600.0f;
@@ -44,6 +44,7 @@ namespace EnumsAndVariables
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbage gravity.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetized = 350;
+    constexpr inline int garbageMaxCountActiveDefault = 400; // Limit of active GarbageType::DEFAULT on map.
     inline int garbageCountMagnetized = 0;
 
     constexpr inline float staticEnvFriction = 40.0f;

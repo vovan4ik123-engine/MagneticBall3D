@@ -138,16 +138,16 @@ namespace MagneticBall3D
 
     void Player::spamMeteorParticles()
     {
-        if(m_playerMoveSpeed == 0.0f || m_spamParticlesTime + m_spamParticlesDelay >= Beryll::TimeStep::getMilliSecFromStart())
+        if(m_spamParticlesTime + m_spamParticlesDelay >= Beryll::TimeStep::getMilliSecFromStart())
             return;
 
         m_spamParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * m_diameter)};
-        float sizeBegin = m_diameter + EnumsAndVariables::garbageCountMagnetized * 0.012f;
+        float sizeBegin = m_diameter + EnumsAndVariables::garbageCountMagnetized * 0.014f;
 
-        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.4f,
+        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.5f,
                                                     {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
                                                     orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
     }

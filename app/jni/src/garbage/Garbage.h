@@ -7,7 +7,7 @@ namespace MagneticBall3D
     enum class GarbageType
     {
         NONE,
-        // Appears on map after loading.
+        // Spawned randomly on map around player.
         DEFAULT,
         // Appears after killing specific type of enemy.
         COP_WITH_PISTOL,
@@ -29,7 +29,7 @@ namespace MagneticBall3D
         void enableGarbage();
         void disableGarbage();
         bool getIsEnabled() { return m_isEnabled; }
-        static int getActiveCount() { return Garbage::m_activeGarbageCount; }
+        static int getActiveDefaultGarbageCount() { return Garbage::m_activeDefaultGarbageCount; }
         GarbageType getType() { return m_type; }
 
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
@@ -39,7 +39,7 @@ namespace MagneticBall3D
 
     private:
         bool m_isEnabled = true;
-        static int m_activeGarbageCount;
+        static int m_activeDefaultGarbageCount;
         GarbageType m_type = GarbageType::NONE;
         const int m_maxHP = 0;
     };

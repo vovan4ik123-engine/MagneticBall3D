@@ -39,7 +39,7 @@ namespace MagneticBall3D
         float m_playerMoveSpeed{0.0f};
         glm::vec3 m_playerLinearVelocity{0.0f};
         float m_lastTimeOnBuilding = 0.0f; // Sec.
-        const float m_applyGravityDelay = 0.2f; // Sec. For player after he stop collide with buildings.
+        const float m_applyGravityDelay = 0.4f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;

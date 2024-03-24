@@ -95,8 +95,11 @@ namespace MagneticBall3D
             }
         }
 
-//        if(m_gui->sliderFPS->getIsValueChanging())
-//            Beryll::GameLoop::setFPSLimit(m_gui->sliderFPS->getValue());
+        if(m_lastTimeSpawnGarbage + m_spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
+        {
+            spawnGarbage(3, GarbageType::DEFAULT);
+            m_lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
+        }
 
         EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
         EnumsAndVariables::playerMaxSpeedXZ = m_gui->sliderSpeed->getValue();
@@ -289,12 +292,14 @@ namespace MagneticBall3D
         for(const auto& obj : objects1)
         {
             m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
 
             obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
             obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
+
         }
 
         const auto objects2 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Garbage2.fbx",
@@ -310,6 +315,7 @@ namespace MagneticBall3D
         for(const auto& obj : objects2)
         {
             m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
@@ -331,6 +337,7 @@ namespace MagneticBall3D
         for(const auto& obj : objects3)
         {
             m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
@@ -460,7 +467,7 @@ namespace MagneticBall3D
             glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
             if(m_player->getIsOnBuilding())
             {
-                powerForImpulse *= 0.7f;
+                powerForImpulse *= 0.8f;
                 powerForTorque *= 3.0f;
             }
             else if(m_player->getIsOnAir())
@@ -565,6 +572,7 @@ namespace MagneticBall3D
             ++m_pathFindingIteration; // Go to next iteration in next frame.
 
             m_allowedPointsToSpawnEnemies.clear();
+            m_allowedPointsToSpawnGarbage.clear();
 
             glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
             float distanceToClosestPoint = std::numeric_limits<float>::max();
@@ -586,6 +594,11 @@ namespace MagneticBall3D
                 {
                     // We can spawn enemy at this point.
                     m_allowedPointsToSpawnEnemies.push_back(point);
+                }
+                else
+                {
+                    // We can spawn garbage at this point.
+                    m_allowedPointsToSpawnGarbage.push_back(point);
                 }
             }
 
@@ -613,7 +626,7 @@ namespace MagneticBall3D
                         enemy->enableEnemy();
                         enemy->disableDraw();
 
-                        glm::ivec2 spawnPoint2D = m_allowedPointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnEnemies.size() - 1)];
+                        const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnEnemies.size() - 1)];
                         glm::vec3 spawnPoint3D{spawnPoint2D.x,
                                                enemy->getController().getFromOriginToBottom(),
                                                spawnPoint2D.y};
@@ -784,7 +797,7 @@ namespace MagneticBall3D
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
 
-                // Spam one garbage.
+                // Spawn one garbage.
                 for(auto& wrapper : m_allGarbageWrappers)
                 {
                     if(!wrapper.getIsEnabled())
@@ -881,5 +894,30 @@ namespace MagneticBall3D
 
         Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
+    }
+
+    void PlayStateSceneLayer::spawnGarbage(const int count, GarbageType type)
+    {
+        if(count == 0 ||
+           (type == GarbageType::DEFAULT && Garbage::getActiveDefaultGarbageCount() >= EnumsAndVariables::garbageMaxCountActiveDefault))
+            return;
+
+        int spawnedCount = 0;
+        const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
+        const glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
+
+        for(auto& wrapper : m_allGarbageWrappers)
+        {
+            if(!wrapper.getIsEnabled() && wrapper.getType() == type)
+            {
+                wrapper.enableGarbage();
+                wrapper.obj->setOrigin(spawnPoint3D);
+
+                ++spawnedCount;
+            }
+
+            if(spawnedCount >= count)
+                break;
+        }
     }
 }
