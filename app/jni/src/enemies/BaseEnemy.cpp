@@ -30,80 +30,96 @@ namespace MagneticBall3D
 
     void BaseEnemy::update(const glm::vec3& playerOrigin)
     {
-        if(glm::distance(m_origin, playerOrigin) > m_attackDistance)
+        if(getIsAttacking())
         {
-            if(getIsDelayBeforeFirstAttack())
-            {
-                //BR_INFO("%s", "more that attack radius - preparing for first attack");
-                unitState = UnitState::IDLE;
-                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE, false, false);
-                rotateToPoint(playerOrigin, true);
-            }
-            else
-            {
-                //BR_INFO("%s", "more that attack radius - move");
-                m_enterInAttackRadius = false;
-                m_timeEnterInAttackRadius = 0.0f;
-
-                unitState = UnitState::MOVE;
-
-                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-
-                getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
-
-                if(!getController().getIsMoving())
-                {
-                    //BR_INFO("%s", "NOT   moving");
-
-                    // Go to next point if exists.
-                    if(indexInPathArray < pathArray.size() - 1)
-                    {
-                        ++indexInPathArray;
-
-                        currentPointToMove2DIntegers = pathArray[indexInPathArray];
-                        currentPointToMove3DFloats = glm::vec3(currentPointToMove2DIntegers.x,
-                                                               getController().getFromOriginToBottom(),
-                                                               currentPointToMove2DIntegers.y);
-                    }
-                }
-            }
+            //BR_INFO("%s", "is attacking");
+            // Do nothing. Attack animation should be playing now.
         }
-        else if(!m_enterInAttackRadius)
+        else if(getIsDelayBeforeFirstAttack())
         {
-            //BR_INFO("%s", "enter attack radius");
-            m_enterInAttackRadius = true;
-            m_timeEnterInAttackRadius = Beryll::TimeStep::getSecFromStart();
-        }
-        else if(m_enterInAttackRadius && !getIsDelayBeforeFirstAttack() && getIsTimeToAttack())
-        {
-            //BR_INFO("%s", "attack");
-            // Check if enemy see player.
-            Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
-                                                                                 playerOrigin,
-                                                                                 Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                 Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::PLAYER);
-
-            if(rayAttack && rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
-            {
-                unitState = UnitState::CAN_ATTACK;
-            }
-        }
-        else if(unitState == UnitState::ATTACKING && getIsAttacking())
-        {
-            //BR_INFO("%s", "ATTACKING");
-            // Just wait.
-        }
-        else
-        {
-            //BR_INFO("%s", "idle");
+            //BR_INFO("%s", "DelayBeforeFirstAttack");
             unitState = UnitState::IDLE;
             setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE, false, false);
             rotateToPoint(playerOrigin, true);
+        }
+        else if(glm::distance(m_origin, playerOrigin) > m_attackDistance)
+        {
+            //BR_INFO("%s", "move because distance");
+            move();
+        }
+        else
+        {
+            //BR_INFO("%s", "IN_ATTACK_RADIUS");
+            unitState = UnitState::IN_ATTACK_RADIUS;
+
+            if(getIsTimeToAttack())
+            {
+                //BR_INFO("%s", "if(getIsTimeToAttack())");
+                // Check if enemy see player.
+                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
+                                                                                     playerOrigin,
+                                                                                     Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                     Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::PLAYER);
+
+                if(rayAttack && rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                {
+                    if(m_prepareToFirstAttack)
+                    {
+                        //BR_INFO("%s", " prepareToFirstAttack");
+                        m_prepareToFirstAttack = false;
+                        m_prepareToFirstAttackStartTime = Beryll::TimeStep::getSecFromStart();
+                    }
+                    else
+                    {
+                        //BR_INFO("%s", "UnitState::CAN_ATTACK");
+                        unitState = UnitState::CAN_ATTACK;
+                    }
+                }
+                else
+                {
+                    //BR_INFO("%s", "move because dont see");
+                    move();
+                }
+            }
+        }
+    }
+
+    void BaseEnemy::move()
+    {
+        unitState = UnitState::MOVE;
+
+        m_prepareToFirstAttack = true;
+
+        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+
+        getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
+
+        if(!getController().getIsMoving())
+        {
+            //BR_INFO("%s", "NOT   moving");
+
+            // Go to next point if exists.
+            if(indexInPathArray < pathArray.size() - 1)
+            {
+                ++indexInPathArray;
+
+                currentPointToMove2DIntegers = pathArray[indexInPathArray];
+                currentPointToMove3DFloats = glm::vec3(currentPointToMove2DIntegers.x,
+                                                       getController().getFromOriginToBottom(),
+                                                       currentPointToMove2DIntegers.y);
+            }
+//            else
+//            {
+//                BR_INFO("%s", "idle because indexInPathArray >= pathArray.size() - 1");
+//                unitState = UnitState::IDLE;
+//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE, false, false);
+//            }
         }
     }
 
     void BaseEnemy::attack(const glm::vec3& playerOrigin)
     {
+        //BR_INFO("%s", "BaseEnemy::attack()");
         rotateToPoint(playerOrigin, true);
         setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::ATTACK, true, true);
         m_lastAttackTime = Beryll::TimeStep::getSecFromStart();
@@ -130,5 +146,6 @@ namespace MagneticBall3D
             --BaseEnemy::m_activeEnemiesCount;
 
         m_isEnabled = false;
+        isSeePlayerOrGarbage = false;
     }
 }

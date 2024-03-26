@@ -41,6 +41,8 @@ namespace MagneticBall3D
         bool m_isEnabled = true;
         static int m_activeDefaultGarbageCount;
         GarbageType m_type = GarbageType::NONE;
+
+        // Hp.
         const int m_maxHP = 0;
     };
 }

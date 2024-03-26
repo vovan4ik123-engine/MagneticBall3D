@@ -3,10 +3,10 @@
 
 namespace MagneticBall3D
 {
-    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam)
+    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam, int health)
+    : m_obj(std::move(so)), m_diameter(diam), m_maxHP(health)
     {
-        m_obj = std::move(so);
-        m_diameter = diam;
+
     }
 
     Player::~Player()
@@ -138,10 +138,10 @@ namespace MagneticBall3D
 
     void Player::spamMeteorParticles()
     {
-        if(m_spamParticlesTime + m_spamParticlesDelay >= Beryll::TimeStep::getMilliSecFromStart())
+        if(m_spamMeteorParticlesTime + m_spamMeteorParticlesDelay >= Beryll::TimeStep::getMilliSecFromStart())
             return;
 
-        m_spamParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
+        m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * m_diameter)};

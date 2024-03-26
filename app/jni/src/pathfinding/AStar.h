@@ -5,6 +5,9 @@
 
 namespace MagneticBall3D
 {
+    // https://web.archive.org/web/20171022224528/http://www.policyalmanac.org:80/games/aStarTutorial.htm
+    // https://github.com/daancode/a-star/tree/master
+    // https://en.wikipedia.org/wiki/A*_search_algorithm
     struct Node
     {
         int G = 0; // Score from start to this node.

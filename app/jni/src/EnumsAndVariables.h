@@ -17,7 +17,7 @@ namespace EnumsAndVariables
     };
 
     // Camera.
-    constexpr inline float cameraZoomMaxSpeed = 30.0f; // Meters in sec.
+    constexpr inline float cameraZoomMaxSpeed = 150.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
     constexpr inline float cameraYAccordingPlayerY = 0.025f; // Multiply by player.y and add to m_cameraOffset.y.
 
@@ -33,7 +33,7 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
     inline float playerMaxSpeedXZ = 20.0f;
-    constexpr inline float playerSpeedForMeteor = 30.0f;
+    constexpr inline float playerSpeedForMeteor = 40.0f;
 
     // Garbage.
     constexpr inline float garbageDamping = 0.25f;
@@ -50,11 +50,13 @@ namespace EnumsAndVariables
     constexpr inline float staticEnvFriction = 40.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
-
     // Enemies.
     inline int maxActiveEnemiesCount = 500;
     constexpr inline int maxPathfindingInOneFrame = 10;
     inline int currentPathfindingEnemyIndex = 0;
     constexpr inline float minDistanceToSpawnEnemies = 150.0f;
     inline float radiusToKillEnemies = 15.0f; // Also amount of garbage to kill should be considered with that.
+
+    // Maps progress.
+
 }

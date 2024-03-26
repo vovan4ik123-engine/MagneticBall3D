@@ -14,6 +14,8 @@ add_library(main SHARED main.cpp
                         # Menu.
 
                         # Maps.
+                        maps/BaseMap.cpp
+                        maps/Map1.cpp
 
                         # Play state.
                         playState/PlayStateGUILayer.cpp

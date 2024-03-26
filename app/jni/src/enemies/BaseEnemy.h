@@ -6,7 +6,7 @@ namespace MagneticBall3D
 {
     enum class UnitState
     {
-        MOVE, CAN_ATTACK, IDLE, ATTACKING
+        MOVE, IN_ATTACK_RADIUS, IDLE, ATTACKING, CAN_ATTACK
     };
 
     enum class UnitType
@@ -56,8 +56,9 @@ namespace MagneticBall3D
         int getGarbageAmountToDie() { return m_garbageAmountToDie; }
         float getPlayerSpeedReduceWhenDie() { return m_reducePlayerSpeedWhenDie; }
         bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < Beryll::TimeStep::getSecFromStart(); }
-        bool getIsDelayBeforeFirstAttack() { return (m_timeEnterInAttackRadius + m_delayBeforeFirstAttack) > Beryll::TimeStep::getSecFromStart(); }
-        bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); };
+        bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
+        float getExperienceWhenDie() { return m_experienceWhenDie; }
 
         // Pathfinding.
         int indexInPathArray = 0;
@@ -66,8 +67,11 @@ namespace MagneticBall3D
         std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
 
         UnitState unitState = UnitState::MOVE;
+        bool isSeePlayerOrGarbage = false;
 
     protected:
+        void move();
+
         static int m_activeEnemiesCount;
         bool m_isEnabled = false;
         UnitType m_UnitType = UnitType::NONE;
@@ -75,15 +79,16 @@ namespace MagneticBall3D
 
         // Attack data.
         int m_damage = 0;
-        float m_attackDistance = 0.0f;
+        float m_attackDistance = 10.0f;
         float m_damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float m_lastAttackTime = 0.0f; // Sec.
         float m_timeBetweenAttacks = 0.0f; // Sec.
-        float m_delayBeforeFirstAttack = 1.0f; // When entering into attack radius and preparing to first shoot.
-        float m_timeEnterInAttackRadius = 0.0f;
-        bool m_enterInAttackRadius = false; // When was outside attack radius and enter inside attack radius.
+        float m_prepareToFirstAttackStartTime = 0.0f;
+        bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
+        // Death .
         int m_garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
         float m_reducePlayerSpeedWhenDie = 0.0f;
+        float m_experienceWhenDie = 0.0f;
     };
 }
