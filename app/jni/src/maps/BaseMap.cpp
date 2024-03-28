@@ -622,8 +622,11 @@ namespace MagneticBall3D
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
         }
 
-        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
+        if(EnumsAndVariables::cameraRotateTime + EnumsAndVariables::cameraRotateDelay < Beryll::TimeStep::getSecFromStart() &&
+           !glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
         {
+            EnumsAndVariables::cameraRotateTime = Beryll::TimeStep::getSecFromStart();
+
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);

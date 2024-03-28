@@ -10,8 +10,11 @@ add_compile_options(-fexceptions -frtti)
     add_definitions(-DBR_DEBUG)
 
 add_library(main SHARED main.cpp
+                        GameStateHelper.cpp
+                        DataBaseHelper.cpp
 
                         # Menu.
+                        menus/start/StartMenuGUILayer.cpp
 
                         # Maps.
                         maps/BaseMap.cpp
