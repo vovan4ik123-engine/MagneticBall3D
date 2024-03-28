@@ -1,5 +1,7 @@
 #include "EngineHeaders.h"
 #include "GameStateHelper.h"
+#include "DataBaseHelper.h"
+#include "EnumsAndVariables.h"
 
 int main(int argc, char* argv[])
 {
@@ -7,6 +9,9 @@ int main(int argc, char* argv[])
 
     Beryll::GameLoop::create(Beryll::ScreenOrientation::MOBILE_PORTRAIT);
 
+    DataBaseHelper::readSettings();
+
+    Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
     //Beryll::GameLoop::setFPSLimit(15.0f);
 
     //Beryll::Camera::setCameraFov(45.0f);

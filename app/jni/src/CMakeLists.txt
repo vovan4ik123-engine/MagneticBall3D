@@ -15,6 +15,7 @@ add_library(main SHARED main.cpp
 
                         # Menu.
                         menus/start/StartMenuGUILayer.cpp
+                        menus/settings/SettingsMenuGUILayer.cpp
 
                         # Maps.
                         maps/BaseMap.cpp

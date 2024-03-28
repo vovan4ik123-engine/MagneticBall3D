@@ -45,6 +45,10 @@ namespace MagneticBall3D
         {
             MagneticBall3D::GameStateHelper::pushPlayState();
         }
+        else if(buttonSettings->getIsPressed())
+        {
+            MagneticBall3D::GameStateHelper::pushSettingsState();
+        }
     }
 
     void StartMenuGUILayer::updateAfterPhysics()

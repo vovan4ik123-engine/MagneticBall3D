@@ -16,6 +16,11 @@ namespace EnumsAndVariables
         static const inline int RUN = 3;
     };
 
+    struct SettingsMenu
+    {
+        static inline int FPSLimit = 60;
+    };
+
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 150.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
