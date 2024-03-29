@@ -11,12 +11,12 @@ int main(int argc, char* argv[])
 
     DataBaseHelper::readSettings();
 
-    Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+    //Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
     //Beryll::GameLoop::setFPSLimit(15.0f);
 
     //Beryll::Camera::setCameraFov(45.0f);
-    Beryll::Camera::setProjectionNearClipPlane(1.0f);
-    Beryll::Camera::setProjectionFarClipPlane(1500.0f);
+    Beryll::Camera::setProjectionNearClipPlane(1.5f);
+    Beryll::Camera::setProjectionFarClipPlane(1200.0f);
     Beryll::Camera::setObjectsViewDistance(500.0f);
 
     //Beryll::Physics::setResolution(1);
@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
     Beryll::Renderer::enableFaceCulling();
 
-    MagneticBall3D::GameStateHelper::pushStartMenuState();
-        
+    MagneticBall3D::GameStateHelper::pushPlayState();
+
     Beryll::GameLoop::run();
 
     BR_INFO("%s", "main() finished.");

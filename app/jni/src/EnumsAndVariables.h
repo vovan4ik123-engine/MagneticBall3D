@@ -24,14 +24,14 @@ namespace EnumsAndVariables
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 150.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
-    constexpr inline float cameraYAccordingPlayerY = 0.025f; // Multiply by player.y and add to m_cameraOffset.y.
+    constexpr inline float cameraYAccordingPlayerY = 0.005f; // Multiply by player.y and add to m_cameraOffset.y.
     constexpr inline float cameraRotateDelay = 0.025f;
     inline float cameraRotateTime = 0.0f; // Sec.
 
     // Player.
     constexpr inline float playerMagneticRadius = 35.0f;
-    inline float playerImpulseFactorOnGround = 0.15f;
-    inline float playerTorqueFactorOnGround = 0.1f;
+    constexpr inline float playerImpulseFactorOnGround = 0.15f;
+    constexpr inline float playerTorqueFactorOnGround = 0.1f;
     constexpr inline float playerDamping = 0.25f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;

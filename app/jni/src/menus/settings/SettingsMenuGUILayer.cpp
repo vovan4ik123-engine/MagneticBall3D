@@ -10,7 +10,7 @@ namespace MagneticBall3D
         m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/leftArrow.jpg", "", -1, 90, 30, 10);
         m_guiObjects.push_back(m_buttonBack);
 
-        m_settingsText = std::make_shared<Beryll::Text>("Settings", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 0);
+        m_settingsText = std::make_shared<Beryll::Text>("Settings", EnumsAndVariables::FontsPath::ROBOTO, 5, 32.3f, 0);
         m_guiObjects.push_back(m_settingsText);
 
         m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnumsAndVariables::FontsPath::ROBOTO, 3, 1, 7);

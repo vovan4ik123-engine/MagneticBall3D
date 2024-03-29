@@ -24,7 +24,6 @@ namespace MagneticBall3D
 
         // Load.
         void loadShaders();
-        void loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
         // Before physics.
         void handleScreenSwipe();
@@ -40,6 +39,9 @@ namespace MagneticBall3D
         void killEnemies();
         void handleCamera();
         void spawnGarbage(const int count, GarbageType type);
+
+        // Draw.
+        void updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
 
     protected:
         std::shared_ptr<PlayStateGUILayer> m_gui;
@@ -57,15 +59,24 @@ namespace MagneticBall3D
 //        { for(int i = begin; i < end; ++i) { if(v[i]->getIsEnabledUpdate()) { v[i]->updateAfterPhysics(); } } };
 //        Beryll::AsyncRun::Run(m_allSceneObjects, m_updateAfterPhysics);
 
+        // Map size. Should be assigned in subclasses of specific map.
+        float m_minX = 0.0f;
+        float m_maxX = 0.0f;
+        float m_minZ = 0.0f;
+        float m_maxZ = 0.0f;
+
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadowsNormals;
         std::shared_ptr<Beryll::Shader> m_animatedObjSunLightShadows;
         std::unique_ptr<Beryll::ShadowMap> m_shadowMap;
-        glm::mat4 m_sunLightVPMatrix;
-        glm::vec3 m_sunLightDir;
+        glm::mat4 m_sunLightVPMatrix{1.0f};
+        // Assign in subclass constructor.
+        glm::vec3 m_dirToSun{0.0f};
+        glm::vec3 m_sunLightDir{0.0f};
+        float m_sunDistance = 0.0f;
 
-        glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.2f, 0.0f));
+        glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.05f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
         const float m_startCameraDistance = 160.0f; // For player without garbage.
         float m_cameraDistance = m_startCameraDistance;

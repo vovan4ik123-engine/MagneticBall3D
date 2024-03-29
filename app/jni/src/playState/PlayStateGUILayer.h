@@ -14,8 +14,8 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
+        //std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
+        //std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
         std::shared_ptr<Beryll::SliderHorizontal> sliderEnemy;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSpeed;
         std::shared_ptr<Beryll::ButtonWithText> buttonA;

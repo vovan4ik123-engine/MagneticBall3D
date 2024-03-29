@@ -44,8 +44,6 @@ namespace MagneticBall3D
 
         EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
         EnumsAndVariables::playerMaxSpeedXZ = m_gui->sliderSpeed->getValue();
-        EnumsAndVariables::playerImpulseFactorOnGround = m_gui->sliderImpulse->getValue();
-        EnumsAndVariables::playerTorqueFactorOnGround = m_gui->sliderTorque->getValue();
 
         if(m_gui->buttonA->getIsPressed())
         {
@@ -89,6 +87,19 @@ namespace MagneticBall3D
         m_player->updateSpeed();
         m_player->updateGravity();
 
+        glm::vec3 playerNewOrig = m_player->getObj()->getOrigin();
+        if(playerNewOrig.x < m_minX)
+            playerNewOrig.x = m_minX;
+        else if(playerNewOrig.x > m_maxX)
+            playerNewOrig.x = m_maxX;
+
+        if(playerNewOrig.z < m_minZ)
+            playerNewOrig.z = m_minZ;
+        else if(playerNewOrig.z > m_maxZ)
+            playerNewOrig.z = m_maxZ;
+
+        m_player->getObj()->setOrigin(playerNewOrig);
+
         killEnemies();
         handleCamera(); // Last call before draw.
     }
@@ -97,9 +108,11 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
-        //Beryll::Renderer::disableFaceCulling();
+        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ()) * 170.0f + (m_dirToSun * m_sunDistance);
+        updateSunPosition(sunPos, 700, 700, 850);
+        Beryll::Renderer::disableFaceCulling();
         m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
-        //Beryll::Renderer::enableFaceCulling();
+        Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
         glm::mat4 modelMatrix{1.0f};
@@ -108,7 +121,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", 0.5f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 3.0f);
 
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -131,6 +144,7 @@ namespace MagneticBall3D
             }
         }
 
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 2.0f);
         for(const auto& staticObj : m_allStaticEnv)
         {
             if(staticObj->getIsEnabledDraw())
@@ -147,7 +161,7 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_animatedObjSunLightShadows->set1Float("ambientLight", 0.5f);
-        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 5.0f);
+        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 2.5f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
@@ -186,14 +200,12 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
         m_animatedObjSunLightShadows->activateShadowMapTexture();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap((1024 * 4) - 1, (1024 * 4) - 1);
+        m_shadowMap = Beryll::Renderer::createShadowMap(3400, 3400);
     }
 
-    void BaseMap::loadSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
+    void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
     {
-        m_sunLightDir = glm::normalize(-pos);
-
-        glm::mat4 lightProjection = glm::ortho(-clipCubeWidth * 0.5f, clipCubeWidth * 0.5f, -clipCubeHeight * 0.5f, clipCubeHeight * 0.5f, 1.0f, clipCubeDepth);
+        glm::mat4 lightProjection = glm::ortho(-clipCubeWidth * 0.5f, clipCubeWidth * 0.5f, -clipCubeHeight * 0.5f, clipCubeHeight * 0.5f, 15.0f, clipCubeDepth);
         glm::mat4 lightView = glm::lookAt(pos, pos + m_sunLightDir, BeryllConstants::worldUp);
 
         m_sunLightVPMatrix = lightProjection * lightView;
@@ -641,7 +653,7 @@ namespace MagneticBall3D
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.15f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y;
+        m_cameraOffset.y = 0.05f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y;
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();

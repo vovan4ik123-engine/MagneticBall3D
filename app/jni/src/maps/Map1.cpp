@@ -9,16 +9,15 @@ namespace MagneticBall3D
     {
         // Specific for this map only.
         loadPlayerAndStaticEnv();
-        loadGarbage();
-        loadEnemies();
+        //loadGarbage();
+        //loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
-        loadSunPosition(glm::vec3(200.0f, 200.0f, 20.0f), 500.0f, 500.0f, 500.0f);
         handleCamera();
 
         m_pathFinder = AStar(-250, 250, -250, 250, 5);
-        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/Walls.fbx");
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/prototypeMap/Walls.fbx");
         for(const auto& wall : walls)
         {
             m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
@@ -26,7 +25,7 @@ namespace MagneticBall3D
 
         BR_INFO("Map1 pathfinder walls.size() %d", walls.size());
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/AllowedPositions.fbx");
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/prototypeMap/AllowedPositions.fbx");
         m_pathGridXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
@@ -36,6 +35,15 @@ namespace MagneticBall3D
         BR_INFO("Map1 pathfinder m_pathGridXZ.size() %d", m_pathGridXZ.size());
         m_allowedPointsToSpawnEnemies.reserve(m_pathGridXZ.size());
         m_allowedPointsToSpawnGarbage.reserve(m_pathGridXZ.size());
+
+        m_minX = -790.0f;
+        m_maxX = 790.0f;
+        m_minZ = -790.0f;
+        m_maxZ = 790.0f;
+
+        m_dirToSun = glm::normalize(glm::vec3(-0.707f, 0.707f, -0.707f));
+        m_sunLightDir = -m_dirToSun;
+        m_sunDistance = 500.0f;
     }
 
     Map1::~Map1()
@@ -64,7 +72,7 @@ namespace MagneticBall3D
         m_player->getObj()->setDamping(EnumsAndVariables::playerDamping, EnumsAndVariables::playerDamping);
 
         // Static env.
-        const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/Ground.fbx",
+        const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/map1/Ground.fbx",
                                                                             0.0f,
                                                                             false,
                                                                             Beryll::CollisionFlags::STATIC,
@@ -77,7 +85,7 @@ namespace MagneticBall3D
         m_simpleObjForShadowMap.push_back(ground);
         ground->setFriction(EnumsAndVariables::staticEnvFriction);
 
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Buildings.fbx",
+        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
