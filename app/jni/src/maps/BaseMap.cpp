@@ -36,10 +36,10 @@ namespace MagneticBall3D
             }
         }
 
-        if(m_lastTimeSpawnGarbage + m_spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
+        if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
         {
             spawnGarbage(3, GarbageType::DEFAULT);
-            m_lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
+            EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
         }
 
         EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
@@ -87,18 +87,22 @@ namespace MagneticBall3D
         m_player->updateSpeed();
         m_player->updateGravity();
 
-        glm::vec3 playerNewOrig = m_player->getObj()->getOrigin();
-        if(playerNewOrig.x < m_minX)
-            playerNewOrig.x = m_minX;
-        else if(playerNewOrig.x > m_maxX)
-            playerNewOrig.x = m_maxX;
+        const glm::vec3& playerOrig = m_player->getObj()->getOrigin();
+        bool playerOutOfMap = false;
+        if(playerOrig.x < m_minX)
+            playerOutOfMap = true;
+        else if(playerOrig.x > m_maxX)
+            playerOutOfMap = true;
+        else if(playerOrig.z < m_minZ)
+            playerOutOfMap = true;
+        else if(playerOrig.z > m_maxZ)
+            playerOutOfMap = true;
 
-        if(playerNewOrig.z < m_minZ)
-            playerNewOrig.z = m_minZ;
-        else if(playerNewOrig.z > m_maxZ)
-            playerNewOrig.z = m_maxZ;
-
-        m_player->getObj()->setOrigin(playerNewOrig);
+        if(playerOutOfMap)
+        {
+            m_player->getObj()->resetVelocities();
+            m_player->getObj()->setLinearVelocity(glm::normalize(-playerOrig) * 35.0f);
+        }
 
         killEnemies();
         handleCamera(); // Last call before draw.
@@ -109,7 +113,7 @@ namespace MagneticBall3D
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ()) * 170.0f + (m_dirToSun * m_sunDistance);
-        updateSunPosition(sunPos, 700, 700, 850);
+        updateSunPosition(sunPos, 700, 700, m_sunDistance * 2.0f);
         Beryll::Renderer::disableFaceCulling();
         m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
@@ -187,12 +191,12 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->activateDiffuseTextureMat1();
         m_simpleObjSunLightShadows->activateShadowMapTexture();
 
-        m_simpleObjSunLightShadowsNormals = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadowsNormals.vert",
-                                                                           "shaders/GLES/SimpleObjectSunLightShadowsNormals.frag");
-        m_simpleObjSunLightShadowsNormals->bind();
-        m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
-        m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
-        m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
+//        m_simpleObjSunLightShadowsNormals = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadowsNormals.vert",
+//                                                                           "shaders/GLES/SimpleObjectSunLightShadowsNormals.frag");
+//        m_simpleObjSunLightShadowsNormals->bind();
+//        m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
+//        m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
+//        m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
 
         m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
                                                                       "shaders/GLES/AnimatedObjectSunLightShadows.frag");
@@ -200,7 +204,7 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
         m_animatedObjSunLightShadows->activateShadowMapTexture();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(3400, 3400);
+        m_shadowMap = Beryll::Renderer::createShadowMap(2500, 2500);
     }
 
     void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
@@ -370,7 +374,7 @@ namespace MagneticBall3D
             float distanceToClosestPoint = std::numeric_limits<float>::max();
             float distanceToCurrent = 0.0f;
 
-            for(const glm::ivec2& point : m_pathGridXZ)
+            for(const glm::ivec2& point : m_pathAllowedPositionsXZ)
             {
                 distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(point));
 
@@ -382,12 +386,13 @@ namespace MagneticBall3D
                 }
 
                 // 2.
-                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnEnemies)
+                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnEnemies && distanceToCurrent < EnumsAndVariables::maxDistanceToSpawnEnemies)
                 {
                     // We can spawn enemy at this point.
                     m_allowedPointsToSpawnEnemies.push_back(point);
                 }
-                else
+
+                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnGarbage && distanceToCurrent < EnumsAndVariables::maxDistanceToSpawnGarbage)
                 {
                     // We can spawn garbage at this point.
                     m_allowedPointsToSpawnGarbage.push_back(point);
@@ -395,6 +400,7 @@ namespace MagneticBall3D
             }
 
             BR_ASSERT((!m_allowedPointsToSpawnEnemies.empty()), "%s", "m_allowedPointsToSpawnEnemies empty.");
+            BR_ASSERT((!m_allowedPointsToSpawnGarbage.empty()), "%s", "m_allowedPointsToSpawnGarbage empty.");
         }
         // In second frame:
         // 1. Clear blocked positions.
@@ -425,7 +431,6 @@ namespace MagneticBall3D
                         enemy->setOrigin(spawnPoint3D);
 
                         enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
-                        BR_INFO("enemy->pathArray %d", enemy->pathArray.size());
                         if(enemy->pathArray.size() > 1)
                             enemy->indexInPathArray = 1;
                         else
@@ -472,7 +477,7 @@ namespace MagneticBall3D
                 }
             }
 
-            if(EnumsAndVariables::currentPathfindingEnemyIndex >= m_allAnimatedEnemies.size() -1)
+            if(EnumsAndVariables::currentPathfindingEnemyIndex + 1 >= m_allAnimatedEnemies.size())
             {
                 // All enemies were updated.
                 EnumsAndVariables::currentPathfindingEnemyIndex = 0;
@@ -699,13 +704,15 @@ namespace MagneticBall3D
 
         int spawnedCount = 0;
         const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
-        const glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
+        glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
         for(auto& wrapper : m_allGarbageWrappers)
         {
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
             {
                 wrapper.enableGarbage();
+                spawnPoint3D.x += (Beryll::RandomGenerator::getFloat() - 0.5f) * 5.0f;
+                spawnPoint3D.z += (Beryll::RandomGenerator::getFloat() - 0.5f) * 4.0f;
                 wrapper.obj->setOrigin(spawnPoint3D);
 
                 ++spawnedCount;

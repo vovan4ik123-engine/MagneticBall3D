@@ -71,7 +71,7 @@ namespace MagneticBall3D
         glm::vec3 playerVelocityXZ = m_playerLinearVelocity;
         playerVelocityXZ.y = 0.0f;
         float currentPlayerSpeedXZ = glm::length(playerVelocityXZ);
-        BR_INFO("currentPlayerSpeedXZ %f", currentPlayerSpeedXZ);
+        //BR_INFO("currentPlayerSpeedXZ %f", currentPlayerSpeedXZ);
 
         // Swipe should control only XZ speed.
         if(currentPlayerSpeedXZ >= EnumsAndVariables::playerMaxSpeedXZ)
@@ -98,7 +98,7 @@ namespace MagneticBall3D
         if(impulseFactor < 1.0f)
             return impulseFactor;
 
-        BR_INFO("%s", "apply torque");
+        //BR_INFO("%s", "apply torque");
         // Also apply torque on screen swipe.
         // Torque applied along right/left vector from impulse.
         glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForTorque));

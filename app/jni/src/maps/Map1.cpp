@@ -9,15 +9,19 @@ namespace MagneticBall3D
     {
         // Specific for this map only.
         loadPlayerAndStaticEnv();
-        //loadGarbage();
+        loadGarbage();
         //loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
         handleCamera();
 
-        m_pathFinder = AStar(-250, 250, -250, 250, 5);
-        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/prototypeMap/Walls.fbx");
+        m_minX = -800.0f;
+        m_maxX = 800.0f;
+        m_minZ = -800.0f;
+        m_maxZ = 800.0f;
+        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 10);
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathWalls.fbx");
         for(const auto& wall : walls)
         {
             m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
@@ -25,25 +29,20 @@ namespace MagneticBall3D
 
         BR_INFO("Map1 pathfinder walls.size() %d", walls.size());
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/prototypeMap/AllowedPositions.fbx");
-        m_pathGridXZ.reserve(allowedPoints.size());
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathAllowedPositions.fbx");
+        m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
-            m_pathGridXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+            m_pathAllowedPositionsXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
         }
 
-        BR_INFO("Map1 pathfinder m_pathGridXZ.size() %d", m_pathGridXZ.size());
-        m_allowedPointsToSpawnEnemies.reserve(m_pathGridXZ.size());
-        m_allowedPointsToSpawnGarbage.reserve(m_pathGridXZ.size());
-
-        m_minX = -790.0f;
-        m_maxX = 790.0f;
-        m_minZ = -790.0f;
-        m_maxZ = 790.0f;
+        BR_INFO("Map1 pathfinder m_pathGridXZ.size() %d", m_pathAllowedPositionsXZ.size());
+        m_allowedPointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
+        m_allowedPointsToSpawnGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
         m_dirToSun = glm::normalize(glm::vec3(-0.707f, 0.707f, -0.707f));
         m_sunLightDir = -m_dirToSun;
-        m_sunDistance = 500.0f;
+        m_sunDistance = 600.0f;
     }
 
     Map1::~Map1()
@@ -105,7 +104,7 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Garbage3.fbx",
+        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage3.fbx",
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
@@ -128,7 +127,7 @@ namespace MagneticBall3D
 
         }
 
-        const auto objects2 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Garbage2.fbx",
+        const auto objects2 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage2.fbx",
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
@@ -150,7 +149,7 @@ namespace MagneticBall3D
             obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
         }
 
-        const auto objects3 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/Garbage1.fbx",
+        const auto objects3 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage1.fbx",
                                                                                        EnumsAndVariables::garbageMass,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::DYNAMIC,

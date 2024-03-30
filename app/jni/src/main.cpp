@@ -15,9 +15,9 @@ int main(int argc, char* argv[])
     //Beryll::GameLoop::setFPSLimit(15.0f);
 
     //Beryll::Camera::setCameraFov(45.0f);
-    Beryll::Camera::setProjectionNearClipPlane(1.5f);
-    Beryll::Camera::setProjectionFarClipPlane(1200.0f);
-    Beryll::Camera::setObjectsViewDistance(500.0f);
+    Beryll::Camera::setProjectionNearClipPlane(2.0f);
+    Beryll::Camera::setProjectionFarClipPlane(1500.0f);
+    Beryll::Camera::setObjectsViewDistance(1000.0f);
 
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);

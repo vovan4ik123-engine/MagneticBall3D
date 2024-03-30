@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options(-fexceptions -frtti)
 
 # for info/warning/assert messages
-    #add_definitions(-DBR_DEBUG)
+    add_definitions(-DBR_DEBUG)
 
 add_library(main SHARED main.cpp
                         GameStateHelper.cpp

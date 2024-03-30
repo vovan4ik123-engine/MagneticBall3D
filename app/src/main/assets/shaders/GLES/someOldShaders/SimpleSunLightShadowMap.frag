@@ -36,7 +36,7 @@ void main()
     float shadowMultiplier = 1.0f; // 1 means no shadow
     if(fragPosLightPerspective.z <= 1.0f)
     {
-        shadowMultiplier = closestDepth < currentDepth - 0.0001f ? 0.0f : 1.0f; // currentDepth - 0.0001f is bias offset
+        shadowMultiplier = closestDepth < currentDepth - 0.00015f ? 0.0f : 1.0f; // currentDepth - 0.0001f is bias offset
     }
 
     vec3 textureCollor = texture(diffuseTexture, textureCoords).rgb;

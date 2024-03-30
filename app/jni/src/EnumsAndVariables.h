@@ -32,7 +32,7 @@ namespace EnumsAndVariables
     constexpr inline float playerMagneticRadius = 35.0f;
     constexpr inline float playerImpulseFactorOnGround = 0.15f;
     constexpr inline float playerTorqueFactorOnGround = 0.1f;
-    constexpr inline float playerDamping = 0.25f;
+    constexpr inline float playerDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
@@ -40,10 +40,10 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
     inline float playerMaxSpeedXZ = 20.0f;
-    constexpr inline float playerSpeedForMeteor = 40.0f;
+    constexpr inline float playerSpeedForMeteor = 70.0f;
 
     // Garbage.
-    constexpr inline float garbageDamping = 0.25f;
+    constexpr inline float garbageDamping = 0.1f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 600.0f;
@@ -53,6 +53,10 @@ namespace EnumsAndVariables
     constexpr inline int garbageMaxCountMagnetized = 350;
     constexpr inline int garbageMaxCountActiveDefault = 400; // Limit of active GarbageType::DEFAULT on map.
     inline int garbageCountMagnetized = 0;
+    constexpr inline float minDistanceToSpawnGarbage = 0.0f;
+    constexpr inline float maxDistanceToSpawnGarbage = 300.0f;
+    inline float lastTimeSpawnGarbage = 0.0f; // Sec.
+    constexpr inline  float spawnGarbageDelay = 3.0f; // Sec.
 
     constexpr inline float staticEnvFriction = 40.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -61,7 +65,8 @@ namespace EnumsAndVariables
     inline int maxActiveEnemiesCount = 500;
     constexpr inline int maxPathfindingInOneFrame = 10;
     inline int currentPathfindingEnemyIndex = 0;
-    constexpr inline float minDistanceToSpawnEnemies = 150.0f;
+    constexpr inline float minDistanceToSpawnEnemies = 200.0f;
+    constexpr inline float maxDistanceToSpawnEnemies = 1000.0f;
     inline float radiusToKillEnemies = 15.0f; // Also amount of garbage to kill should be considered with that.
 
     // Maps progress.

@@ -90,14 +90,10 @@ namespace MagneticBall3D
 
         // Pathfinding.
         AStar m_pathFinder{0, 0, 0, 0, 0}; // Assign new object in constructor.
-        std::vector<glm::ivec2> m_pathGridXZ; // Points for enemy movements.
+        std::vector<glm::ivec2> m_pathAllowedPositionsXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_allowedPointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_allowedPointsToSpawnGarbage; // From m_allowedPointsToMoveXZ.
         int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.
-
-        // Garbage.
-        float m_lastTimeSpawnGarbage = 0.0f; // Sec.
-        const float m_spawnGarbageDelay = 1.0f; // Sec.
     };
 }
