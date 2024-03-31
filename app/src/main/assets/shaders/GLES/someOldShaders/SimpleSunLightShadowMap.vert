@@ -23,7 +23,7 @@ void main()
 
     fragPos = (modelMatrix * vec4(inPosition, 1.0f)).xyz;
     fragPosLightPerspective = (MVPLightMatrix * vec4(inPosition, 1.0f)); // transform to view space then to clip space
-    // Perspective divide to transform vertex vrom clip space to NDC(-1.0f 1.0f), then to (0.0f 1.0f)
+    // Perspective divide to transform vertex from clip space to NDC(-1.0f 1.0f), then to (0.0f 1.0f)
     fragPosLightPerspective.xyz = (fragPosLightPerspective.xyz / fragPosLightPerspective.w) * 0.5f + 0.5f;
 
     gl_Position = MVPMatrix * vec4(inPosition, 1.0f); // transform to view space then to clip space

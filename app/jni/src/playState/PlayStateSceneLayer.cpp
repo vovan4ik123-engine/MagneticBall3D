@@ -11,9 +11,6 @@ namespace MagneticBall3D
 
         m_map = std::make_shared<Map1>(gui);
 
-//        std::vector<glm::ivec2> path = m_pathFinder.findPath({0, 0}, {60, 0});
-//        for(const auto& point : path) { BR_INFO("point in path 1 %d %d", point.x, point.y); }
-
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
         //BR_INFO(" %f", );

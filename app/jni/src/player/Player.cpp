@@ -57,7 +57,7 @@ namespace MagneticBall3D
 //        {
 //            m_player->setGravity(EnumsAndVariables::playerGravityOnAir);
 //        }
-        else if(m_lastTimeOnBuilding + m_applyGravityDelay < Beryll::TimeStep::getSecFromStart())
+        else if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
         {
             m_isOnGround = false;
             m_isOnBuilding = false;

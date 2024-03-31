@@ -26,7 +26,7 @@ void main()
     // specular
     vec3 fragToCameraDir = normalize(cameraPos - fragPos);
     vec3 reflectDir = reflect(sunLightDir, normal); // reflect(fromLightPosToFragPos, normal);
-    float specular = pow(max(dot(fragToCameraDir, reflectDir), 0.0f), 64.0f) * specularLightStrength;
+    float specular = pow(max(dot(fragToCameraDir, reflectDir), 0.0f), 128.0f) * specularLightStrength;
 
     // shadow
     // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)

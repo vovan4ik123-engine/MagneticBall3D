@@ -17,7 +17,8 @@ namespace MagneticBall3D
 
     void Garbage::update()
     {
-        if(currentHP <= 0)
+        // Garbage nas no HP or dropped down from map border.
+        if(currentHP <= 0 || obj->getOrigin().y < -500.0f)
         {
             disableGarbage();
         }

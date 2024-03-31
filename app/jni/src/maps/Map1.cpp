@@ -10,7 +10,7 @@ namespace MagneticBall3D
         // Specific for this map only.
         loadPlayerAndStaticEnv();
         loadGarbage();
-        //loadEnemies();
+        loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
@@ -116,7 +116,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects1)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -139,7 +139,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects2)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -161,7 +161,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects3)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 20);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -174,9 +174,9 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int x = 0; x < 300; ++x)
+        for(int x = 0; x < 600; ++x)
         {
-            auto unit = std::make_shared<CopWithPistol>("models3D/AnimCollFootman1.fbx",
+            auto unit = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
                                                         0.0f,
                                                         false,
                                                         Beryll::CollisionFlags::STATIC,
@@ -185,28 +185,12 @@ namespace MagneticBall3D
                                                         Beryll::SceneObjectGroups::ENEMY);
 
             unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE);
+            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
             unit->getController().moveSpeed = 20.0f;
 
             m_allSceneObjects.push_back(unit);
             m_allAnimatedEnemies.push_back(unit);
             m_animatedObjForShadowMap.push_back(unit);
-
-            auto unit2 = std::make_shared<CopWithGrenadeLauncher>("models3D/StoneThrower.fbx",
-                                                                  0.0f,
-                                                                  false,
-                                                                  Beryll::CollisionFlags::STATIC,
-                                                                  Beryll::CollisionGroups::NONE,
-                                                                  Beryll::CollisionGroups::NONE,
-                                                                  Beryll::SceneObjectGroups::ENEMY);
-
-            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE);
-            unit2->getController().moveSpeed = 20.0f;
-
-            m_allSceneObjects.push_back(unit2);
-            m_allAnimatedEnemies.push_back(unit2);
-            m_animatedObjForShadowMap.push_back(unit2);
         }
     }
 }

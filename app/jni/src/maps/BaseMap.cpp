@@ -69,17 +69,22 @@ namespace MagneticBall3D
             {
                 so->updateAfterPhysics();
 
-                if(so->getOrigin().y < -500.0f)
-                    so->disableForEver();
-
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.8f))
+                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.1f))
                         so->enableDraw();
                     else
                         so->disableDraw();
+                }
+                else if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::BUILDING)
+                {
+//                    if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < 100.0f ||
+//                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.0f, 1000.0f))
+//                        so->enableDraw();
+//                    else
+//                        so->disableDraw();
                 }
             }
         }
@@ -112,7 +117,7 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
-        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ()) * 170.0f + (m_dirToSun * m_sunDistance);
+        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 230.0f) + (m_dirToSun * m_sunDistance);
         updateSunPosition(sunPos, 700, 700, m_sunDistance * 2.0f);
         Beryll::Renderer::disableFaceCulling();
         m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
@@ -165,7 +170,7 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_animatedObjSunLightShadows->set1Float("ambientLight", 0.5f);
-        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 2.5f);
+        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
@@ -263,12 +268,12 @@ namespace MagneticBall3D
             glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
             if(m_player->getIsOnBuilding())
             {
-                powerForImpulse *= 0.8f;
+                powerForImpulse *= 0.9f;
                 powerForTorque *= 3.0f;
             }
             else if(m_player->getIsOnAir())
             {
-                powerForImpulse *= 0.4f;
+                powerForImpulse *= 0.5f;
                 powerForTorque *= 2.0f;
             }
 
@@ -494,7 +499,8 @@ namespace MagneticBall3D
             if(enemy->getIsEnabledUpdate() && enemy->unitState == UnitState::CAN_ATTACK)
             {
                 glm::vec3 from = enemy->getOrigin();
-                from.y += enemy->getController().getFromOriginToTop() * 0.5f;
+                from.y += enemy->getController().getFromOriginToTop() * 0.7f;
+                from += enemy->getFaceDirXZ() * 6.0f;
                 glm::vec3 target = m_player->getObj()->getOrigin();
                 target.y += 1.8f;
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from, target,
@@ -658,7 +664,7 @@ namespace MagneticBall3D
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.05f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y;
+        m_cameraOffset.y = 0.035f + EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y;
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();

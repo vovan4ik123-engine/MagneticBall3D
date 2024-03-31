@@ -11,9 +11,9 @@ namespace EnumsAndVariables
 
     struct AnimationIndexes
     {
-        static const inline int ATTACK = 0;
-        static const inline int IDLE = 2;
-        static const inline int RUN = 3;
+        static const inline int RUN = 0;
+        static const inline int STAND = 1;
+        static const inline int ATTACK = 2;
     };
 
     struct SettingsMenu
@@ -45,13 +45,13 @@ namespace EnumsAndVariables
     // Garbage.
     constexpr inline float garbageDamping = 0.1f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 600.0f;
+    constexpr inline float garbageMinGravityPower = 150.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMaxGravityPower = 650.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbage gravity.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -20.0f, 0.0f};
-    constexpr inline int garbageMaxCountMagnetized = 350;
     constexpr inline int garbageMaxCountActiveDefault = 400; // Limit of active GarbageType::DEFAULT on map.
+    constexpr inline int garbageMaxCountMagnetized = 300;
     inline int garbageCountMagnetized = 0;
     constexpr inline float minDistanceToSpawnGarbage = 0.0f;
     constexpr inline float maxDistanceToSpawnGarbage = 300.0f;
@@ -66,7 +66,7 @@ namespace EnumsAndVariables
     constexpr inline int maxPathfindingInOneFrame = 10;
     inline int currentPathfindingEnemyIndex = 0;
     constexpr inline float minDistanceToSpawnEnemies = 200.0f;
-    constexpr inline float maxDistanceToSpawnEnemies = 1000.0f;
+    constexpr inline float maxDistanceToSpawnEnemies = 600.0f;
     inline float radiusToKillEnemies = 15.0f; // Also amount of garbage to kill should be considered with that.
 
     // Maps progress.

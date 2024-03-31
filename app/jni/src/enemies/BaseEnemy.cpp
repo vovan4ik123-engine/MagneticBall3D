@@ -39,7 +39,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "DelayBeforeFirstAttack");
             unitState = UnitState::IDLE;
-            setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE, false, false);
+            setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > m_attackDistance)
@@ -112,7 +112,7 @@ namespace MagneticBall3D
 //            {
 //                BR_INFO("%s", "idle because indexInPathArray >= pathArray.size() - 1");
 //                unitState = UnitState::IDLE;
-//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::IDLE, false, false);
+//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND, false, false);
 //            }
         }
     }
