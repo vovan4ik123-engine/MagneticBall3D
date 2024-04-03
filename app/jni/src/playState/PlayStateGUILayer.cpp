@@ -30,7 +30,6 @@ namespace MagneticBall3D
 
         buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 2, 80, 90, 20, 10);
         m_guiObjects.push_back(buttonA);
-
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()

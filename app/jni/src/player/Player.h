@@ -18,7 +18,7 @@ namespace MagneticBall3D
         // Return factor after impulse apply in range 0...1.
         // 1 if full impulse was applied.
         // 0 if nothing was applied.
-        float handleScreenSwipe(const glm::vec3& swipeForImpulse, const glm::vec3& swipeForTorque);
+        float handleScreenSwipe(glm::vec3 swipeForImpulse, const glm::vec3& swipeForTorque);
         void reduceSpeed(float speedToReduce);
         float getMoveSpeed() { return m_playerMoveSpeed; }
         const glm::vec3& getMoveDir() { return m_playerMoveDir; }

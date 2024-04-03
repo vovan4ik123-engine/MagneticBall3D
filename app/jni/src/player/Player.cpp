@@ -30,10 +30,10 @@ namespace MagneticBall3D
         }
 
         // Handle meteor.
-        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
-            m_isMeteor = true;
-        else
-            m_isMeteor = false;
+//        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
+//            m_isMeteor = true;
+//        else
+//            m_isMeteor = false;
     }
 
     void Player::updateGravity()
@@ -66,7 +66,7 @@ namespace MagneticBall3D
         }
     }
 
-    float Player::handleScreenSwipe(const glm::vec3& swipeForImpulse, const glm::vec3& swipeForTorque)
+    float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, const glm::vec3& swipeForTorque)
     {
         glm::vec3 playerVelocityXZ = m_playerLinearVelocity;
         playerVelocityXZ.y = 0.0f;
@@ -74,38 +74,49 @@ namespace MagneticBall3D
         //BR_INFO("currentPlayerSpeedXZ %f", currentPlayerSpeedXZ);
 
         // Swipe should control only XZ speed.
-        if(currentPlayerSpeedXZ >= EnumsAndVariables::playerMaxSpeedXZ)
-            return 0.0f;
+        //if(currentPlayerSpeedXZ >= EnumsAndVariables::playerMaxSpeedXZ)
+        //    return 0.0f;
+
+        float impulseFirstLength = glm::length(swipeForImpulse);
+
+        if(m_playerMoveSpeed > 1.0f && m_isOnGround)
+        {
+            float angleMoveToImpulse = BeryllUtils::Common::getAngleInRadians(m_playerMoveDir, glm::normalize(swipeForImpulse));
+            //BR_INFO("angleMoveToImpulse %f", angleMoveToImpulse);
+            swipeForImpulse += swipeForImpulse * (angleMoveToImpulse * 2.4f);
+        }
 
         //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
         glm::vec3 newLinearVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
         newLinearVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newLinearVelocityXZ);
 
-        float impulseFactor = 1.0f;
+        float impulseReduceFactor = 1.0f;
         if(newPlayerSpeedXZ > EnumsAndVariables::playerMaxSpeedXZ)
         {
             // Apply less impulse because speed limit was exceeded.
             float newSpeedLimit = EnumsAndVariables::playerMaxSpeedXZ - currentPlayerSpeedXZ;
             float newSpeedAdded = newPlayerSpeedXZ - currentPlayerSpeedXZ;
-            impulseFactor = newSpeedLimit / newSpeedAdded;
+            impulseReduceFactor = newSpeedLimit / newSpeedAdded;
+            swipeForImpulse *= impulseReduceFactor;
         }
 
-        m_obj->applyCentralImpulse(swipeForImpulse * impulseFactor);
+        float impulseLastLength = glm::length(swipeForImpulse);
+        m_obj->applyCentralImpulse(swipeForImpulse);
         updateSpeed();
 
         // We applied less than initial impulse and already reach max speed. Dont need apply torque.
-        if(impulseFactor < 1.0f)
-            return impulseFactor;
+        if(impulseReduceFactor >= 1.0f)
+        {
+            //BR_INFO("%s", "apply torque");
+            // Also apply torque on screen swipe.
+            // Torque applied along right/left vector from impulse.
+            glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForTorque));
+            impulseLeft = glm::normalize(impulseLeft) * glm::length(swipeForTorque);
+            m_obj->applyTorqueImpulse(impulseLeft);
+        }
 
-        //BR_INFO("%s", "apply torque");
-        // Also apply torque on screen swipe.
-        // Torque applied along right/left vector from impulse.
-        glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForTorque));
-        impulseLeft = glm::normalize(impulseLeft) * glm::length(swipeForTorque);
-        m_obj->applyTorqueImpulse(impulseLeft);
-
-        return impulseFactor;
+        return impulseLastLength / impulseFirstLength;
     }
 
     void Player::reduceSpeed(float speedToReduce)

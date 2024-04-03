@@ -268,13 +268,13 @@ namespace MagneticBall3D
             glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
             if(m_player->getIsOnBuilding())
             {
-                powerForImpulse *= 0.9f;
-                powerForTorque *= 3.0f;
+                powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding;
             }
             else if(m_player->getIsOnAir())
             {
-                powerForImpulse *= 0.5f;
-                powerForTorque *= 2.0f;
+                powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnAir;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnAir;
             }
 
             float factorImpulseApplied = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
