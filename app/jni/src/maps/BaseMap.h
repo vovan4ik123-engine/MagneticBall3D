@@ -39,6 +39,7 @@ namespace MagneticBall3D
         void killEnemies();
         void handleCamera();
         void spawnGarbage(const int count, GarbageType type);
+        void updateGUI();
 
         // Draw.
         void updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);

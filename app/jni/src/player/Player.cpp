@@ -4,9 +4,12 @@
 namespace MagneticBall3D
 {
     Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam, int health)
-    : m_obj(std::move(so)), m_diameter(diam), m_maxHP(health)
+    : m_obj(std::move(so)), m_diameter(diam), maxHP(health), currentHP(health)
     {
+        BR_ASSERT((m_maxLevel == m_expPerLevel.size()), "%s", "m_maxLevel != m_expNeedPerLevel.size()");
 
+        m_currentLevelExp = 0;
+        m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
     }
 
     Player::~Player()
@@ -14,30 +17,12 @@ namespace MagneticBall3D
 
     }
 
-    void Player::updateSpeed()
+    void Player::update()
     {
-        // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
-        m_playerLinearVelocity = m_obj->getLinearVelocity();
-        m_playerMoveSpeed = glm::length(m_playerLinearVelocity);
-        if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
-        {
-            m_playerMoveSpeed = 0.0f;
-            m_playerMoveDir = glm::vec3{0.0f};
-        }
-        else
-        {
-            m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
-        }
+        // Update speed.
+        updateSpeed();
 
-        // Handle meteor.
-//        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
-//            m_isMeteor = true;
-//        else
-//            m_isMeteor = false;
-    }
-
-    void Player::updateGravity()
-    {
+        // Update gravity.
         if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
             m_isOnGround = false;
@@ -64,6 +49,42 @@ namespace MagneticBall3D
             m_isOnAir = true;
             m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
         }
+
+        // Update HP.
+        if(currentHP <= 0)
+        {
+            BR_INFO("%s", "Reset HP");
+            currentHP = maxHP;
+        }
+
+        // Update XP.
+        if(m_currentLevelExp >= m_currentLevelMaxExp)
+        {
+            BR_INFO("%s", "Reset XP");
+            m_currentLevelExp = 0;
+        }
+    }
+
+    void Player::updateSpeed()
+    {
+        // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
+        m_playerLinearVelocity = m_obj->getLinearVelocity();
+        m_playerMoveSpeed = glm::length(m_playerLinearVelocity);
+        if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
+        {
+            m_playerMoveSpeed = 0.0f;
+            m_playerMoveDir = glm::vec3{0.0f};
+        }
+        else
+        {
+            m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
+        }
+
+        // Handle meteor.
+        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
+            m_isMeteor = true;
+        else
+            m_isMeteor = false;
     }
 
     float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, const glm::vec3& swipeForTorque)
@@ -83,7 +104,7 @@ namespace MagneticBall3D
         {
             float angleMoveToImpulse = BeryllUtils::Common::getAngleInRadians(m_playerMoveDir, glm::normalize(swipeForImpulse));
             //BR_INFO("angleMoveToImpulse %f", angleMoveToImpulse);
-            swipeForImpulse += swipeForImpulse * (angleMoveToImpulse * 2.4f);
+            swipeForImpulse += swipeForImpulse * (angleMoveToImpulse * 2.0f);
         }
 
         //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;

@@ -13,6 +13,7 @@ namespace MagneticBall3D
     {
         NONE,
         COP_WITH_PISTOL,
+        COP_WITH_PISTOL_SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
         SNIPER
     };
@@ -58,7 +59,7 @@ namespace MagneticBall3D
         bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < Beryll::TimeStep::getSecFromStart(); }
         bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
         bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
-        float getExperienceWhenDie() { return m_experienceWhenDie; }
+        int getExperienceWhenDie() { return m_experienceWhenDie; }
 
         // Pathfinding.
         int indexInPathArray = 0;
@@ -89,6 +90,6 @@ namespace MagneticBall3D
         // Death .
         int m_garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
         float m_reducePlayerSpeedWhenDie = 0.0f;
-        float m_experienceWhenDie = 0.0f;
+        int m_experienceWhenDie = 0;
     };
 }

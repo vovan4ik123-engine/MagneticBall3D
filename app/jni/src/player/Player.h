@@ -11,9 +11,7 @@ namespace MagneticBall3D
         Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam, int health);
         ~Player();
 
-
-        void updateSpeed();
-        void updateGravity();
+        void update();
 
         // Return factor after impulse apply in range 0...1.
         // 1 if full impulse was applied.
@@ -32,11 +30,18 @@ namespace MagneticBall3D
         void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam) { m_obj = std::move(so); m_diameter = diam; }
 
         int currentHP = 0;
+        const int maxHP = 0;
+
+        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += exp; } }
+
+        int getCurrentLevelExp() { return m_currentLevelExp; }
+        int getCurrentLevelMaxExp() { return m_currentLevelMaxExp; }
 
     private:
+        void updateSpeed();
+
         std::shared_ptr<Beryll::SimpleCollidingObject> m_obj;
         float m_diameter = 0.0f;
-        const int m_maxHP = 0;
 
         // Move.
         glm::vec3 m_playerMoveDir{0.0f};
@@ -58,8 +63,9 @@ namespace MagneticBall3D
         // Level.
         static constexpr int m_maxLevel = 10;
         int m_currentLevel = 0;
-        int m_experienceOnCurrentLevel;
-        const std::array<const int, m_maxLevel> m_expNeedPerLevel{10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+        int m_currentLevelExp;
+        int m_currentLevelMaxExp;
+        const std::array<const int, m_maxLevel> m_expPerLevel{500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
 
     };
 }

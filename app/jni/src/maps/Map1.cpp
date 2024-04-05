@@ -9,18 +9,18 @@ namespace MagneticBall3D
     {
         // Specific for this map only.
         loadPlayerAndStaticEnv();
-        loadGarbage();
+        //loadGarbage();
         loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
         handleCamera();
 
-        m_minX = -800.0f;
-        m_maxX = 800.0f;
-        m_minZ = -800.0f;
-        m_maxZ = 800.0f;
-        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 10);
+        m_minX = -810.0f;
+        m_maxX = 810.0f;
+        m_minZ = -810.0f;
+        m_maxZ = 810.0f;
+        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 30);
         std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathWalls.fbx");
         for(const auto& wall : walls)
         {
@@ -40,7 +40,7 @@ namespace MagneticBall3D
         m_allowedPointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_allowedPointsToSpawnGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
-        m_dirToSun = glm::normalize(glm::vec3(-0.707f, 0.707f, -0.707f));
+        m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.5f, -0.8f));
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
     }
@@ -63,7 +63,7 @@ namespace MagneticBall3D
 
         m_allSceneObjects.push_back(playerBall);
         m_simpleObjForShadowMap.push_back(playerBall);
-        m_player = std::make_shared<Player>(playerBall, 4.0f, 50);
+        m_player = std::make_shared<Player>(playerBall, 4.0f, 1000);
 
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
         m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);
@@ -116,7 +116,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects1)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 5);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -139,7 +139,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects2)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 5);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -161,7 +161,7 @@ namespace MagneticBall3D
 
         for(const auto& obj : objects3)
         {
-            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 8);
+            m_allGarbageWrappers.emplace_back(obj, GarbageType::DEFAULT, 5);
             m_allGarbageWrappers.back().disableGarbage();
 
             m_allSceneObjects.push_back(obj);
@@ -174,7 +174,7 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int x = 0; x < 600; ++x)
+        for(int x = 0; x < 300; ++x)
         {
             auto unit = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
                                                         0.0f,
@@ -191,6 +191,22 @@ namespace MagneticBall3D
             m_allSceneObjects.push_back(unit);
             m_allAnimatedEnemies.push_back(unit);
             m_animatedObjForShadowMap.push_back(unit);
+
+            auto unit2 = std::make_shared<CopWithGrenadeLauncher>("models3D/enemies/CopWithGrenadeLauncher.fbx",
+                                                        0.0f,
+                                                        false,
+                                                        Beryll::CollisionFlags::STATIC,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::SceneObjectGroups::ENEMY);
+
+            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
+            unit2->getController().moveSpeed = 20.0f;
+
+            m_allSceneObjects.push_back(unit2);
+            m_allAnimatedEnemies.push_back(unit2);
+            m_animatedObjForShadowMap.push_back(unit2);
         }
     }
 }

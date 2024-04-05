@@ -25,10 +25,12 @@ namespace MagneticBall3D
         m_attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
         m_damageRadius = 0.0f;
         m_lastAttackTime = 0.0f;
-        m_timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat();
+        m_timeBetweenAttacks = 1.0f + Beryll::RandomGenerator::getFloat();
 
         m_garbageAmountToDie = 40;
-        m_reducePlayerSpeedWhenDie = 2.0f;
+        m_reducePlayerSpeedWhenDie = 6.0f;
+
+        m_experienceWhenDie = 1;
     }
 
     CopWithPistol::~CopWithPistol()

@@ -22,13 +22,15 @@ namespace MagneticBall3D
         m_attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
         m_damage = 1;
-        m_attackDistance = 35.0f;
+        m_attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
         m_damageRadius = 5.0f;
         m_lastAttackTime = 0.0f;
-        m_timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat();
+        m_timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat();
 
         m_garbageAmountToDie = 50;
-        m_reducePlayerSpeedWhenDie = 2.0f;
+        m_reducePlayerSpeedWhenDie = 9.0f;
+
+        m_experienceWhenDie = 2;
     }
 
     CopWithGrenadeLauncher::~CopWithGrenadeLauncher()

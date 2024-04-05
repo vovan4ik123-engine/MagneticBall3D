@@ -147,5 +147,8 @@ namespace MagneticBall3D
 
         m_isEnabled = false;
         isSeePlayerOrGarbage = false;
+        m_lastAttackTime = 0.0f;
+        m_prepareToFirstAttackStartTime = 0.0f;
+        m_prepareToFirstAttack = true;
     }
 }

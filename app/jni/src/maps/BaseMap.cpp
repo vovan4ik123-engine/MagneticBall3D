@@ -89,8 +89,7 @@ namespace MagneticBall3D
             }
         }
 
-        m_player->updateSpeed();
-        m_player->updateGravity();
+        m_player->update();
 
         const glm::vec3& playerOrig = m_player->getObj()->getOrigin();
         bool playerOutOfMap = false;
@@ -111,6 +110,8 @@ namespace MagneticBall3D
 
         killEnemies();
         handleCamera(); // Last call before draw.
+
+        updateGUI();
     }
 
     void BaseMap::draw()
@@ -247,6 +248,9 @@ namespace MagneticBall3D
         if(!fingerStillOnScreen && m_fingerDownID != -1)
         {
             m_fingerDownID = -1;
+
+            m_gui->progressBarHP->setProgress(m_gui->progressBarHP->getProgress() - 0.01f);
+            m_gui->progressBarXP->setProgress(m_gui->progressBarXP->getProgress() + 0.01f);
 
             if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 1.0f)
                 return;
@@ -409,7 +413,8 @@ namespace MagneticBall3D
         }
         // In second frame:
         // 1. Clear blocked positions.
-        // 2. Spawn enemies.
+        // 2. Block positions to which someone moves.
+        // 3. Spawn enemies.
         else if(m_pathFindingIteration == 1)
         {
             ++m_pathFindingIteration;
@@ -418,6 +423,15 @@ namespace MagneticBall3D
             m_pathFinder.clearBlockedPositions();
 
             // 2.
+            for(const auto& enemy : m_allAnimatedEnemies)
+            {
+                if(enemy->getIsEnabledUpdate() && enemy->indexInPathArray + 1 < enemy->pathArray.size())
+                {
+                    m_pathFinder.addBlockedPosition(enemy->pathArray[enemy->indexInPathArray + 1]);
+                }
+            }
+
+            // 3.
             int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - BaseEnemy::getActiveCount();
             int spawnedCount = 0;
             if(countToSpawn > 0)
@@ -498,9 +512,13 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledUpdate() && enemy->unitState == UnitState::CAN_ATTACK)
             {
-                glm::vec3 from = enemy->getOrigin();
-                from.y += enemy->getController().getFromOriginToTop() * 0.7f;
-                from += enemy->getFaceDirXZ() * 6.0f;
+                glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
+                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                    from.y += enemy->getController().getFromOriginToTop() * 0.7f;
+                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    from.y += 0.0f;
+                from += enemy->getFaceDirXZ() * 7.0f;
+
                 glm::vec3 target = m_player->getObj()->getOrigin();
                 target.y += 1.8f;
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from, target,
@@ -530,6 +548,7 @@ namespace MagneticBall3D
                     {
                         // Player attacked.
                         //BR_INFO("%s", "Player attacked");
+                        m_player->currentHP -= enemy->getDamage();
 
                     }
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
@@ -593,12 +612,14 @@ namespace MagneticBall3D
     void BaseMap::killEnemies()
     {
         float speedToReduce = 0.0f;
+        int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::radiusToKillEnemies)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
+                addToExp += enemy->getExperienceWhenDie();
 
                 // Spawn one garbage.
                 for(auto& wrapper : m_allGarbageWrappers)
@@ -625,6 +646,7 @@ namespace MagneticBall3D
         }
 
         m_player->reduceSpeed(speedToReduce);
+        m_player->addToExp(addToExp);
     }
 
     void BaseMap::handleCamera()
@@ -656,7 +678,7 @@ namespace MagneticBall3D
             if(angleDifference > 0.035f) // More than 2 degrees.
             {
                 const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
-                                                               angleDifference * 0.03f + 0.007f,
+                                                               angleDifference * 0.024f + 0.006f,
                                                                glm::normalize(glm::axis(rotation)));
                 m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
             }
@@ -727,5 +749,11 @@ namespace MagneticBall3D
             if(spawnedCount >= count)
                 break;
         }
+    }
+
+    void BaseMap::updateGUI()
+    {
+        m_gui->progressBarHP->setProgress(float(m_player->currentHP) / float(m_player->maxHP));
+        m_gui->progressBarXP->setProgress(float(m_player->getCurrentLevelExp()) / float(m_player->getCurrentLevelMaxExp()));
     }
 }
