@@ -43,7 +43,7 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -25.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
-    inline float playerMaxSpeedXZ = 20.0f;
+    inline float playerMaxSpeedXZ = 100.0f;
     constexpr inline float playerSpeedForMeteor = 70.0f;
     constexpr inline float playerLeftRightTurnPower = 2.0f;
 

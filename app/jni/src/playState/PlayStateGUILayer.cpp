@@ -24,10 +24,6 @@ namespace MagneticBall3D
         m_guiObjects.push_back(sliderEnemy);
         sliderEnemy->setValue(1.0f);
 
-        sliderSpeed = std::make_shared<Beryll::SliderHorizontal>("speed", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 200);
-        m_guiObjects.push_back(sliderSpeed);
-        sliderSpeed->setValue(100.0f);
-
         progressBarHP = std::make_shared<Beryll::ProgressBar>( 60, 0, 40, 3);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);

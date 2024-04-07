@@ -43,7 +43,6 @@ namespace MagneticBall3D
         }
 
         EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
-        EnumsAndVariables::playerMaxSpeedXZ = m_gui->sliderSpeed->getValue();
 
         if(m_gui->buttonA->getIsPressed())
         {

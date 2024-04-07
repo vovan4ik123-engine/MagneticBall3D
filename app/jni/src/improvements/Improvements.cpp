@@ -14,22 +14,32 @@ namespace MagneticBall3D
         {
             if(inf.type == ImprovementType::PLAYER_SIZE)
             {
-                auto b = std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/increaseSize.jpg", "", 0, 35, 30, 30);
+                auto b = std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/IncreaseSize.jpg", "",
+                                                                               m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
 
-                auto pr = std::make_shared<Beryll::ProgressBar>( 0, 65, 30, 3);
-                pr->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
-                pr->setProgressColor(0.3f, 0.0f, 0.51f, 1.0f);
-                pr->setBackgroundColor(0.6f, 0.6f, 0.6f, 1.0f);
-                pr->setProgress(0.4f);
+                auto prt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
+                                                                      m_leftDefault, m_progressTop);
+                prt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
-                ImprovementGUIBlock guiBlock(inf, b, pr);
+                ImprovementGUIBlock guiBlock(inf, b, prt);
                 m_allAvailableGUIBlocks.push_back(guiBlock);
 
                 BR_INFO("%s", "Created GUI block for PLAYER_SIZE.");
             }
             else if(inf.type == ImprovementType::PLAYER_MAX_SPEED)
             {
+                auto b = std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/MaxSpeed.jpg", "",
+                                                                     m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
 
+                auto prt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
+                                                          m_leftDefault, m_progressTop);
+                prt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
+
+                ImprovementGUIBlock guiBlock(inf, b, prt);
+                guiBlock.info.currentLevel = 3;
+                m_allAvailableGUIBlocks.push_back(guiBlock);
+
+                BR_INFO("%s", "Created GUI block for PLAYER_MAX_SPEED.");
             }
 
         }
@@ -51,7 +61,48 @@ namespace MagneticBall3D
             m_GUIBlocksOnScreen = true;
 
             // Fill m_GUIBlocksToShow.
-            m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks.back());
+            if(m_allAvailableGUIBlocks.empty())
+            {
+                // Prepare default improvement. For example restore 50% players hp.
+            }
+            else if(m_allAvailableGUIBlocks.size() == 1)
+            {
+                m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[0]);
+                m_GUIBlocksToShow.back().button->leftPos = m_leftPos1BlockButton;
+                m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos1BlockText;
+                m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
+                m_GUIBlocksToShow.back().progressText->text += "/";
+                m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+            }
+            else if(m_allAvailableGUIBlocks.size() == 2)
+            {
+                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+                {
+                    m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[i]);
+                    m_GUIBlocksToShow.back().button->leftPos = m_leftPos2BlocksButtons[i];
+                    m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos2BlocksTexts[i];
+                    m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
+                    m_GUIBlocksToShow.back().progressText->text += "/";
+                    m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+                }
+            }
+            else if(m_allAvailableGUIBlocks.size() == 3)
+            {
+                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+                {
+                    m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[i]);
+                    m_GUIBlocksToShow.back().button->leftPos = m_leftPos3BlocksButtons[i];
+                    m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos3BlocksTexts[i];
+                    m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
+                    m_GUIBlocksToShow.back().progressText->text += "/";
+                    m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+                }
+            }
+            else
+            {
+                // Select randomly 3 blocks.
+
+            }
         }
 
         if(m_GUIBlocksOnScreen)
@@ -62,7 +113,15 @@ namespace MagneticBall3D
 
                 if(block.button->getIsPressed())
                 {
-                    BR_INFO("%s", "block.button pressed");
+                    if(block.info.type == ImprovementType::PLAYER_SIZE)
+                    {
+                        BR_INFO("%s", "block PLAYER_SIZE pressed");
+                    }
+                    else if(block.info.type == ImprovementType::PLAYER_MAX_SPEED)
+                    {
+                        BR_INFO("%s", "block PLAYER_MAX_SPEED pressed");
+                    }
+
                     m_GUIBlocksOnScreen = false;
                     break;
                 }
