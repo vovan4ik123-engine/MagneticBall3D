@@ -25,11 +25,10 @@ add_library(main SHARED main.cpp
                         playState/PlayStateGUILayer.cpp
                         playState/PlayStateSceneLayer.cpp
 
-                        # Pathfinding
-                        pathfinding/AStar.cpp
-
                         player/Player.cpp
                         garbage/Garbage.cpp
+                        pathfinding/AStar.cpp
+                        improvements/Improvements.cpp
 
                         # Enemies.
                         enemies/BaseEnemy.cpp

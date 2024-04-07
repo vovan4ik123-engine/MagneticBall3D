@@ -3,9 +3,11 @@
 #include "EngineHeaders.h"
 #include "playState/PlayStateGUILayer.h"
 #include "pathfinding/AStar.h"
+#include "improvements/Improvements.h"
 #include "player/Player.h"
 #include "garbage/Garbage.h"
 #include "enemies/BaseEnemy.h"
+
 
 namespace MagneticBall3D
 {
@@ -90,11 +92,14 @@ namespace MagneticBall3D
         glm::vec3 m_screenSwipe3D{0.0f};
 
         // Pathfinding.
-        AStar m_pathFinder{0, 0, 0, 0, 0}; // Assign new object in constructor.
+        AStar m_pathFinder; // Assign new object with map size in constructor of specific map.
         std::vector<glm::ivec2> m_pathAllowedPositionsXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_allowedPointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_allowedPointsToSpawnGarbage; // From m_allowedPointsToMoveXZ.
         int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.
+
+        // Improvements
+        Improvements m_improvements; // Assign new object with improvements in constructor of specific map.
     };
 }

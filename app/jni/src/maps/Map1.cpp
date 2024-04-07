@@ -43,6 +43,8 @@ namespace MagneticBall3D
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.5f, -0.8f));
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
+
+        m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5}});
     }
 
     Map1::~Map1()
@@ -63,7 +65,7 @@ namespace MagneticBall3D
 
         m_allSceneObjects.push_back(playerBall);
         m_simpleObjForShadowMap.push_back(playerBall);
-        m_player = std::make_shared<Player>(playerBall, 4.0f, 1000);
+        m_player = std::make_shared<Player>(playerBall, 1000);
 
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
         m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);

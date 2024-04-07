@@ -105,7 +105,7 @@ namespace MagneticBall3D
 
                 currentPointToMove2DIntegers = pathArray[indexInPathArray];
                 currentPointToMove3DFloats = glm::vec3(currentPointToMove2DIntegers.x,
-                                                       getController().getFromOriginToBottom(),
+                                                       getFromOriginToBottom(),
                                                        currentPointToMove2DIntegers.y);
             }
 //            else

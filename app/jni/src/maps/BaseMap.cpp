@@ -112,10 +112,13 @@ namespace MagneticBall3D
         handleCamera(); // Last call before draw.
 
         updateGUI();
+        m_improvements.update();
     }
 
     void BaseMap::draw()
     {
+        m_improvements.draw();
+
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 230.0f) + (m_dirToSun * m_sunDistance);
@@ -130,7 +133,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_simpleObjSunLightShadows->set1Float("ambientLight", 0.5f);
+        m_simpleObjSunLightShadows->set1Float("ambientLight", 0.65f);
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", 3.0f);
 
 
@@ -154,7 +157,7 @@ namespace MagneticBall3D
             }
         }
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 2.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
         for(const auto& staticObj : m_allStaticEnv)
         {
             if(staticObj->getIsEnabledDraw())
@@ -170,7 +173,7 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->bind();
         m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_animatedObjSunLightShadows->set1Float("ambientLight", 0.5f);
+        m_animatedObjSunLightShadows->set1Float("ambientLight", 0.65f);
         m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
@@ -413,8 +416,7 @@ namespace MagneticBall3D
         }
         // In second frame:
         // 1. Clear blocked positions.
-        // 2. Block positions to which someone moves.
-        // 3. Spawn enemies.
+        // 2. Spawn enemies.
         else if(m_pathFindingIteration == 1)
         {
             ++m_pathFindingIteration;
@@ -423,15 +425,6 @@ namespace MagneticBall3D
             m_pathFinder.clearBlockedPositions();
 
             // 2.
-            for(const auto& enemy : m_allAnimatedEnemies)
-            {
-                if(enemy->getIsEnabledUpdate() && enemy->indexInPathArray + 1 < enemy->pathArray.size())
-                {
-                    m_pathFinder.addBlockedPosition(enemy->pathArray[enemy->indexInPathArray + 1]);
-                }
-            }
-
-            // 3.
             int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - BaseEnemy::getActiveCount();
             int spawnedCount = 0;
             if(countToSpawn > 0)
@@ -445,7 +438,7 @@ namespace MagneticBall3D
 
                         const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnEnemies.size() - 1)];
                         glm::vec3 spawnPoint3D{spawnPoint2D.x,
-                                               enemy->getController().getFromOriginToBottom(),
+                                               enemy->getFromOriginToBottom(),
                                                spawnPoint2D.y};
                         enemy->setOrigin(spawnPoint3D);
 
@@ -457,7 +450,7 @@ namespace MagneticBall3D
 
                         enemy->currentPointToMove2DIntegers = enemy->pathArray[enemy->indexInPathArray];
                         enemy->currentPointToMove3DFloats = glm::vec3(enemy->currentPointToMove2DIntegers.x,
-                                                                      enemy->getController().getFromOriginToBottom(),
+                                                                      enemy->getFromOriginToBottom(),
                                                                       enemy->currentPointToMove2DIntegers.y);
 
                         ++spawnedCount;
@@ -487,7 +480,7 @@ namespace MagneticBall3D
                     m_allAnimatedEnemies[i]->indexInPathArray = 0;
                     m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
                     m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,
-                                                                                    m_allAnimatedEnemies[i]->getController().getFromOriginToBottom(),
+                                                                                    m_allAnimatedEnemies[i]->getFromOriginToBottom(),
                                                                                     m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.y);
 
                     m_pathFinder.addBlockedPosition(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers);
@@ -514,7 +507,7 @@ namespace MagneticBall3D
             {
                 glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
-                    from.y += enemy->getController().getFromOriginToTop() * 0.7f;
+                    from.y += enemy->getFromOriginToTop() * 0.7f;
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     from.y += 0.0f;
                 from += enemy->getFaceDirXZ() * 7.0f;

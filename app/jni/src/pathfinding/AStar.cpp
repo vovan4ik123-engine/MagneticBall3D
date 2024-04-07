@@ -2,6 +2,11 @@
 
 namespace MagneticBall3D
 {
+    AStar::AStar()
+    {
+
+    }
+
     AStar::AStar(int mapLeftX, int mapRightX, int mapBottomY, int mapUpperY, int nodeDistance)
     {
         m_mapLeftX = mapLeftX;
@@ -10,7 +15,7 @@ namespace MagneticBall3D
         m_mapUpperY = mapUpperY;
 
         m_walls.reserve(1000);
-        m_blockedPositions.reserve(700);
+        m_blockedPositions.reserve(1000);
         m_allNodesCreated.reserve(400);
 
         m_nDist = nodeDistance;

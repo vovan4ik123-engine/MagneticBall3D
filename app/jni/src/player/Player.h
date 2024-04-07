@@ -8,7 +8,7 @@ namespace MagneticBall3D
     {
     public:
         Player() = delete;
-        Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam, int health);
+        Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, int health);
         ~Player();
 
         void update();
@@ -27,7 +27,7 @@ namespace MagneticBall3D
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
-        void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam) { m_obj = std::move(so); m_diameter = diam; }
+        void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
 
         int currentHP = 0;
         const int maxHP = 0;
@@ -36,12 +36,13 @@ namespace MagneticBall3D
 
         int getCurrentLevelExp() { return m_currentLevelExp; }
         int getCurrentLevelMaxExp() { return m_currentLevelMaxExp; }
+        bool getIsNextLevelAchieved() { return m_nextLevelAchieved; }
+        void handleLevelAchievement() { m_nextLevelAchieved = false; }
 
     private:
         void updateSpeed();
 
         std::shared_ptr<Beryll::SimpleCollidingObject> m_obj;
-        float m_diameter = 0.0f;
 
         // Move.
         glm::vec3 m_playerMoveDir{0.0f};
@@ -61,11 +62,11 @@ namespace MagneticBall3D
         uint64_t m_spamMeteorParticlesDelay = 40; // Millisec.
 
         // Level.
-        static constexpr int m_maxLevel = 10;
+        static constexpr int m_maxLevel = 4;
+        const std::array<const int, m_maxLevel> m_expPerLevel{5, 5, 5, 5};
         int m_currentLevel = 0;
-        int m_currentLevelExp;
-        int m_currentLevelMaxExp;
-        const std::array<const int, m_maxLevel> m_expPerLevel{500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
-
+        int m_currentLevelExp = 0;
+        int m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
+        bool m_nextLevelAchieved = false;
     };
 }

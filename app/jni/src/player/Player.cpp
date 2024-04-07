@@ -3,13 +3,10 @@
 
 namespace MagneticBall3D
 {
-    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float diam, int health)
-    : m_obj(std::move(so)), m_diameter(diam), maxHP(health), currentHP(health)
+    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, int health)
+    : m_obj(std::move(so)), maxHP(health), currentHP(health)
     {
         BR_ASSERT((m_maxLevel == m_expPerLevel.size()), "%s", "m_maxLevel != m_expNeedPerLevel.size()");
-
-        m_currentLevelExp = 0;
-        m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
     }
 
     Player::~Player()
@@ -58,10 +55,20 @@ namespace MagneticBall3D
         }
 
         // Update XP.
-        if(m_currentLevelExp >= m_currentLevelMaxExp)
+        if(m_currentLevel < m_maxLevel && m_currentLevelExp >= m_currentLevelMaxExp)
         {
-            BR_INFO("%s", "Reset XP");
-            m_currentLevelExp = 0;
+            ++m_currentLevel;
+            BR_INFO("Got exp limit. Handle level: %d", m_currentLevel);
+            m_nextLevelAchieved = true; // Achievement should be handled by Improvements class.
+
+            if(m_currentLevel < m_maxLevel)
+            {
+                int levelExpOverflow = m_currentLevelExp - m_currentLevelMaxExp;
+                m_currentLevelExp = std::max(0, levelExpOverflow);
+                BR_INFO("Reset level exp to: %d", m_currentLevelExp);
+
+                m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
+            }
         }
     }
 
@@ -104,7 +111,7 @@ namespace MagneticBall3D
         {
             float angleMoveToImpulse = BeryllUtils::Common::getAngleInRadians(m_playerMoveDir, glm::normalize(swipeForImpulse));
             //BR_INFO("angleMoveToImpulse %f", angleMoveToImpulse);
-            swipeForImpulse += swipeForImpulse * (angleMoveToImpulse * 2.0f);
+            swipeForImpulse += swipeForImpulse * (angleMoveToImpulse * EnumsAndVariables::playerLeftRightTurnPower);
         }
 
         //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
@@ -176,8 +183,9 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * m_diameter)};
-        float sizeBegin = m_diameter + EnumsAndVariables::garbageCountMagnetized * 0.014f;
+        float diameter = m_obj->getXZRadius() * 2.0f;
+        glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * diameter)};
+        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.014f;
 
         Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.5f,
                                                     {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
