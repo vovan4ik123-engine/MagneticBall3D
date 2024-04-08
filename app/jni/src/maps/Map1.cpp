@@ -44,9 +44,9 @@ namespace MagneticBall3D
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
 
-        m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5},
-                                                 {ImprovementType::PLAYER_MAX_SPEED, 7},
-                                                 {ImprovementType::PLAYER_MAX_SPEED, 8}});
+        m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 2},
+                                                 {ImprovementType::PLAYER_MAX_SPEED, 3},
+                                                 {ImprovementType::PLAYER_MAX_SPEED, 4}});
     }
 
     Map1::~Map1()

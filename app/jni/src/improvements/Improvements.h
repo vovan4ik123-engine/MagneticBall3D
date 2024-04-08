@@ -33,6 +33,8 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::ButtonWithTexture> button;
         std::shared_ptr<Beryll::Text> progressText;
 
+        bool onScreen = false;
+
         void update() const
         {
             button->updateBeforePhysics();
@@ -44,6 +46,11 @@ namespace MagneticBall3D
             button->draw();
             progressText->draw();
         }
+
+        int getID() const { return m_id; }
+
+    private:
+        int m_id = BeryllUtils::Common::generateID();
     };
 
     class Improvements final
@@ -60,7 +67,6 @@ namespace MagneticBall3D
 
     private:
         std::vector<ImprovementGUIBlock> m_allAvailableGUIBlocks;
-        std::vector<ImprovementGUIBlock> m_GUIBlocksToShow;
         std::shared_ptr<Player> m_player;
         bool m_GUIBlocksOnScreen = false;
 

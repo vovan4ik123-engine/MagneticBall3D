@@ -16,7 +16,7 @@ namespace MagneticBall3D
         // Return factor after impulse apply in range 0...1.
         // 1 if full impulse was applied.
         // 0 if nothing was applied.
-        float handleScreenSwipe(glm::vec3 swipeForImpulse, const glm::vec3& swipeForTorque);
+        float handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque);
         void reduceSpeed(float speedToReduce);
         float getMoveSpeed() { return m_playerMoveSpeed; }
         const glm::vec3& getMoveDir() { return m_playerMoveDir; }
@@ -62,11 +62,11 @@ namespace MagneticBall3D
         uint64_t m_spamMeteorParticlesDelay = 40; // Millisec.
 
         // Level.
-        static constexpr int m_maxLevel = 4;
-        const std::array<const int, m_maxLevel> m_expPerLevel{5, 5, 5, 5};
+        static constexpr int m_maxLevel = 43;
+        //const std::array<const int, m_maxLevel> m_expPerLevel{5, 5, 5, 5};
         int m_currentLevel = 0;
         int m_currentLevelExp = 0;
-        int m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
+        int m_currentLevelMaxExp = 5;
         bool m_nextLevelAchieved = false;
     };
 }

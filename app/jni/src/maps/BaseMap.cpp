@@ -251,36 +251,36 @@ namespace MagneticBall3D
         {
             m_fingerDownID = -1;
 
-            m_gui->progressBarHP->setProgress(m_gui->progressBarHP->getProgress() - 0.01f);
-            m_gui->progressBarXP->setProgress(m_gui->progressBarXP->getProgress() + 0.01f);
-
             if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 1.0f)
                 return;
 
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
             float screenSwipeLength = glm::length(m_screenSwipe3D);
-            if(screenSwipeLength > 1000.0f)
+            if(screenSwipeLength > 400.0f)
             {
-                screenSwipeLength = 1000.0f;
+                screenSwipeLength = 400.0f;
                 m_screenSwipe3D = glm::normalize(m_screenSwipe3D) * screenSwipeLength;
             }
 
             glm::qua cameraRotFromStartDir = glm::normalize(glm::rotation(m_startDir, Beryll::Camera::getCameraFrontDirectionXZ()));
             m_screenSwipe3D = glm::normalize(cameraRotFromStartDir * glm::normalize(m_screenSwipe3D));
-            m_screenSwipe3D *= screenSwipeLength;
+            m_screenSwipe3D *= (screenSwipeLength * EnumsAndVariables::swipePowerMultiplier);
 
             glm::vec3 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
             glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
+            float garbageImpulseMultiplier = 1.3f;
             if(m_player->getIsOnBuilding())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding;
+                garbageImpulseMultiplier = 0.6f;
             }
             else if(m_player->getIsOnAir())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnAir;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnAir;
+                garbageImpulseMultiplier = 0.5f;
             }
 
             float factorImpulseApplied = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
@@ -289,7 +289,7 @@ namespace MagneticBall3D
             glm::vec3 impulseForGarbage = powerForImpulse * factorImpulseApplied * EnumsAndVariables::playerMassToGarbageMassRatio;
             // We apply only impulse for garbage. But for player were applied impulse + torque.
             // This compensate player speed increased by torque.
-            impulseForGarbage *= 1.2f;
+            impulseForGarbage *= garbageImpulseMultiplier;
             for(const auto& wrapper : m_allGarbageWrappers)
             {
                 if(wrapper.isMagnetized)
@@ -646,7 +646,7 @@ namespace MagneticBall3D
         const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
 
-        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getObj()->getID(), Beryll::CollisionGroups::GROUND))
+        if(m_player->getIsOnGround())
         {
             if(m_player->getMoveSpeed() > EnumsAndVariables::minPlayerSpeedToCameraFollow)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_player->getMoveDir().x, 0.0f, m_player->getMoveDir().z));
@@ -655,7 +655,7 @@ namespace MagneticBall3D
         }
         else
         {
-            if(glm::length(m_screenSwipe3D) > 200.0f)
+            if(glm::length(m_screenSwipe3D) > 180.0f * EnumsAndVariables::swipePowerMultiplier)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
         }
 

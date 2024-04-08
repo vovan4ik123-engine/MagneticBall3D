@@ -36,7 +36,6 @@ namespace MagneticBall3D
                 prt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
                 ImprovementGUIBlock guiBlock(inf, b, prt);
-                guiBlock.info.currentLevel = 3;
                 m_allAvailableGUIBlocks.push_back(guiBlock);
 
                 BR_INFO("%s", "Created GUI block for PLAYER_MAX_SPEED.");
@@ -60,42 +59,47 @@ namespace MagneticBall3D
 
             m_GUIBlocksOnScreen = true;
 
-            // Fill m_GUIBlocksToShow.
+            // Disable all.
+            for(auto& blockDisable : m_allAvailableGUIBlocks)
+                blockDisable.onScreen = false;
+
+            // Enable some blocks.
             if(m_allAvailableGUIBlocks.empty())
             {
+                BR_INFO("%s", "m_allAvailableGUIBlocks.empty()");
                 // Prepare default improvement. For example restore 50% players hp.
             }
             else if(m_allAvailableGUIBlocks.size() == 1)
             {
-                m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[0]);
-                m_GUIBlocksToShow.back().button->leftPos = m_leftPos1BlockButton;
-                m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos1BlockText;
-                m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
-                m_GUIBlocksToShow.back().progressText->text += "/";
-                m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+                m_allAvailableGUIBlocks[0].button->leftPos = m_leftPos1BlockButton;
+                m_allAvailableGUIBlocks[0].progressText->leftPos = m_leftPos1BlockText;
+                m_allAvailableGUIBlocks[0].progressText->text = std::to_string(m_allAvailableGUIBlocks[0].info.currentLevel);
+                m_allAvailableGUIBlocks[0].progressText->text += "/";
+                m_allAvailableGUIBlocks[0].progressText->text += std::to_string(m_allAvailableGUIBlocks[0].info.maxLevel);
+                m_allAvailableGUIBlocks[0].onScreen = true;
             }
             else if(m_allAvailableGUIBlocks.size() == 2)
             {
                 for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
                 {
-                    m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[i]);
-                    m_GUIBlocksToShow.back().button->leftPos = m_leftPos2BlocksButtons[i];
-                    m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos2BlocksTexts[i];
-                    m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
-                    m_GUIBlocksToShow.back().progressText->text += "/";
-                    m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos2BlocksButtons[i];
+                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos2BlocksTexts[i];
+                    m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                    m_allAvailableGUIBlocks[i].progressText->text += "/";
+                    m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                    m_allAvailableGUIBlocks[i].onScreen = true;
                 }
             }
             else if(m_allAvailableGUIBlocks.size() == 3)
             {
                 for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
                 {
-                    m_GUIBlocksToShow.push_back(m_allAvailableGUIBlocks[i]);
-                    m_GUIBlocksToShow.back().button->leftPos = m_leftPos3BlocksButtons[i];
-                    m_GUIBlocksToShow.back().progressText->leftPos = m_leftPos3BlocksTexts[i];
-                    m_GUIBlocksToShow.back().progressText->text = std::to_string(m_GUIBlocksToShow.back().info.currentLevel);
-                    m_GUIBlocksToShow.back().progressText->text += "/";
-                    m_GUIBlocksToShow.back().progressText->text += std::to_string(m_GUIBlocksToShow.back().info.maxLevel);
+                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[i];
+                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[i];
+                    m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                    m_allAvailableGUIBlocks[i].progressText->text += "/";
+                    m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                    m_allAvailableGUIBlocks[i].onScreen = true;
                 }
             }
             else
@@ -107,12 +111,28 @@ namespace MagneticBall3D
 
         if(m_GUIBlocksOnScreen)
         {
-            for(const auto& block : m_GUIBlocksToShow)
+            int idToRemove = -1;
+
+            for(auto& block : m_allAvailableGUIBlocks)
             {
+                if(!block.onScreen)
+                    continue;
+
                 block.update();
 
                 if(block.button->getIsPressed())
                 {
+                    ++block.info.currentLevel;
+
+                    if(block.info.currentLevel >= block.info.maxLevel)
+                        idToRemove = block.getID();
+
+                    m_GUIBlocksOnScreen = false;
+                    // Disable all.
+                    for(auto& blockDisable : m_allAvailableGUIBlocks)
+                        blockDisable.onScreen = false;
+
+                    // Handle click.
                     if(block.info.type == ImprovementType::PLAYER_SIZE)
                     {
                         BR_INFO("%s", "block PLAYER_SIZE pressed");
@@ -122,15 +142,21 @@ namespace MagneticBall3D
                         BR_INFO("%s", "block PLAYER_MAX_SPEED pressed");
                     }
 
-                    m_GUIBlocksOnScreen = false;
                     break;
                 }
             }
-        }
-        else if(!m_GUIBlocksToShow.empty())
-        {
-            BR_INFO("%s", "m_GUIBlocksToShow.clear()");
-            m_GUIBlocksToShow.clear();
+
+            if(idToRemove != -1)
+            {
+                auto iter = std::find_if(m_allAvailableGUIBlocks.begin(), m_allAvailableGUIBlocks.end(),
+                                              [idToRemove](const ImprovementGUIBlock& b) { return b.getID() == idToRemove; });
+
+                if(iter != m_allAvailableGUIBlocks.end())
+                {
+                    BR_INFO("%s", "Remove from m_allAvailableGUIBlocks");
+                    m_allAvailableGUIBlocks.erase(iter);
+                }
+            }
         }
     }
 
@@ -138,9 +164,10 @@ namespace MagneticBall3D
     {
         if(m_GUIBlocksOnScreen)
         {
-            for(const auto& block : m_GUIBlocksToShow)
+            for(const auto& block : m_allAvailableGUIBlocks)
             {
-                block.draw();
+                if(block.onScreen)
+                    block.draw();
             }
         }
     }
