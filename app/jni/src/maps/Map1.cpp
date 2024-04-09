@@ -44,9 +44,7 @@ namespace MagneticBall3D
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
 
-        m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 2},
-                                                 {ImprovementType::PLAYER_MAX_SPEED, 3},
-                                                 {ImprovementType::PLAYER_MAX_SPEED, 4}});
+        m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5}});
     }
 
     Map1::~Map1()
@@ -56,7 +54,7 @@ namespace MagneticBall3D
 
     void Map1::loadPlayerAndStaticEnv()
     {
-        const auto playerBall = std::make_shared<Beryll::SimpleCollidingObject>("models3D/player/Player.fbx",
+        auto playerAllBalls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/player/Player6Models.fbx",
                                                                                 EnumsAndVariables::playerMass,
                                                                                 true,
                                                                                 Beryll::CollisionFlags::DYNAMIC,
@@ -65,9 +63,23 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                 Beryll::SceneObjectGroups::PLAYER);
 
-        m_allSceneObjects.push_back(playerBall);
-        m_simpleObjForShadowMap.push_back(playerBall);
-        m_player = std::make_shared<Player>(playerBall, 1000);
+        // Sort by radius.
+        std::sort(playerAllBalls.begin(), playerAllBalls.end(),
+                  [](const std::shared_ptr<Beryll::SimpleCollidingObject>& o1, const std::shared_ptr<Beryll::SimpleCollidingObject>& o2) { return o1->getXZRadius() < o2->getXZRadius(); });
+        // Disable all.
+        for(const auto& item : playerAllBalls)
+        {
+            BR_INFO("radius %f", item->getXZRadius());
+            item->disableCollisionMesh();
+            item->disableUpdate();
+            item->disableDraw();
+
+            m_allSceneObjects.push_back(item);
+            m_simpleObjForShadowMap.push_back(item);
+        }
+
+        m_player = std::make_shared<Player>(playerAllBalls[0], 1000);
+        m_player->setAllModels(playerAllBalls);
 
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
         m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);

@@ -16,12 +16,13 @@ uniform vec3 sunLightDir;
 uniform vec3 cameraPos;
 
 uniform float ambientLight;
+uniform float sunLightStrength;
 uniform float specularLightStrength;
 
 void main()
 {
     // diffuse
-    float diffuse = max(dot(normal, -sunLightDir), 0.0f);
+    float diffuse = max(dot(normal, -sunLightDir), 0.0f) * sunLightStrength;
 
     // specular
     vec3 fragToCameraDir = normalize(cameraPos - fragPos);
@@ -36,7 +37,7 @@ void main()
     float shadowMultiplier = 1.0f; // 1 means no shadow
     if(fragPosLightPerspective.z <= 1.0f)
     {
-        shadowMultiplier = closestDepth < currentDepth - 0.0001f ? 0.0f : 1.0f; // currentDepth - 0.0... is bias offset
+        shadowMultiplier = closestDepth < currentDepth - 0.00015f ? 0.0f : 1.0f; // currentDepth - 0.0... is bias offset
     }
 
     vec3 textureCollor = texture(diffuseTexture, textureCoords).rgb;

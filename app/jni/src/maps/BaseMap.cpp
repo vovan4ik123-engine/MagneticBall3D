@@ -132,9 +132,10 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_simpleObjSunLightShadows->set1Float("ambientLight", 0.65f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 3.0f);
 
+        m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
+        m_simpleObjSunLightShadows->set1Float("sunLightStrength", m_gui->sliderSunPower->getValue());
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", m_gui->sliderSpecularPower->getValue());
 
         modelMatrix = m_player->getObj()->getModelMatrix();
         m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
@@ -156,7 +157,6 @@ namespace MagneticBall3D
             }
         }
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
         for(const auto& staticObj : m_allStaticEnv)
         {
             if(staticObj->getIsEnabledDraw())
@@ -254,6 +254,8 @@ namespace MagneticBall3D
             if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 1.0f)
                 return;
 
+            m_gui->swipeCount->text = std::to_string(++m_gui->swipeCounter);
+
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
             float screenSwipeLength = glm::length(m_screenSwipe3D);
@@ -267,16 +269,26 @@ namespace MagneticBall3D
             m_screenSwipe3D = glm::normalize(cameraRotFromStartDir * glm::normalize(m_screenSwipe3D));
             m_screenSwipe3D *= (screenSwipeLength * EnumsAndVariables::swipePowerMultiplier);
 
-            glm::vec3 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
-            glm::vec3 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
-            float garbageImpulseMultiplier = 1.3f;
-            if(m_player->getIsOnBuilding())
+            glm::vec3 powerForImpulse{0.0f};
+            glm::vec3 powerForTorque{0.0f};
+            float garbageImpulseMultiplier = 0.0f;
+            if(m_player->getIsOnGround())
+            {
+                powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
+
+                float swipeFactorBasedOnAngleAndSpeed = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(powerForImpulse)) *
+                                                        (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
+                powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
+                garbageImpulseMultiplier = 1.2f;
+            }
+            else if(m_player->getIsOnBuilding())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding * m_player->getObj()->getXZRadius();
                 garbageImpulseMultiplier = 0.6f;
             }
-            else if(m_player->getIsOnAir())
+            else // if(m_player->getIsOnAir())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnAir;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnAir;

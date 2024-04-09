@@ -9,7 +9,7 @@ namespace MagneticBall3D
 
         m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 0);
         m_guiObjects.push_back(m_statistics1);
-        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 3);
+        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 2.5f);
         m_guiObjects.push_back(m_statistics2);
 
 //        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
@@ -20,9 +20,24 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
 
-        sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 600);
+        swipeCount = std::make_shared<Beryll::Text>("0000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 4.75f);
+        m_guiObjects.push_back(swipeCount);
+
+        sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 600);
         m_guiObjects.push_back(sliderEnemy);
-        sliderEnemy->setValue(1.0f);
+        sliderEnemy->setValue(5.0f);
+
+        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+        m_guiObjects.push_back(sliderAmbient);
+        sliderAmbient->setValue(0.7f);
+
+        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 3);
+        m_guiObjects.push_back(sliderSunPower);
+        sliderSunPower->setValue(0.8f);
+
+        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 16, 40, 2, 0, 3);
+        m_guiObjects.push_back(sliderSpecularPower);
+        sliderSpecularPower->setValue(1.0f);
 
         progressBarHP = std::make_shared<Beryll::ProgressBar>( 60, 0, 40, 3);
         m_guiObjects.push_back(progressBarHP);

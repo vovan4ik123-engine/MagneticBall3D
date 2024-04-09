@@ -39,10 +39,14 @@ namespace MagneticBall3D
         bool getIsNextLevelAchieved() { return m_nextLevelAchieved; }
         void handleLevelAchievement() { m_nextLevelAchieved = false; }
 
+        void setAllModels(std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> models) { m_allModels = std::move(models); }
+        void selectNextModel();
+
     private:
         void updateSpeed();
 
         std::shared_ptr<Beryll::SimpleCollidingObject> m_obj;
+        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allModels;
 
         // Move.
         glm::vec3 m_playerMoveDir{0.0f};

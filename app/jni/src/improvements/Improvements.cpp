@@ -136,6 +136,7 @@ namespace MagneticBall3D
                     if(block.info.type == ImprovementType::PLAYER_SIZE)
                     {
                         BR_INFO("%s", "block PLAYER_SIZE pressed");
+                        m_player->selectNextModel();
                     }
                     else if(block.info.type == ImprovementType::PLAYER_MAX_SPEED)
                     {

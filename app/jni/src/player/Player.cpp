@@ -6,6 +6,10 @@ namespace MagneticBall3D
     Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, int health)
     : m_obj(std::move(so)), maxHP(health), currentHP(health)
     {
+        m_obj->enableCollisionMesh();
+        m_obj->enableUpdate();
+        m_obj->enableDraw();
+
         //BR_ASSERT((m_maxLevel == m_expPerLevel.size()), "%s", "m_maxLevel != m_expNeedPerLevel.size()");
     }
 
@@ -94,55 +98,43 @@ namespace MagneticBall3D
 
     float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque)
     {
-        //BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
-
-        glm::vec3 playerVelocityXZ = m_playerLinearVelocity;
-        playerVelocityXZ.y = 0.0f;
+        BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
         // Swipe should control only XZ speed.
-        float currentPlayerSpeedXZ = glm::length(playerVelocityXZ);
-
-        float impulseFirstLength = glm::length(swipeForImpulse);
-
-        if(m_isOnGround)
-        {
-            float swipeFactorBasedOnAngleAndSpeed = BeryllUtils::Common::getAngleInRadians(m_playerMoveDir, glm::normalize(swipeForImpulse)) *
-                                                    (m_playerMoveSpeed * EnumsAndVariables::playerLeftRightTurnPower);
-            //BR_INFO("swipeFactorBasedOnAngleAndSpeed %f", swipeFactorBasedOnAngleAndSpeed);
-            swipeForImpulse += swipeForImpulse * swipeFactorBasedOnAngleAndSpeed;
-            swipeForTorque += (swipeForTorque * swipeFactorBasedOnAngleAndSpeed) * 0.31f;
-        }
+        // Y speed controlled by gravity.
+        glm::vec3 currentVelocityXZ = m_playerLinearVelocity;
+        currentVelocityXZ.y = 0.0f;
+        float currentPlayerSpeedXZ = glm::length(currentVelocityXZ);
 
         //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
-        glm::vec3 newLinearVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
-        newLinearVelocityXZ.y = 0.0f;
-        float newPlayerSpeedXZ = glm::length(newLinearVelocityXZ);
+        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
+        newVelocityXZ.y = 0.0f;
+        float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
         float impulseReduceFactor = 1.0f;
         if(newPlayerSpeedXZ > EnumsAndVariables::playerMaxSpeedXZ)
         {
             // Apply less impulse because speed limit was exceeded.
-            float newSpeedLimit = EnumsAndVariables::playerMaxSpeedXZ - currentPlayerSpeedXZ;
+            newVelocityXZ = glm::normalize(newVelocityXZ) * EnumsAndVariables::playerMaxSpeedXZ;
+
+            float newSpeedLimit = std::max(EnumsAndVariables::playerMaxSpeedXZ - currentPlayerSpeedXZ, 0.0f);
             float newSpeedAdded = newPlayerSpeedXZ - currentPlayerSpeedXZ;
             impulseReduceFactor = newSpeedLimit / newSpeedAdded;
-            swipeForImpulse *= impulseReduceFactor;
         }
 
-        float impulseLastLength = glm::length(swipeForImpulse);
-        m_obj->applyCentralImpulse(swipeForImpulse);
+        newVelocityXZ.y = m_playerLinearVelocity.y;
+        m_obj->setLinearVelocity(newVelocityXZ);
         updateSpeed();
 
-        // impulseReduceFactor < 1 mean: we applied less than initial impulse and already reach max speed. Dont need apply torque.
-        if(impulseReduceFactor >= 1.0f)
+        if(impulseReduceFactor == 1.0f)
         {
-            //BR_INFO("%s", "apply torque");
-            // Also apply torque on screen swipe.
+            // Impulse was not enough to reach max speed. We have limit to apply torque.
             // Torque applied along right/left vector from impulse.
-            glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForTorque));
+            glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForImpulse));
             impulseLeft = glm::normalize(impulseLeft) * glm::length(swipeForTorque);
             m_obj->applyTorqueImpulse(impulseLeft);
         }
 
-        return impulseLastLength / impulseFirstLength;
+        return impulseReduceFactor;
     }
 
     void Player::reduceSpeed(float speedToReduce)
@@ -188,5 +180,27 @@ namespace MagneticBall3D
         Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.5f,
                                                     {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
                                                     orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
+    }
+
+    void Player::selectNextModel()
+    {
+        for(const auto& item : m_allModels)
+        {
+            if(item->getXZRadius() > m_obj->getXZRadius())
+            {
+                BR_INFO("Set radius %f", item->getXZRadius());
+                item->enableCollisionMesh();
+                item->enableUpdate();
+                item->enableDraw();
+                item->setOrigin(m_obj->getOrigin());
+                item->setLinearVelocity(m_obj->getLinearVelocity());
+                item->setAngularVelocity(m_obj->getAngularVelocity());
+
+                m_obj->disableForEver();
+                m_obj = item;
+
+                break;
+            }
+        }
     }
 }
