@@ -38,7 +38,7 @@ namespace MagneticBall3D
 
         if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
         {
-            spawnGarbage(3, GarbageType::DEFAULT);
+            spawnGarbage(23, GarbageType::DEFAULT);
             EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
         }
 
@@ -280,19 +280,19 @@ namespace MagneticBall3D
                 float swipeFactorBasedOnAngleAndSpeed = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(powerForImpulse)) *
                                                         (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                garbageImpulseMultiplier = 1.2f;
+                garbageImpulseMultiplier = 0.75f;
             }
             else if(m_player->getIsOnBuilding())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding * m_player->getObj()->getXZRadius();
-                garbageImpulseMultiplier = 0.6f;
+                garbageImpulseMultiplier = 0.4f;
             }
             else // if(m_player->getIsOnAir())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnAir;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnAir;
-                garbageImpulseMultiplier = 0.5f;
+                garbageImpulseMultiplier = 0.2f;
             }
 
             float factorImpulseApplied = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
@@ -349,6 +349,7 @@ namespace MagneticBall3D
         if(gravPower > EnumsAndVariables::garbageMaxGravityPower)
             gravPower = EnumsAndVariables::garbageMaxGravityPower;
 
+        //int resetCount = 0;
         for(auto& wrapper : m_allGarbageWrappers)
         {
             if(wrapper.isMagnetized)
@@ -368,9 +369,13 @@ namespace MagneticBall3D
                 const glm::vec3 objMoveDir = glm::normalize(linVelocity);
                 const float objSpeed = glm::length(linVelocity);
                 const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+                float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
+                if(m_player->getIsOnAir())
+                    speedToResetVelocity = m_player->getMoveSpeed() * 1.45f;
 
-                if(objSpeed > m_player->getMoveSpeed() * 2.0f && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
+                if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                 {
+                    //++resetCount;
                     wrapper.obj->setLinearVelocity(objToPlayerDir * 5.0f);
                 }
             }
@@ -379,6 +384,8 @@ namespace MagneticBall3D
                 wrapper.obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
             }
         }
+
+        //BR_INFO("magnetized %d resetCount %d", EnumsAndVariables::garbageCountMagnetized, resetCount);
     }
 
     void BaseMap::updatePathfindingAndSpawnEnemies()
@@ -517,10 +524,11 @@ namespace MagneticBall3D
             if(enemy->getIsEnabledUpdate() && enemy->unitState == UnitState::CAN_ATTACK)
             {
                 glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
-                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL || enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                     from.y += enemy->getFromOriginToTop() * 0.7f;
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     from.y += 0.0f;
+
                 from += enemy->getFaceDirXZ() * 7.0f;
 
                 glm::vec3 target = m_player->getObj()->getOrigin();

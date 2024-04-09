@@ -28,7 +28,7 @@ namespace MagneticBall3D
         m_timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat();
 
         m_garbageAmountToDie = 50;
-        m_reducePlayerSpeedWhenDie = 9.0f;
+        m_reducePlayerSpeedWhenDie = 7.0f;
 
         m_experienceWhenDie = 2;
     }

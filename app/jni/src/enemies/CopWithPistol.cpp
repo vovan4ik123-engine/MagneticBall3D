@@ -21,7 +21,7 @@ namespace MagneticBall3D
         m_UnitType = UnitType::COP_WITH_PISTOL;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
-        m_damage = 2;
+        m_damage = 3;
         m_attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
         m_damageRadius = 0.0f;
         m_lastAttackTime = 0.0f;

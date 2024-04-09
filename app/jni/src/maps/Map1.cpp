@@ -1,6 +1,7 @@
 #include "Map1.h"
 #include "EnumsAndVariables.h"
 #include "enemies/CopWithPistol.h"
+#include "enemies/CopWithPistolShield.h"
 #include "enemies/CopWithGrenadeLauncher.h"
 
 namespace MagneticBall3D
@@ -9,7 +10,7 @@ namespace MagneticBall3D
     {
         // Specific for this map only.
         loadPlayerAndStaticEnv();
-        //loadGarbage();
+        loadGarbage();
         loadEnemies();
 
         // Defined in base class. Common for all maps.
@@ -45,6 +46,8 @@ namespace MagneticBall3D
         m_sunDistance = 600.0f;
 
         m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5}});
+
+        //BR_INFO(" %f", );
     }
 
     Map1::~Map1()
@@ -69,7 +72,6 @@ namespace MagneticBall3D
         // Disable all.
         for(const auto& item : playerAllBalls)
         {
-            BR_INFO("radius %f", item->getXZRadius());
             item->disableCollisionMesh();
             item->disableUpdate();
             item->disableDraw();
@@ -190,7 +192,7 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int x = 0; x < 300; ++x)
+        for(int x = 0; x < 200; ++x)
         {
             auto unit = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
                                                         0.0f,
@@ -202,7 +204,7 @@ namespace MagneticBall3D
 
             unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
             unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
-            unit->getController().moveSpeed = 20.0f;
+            unit->getController().moveSpeed = 25.0f;
 
             m_allSceneObjects.push_back(unit);
             m_allAnimatedEnemies.push_back(unit);
@@ -223,6 +225,22 @@ namespace MagneticBall3D
             m_allSceneObjects.push_back(unit2);
             m_allAnimatedEnemies.push_back(unit2);
             m_animatedObjForShadowMap.push_back(unit2);
+
+            auto unit3 = std::make_shared<CopWithPistolShield>("models3D/enemies/CopWithPistolShield.fbx",
+                                                               0.0f,
+                                                               false,
+                                                               Beryll::CollisionFlags::STATIC,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::SceneObjectGroups::ENEMY);
+
+            unit3->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+            unit3->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
+            unit3->getController().moveSpeed = 17.0f;
+
+            m_allSceneObjects.push_back(unit3);
+            m_allAnimatedEnemies.push_back(unit3);
+            m_animatedObjForShadowMap.push_back(unit3);
         }
     }
 }
