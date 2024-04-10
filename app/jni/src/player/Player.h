@@ -19,7 +19,9 @@ namespace MagneticBall3D
         float handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque);
         void reduceSpeed(float speedToReduce);
         float getMoveSpeed() { return m_playerMoveSpeed; }
+        float getMoveSpeedXZ() { return m_playerMoveSpeedXZ; }
         const glm::vec3& getMoveDir() { return m_playerMoveDir; }
+        const glm::vec3& getMoveDirXZ() { return m_playerMoveDirXZ; }
         bool getIsOnGround() { return m_isOnGround; }
         bool getIsOnBuilding() { return m_isOnBuilding; }
         bool getIsOnAir() { return m_isOnAir; }
@@ -50,12 +52,15 @@ namespace MagneticBall3D
 
         // Move.
         glm::vec3 m_playerMoveDir{0.0f};
+        glm::vec3 m_playerMoveDirXZ{0.0f};
         float m_playerMoveSpeed = 0.0f;
+        float m_playerMoveSpeedXZ = 0.0f;
         glm::vec3 m_playerLinearVelocity{0.0f};
+        glm::vec3 m_playerLinearVelocityXZ{0.0f};
 
         // Gravity.
         float m_lastTimeOnBuilding = 0.0f; // Sec.
-        const float m_applyAirGravityDelay = 0.6f; // Sec. For player after he stop collide with buildings.
+        const float m_applyAirGravityDelay = 0.5f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;

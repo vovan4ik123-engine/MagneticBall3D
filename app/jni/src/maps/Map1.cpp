@@ -11,7 +11,7 @@ namespace MagneticBall3D
         // Specific for this map only.
         loadPlayerAndStaticEnv();
         loadGarbage();
-        loadEnemies();
+        //loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
@@ -48,6 +48,7 @@ namespace MagneticBall3D
         m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5}});
 
         //BR_INFO(" %f", );
+        //BR_INFO("%s", "");
     }
 
     Map1::~Map1()
@@ -66,7 +67,7 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                 Beryll::SceneObjectGroups::PLAYER);
 
-        // Sort by radius.
+        // Sort by radius from small to large.
         std::sort(playerAllBalls.begin(), playerAllBalls.end(),
                   [](const std::shared_ptr<Beryll::SimpleCollidingObject>& o1, const std::shared_ptr<Beryll::SimpleCollidingObject>& o2) { return o1->getXZRadius() < o2->getXZRadius(); });
         // Disable all.
@@ -86,7 +87,7 @@ namespace MagneticBall3D
         //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
         m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);
         m_player->getObj()->setFriction(EnumsAndVariables::playerFriction);
-        m_player->getObj()->setDamping(EnumsAndVariables::playerDamping, EnumsAndVariables::playerDamping);
+        m_player->getObj()->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
 
         // Static env.
         const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/map1/Ground.fbx",

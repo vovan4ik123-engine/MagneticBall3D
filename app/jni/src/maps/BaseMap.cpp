@@ -350,6 +350,10 @@ namespace MagneticBall3D
             gravPower = EnumsAndVariables::garbageMaxGravityPower;
 
         //int resetCount = 0;
+        float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
+        if(m_player->getIsOnAir())
+            speedToResetVelocity = m_player->getMoveSpeed() * 1.35f;
+
         for(auto& wrapper : m_allGarbageWrappers)
         {
             if(wrapper.isMagnetized)
@@ -369,14 +373,11 @@ namespace MagneticBall3D
                 const glm::vec3 objMoveDir = glm::normalize(linVelocity);
                 const float objSpeed = glm::length(linVelocity);
                 const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
-                float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
-                if(m_player->getIsOnAir())
-                    speedToResetVelocity = m_player->getMoveSpeed() * 1.45f;
 
                 if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                 {
                     //++resetCount;
-                    wrapper.obj->setLinearVelocity(objToPlayerDir * 5.0f);
+                    wrapper.obj->setLinearVelocity(objToPlayerDir * 4.0f);
                 }
             }
             else if(wrapper.getIsEnabled())

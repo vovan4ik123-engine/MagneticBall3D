@@ -39,7 +39,8 @@ namespace EnumsAndVariables
     constexpr inline float playerTorqueFactorOnBuilding = 0.15f; // Will multiplied by radius.
     constexpr inline float playerImpulseFactorOnAir = 0.08f;
     constexpr inline float playerTorqueFactorOnAir = 0.1f;
-    constexpr inline float playerDamping = 0.1f;
+    constexpr inline float playerLinearDamping = 0.1f;
+    constexpr inline float playerAngularDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};

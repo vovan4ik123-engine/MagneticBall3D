@@ -24,20 +24,30 @@ namespace MagneticBall3D
         updateSpeed();
 
         // Update gravity.
-        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
+            if(!m_isOnGround)
+            {
+                m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+            }
+
+            m_isOnGround = true;
+            m_isOnBuilding = false;
+            m_isOnAir = false;
+        }
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
+        {
+            if(!m_isOnBuilding)
+            {
+                m_obj->setGravity(EnumsAndVariables::playerGravityOnBuilding);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+            }
+
             m_isOnGround = false;
             m_isOnBuilding = true;
             m_isOnAir = false;
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
-            m_obj->setGravity(EnumsAndVariables::playerGravityOnBuilding);
-        }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
-        {
-            m_isOnGround = true;
-            m_isOnBuilding = false;
-            m_isOnAir = false;
-            m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
         }
 //        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::JUMPPAD))
 //        {
@@ -45,10 +55,15 @@ namespace MagneticBall3D
 //        }
         else if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
         {
+            if(!m_isOnAir)
+            {
+                m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.6f);
+            }
+
             m_isOnGround = false;
             m_isOnBuilding = false;
             m_isOnAir = true;
-            m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
         }
 
         // Update HP.
@@ -78,15 +93,20 @@ namespace MagneticBall3D
     {
         // Prefer check m_playerMoveSpeed > 0.0f before use m_playerMoveDir.
         m_playerLinearVelocity = m_obj->getLinearVelocity();
+        m_playerLinearVelocityXZ = glm::vec3(m_playerLinearVelocity.x, 0.0f, m_playerLinearVelocity.z);
         m_playerMoveSpeed = glm::length(m_playerLinearVelocity);
+        m_playerMoveSpeedXZ = glm::length(m_playerLinearVelocityXZ);
         if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
         {
             m_playerMoveSpeed = 0.0f;
+            m_playerMoveSpeedXZ = 0.0f;
             m_playerMoveDir = glm::vec3{0.0f};
+            m_playerMoveDirXZ = glm::vec3{0.0f};
         }
         else
         {
             m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
+            m_playerMoveDirXZ = glm::normalize(m_playerLinearVelocityXZ);
         }
 
         // Handle meteor.
@@ -101,11 +121,7 @@ namespace MagneticBall3D
         BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
         // Swipe should control only XZ speed.
         // Y speed controlled by gravity.
-        glm::vec3 currentVelocityXZ = m_playerLinearVelocity;
-        currentVelocityXZ.y = 0.0f;
-        float currentPlayerSpeedXZ = glm::length(currentVelocityXZ);
-
-        //m_linearVelocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
+        // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
         glm::vec3 newVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
         newVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
@@ -116,8 +132,8 @@ namespace MagneticBall3D
             // Apply less impulse because speed limit was exceeded.
             newVelocityXZ = glm::normalize(newVelocityXZ) * EnumsAndVariables::playerMaxSpeedXZ;
 
-            float newSpeedLimit = std::max(EnumsAndVariables::playerMaxSpeedXZ - currentPlayerSpeedXZ, 0.0f);
-            float newSpeedAdded = newPlayerSpeedXZ - currentPlayerSpeedXZ;
+            float newSpeedLimit = std::max(EnumsAndVariables::playerMaxSpeedXZ - m_playerMoveSpeedXZ, 0.0f);
+            float newSpeedAdded = newPlayerSpeedXZ - m_playerMoveSpeedXZ;
             impulseReduceFactor = newSpeedLimit / newSpeedAdded;
         }
 
@@ -143,26 +159,19 @@ namespace MagneticBall3D
             return;
 
         // When player move as meteor his speed will reduced 50% less from normal reduction.
-        // That mean stop meteor is 2 times harder than stop normal player.
         if(m_isMeteor)
             speedToReduce *= 0.5f;
 
         if(speedToReduce >= m_playerMoveSpeed)
         {
-            m_playerMoveSpeed = 0.0f;
-            m_playerMoveDir = glm::vec3{0.0f};
-            m_playerLinearVelocity = glm::vec3{0.0f};
-
-            m_obj->setLinearVelocity(m_playerLinearVelocity);
+            m_obj->setLinearVelocity(glm::vec3{0.0f});
         }
         else
         {
-            m_playerMoveSpeed = m_playerMoveSpeed - speedToReduce;
-            // m_playerMoveDir = glm::normalize(m_playerLinearVelocity); should be same.
-            m_playerLinearVelocity = m_playerMoveDir * m_playerMoveSpeed;
-
-            m_obj->setLinearVelocity(m_playerLinearVelocity);
+            m_obj->setLinearVelocity(m_playerMoveDir * (m_playerMoveSpeed - speedToReduce));
         }
+
+        updateSpeed();
     }
 
     void Player::spamMeteorParticles()
@@ -188,7 +197,6 @@ namespace MagneticBall3D
         {
             if(item->getXZRadius() > m_obj->getXZRadius())
             {
-                BR_INFO("Set radius %f", item->getXZRadius());
                 item->enableCollisionMesh();
                 item->enableUpdate();
                 item->enableDraw();
