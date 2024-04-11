@@ -7,6 +7,8 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::PLAY_GUI;
 
+        float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
+
         m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 0);
         m_guiObjects.push_back(m_statistics1);
         m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 2.5f);
@@ -25,7 +27,7 @@ namespace MagneticBall3D
 
         sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 600);
         m_guiObjects.push_back(sliderEnemy);
-        sliderEnemy->setValue(5.0f);
+        sliderEnemy->setValue(25.0f);
 
         sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
@@ -53,8 +55,15 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 2, 80, 90, 20, 10);
+        buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 5, 80, 90, 10 * screenAR, 10);
         m_guiObjects.push_back(buttonA);
+
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
+        m_guiObjects.push_back(buttonPause);
+
+        buttonResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 45, 40, 10);
+        m_guiObjects.push_back(buttonResume);
+        buttonResume->disable();
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -64,6 +73,9 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::updateBeforePhysics()
     {
+        if(EnumsAndVariables::improvementSystemOnScreen)
+            return;
+
         for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
             if(go->getIsEnabled())
@@ -71,7 +83,6 @@ namespace MagneticBall3D
                 go->updateBeforePhysics();
             }
         }
-
 
         if(Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
         {
@@ -88,6 +99,19 @@ namespace MagneticBall3D
             m_statistics2->text = stream.str();
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
+        }
+
+        if(buttonPause->getIsPressed())
+        {
+            Beryll::Physics::disableSimulation();
+            EnumsAndVariables::gameOnPause = true;
+            buttonResume->enable();
+        }
+        else if(buttonResume->getIsPressed())
+        {
+            Beryll::Physics::enableSimulation();
+            EnumsAndVariables::gameOnPause = false;
+            buttonResume->disable();
         }
     }
 

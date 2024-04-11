@@ -55,9 +55,9 @@ namespace EnumsAndVariables
     constexpr inline float garbageDamping = 0.1f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 150.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 650.0f;
+    constexpr inline float garbageMaxGravityPower = 700.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbage gravity.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountActiveDefault = 400; // Limit of active GarbageType::DEFAULT on map.
     constexpr inline int garbageMaxCountMagnetized = 300;
@@ -78,6 +78,8 @@ namespace EnumsAndVariables
     constexpr inline float maxDistanceToSpawnEnemies = 600.0f;
     inline float radiusToKillEnemies = 15.0f; // Also amount of garbage to kill should be considered with that.
 
-    // Maps progress.
+    // Pause.
+    inline bool gameOnPause = false;
+    inline bool improvementSystemOnScreen = false;
 
 }

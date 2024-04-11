@@ -53,11 +53,13 @@ namespace MagneticBall3D
     {
         BR_ASSERT((m_player != nullptr), "%s", "m_player is nullptr.");
 
-        if(m_player->getIsNextLevelAchieved())
+        if(m_player->getIsNextLevelAchieved() && !m_allAvailableGUIBlocks.empty())
         {
             m_player->handleLevelAchievement();
 
-            m_GUIBlocksOnScreen = true;
+            BR_INFO("%s", "improvementSystemOnScreen = true");
+            EnumsAndVariables::improvementSystemOnScreen = true;
+            Beryll::Physics::disableSimulation();
 
             // Disable all.
             for(auto& blockDisable : m_allAvailableGUIBlocks)
@@ -109,7 +111,7 @@ namespace MagneticBall3D
             }
         }
 
-        if(m_GUIBlocksOnScreen)
+        if(EnumsAndVariables::improvementSystemOnScreen)
         {
             int idToRemove = -1;
 
@@ -127,7 +129,10 @@ namespace MagneticBall3D
                     if(block.info.currentLevel >= block.info.maxLevel)
                         idToRemove = block.getID();
 
-                    m_GUIBlocksOnScreen = false;
+                    BR_INFO("%s", "improvementSystemOnScreen = false");
+                    EnumsAndVariables::improvementSystemOnScreen = false;
+                    Beryll::Physics::enableSimulation();
+
                     // Disable all.
                     for(auto& blockDisable : m_allAvailableGUIBlocks)
                         blockDisable.onScreen = false;
@@ -163,7 +168,7 @@ namespace MagneticBall3D
 
     void Improvements::draw()
     {
-        if(m_GUIBlocksOnScreen)
+        if(EnumsAndVariables::improvementSystemOnScreen)
         {
             for(const auto& block : m_allAvailableGUIBlocks)
             {

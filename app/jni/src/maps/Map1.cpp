@@ -11,7 +11,7 @@ namespace MagneticBall3D
         // Specific for this map only.
         loadPlayerAndStaticEnv();
         loadGarbage();
-        //loadEnemies();
+        loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();

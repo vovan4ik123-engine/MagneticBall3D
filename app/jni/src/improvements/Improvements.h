@@ -63,12 +63,9 @@ namespace MagneticBall3D
         void update();
         void draw();
 
-        bool getIsGUIBlocksOnScreen() { return m_GUIBlocksOnScreen; }
-
     private:
         std::vector<ImprovementGUIBlock> m_allAvailableGUIBlocks;
         std::shared_ptr<Player> m_player;
-        bool m_GUIBlocksOnScreen = false;
 
         // Positions of GUI block in % of screen. Range 0.0f...100.0f.
         // To create blocks.

@@ -15,51 +15,62 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
-        handleScreenSwipe();
-        magnetizeGarbageAndUpdateGravity();
-        updatePathfindingAndSpawnEnemies();
-        for(const auto& enemy : m_allAnimatedEnemies)
+        if(EnumsAndVariables::gameOnPause)
+            return;
+
+        if(!EnumsAndVariables::improvementSystemOnScreen)
         {
-            if(enemy->getIsEnabledUpdate())
+            handleScreenSwipe();
+            magnetizeGarbageAndUpdateGravity();
+            updatePathfindingAndSpawnEnemies();
+            for(const auto& enemy : m_allAnimatedEnemies)
             {
-                enemy->update(m_player->getObj()->getOrigin());
+                if(enemy->getIsEnabledUpdate())
+                {
+                    enemy->update(m_player->getObj()->getOrigin());
+                }
+            }
+
+            handleEnemiesAttacks();
+
+            for(auto& garbage : m_allGarbageWrappers)
+            {
+                if(garbage.getIsEnabled())
+                {
+                    garbage.update();
+                }
+            }
+
+            if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
+            {
+                spawnGarbage(23, GarbageType::DEFAULT);
+                EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
+            }
+
+            EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
+
+            if(m_gui->buttonA->getIsPressed())
+            {
+                const float powerToOneKg = 100.0f;
+
+                m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
+
+                for(const auto& wrapper : m_allGarbageWrappers)
+                {
+                    if(wrapper.isMagnetized)
+                        wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
+                }
             }
         }
 
-        handleEnemiesAttacks();
-
-        for(auto& garbage : m_allGarbageWrappers)
-        {
-            if(garbage.getIsEnabled())
-            {
-                garbage.update();
-            }
-        }
-
-        if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
-        {
-            spawnGarbage(23, GarbageType::DEFAULT);
-            EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
-        }
-
-        EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
-
-        if(m_gui->buttonA->getIsPressed())
-        {
-            const float powerToOneKg = 100.0f;
-
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
-
-            for(const auto& wrapper : m_allGarbageWrappers)
-            {
-                if(wrapper.isMagnetized)
-                    wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
-            }
-        }
+        m_improvements.update();
     }
 
     void BaseMap::updateAfterPhysics()
     {
+        if(EnumsAndVariables::improvementSystemOnScreen || EnumsAndVariables::gameOnPause)
+            return;
+
         const float distanceToEnableObjects = m_cameraDistance * 0.65f;
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_allSceneObjects)
@@ -111,7 +122,6 @@ namespace MagneticBall3D
         handleCamera(); // Last call before draw.
 
         updateGUI();
-        m_improvements.update();
     }
 
     void BaseMap::draw()
@@ -351,8 +361,6 @@ namespace MagneticBall3D
 
         //int resetCount = 0;
         float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
-        if(m_player->getIsOnAir())
-            speedToResetVelocity = m_player->getMoveSpeed() * 1.35f;
 
         for(auto& wrapper : m_allGarbageWrappers)
         {
