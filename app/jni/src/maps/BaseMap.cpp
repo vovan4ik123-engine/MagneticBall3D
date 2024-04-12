@@ -197,7 +197,7 @@ namespace MagneticBall3D
             }
         }
 
-        //m_skyBox->draw();
+        m_skyBox->draw();
         Beryll::ParticleSystem::draw();
     }
 

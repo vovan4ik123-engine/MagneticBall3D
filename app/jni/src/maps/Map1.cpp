@@ -10,8 +10,8 @@ namespace MagneticBall3D
     {
         // Specific for this map only.
         loadPlayerAndStaticEnv();
-        loadGarbage();
-        loadEnemies();
+        //loadGarbage();
+        //loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
@@ -46,6 +46,8 @@ namespace MagneticBall3D
         m_sunDistance = 600.0f;
 
         m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_SIZE, 5}});
+
+        m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");
