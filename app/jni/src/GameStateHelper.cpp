@@ -3,6 +3,8 @@
 #include "playState/PlayStateGUILayer.h"
 #include "playState/PlayStateSceneLayer.h"
 #include "menus/start/StartMenuGUILayer.h"
+#include "menus/shop/ShopGUILayer.h"
+#include "menus/playerTalents/PlayerTalentsGUILayer.h"
 #include "menus/settings/SettingsMenuGUILayer.h"
 
 namespace MagneticBall3D
@@ -31,6 +33,28 @@ namespace MagneticBall3D
         Beryll::GameStateMachine::pushState(playState);
     }
 
+    void GameStateHelper::pushShopState()
+    {
+        std::shared_ptr<ShopGUILayer> GUILayer = std::make_shared<ShopGUILayer>();
+
+        std::shared_ptr<Beryll::GameState> shopMenuState = std::make_shared<Beryll::GameState>();
+        shopMenuState->ID = Beryll::GameStateID::SHOP;
+        shopMenuState->layerStack.pushOverlay(GUILayer);
+
+        Beryll::GameStateMachine::pushState(shopMenuState);
+    }
+
+    void GameStateHelper::pushPlayerTalentsState()
+    {
+        std::shared_ptr<PlayerTalentsGUILayer> GUILayer = std::make_shared<PlayerTalentsGUILayer>();
+
+        std::shared_ptr<Beryll::GameState> playerTalentsMenuState = std::make_shared<Beryll::GameState>();
+        playerTalentsMenuState->ID = Beryll::GameStateID::PLAYER_TALENTS;
+        playerTalentsMenuState->layerStack.pushOverlay(GUILayer);
+
+        Beryll::GameStateMachine::pushState(playerTalentsMenuState);
+    }
+
     void GameStateHelper::pushSettingsState()
     {
         std::shared_ptr<SettingsMenuGUILayer> GUILayer = std::make_shared<SettingsMenuGUILayer>();
@@ -40,11 +64,6 @@ namespace MagneticBall3D
         settingsMenuState->layerStack.pushOverlay(GUILayer);
 
         Beryll::GameStateMachine::pushState(settingsMenuState);
-    }
-
-    void GameStateHelper::pushShopState()
-    {
-
     }
 
     void GameStateHelper::popState()

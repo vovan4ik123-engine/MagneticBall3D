@@ -7,7 +7,7 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::PLAY_GUI;
 
-        float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
+        const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
         m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 0);
         m_guiObjects.push_back(m_statistics1);

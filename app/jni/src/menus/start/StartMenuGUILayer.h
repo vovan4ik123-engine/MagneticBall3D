@@ -17,7 +17,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::GUITexture> map1Texture;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonPlay;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonShop;
-        std::shared_ptr<Beryll::ButtonWithTexture> buttonPlayer;
+        std::shared_ptr<Beryll::ButtonWithTexture> buttonPlayerTalents;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonSettings;
 
     private:

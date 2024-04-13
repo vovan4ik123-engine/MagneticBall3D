@@ -12,6 +12,8 @@ namespace MagneticBall3D
         // Appears after killing specific type of enemy.
         COP_WITH_PISTOL,
         PISTOL,
+        COP_WITH_PISTOL_SHIELD,
+        SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
         GRENADE_LAUNCHER,
         SNIPER,

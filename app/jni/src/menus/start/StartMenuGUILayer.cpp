@@ -10,19 +10,19 @@ namespace MagneticBall3D
 
         Beryll::Window::getInstance()->setClearColor(0.0666f * 0.7f, 0.7333f * 0.7f, 0.2f * 0.7f, 1.0f);
 
-        map1Texture = std::make_shared<Beryll::GUITexture>("GUI/menus/start/map1.jpg", 15, 10, 70, 50);
+        map1Texture = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map1.jpg", 15, 10, 70, 50);
         m_guiObjects.push_back(map1Texture);
 
-        buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/play.jpg", "", 25, 70, 50, 10);
+        buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.jpg", "", 25, 70, 50, 10);
         m_guiObjects.push_back(buttonPlay);
 
-        buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/shop.jpg", "", -1.0f, 90, 34.0f, 10);
+        buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "", -1.0f, 90, 34.0f, 10);
         m_guiObjects.push_back(buttonShop);
 
-        buttonPlayer = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/player.jpg", "", 33.0f, 90, 33.3f, 10);
-        m_guiObjects.push_back(buttonPlayer);
+        buttonPlayerTalents = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/PlayerTalents.jpg", "", 33.0f, 90, 33.3f, 10);
+        m_guiObjects.push_back(buttonPlayerTalents);
 
-        buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/settings.jpg", "", 66.3f, 90, 34.0f, 10);
+        buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "", 66.3f, 90, 34.0f, 10);
         m_guiObjects.push_back(buttonSettings);
     }
 
@@ -44,6 +44,14 @@ namespace MagneticBall3D
         if(buttonPlay->getIsPressed())
         {
             MagneticBall3D::GameStateHelper::pushPlayState();
+        }
+        else if(buttonShop->getIsPressed())
+        {
+            MagneticBall3D::GameStateHelper::pushShopState();
+        }
+        else if(buttonPlayerTalents->getIsPressed())
+        {
+            MagneticBall3D::GameStateHelper::pushPlayerTalentsState();
         }
         else if(buttonSettings->getIsPressed())
         {

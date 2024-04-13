@@ -16,6 +16,8 @@ add_library(main SHARED main.cpp
                         # Menu.
                         menus/start/StartMenuGUILayer.cpp
                         menus/settings/SettingsMenuGUILayer.cpp
+                        menus/shop/ShopGUILayer.cpp
+                        menus/playerTalents/PlayerTalentsGUILayer.cpp
 
                         # Maps.
                         maps/BaseMap.cpp
