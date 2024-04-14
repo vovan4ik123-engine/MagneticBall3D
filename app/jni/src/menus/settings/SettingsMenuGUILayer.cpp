@@ -72,7 +72,7 @@ namespace MagneticBall3D
                 Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
 
                 // Also store to data base.
-                DataBaseHelper::storeFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+                DataBaseHelper::storeSettingsFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
                 break;
             }
         }

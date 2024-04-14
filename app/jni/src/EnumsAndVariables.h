@@ -11,14 +11,19 @@ namespace EnumsAndVariables
 
     struct AnimationIndexes
     {
-        static const inline int RUN = 0;
-        static const inline int STAND = 1;
-        static const inline int ATTACK = 2;
+        static const inline int run = 0;
+        static const inline int stand = 1;
+        static const inline int attack = 2;
     };
 
     struct SettingsMenu
     {
         static inline int FPSLimit = 60;
+    };
+
+    struct CurrencyBalance
+    {
+        static inline int crystals = 300;
     };
 
     // Camera.

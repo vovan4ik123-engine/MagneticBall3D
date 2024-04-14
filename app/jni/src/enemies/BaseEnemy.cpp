@@ -39,7 +39,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "DelayBeforeFirstAttack");
             unitState = UnitState::IDLE;
-            setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND, false, false);
+            setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > m_attackDistance)
@@ -90,7 +90,7 @@ namespace MagneticBall3D
 
         m_prepareToFirstAttack = true;
 
-        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
+        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
 
         getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
 
@@ -112,7 +112,7 @@ namespace MagneticBall3D
 //            {
 //                BR_INFO("%s", "idle because indexInPathArray >= pathArray.size() - 1");
 //                unitState = UnitState::IDLE;
-//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND, false, false);
+//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
 //            }
         }
     }
@@ -121,7 +121,7 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "BaseEnemy::attack()");
         rotateToPoint(playerOrigin, true);
-        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::ATTACK, true, true);
+        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::attack, true, true);
         m_lastAttackTime = Beryll::TimeStep::getSecFromStart();
         unitState = UnitState::ATTACKING;
     }

@@ -205,8 +205,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
+            unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit->getController().moveSpeed = 25.0f;
 
             m_allSceneObjects.push_back(unit);
@@ -221,8 +221,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
+            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit2->getController().moveSpeed = 20.0f;
 
             m_allSceneObjects.push_back(unit2);
@@ -237,8 +237,8 @@ namespace MagneticBall3D
                                                                Beryll::CollisionGroups::NONE,
                                                                Beryll::SceneObjectGroups::ENEMY);
 
-            unit3->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::RUN, false, false);
-            unit3->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::STAND);
+            unit3->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            unit3->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit3->getController().moveSpeed = 17.0f;
 
             m_allSceneObjects.push_back(unit3);

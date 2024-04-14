@@ -12,25 +12,45 @@ namespace DataBaseHelper
     //BLOB - The value is a blob of data, stored exactly as it was input.
     //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
+    // Database schema.
+    // Tables:      Settings            |   CurrencyBalance     |   PlayerTalents
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // Columns:     ID                  |   ID                  |
+    //              FPSLimit            |   Crystals            |
+    //
+    //
+
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
+    void prepareDatabase(); // Always call at app launch.
+    // const inline std::string deleteAllSettings = "DELETE FROM Settings;";
+    //const inline std::string insertIntoBattlesProgress = "INSERT INTO BattlesProgress(ID, MaxAvailableBattle, AllBattlesFinished) "
+    //                                                     "VALUES(NULL, :battleNumber, :allFinished);";
 
-    const inline std::string selectSettings = "SELECT FPSLimit FROM Settings LIMIT 1;";
-
+    // Settings.
     const inline std::string createTableSettings = "CREATE TABLE IF NOT EXISTS "
                                                    "Settings( "
                                                    "ID INTEGER PRIMARY KEY NOT NULL, "
                                                    "FPSLimit INTEGER);";
 
-    const inline std::string deleteAllSettings = "DELETE FROM Settings;";
+    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit) VALUES(NULL, NULL);";
+    const inline std::string selectSettingsAll = "SELECT * FROM Settings;";
+    const inline std::string selectSettingsFPSLimit = "SELECT FPSLimit FROM Settings LIMIT 1;";
+    const inline std::string updateSettingsFPSLimit = "UPDATE Settings SET FPSLimit = :FPS;";
 
-    //const inline std::string insertIntoBattlesProgress = "INSERT INTO BattlesProgress(ID, MaxAvailableBattle, AllBattlesFinished) "
-    //                                                     "VALUES(NULL, :battleNumber, :allFinished);";
-
-    const inline std::string insertFirstRowToSettings = "INSERT INTO Settings(ID, FPSLimit) VALUES(NULL, NULL);";
-
-    const inline std::string updateFPSLimit = "UPDATE Settings SET FPSLimit = :FPS;";
-
-    void readSettings();
     bool getIsSettingsTableEmpty();
-    void storeFPSLimit(int value);
+    void readSettings();
+    void storeSettingsFPSLimit(int value);
+
+    // CurrencyBalance.
+    const inline std::string createTableCurrencyBalance = "CREATE TABLE IF NOT EXISTS "
+                                                          "CurrencyBalance( "
+                                                          "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                          "Crystals INTEGER);";
+
+    const inline std::string insertFirstRowCurrencyBalance = "INSERT INTO CurrencyBalance(ID, Crystals) VALUES(NULL, NULL);";
+    const inline std::string selectCurrencyBalanceCrystals = "SELECT Crystals FROM CurrencyBalance LIMIT 1;";
+    const inline std::string updateCurrencyBalanceCrystals = "UPDATE CurrencyBalance SET Crystals = :crystals;";
+
+    void readCurrencyBalance();
+    void storeCurrencyBalanceCrystals(int value);
 }

@@ -53,6 +53,32 @@ namespace MagneticBall3D
             MagneticBall3D::GameStateHelper::popState();
             return;
         }
+
+        //
+        if(button70crystals->getIsPressed())
+        {
+
+        }
+        else if(button200crystals->getIsPressed())
+        {
+
+        }
+        else if(button420crystals->getIsPressed())
+        {
+
+        }
+        else if(button900crystals->getIsPressed())
+        {
+
+        }
+        else if(button2500crystals->getIsPressed())
+        {
+
+        }
+        else if(button15000crystals->getIsPressed())
+        {
+
+        }
     }
 
     void ShopGUILayer::updateAfterPhysics()

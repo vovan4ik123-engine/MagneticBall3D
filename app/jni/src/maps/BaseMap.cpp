@@ -1,5 +1,6 @@
 #include "BaseMap.h"
 #include "EnumsAndVariables.h"
+#include "DataBaseHelper.h"
 
 namespace MagneticBall3D
 {
@@ -51,6 +52,9 @@ namespace MagneticBall3D
 
             if(m_gui->buttonA->getIsPressed())
             {
+                EnumsAndVariables::CurrencyBalance::crystals -= 10;
+                DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
+
                 const float powerToOneKg = 100.0f;
 
                 m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));

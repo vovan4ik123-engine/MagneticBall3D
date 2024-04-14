@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 
     Beryll::GameLoop::create(Beryll::ScreenOrientation::MOBILE_PORTRAIT);
 
-    DataBaseHelper::readSettings();
+    DataBaseHelper::prepareDatabase();
 
     //Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
     //Beryll::GameLoop::setFPSLimit(15.0f);
