@@ -24,6 +24,9 @@ namespace MagneticBall3D
 
         buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "", 66.3f, 90, 34.0f, 10);
         m_guiObjects.push_back(buttonSettings);
+
+        textCrystals = std::make_shared<Beryll::Text>("Crystals: X X X X", EnumsAndVariables::FontsPath::CREAMY, 2.4f, 60, 0);
+        m_guiObjects.push_back(textCrystals);
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -41,21 +44,23 @@ namespace MagneticBall3D
             }
         }
 
+        textCrystals->text = "Crystals: " + std::to_string(EnumsAndVariables::CurrencyBalance::crystals);
+
         if(buttonPlay->getIsPressed())
         {
-            MagneticBall3D::GameStateHelper::pushPlayState();
+            GameStateHelper::pushPlayState();
         }
         else if(buttonShop->getIsPressed())
         {
-            MagneticBall3D::GameStateHelper::pushShopState();
+            GameStateHelper::pushShopState();
         }
         else if(buttonPlayerTalents->getIsPressed())
         {
-            MagneticBall3D::GameStateHelper::pushPlayerTalentsState();
+            GameStateHelper::pushPlayerTalentsState();
         }
         else if(buttonSettings->getIsPressed())
         {
-            MagneticBall3D::GameStateHelper::pushSettingsState();
+            GameStateHelper::pushSettingsState();
         }
     }
 

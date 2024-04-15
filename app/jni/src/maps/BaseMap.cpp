@@ -462,7 +462,7 @@ namespace MagneticBall3D
             {
                 for(const auto& enemy : m_allAnimatedEnemies)
                 {
-                    if(!enemy->getIsEnabledUpdate())
+                    if(!enemy->getIsEnabledUpdate() && enemy->isCanBeSpawned)
                     {
                         enemy->enableEnemy();
                         enemy->disableDraw();
@@ -507,7 +507,7 @@ namespace MagneticBall3D
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate())
                 {
-                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 8);
+                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
                     m_allAnimatedEnemies[i]->indexInPathArray = 0;
                     m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
                     m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,

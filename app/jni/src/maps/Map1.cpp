@@ -208,6 +208,7 @@ namespace MagneticBall3D
             unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
             unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit->getController().moveSpeed = 25.0f;
+            unit->isCanBeSpawned = true;
 
             m_allSceneObjects.push_back(unit);
             m_allAnimatedEnemies.push_back(unit);
@@ -224,6 +225,7 @@ namespace MagneticBall3D
             unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
             unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit2->getController().moveSpeed = 20.0f;
+            unit2->isCanBeSpawned = true;
 
             m_allSceneObjects.push_back(unit2);
             m_allAnimatedEnemies.push_back(unit2);
@@ -240,6 +242,7 @@ namespace MagneticBall3D
             unit3->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
             unit3->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
             unit3->getController().moveSpeed = 17.0f;
+            unit3->isCanBeSpawned = true;
 
             m_allSceneObjects.push_back(unit3);
             m_allAnimatedEnemies.push_back(unit3);

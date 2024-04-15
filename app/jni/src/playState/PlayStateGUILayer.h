@@ -26,6 +26,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::ButtonWithText> buttonA;
         std::shared_ptr<Beryll::ButtonWithText> buttonPause;
         std::shared_ptr<Beryll::ButtonWithText> buttonResume;
+        std::shared_ptr<Beryll::ButtonWithText> buttonExit;
 
         int swipeCounter = 0;
 

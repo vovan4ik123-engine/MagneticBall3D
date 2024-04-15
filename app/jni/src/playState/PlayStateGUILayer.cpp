@@ -1,5 +1,6 @@
 #include "PlayStateGUILayer.h"
 #include "EnumsAndVariables.h"
+#include "GameStateHelper.h"
 
 namespace MagneticBall3D
 {
@@ -64,6 +65,10 @@ namespace MagneticBall3D
         buttonResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 45, 40, 10);
         m_guiObjects.push_back(buttonResume);
         buttonResume->disable();
+
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 60, 40, 10);
+        m_guiObjects.push_back(buttonExit);
+        buttonExit->disable();
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -106,12 +111,21 @@ namespace MagneticBall3D
             Beryll::Physics::disableSimulation();
             EnumsAndVariables::gameOnPause = true;
             buttonResume->enable();
+            buttonExit->enable();
         }
         else if(buttonResume->getIsPressed())
         {
             Beryll::Physics::enableSimulation();
             EnumsAndVariables::gameOnPause = false;
             buttonResume->disable();
+            buttonExit->disable();
+        }
+        else if(buttonExit->getIsPressed())
+        {
+            Beryll::Physics::enableSimulation();
+            EnumsAndVariables::gameOnPause = false;
+            GameStateHelper::popState();
+            return;
         }
     }
 

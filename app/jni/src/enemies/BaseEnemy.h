@@ -15,7 +15,9 @@ namespace MagneticBall3D
         COP_WITH_PISTOL,
         COP_WITH_PISTOL_SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
-        SNIPER
+        SNIPER,
+        TANK,
+        BOSS_TANK
     };
 
     enum class AttackType
@@ -69,6 +71,8 @@ namespace MagneticBall3D
 
         UnitState unitState = UnitState::MOVE;
         bool isSeePlayerOrGarbage = false;
+
+        bool isCanBeSpawned = false;
 
     protected:
         void move();

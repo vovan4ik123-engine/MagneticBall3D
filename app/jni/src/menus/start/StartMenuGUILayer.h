@@ -19,6 +19,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::ButtonWithTexture> buttonShop;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonPlayerTalents;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonSettings;
+        std::shared_ptr<Beryll::Text> textCrystals;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
