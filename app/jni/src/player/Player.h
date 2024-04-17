@@ -25,14 +25,12 @@ namespace MagneticBall3D
         bool getIsOnGround() { return m_isOnGround; }
         bool getIsOnBuilding() { return m_isOnBuilding; }
         bool getIsOnAir() { return m_isOnAir; }
+        bool getIsOnJumpPad() { return m_isOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
         void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
-
-        int currentHP = 0;
-        const int maxHP = 0;
 
         void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += exp; } }
 
@@ -43,6 +41,9 @@ namespace MagneticBall3D
 
         void setAllModels(std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> models) { m_allModels = std::move(models); }
         void selectNextModel();
+
+        int currentHP = 0;
+        const int maxHP = 0;
 
     private:
         void updateSpeed();
@@ -60,10 +61,12 @@ namespace MagneticBall3D
 
         // Gravity.
         float m_lastTimeOnBuilding = 0.0f; // Sec.
+        float m_lastTimeOnJumpPad = 0.0f; // Sec.
         const float m_applyAirGravityDelay = 0.5f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;
+        bool m_isOnJumpPad = false;
 
         // Meteor.
         bool m_isMeteor = false;

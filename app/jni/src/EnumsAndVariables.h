@@ -50,14 +50,14 @@ namespace EnumsAndVariables
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -25.0f, 0.0f};
-    constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -4.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -8.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnJumppad{0.0f, -10.0f, 0.0f};
     inline float playerMaxSpeedXZ = 100.0f;
     constexpr inline float playerSpeedForMeteor = 70.0f;
     constexpr inline float playerLeftRightTurnPower = 0.03f;
 
     // Garbage.
-    constexpr inline float garbageDamping = 0.1f;
+    constexpr inline float garbageDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 150.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 700.0f;

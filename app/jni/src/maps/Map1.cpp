@@ -9,7 +9,7 @@ namespace MagneticBall3D
     Map1::Map1(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
         // Specific for this map only.
-        loadPlayerAndStaticEnv();
+        loadPlayerAndEnv();
         //loadGarbage();
         //loadEnemies();
 
@@ -58,7 +58,7 @@ namespace MagneticBall3D
 
     }
 
-    void Map1::loadPlayerAndStaticEnv()
+    void Map1::loadPlayerAndEnv()
     {
         auto playerAllBalls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/player/Player6Models.fbx",
                                                                                 EnumsAndVariables::playerMass,
@@ -66,7 +66,8 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionFlags::DYNAMIC,
                                                                                 Beryll::CollisionGroups::PLAYER,
                                                                                 Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK |
+                                                                                Beryll::CollisionGroups::JUMPPAD,
                                                                                 Beryll::SceneObjectGroups::PLAYER);
 
         // Sort by radius from small to large.
@@ -91,7 +92,7 @@ namespace MagneticBall3D
         m_player->getObj()->setFriction(EnumsAndVariables::playerFriction);
         m_player->getObj()->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
 
-        // Static env.
+        // Env.
         const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/map1/Ground.fbx",
                                                                             0.0f,
                                                                             false,
@@ -100,12 +101,26 @@ namespace MagneticBall3D
                                                                             Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
                                                                             Beryll::SceneObjectGroups::GROUND);
 
-        m_allSceneObjects.push_back(ground);
         m_allStaticEnv.push_back(ground);
-        m_simpleObjForShadowMap.push_back(ground);
         ground->setFriction(EnumsAndVariables::staticEnvFriction);
 
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
+//        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
+//                                                                                       0.0f,
+//                                                                                       false,
+//                                                                                       Beryll::CollisionFlags::STATIC,
+//                                                                                       Beryll::CollisionGroups::BUILDING,
+//                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+//                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
+//                                                                                       Beryll::SceneObjectGroups::BUILDING);
+//
+//        for(const auto& obj : objects1)
+//        {
+//            m_allStaticEnv.push_back(obj);
+//            m_simpleObjForShadowMap.push_back(obj);
+//            obj->setFriction(EnumsAndVariables::staticEnvFriction);
+//        }
+
+        const auto collidersEnv1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/EnvColliders.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
@@ -114,12 +129,31 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
-        for(const auto& obj : objects1)
+        for(const auto& obj : collidersEnv1)
         {
-            m_allSceneObjects.push_back(obj);
             m_allStaticEnv.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
             obj->setFriction(EnumsAndVariables::staticEnvFriction);
+        }
+
+        const auto jumpPads = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/JumpPads.fbx",
+                                                                                            0.0f,
+                                                                                            false,
+                                                                                            Beryll::CollisionFlags::STATIC,
+                                                                                            Beryll::CollisionGroups::JUMPPAD,
+                                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                            Beryll::SceneObjectGroups::JUMPPAD);
+
+        for(const auto& obj : jumpPads)
+        {
+            m_allStaticEnv.push_back(obj);
+        }
+
+        const auto env1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map1/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
+
+        for(const auto& obj : env1)
+        {
+            m_allStaticEnv.push_back(obj);
         }
     }
 

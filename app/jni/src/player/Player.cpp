@@ -24,7 +24,24 @@ namespace MagneticBall3D
         updateSpeed();
 
         // Update gravity.
-        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
+        {
+            if(m_lastTimeOnJumpPad + 1.0f < Beryll::TimeStep::getSecFromStart())
+            {
+                m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
+                m_isOnJumpPad = true;
+            }
+            else
+            {
+                m_isOnJumpPad = false;
+            }
+
+            m_isOnGround = false;
+            m_isOnBuilding = false;
+            m_isOnAir = false;
+            m_lastTimeOnJumpPad = Beryll::TimeStep::getSecFromStart();
+        }
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
             if(!m_isOnGround)
             {
@@ -35,6 +52,7 @@ namespace MagneticBall3D
             m_isOnGround = true;
             m_isOnBuilding = false;
             m_isOnAir = false;
+            m_isOnJumpPad = false;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
@@ -47,23 +65,21 @@ namespace MagneticBall3D
             m_isOnGround = false;
             m_isOnBuilding = true;
             m_isOnAir = false;
+            m_isOnJumpPad = false;
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
         }
-//        else if(Beryll::Physics::getIsCollisionWithGroup(m_player->getID(), Beryll::CollisionGroups::JUMPPAD))
-//        {
-//            m_player->setGravity(EnumsAndVariables::playerGravityOnAir);
-//        }
         else if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
         {
             if(!m_isOnAir)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.6f);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.5f);
             }
 
             m_isOnGround = false;
             m_isOnBuilding = false;
             m_isOnAir = true;
+            m_isOnJumpPad = false;
         }
 
         // Update HP.

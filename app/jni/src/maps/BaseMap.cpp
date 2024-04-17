@@ -50,12 +50,10 @@ namespace MagneticBall3D
 
             EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
 
-            if(m_gui->buttonA->getIsPressed())
+            if(m_gui->buttonA->getIsPressed() || m_player->getIsOnJumpPad())
             {
-                EnumsAndVariables::CurrencyBalance::crystals -= 10;
-                DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
-
-                const float powerToOneKg = 100.0f;
+                BR_INFO("%s", "Apply jumppad.");
+                const float powerToOneKg = m_gui->sliderJumppad->getValue();
 
                 m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
 

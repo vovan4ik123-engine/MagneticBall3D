@@ -53,7 +53,7 @@ namespace MagneticBall3D
         std::vector<Garbage> m_allGarbageWrappers; // Garbage contains Beryll::SimpleCollidingObject inside.
         std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
-        std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> m_allStaticEnv;
+        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_allStaticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 

@@ -42,6 +42,10 @@ namespace MagneticBall3D
         m_guiObjects.push_back(sliderSpecularPower);
         sliderSpecularPower->setValue(1.0f);
 
+        sliderJumppad = std::make_shared<Beryll::SliderHorizontal>("jumppad", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 19, 40, 2, 50, 200);
+        m_guiObjects.push_back(sliderJumppad);
+        sliderJumppad->setValue(120.0f);
+
         progressBarHP = std::make_shared<Beryll::ProgressBar>( 60, 0, 40, 3);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);

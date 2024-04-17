@@ -12,7 +12,7 @@ namespace MagneticBall3D
 
     Garbage::~Garbage()
     {
-
+        //BR_INFO("%s", "Garbage::~Garbage()");
     }
 
     void Garbage::update()

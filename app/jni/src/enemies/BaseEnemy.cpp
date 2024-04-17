@@ -25,7 +25,7 @@ namespace MagneticBall3D
 
     BaseEnemy::~BaseEnemy()
     {
-
+        //BR_INFO("%s", "BaseEnemy::~BaseEnemy()");
     }
 
     void BaseEnemy::update(const glm::vec3& playerOrigin)
