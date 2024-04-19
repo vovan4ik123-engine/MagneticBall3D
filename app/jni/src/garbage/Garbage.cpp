@@ -31,7 +31,7 @@ namespace MagneticBall3D
         obj->enableCollisionMesh();
 
         // Count DEFAULT garbage because it has limit on map.
-        if(m_type == GarbageType::DEFAULT)
+        if(m_type == GarbageType::COMMON)
             ++Garbage::m_activeDefaultGarbageCount;
 
         m_isEnabled = true;
@@ -46,7 +46,7 @@ namespace MagneticBall3D
         obj->disableCollisionMesh();
 
         // Count DEFAULT garbage because it has limit on map.
-        if(Garbage::m_activeDefaultGarbageCount > 0 && m_type == GarbageType::DEFAULT)
+        if(Garbage::m_activeDefaultGarbageCount > 0 && m_type == GarbageType::COMMON)
             --Garbage::m_activeDefaultGarbageCount;
 
         m_isEnabled = false;

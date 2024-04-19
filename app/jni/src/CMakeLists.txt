@@ -38,6 +38,7 @@ add_library(main SHARED main.cpp
                         enemies/CopWithPistolShield.cpp
                         enemies/CopWithGrenadeLauncher.cpp
                         enemies/Sniper.cpp
+                        enemies/Tank.cpp
             )
 
 target_include_directories(main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

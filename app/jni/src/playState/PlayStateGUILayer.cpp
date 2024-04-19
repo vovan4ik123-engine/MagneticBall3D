@@ -26,23 +26,19 @@ namespace MagneticBall3D
         swipeCount = std::make_shared<Beryll::Text>("0000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 4.75f);
         m_guiObjects.push_back(swipeCount);
 
-        sliderEnemy = std::make_shared<Beryll::SliderHorizontal>("enemies", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 600);
-        m_guiObjects.push_back(sliderEnemy);
-        sliderEnemy->setValue(25.0f);
-
-        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
         sliderAmbient->setValue(0.7f);
 
-        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 3);
+        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 3);
         m_guiObjects.push_back(sliderSunPower);
         sliderSunPower->setValue(0.8f);
 
-        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 16, 40, 2, 0, 3);
+        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 3);
         m_guiObjects.push_back(sliderSpecularPower);
         sliderSpecularPower->setValue(1.0f);
 
-        sliderJumppad = std::make_shared<Beryll::SliderHorizontal>("jumppad", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 19, 40, 2, 50, 200);
+        sliderJumppad = std::make_shared<Beryll::SliderHorizontal>("jumppad", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 16, 40, 2, 50, 200);
         m_guiObjects.push_back(sliderJumppad);
         sliderJumppad->setValue(120.0f);
 

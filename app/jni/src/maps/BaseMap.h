@@ -22,8 +22,6 @@ namespace MagneticBall3D
         virtual void updateAfterPhysics();
         virtual void draw();
 
-        virtual void toMakeClassAbstract() = 0;
-
         // Load.
         void loadShaders();
 
@@ -31,6 +29,7 @@ namespace MagneticBall3D
         void handleScreenSwipe();
         void magnetizeGarbageAndUpdateGravity();
         void updatePathfindingAndSpawnEnemies();
+        virtual void spawnEnemies() = 0;
         void handleEnemiesAttacks();
 
         // After physics.
@@ -50,10 +49,10 @@ namespace MagneticBall3D
         std::shared_ptr<PlayStateGUILayer> m_gui;
 
         std::shared_ptr<Player> m_player;
-        std::vector<Garbage> m_allGarbageWrappers; // Garbage contains Beryll::SimpleCollidingObject inside.
+        std::vector<Garbage> m_allGarbage; // Common garbage spawned on map + garbage after kill enemies.
         std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;
-        std::vector<std::shared_ptr<Beryll::SceneObject>> m_allSceneObjects;
-        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_allStaticEnv;
+        std::vector<std::shared_ptr<Beryll::SceneObject>> m_animatedOrDynamicObjects;
+        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_staticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 
@@ -67,6 +66,9 @@ namespace MagneticBall3D
         float m_maxX = 0.0f;
         float m_minZ = 0.0f;
         float m_maxZ = 0.0f;
+
+        float m_mapStartTimeSec = 0.0f;
+        float m_mapPlayTimeSec = 0.0f;
 
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;

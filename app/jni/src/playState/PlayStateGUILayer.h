@@ -16,7 +16,6 @@ namespace MagneticBall3D
 
         //std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
         //std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderEnemy;
         std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSunPower;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;

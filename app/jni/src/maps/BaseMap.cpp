@@ -16,6 +16,8 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
+        m_mapPlayTimeSec = Beryll::TimeStep::getSecFromStart() - m_mapStartTimeSec;
+
         if(EnumsAndVariables::gameOnPause)
             return;
 
@@ -34,7 +36,7 @@ namespace MagneticBall3D
 
             handleEnemiesAttacks();
 
-            for(auto& garbage : m_allGarbageWrappers)
+            for(auto& garbage : m_allGarbage)
             {
                 if(garbage.getIsEnabled())
                 {
@@ -44,11 +46,9 @@ namespace MagneticBall3D
 
             if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
             {
-                spawnGarbage(23, GarbageType::DEFAULT);
+                spawnGarbage(23, GarbageType::COMMON);
                 EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
             }
-
-            EnumsAndVariables::maxActiveEnemiesCount = int(m_gui->sliderEnemy->getValue());
 
             if(m_gui->buttonA->getIsPressed() || m_player->getIsOnJumpPad())
             {
@@ -57,7 +57,7 @@ namespace MagneticBall3D
 
                 m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
 
-                for(const auto& wrapper : m_allGarbageWrappers)
+                for(const auto& wrapper : m_allGarbage)
                 {
                     if(wrapper.isMagnetized)
                         wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
@@ -75,7 +75,7 @@ namespace MagneticBall3D
 
         const float distanceToEnableObjects = m_cameraDistance * 0.65f;
 
-        for(const std::shared_ptr<Beryll::SceneObject>& so : m_allSceneObjects)
+        for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
             if(so->getIsEnabledUpdate())
             {
@@ -89,14 +89,6 @@ namespace MagneticBall3D
                         so->enableDraw();
                     else
                         so->disableDraw();
-                }
-                else if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::BUILDING)
-                {
-//                    if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < 100.0f ||
-//                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.0f, 1000.0f))
-//                        so->enableDraw();
-//                    else
-//                        so->disableDraw();
                 }
             }
         }
@@ -157,7 +149,7 @@ namespace MagneticBall3D
         if(m_player->getIsMeteor())
             m_player->spamMeteorParticles();
 
-        for(const auto& wrapper : m_allGarbageWrappers)
+        for(const auto& wrapper : m_allGarbage)
         {
             if(wrapper.obj->getIsEnabledDraw())
             {
@@ -169,7 +161,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(const auto& staticObj : m_allStaticEnv)
+        for(const auto& staticObj : m_staticEnv)
         {
             if(staticObj->getIsEnabledDraw())
             {
@@ -314,7 +306,7 @@ namespace MagneticBall3D
             // We apply only impulse for garbage. But for player were applied impulse + torque.
             // This compensate player speed increased by torque.
             impulseForGarbage *= garbageImpulseMultiplier;
-            for(const auto& wrapper : m_allGarbageWrappers)
+            for(const auto& wrapper : m_allGarbage)
             {
                 if(wrapper.isMagnetized)
                     wrapper.obj->applyCentralImpulse(impulseForGarbage);
@@ -327,7 +319,7 @@ namespace MagneticBall3D
         EnumsAndVariables::garbageCountMagnetized = 0;
 
         // Check if magnetized garbage still in playerMagneticRadius.
-        for(auto& wrapper : m_allGarbageWrappers)
+        for(auto& wrapper : m_allGarbage)
         {
             if(wrapper.getIsEnabled() && wrapper.isMagnetized &&
                glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
@@ -343,7 +335,7 @@ namespace MagneticBall3D
         // Check for more garbage if we have limit to that.
         if(EnumsAndVariables::garbageMaxCountMagnetized - EnumsAndVariables::garbageCountMagnetized > 0)
         {
-            for(auto& wrapper : m_allGarbageWrappers)
+            for(auto& wrapper : m_allGarbage)
             {
                 if(wrapper.getIsEnabled() && !wrapper.isMagnetized &&
                    glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
@@ -351,7 +343,7 @@ namespace MagneticBall3D
                     ++EnumsAndVariables::garbageCountMagnetized;
                     wrapper.isMagnetized = true;
 
-                    if(EnumsAndVariables::garbageMaxCountMagnetized == EnumsAndVariables::garbageCountMagnetized)
+                    if(EnumsAndVariables::garbageMaxCountMagnetized >= EnumsAndVariables::garbageCountMagnetized)
                         break;
                 }
             }
@@ -364,7 +356,7 @@ namespace MagneticBall3D
         //int resetCount = 0;
         float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
 
-        for(auto& wrapper : m_allGarbageWrappers)
+        for(auto& wrapper : m_allGarbage)
         {
             if(wrapper.isMagnetized)
             {
@@ -445,7 +437,7 @@ namespace MagneticBall3D
         }
         // In second frame:
         // 1. Clear blocked positions.
-        // 2. Spawn enemies.
+        // 2. Spawn enemies. In subclass.
         else if(m_pathFindingIteration == 1)
         {
             ++m_pathFindingIteration;
@@ -454,43 +446,7 @@ namespace MagneticBall3D
             m_pathFinder.clearBlockedPositions();
 
             // 2.
-            int countToSpawn = EnumsAndVariables::maxActiveEnemiesCount - BaseEnemy::getActiveCount();
-            int spawnedCount = 0;
-            if(countToSpawn > 0)
-            {
-                for(const auto& enemy : m_allAnimatedEnemies)
-                {
-                    if(!enemy->getIsEnabledUpdate() && enemy->isCanBeSpawned)
-                    {
-                        enemy->enableEnemy();
-                        enemy->disableDraw();
-
-                        const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnEnemies.size() - 1)];
-                        glm::vec3 spawnPoint3D{spawnPoint2D.x,
-                                               enemy->getFromOriginToBottom(),
-                                               spawnPoint2D.y};
-                        enemy->setOrigin(spawnPoint3D);
-
-                        enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
-                        if(enemy->pathArray.size() > 1)
-                            enemy->indexInPathArray = 1;
-                        else
-                            enemy->indexInPathArray = 0;
-
-                        enemy->currentPointToMove2DIntegers = enemy->pathArray[enemy->indexInPathArray];
-                        enemy->currentPointToMove3DFloats = glm::vec3(enemy->currentPointToMove2DIntegers.x,
-                                                                      enemy->getFromOriginToBottom(),
-                                                                      enemy->currentPointToMove2DIntegers.y);
-
-                        ++spawnedCount;
-
-                        //BR_INFO("Spawn enemy %d %d active count: %d", spawnPoint2D.x, spawnPoint2D.y, AnimatedCollidingEnemy::getActiveCount());
-
-                        if(spawnedCount >= countToSpawn)
-                            break;
-                    }
-                }
-            }
+            spawnEnemies();
         }
         // In third frame:
         // 1. Update paths for enemies.
@@ -535,12 +491,23 @@ namespace MagneticBall3D
             if(enemy->getIsEnabledUpdate() && enemy->unitState == UnitState::CAN_ATTACK)
             {
                 glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
-                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL || enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
-                    from.y += enemy->getFromOriginToTop() * 0.7f;
-                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                    from.y += 0.0f;
 
-                from += enemy->getFaceDirXZ() * 7.0f;
+                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
+                   enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                {
+                    from.y += enemy->getFromOriginToTop() * 0.7f;
+                    from += enemy->getFaceDirXZ() * 8.0f;
+                }
+                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    from.y += 0.0f;
+                    from += enemy->getFaceDirXZ() * 8.0f;
+                }
+                else if(enemy->getUnitType() == UnitType::TANK)
+                {
+                    from.y += enemy->getFromOriginToTop() * 0.8f;
+                    from += enemy->getFaceDirXZ() * 25.0f;
+                }
 
                 glm::vec3 target = m_player->getObj()->getOrigin();
                 target.y += 1.8f;
@@ -580,7 +547,7 @@ namespace MagneticBall3D
                         if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_ONE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
-                            for(auto& wrapper : m_allGarbageWrappers)
+                            for(auto& wrapper : m_allGarbage)
                             {
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
@@ -592,7 +559,7 @@ namespace MagneticBall3D
                         else if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_RADIUS)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_RADIUS");
-                            for(auto& wrapper : m_allGarbageWrappers)
+                            for(auto& wrapper : m_allGarbage)
                             {
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID() &&
                                    glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->getDamageRadius())
@@ -645,7 +612,7 @@ namespace MagneticBall3D
                 addToExp += enemy->getExperienceWhenDie();
 
                 // Spawn one garbage.
-                for(auto& wrapper : m_allGarbageWrappers)
+                for(auto& wrapper : m_allGarbage)
                 {
                     if(!wrapper.getIsEnabled())
                     {
@@ -659,9 +626,21 @@ namespace MagneticBall3D
                 {
                     // Spawn garbage COP_WITH_PISTOL + PISTOL.
                 }
-                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     // Spawn garbage COP_WITH_GRENADE_LAUNCHER + GRENADE_LAUNCHER.
+                }
+                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+
+                }
+                else if(enemy->getUnitType() == UnitType::SNIPER)
+                {
+
+                }
+                else if(enemy->getUnitType() == UnitType::TANK)
+                {
+
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
@@ -749,15 +728,15 @@ namespace MagneticBall3D
 
     void BaseMap::spawnGarbage(const int count, GarbageType type)
     {
-        if(count == 0 ||
-           (type == GarbageType::DEFAULT && Garbage::getActiveDefaultGarbageCount() >= EnumsAndVariables::garbageMaxCountActiveDefault))
+        if(count == 0 || m_allowedPointsToSpawnGarbage.empty() ||
+           (type == GarbageType::COMMON && Garbage::getActiveCommonGarbageCount() >= EnumsAndVariables::garbageCommonMaxActive))
             return;
 
         int spawnedCount = 0;
         const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
         glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
-        for(auto& wrapper : m_allGarbageWrappers)
+        for(auto& wrapper : m_allGarbage)
         {
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
             {

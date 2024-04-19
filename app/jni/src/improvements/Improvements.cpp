@@ -106,8 +106,37 @@ namespace MagneticBall3D
             }
             else
             {
-                // Select randomly 3 blocks.
+                // Exclude randomly all except 3 blocks.
+                const int indexesCountToExclude = m_allAvailableGUIBlocks.size() - 3;
+                std::vector<int> indexesToExclude;
 
+                while(indexesToExclude.size() < indexesCountToExclude)
+                {
+                    int randomIndex = Beryll::RandomGenerator::getInt(m_allAvailableGUIBlocks.size() - 1);
+
+                    if(std::find(indexesToExclude.begin(), indexesToExclude.end(), randomIndex) == indexesToExclude.end())
+                    {
+                        indexesToExclude.push_back(randomIndex);
+                        BR_INFO("index to exclude %d", randomIndex);
+                    }
+                }
+
+                int indexOnScreen = 0;
+                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+                {
+                    if(std::find(indexesToExclude.begin(), indexesToExclude.end(), i) == indexesToExclude.end())
+                    {
+                        // Show block.
+                        m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];
+                        m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[indexOnScreen];
+                        m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                        m_allAvailableGUIBlocks[i].progressText->text += "/";
+                        m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                        m_allAvailableGUIBlocks[i].onScreen = true;
+
+                        ++indexOnScreen;
+                    }
+                }
             }
         }
 

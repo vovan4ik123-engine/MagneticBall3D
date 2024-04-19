@@ -64,7 +64,7 @@ namespace EnumsAndVariables
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
-    constexpr inline int garbageMaxCountActiveDefault = 400; // Limit of active GarbageType::DEFAULT on map.
+    constexpr inline int garbageCommonMaxActive = 400; // Limit of active GarbageType::COMMON on map.
     constexpr inline int garbageMaxCountMagnetized = 300;
     inline int garbageCountMagnetized = 0;
     constexpr inline float minDistanceToSpawnGarbage = 0.0f;
@@ -76,7 +76,7 @@ namespace EnumsAndVariables
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
     // Enemies.
-    inline int maxActiveEnemiesCount = 500;
+    inline int maxActiveEnemiesCountOnGround = 0;
     constexpr inline int maxPathfindingInOneFrame = 10;
     inline int currentPathfindingEnemyIndex = 0;
     constexpr inline float minDistanceToSpawnEnemies = 200.0f;
@@ -87,4 +87,6 @@ namespace EnumsAndVariables
     inline bool gameOnPause = false;
     inline bool improvementSystemOnScreen = false;
 
+    // Jump pad
+    constexpr inline float jumpPadPower = 120.0f;
 }

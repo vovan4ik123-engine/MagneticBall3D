@@ -29,7 +29,6 @@ namespace MagneticBall3D
 
         m_garbageAmountToDie = 50;
         m_reducePlayerSpeedWhenDie = 7.0f;
-
         m_experienceWhenDie = 2;
     }
 
