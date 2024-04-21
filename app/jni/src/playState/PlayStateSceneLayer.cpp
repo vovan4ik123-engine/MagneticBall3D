@@ -11,6 +11,10 @@ namespace MagneticBall3D
 
         m_map = std::make_shared<Map1>(gui);
 
+        EnumsAndVariables::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
+        EnumsAndVariables::mapPlayTimeSec = 0.0f;
+        EnumsAndVariables::mapSwipeCount = 0;
+
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
         //BR_INFO(" %f", );

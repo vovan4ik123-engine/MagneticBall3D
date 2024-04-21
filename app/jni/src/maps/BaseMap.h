@@ -8,7 +8,6 @@
 #include "garbage/Garbage.h"
 #include "enemies/BaseEnemy.h"
 
-
 namespace MagneticBall3D
 {
     class BaseMap
@@ -31,6 +30,7 @@ namespace MagneticBall3D
         void updatePathfindingAndSpawnEnemies();
         virtual void spawnEnemies() = 0;
         void handleEnemiesAttacks();
+        void handleJumpPads();
 
         // After physics.
         void emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
@@ -39,7 +39,7 @@ namespace MagneticBall3D
                                     const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
         void killEnemies();
         void handleCamera();
-        void spawnGarbage(const int count, GarbageType type);
+        void spawnGarbage(const int count, GarbageType type, glm::vec3 spawnPoint);
         void updateGUI();
 
         // Draw.
@@ -66,9 +66,6 @@ namespace MagneticBall3D
         float m_maxX = 0.0f;
         float m_minZ = 0.0f;
         float m_maxZ = 0.0f;
-
-        float m_mapStartTimeSec = 0.0f;
-        float m_mapPlayTimeSec = 0.0f;
 
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;

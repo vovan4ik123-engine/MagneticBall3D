@@ -17,7 +17,9 @@ namespace MagneticBall3D
         COP_WITH_GRENADE_LAUNCHER,
         GRENADE_LAUNCHER,
         SNIPER,
-        SNIPER_GUN
+        SNIPER_GUN,
+        TANK_TRACK,
+        TANK_TURRET
     };
 
     class Garbage
@@ -31,7 +33,7 @@ namespace MagneticBall3D
         void enableGarbage();
         void disableGarbage();
         bool getIsEnabled() { return m_isEnabled; }
-        static int getActiveCommonGarbageCount() { return Garbage::m_activeDefaultGarbageCount; }
+        static int getActiveCommonGarbageCount() { return Garbage::m_activeCommonGarbageCount; }
         GarbageType getType() { return m_type; }
 
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
@@ -41,7 +43,7 @@ namespace MagneticBall3D
 
     private:
         bool m_isEnabled = true;
-        static int m_activeDefaultGarbageCount;
+        static int m_activeCommonGarbageCount;
         GarbageType m_type = GarbageType::NONE;
 
         // Hp.

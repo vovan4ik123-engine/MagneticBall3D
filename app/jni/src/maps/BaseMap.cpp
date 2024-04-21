@@ -16,56 +16,49 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
-        m_mapPlayTimeSec = Beryll::TimeStep::getSecFromStart() - m_mapStartTimeSec;
-
         if(EnumsAndVariables::gameOnPause)
             return;
 
-        if(!EnumsAndVariables::improvementSystemOnScreen)
+        m_improvements.update();
+
+        if(EnumsAndVariables::improvementSystemOnScreen)
+            return;
+
+        EnumsAndVariables::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
+
+        handleScreenSwipe();
+
+        updatePathfindingAndSpawnEnemies();
+
+        if(!m_allowedPointsToSpawnGarbage.empty() &&
+           Garbage::getActiveCommonGarbageCount() < EnumsAndVariables::garbageCommonMaxActive &&
+           EnumsAndVariables::lastTimeSpawnCommonGarbage + EnumsAndVariables::spawnCommonGarbageDelay < Beryll::TimeStep::getSecFromStart())
         {
-            handleScreenSwipe();
-            magnetizeGarbageAndUpdateGravity();
-            updatePathfindingAndSpawnEnemies();
-            for(const auto& enemy : m_allAnimatedEnemies)
-            {
-                if(enemy->getIsEnabledUpdate())
-                {
-                    enemy->update(m_player->getObj()->getOrigin());
-                }
-            }
+            const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
+            glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
-            handleEnemiesAttacks();
-
-            for(auto& garbage : m_allGarbage)
-            {
-                if(garbage.getIsEnabled())
-                {
-                    garbage.update();
-                }
-            }
-
-            if(EnumsAndVariables::lastTimeSpawnGarbage + EnumsAndVariables::spawnGarbageDelay < Beryll::TimeStep::getSecFromStart())
-            {
-                spawnGarbage(23, GarbageType::COMMON);
-                EnumsAndVariables::lastTimeSpawnGarbage = Beryll::TimeStep::getSecFromStart();
-            }
-
-            if(m_gui->buttonA->getIsPressed() || m_player->getIsOnJumpPad())
-            {
-                BR_INFO("%s", "Apply jumppad.");
-                const float powerToOneKg = m_gui->sliderJumppad->getValue();
-
-                m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
-
-                for(const auto& wrapper : m_allGarbage)
-                {
-                    if(wrapper.isMagnetized)
-                        wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
-                }
-            }
+            spawnGarbage(10, GarbageType::COMMON, spawnPoint3D);
+            EnumsAndVariables::lastTimeSpawnCommonGarbage = Beryll::TimeStep::getSecFromStart();
         }
 
-        m_improvements.update();
+        handleJumpPads();
+
+        const glm::vec3& playerOrig = m_player->getObj()->getOrigin();
+        bool playerOutOfMap = false;
+        if(playerOrig.x < m_minX)
+            playerOutOfMap = true;
+        else if(playerOrig.x > m_maxX)
+            playerOutOfMap = true;
+        else if(playerOrig.z < m_minZ)
+            playerOutOfMap = true;
+        else if(playerOrig.z > m_maxZ)
+            playerOutOfMap = true;
+
+        if(playerOutOfMap)
+        {
+            m_player->getObj()->resetVelocities();
+            m_player->getObj()->setLinearVelocity(glm::normalize(-playerOrig) * 35.0f);
+        }
     }
 
     void BaseMap::updateAfterPhysics()
@@ -95,24 +88,23 @@ namespace MagneticBall3D
 
         m_player->update();
 
-        const glm::vec3& playerOrig = m_player->getObj()->getOrigin();
-        bool playerOutOfMap = false;
-        if(playerOrig.x < m_minX)
-            playerOutOfMap = true;
-        else if(playerOrig.x > m_maxX)
-            playerOutOfMap = true;
-        else if(playerOrig.z < m_minZ)
-            playerOutOfMap = true;
-        else if(playerOrig.z > m_maxZ)
-            playerOutOfMap = true;
-
-        if(playerOutOfMap)
+        for(const auto& enemy : m_allAnimatedEnemies)
         {
-            m_player->getObj()->resetVelocities();
-            m_player->getObj()->setLinearVelocity(glm::normalize(-playerOrig) * 35.0f);
+            if(enemy->getIsEnabledUpdate())
+                enemy->update(m_player->getObj()->getOrigin());
         }
 
+        handleEnemiesAttacks();
         killEnemies();
+
+        for(auto& garbage : m_allGarbage)
+        {
+            if(garbage.getIsEnabled())
+                garbage.update();
+        }
+
+        magnetizeGarbageAndUpdateGravity();
+
         handleCamera(); // Last call before draw.
 
         updateGUI();
@@ -258,7 +250,7 @@ namespace MagneticBall3D
             if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 1.0f)
                 return;
 
-            m_gui->swipeCount->text = std::to_string(++m_gui->swipeCounter);
+            ++EnumsAndVariables::mapSwipeCount;
 
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
@@ -333,19 +325,16 @@ namespace MagneticBall3D
         }
 
         // Check for more garbage if we have limit to that.
-        if(EnumsAndVariables::garbageMaxCountMagnetized - EnumsAndVariables::garbageCountMagnetized > 0)
+        for(auto& wrapper : m_allGarbage)
         {
-            for(auto& wrapper : m_allGarbage)
-            {
-                if(wrapper.getIsEnabled() && !wrapper.isMagnetized &&
-                   glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
-                {
-                    ++EnumsAndVariables::garbageCountMagnetized;
-                    wrapper.isMagnetized = true;
+            if(EnumsAndVariables::garbageCountMagnetized >= EnumsAndVariables::garbageMaxCountMagnetized)
+                break;
 
-                    if(EnumsAndVariables::garbageMaxCountMagnetized >= EnumsAndVariables::garbageCountMagnetized)
-                        break;
-                }
+            if(wrapper.getIsEnabled() && !wrapper.isMagnetized &&
+               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVariables::playerMagneticRadius)
+            {
+                ++EnumsAndVariables::garbageCountMagnetized;
+                wrapper.isMagnetized = true;
             }
         }
 
@@ -612,15 +601,7 @@ namespace MagneticBall3D
                 addToExp += enemy->getExperienceWhenDie();
 
                 // Spawn one garbage.
-                for(auto& wrapper : m_allGarbage)
-                {
-                    if(!wrapper.getIsEnabled())
-                    {
-                        wrapper.enableGarbage();
-                        wrapper.obj->setOrigin(enemy->getOrigin());
-                        break;
-                    }
-                }
+                spawnGarbage(1, GarbageType::COMMON, enemy->getOrigin());
 
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
@@ -726,36 +707,46 @@ namespace MagneticBall3D
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
     }
 
-    void BaseMap::spawnGarbage(const int count, GarbageType type)
+    void BaseMap::spawnGarbage(const int count, GarbageType type, glm::vec3 spawnPoint)
     {
-        if(count == 0 || m_allowedPointsToSpawnGarbage.empty() ||
-           (type == GarbageType::COMMON && Garbage::getActiveCommonGarbageCount() >= EnumsAndVariables::garbageCommonMaxActive))
-            return;
-
         int spawnedCount = 0;
-        const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
-        glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
-
         for(auto& wrapper : m_allGarbage)
         {
+            if(spawnedCount >= count)
+                break;
+
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
             {
                 wrapper.enableGarbage();
-                spawnPoint3D.x += (Beryll::RandomGenerator::getFloat() - 0.5f) * 5.0f;
-                spawnPoint3D.z += (Beryll::RandomGenerator::getFloat() - 0.5f) * 4.0f;
-                wrapper.obj->setOrigin(spawnPoint3D);
+                wrapper.obj->setOrigin(spawnPoint);
 
                 ++spawnedCount;
             }
-
-            if(spawnedCount >= count)
-                break;
         }
+
+        BR_INFO(" Garbage::getActiveCommon: %d", Garbage::getActiveCommonGarbageCount());
     }
 
     void BaseMap::updateGUI()
     {
         m_gui->progressBarHP->setProgress(float(m_player->currentHP) / float(m_player->maxHP));
         m_gui->progressBarXP->setProgress(float(m_player->getCurrentLevelExp()) / float(m_player->getCurrentLevelMaxExp()));
+    }
+
+    void BaseMap::handleJumpPads()
+    {
+        if(m_player->getIsOnJumpPad())
+        {
+            BR_INFO("%s", "Apply jumppad.");
+            const float powerToOneKg = m_gui->sliderJumppad->getValue();
+
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
+
+            for(const auto& wrapper : m_allGarbage)
+            {
+                if(wrapper.isMagnetized)
+                    wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
+            }
+        }
     }
 }

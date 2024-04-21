@@ -64,13 +64,13 @@ namespace EnumsAndVariables
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 4.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
-    constexpr inline int garbageCommonMaxActive = 400; // Limit of active GarbageType::COMMON on map.
-    constexpr inline int garbageMaxCountMagnetized = 300;
+    constexpr inline int garbageCommonMaxActive = 100; // Limit of active GarbageType::COMMON on map.
+    constexpr inline int garbageMaxCountMagnetized = 50;
     inline int garbageCountMagnetized = 0;
     constexpr inline float minDistanceToSpawnGarbage = 0.0f;
     constexpr inline float maxDistanceToSpawnGarbage = 300.0f;
-    inline float lastTimeSpawnGarbage = 0.0f; // Sec.
-    constexpr inline  float spawnGarbageDelay = 3.0f; // Sec.
+    inline float lastTimeSpawnCommonGarbage = 0.0f; // Sec.
+    constexpr inline  float spawnCommonGarbageDelay = 3.0f; // Sec.
 
     constexpr inline float staticEnvFriction = 40.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -87,6 +87,11 @@ namespace EnumsAndVariables
     inline bool gameOnPause = false;
     inline bool improvementSystemOnScreen = false;
 
-    // Jump pad
+    // Jump pad.
     constexpr inline float jumpPadPower = 120.0f;
+
+    // Map.
+    inline float mapStartTimeSec = 0.0f;
+    inline float mapPlayTimeSec = 0.0f;
+    inline int mapSwipeCount = 0.0f;
 }

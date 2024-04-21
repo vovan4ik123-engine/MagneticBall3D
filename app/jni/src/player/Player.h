@@ -74,7 +74,7 @@ namespace MagneticBall3D
         uint64_t m_spamMeteorParticlesDelay = 40; // Millisec.
 
         // Level.
-        static constexpr int m_maxLevel = 43;
+        static constexpr int m_maxLevel = 5;
         //const std::array<const int, m_maxLevel> m_expPerLevel{5, 5, 5, 5};
         int m_currentLevel = 0;
         int m_currentLevelExp = 0;

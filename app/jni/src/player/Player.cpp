@@ -41,19 +41,6 @@ namespace MagneticBall3D
             m_isOnAir = false;
             m_lastTimeOnJumpPad = Beryll::TimeStep::getSecFromStart();
         }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
-        {
-            if(!m_isOnGround)
-            {
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
-            }
-
-            m_isOnGround = true;
-            m_isOnBuilding = false;
-            m_isOnAir = false;
-            m_isOnJumpPad = false;
-        }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
             if(!m_isOnBuilding)
@@ -68,9 +55,22 @@ namespace MagneticBall3D
             m_isOnJumpPad = false;
             m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
         }
-        else if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
-            if(!m_isOnAir)
+            if(!m_isOnGround)
+            {
+                m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+            }
+
+            m_isOnGround = true;
+            m_isOnBuilding = false;
+            m_isOnAir = false;
+            m_isOnJumpPad = false;
+        }
+        else
+        {
+            if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
                 m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.5f);
@@ -85,7 +85,7 @@ namespace MagneticBall3D
         // Update HP.
         if(currentHP <= 0)
         {
-            BR_INFO("%s", "Reset HP");
+            //BR_INFO("%s", "Reset HP");
             currentHP = maxHP;
         }
 
@@ -93,7 +93,7 @@ namespace MagneticBall3D
         if(m_currentLevel < m_maxLevel && m_currentLevelExp >= m_currentLevelMaxExp)
         {
             ++m_currentLevel;
-            BR_INFO("Got exp limit. Handle level: %d", m_currentLevel);
+            BR_INFO("Got level: %d", m_currentLevel);
             m_nextLevelAchieved = true; // Achievement should be handled by Improvements class.
 
             if(m_currentLevel < m_maxLevel)
@@ -134,7 +134,7 @@ namespace MagneticBall3D
 
     float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque)
     {
-        BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
+        //BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
         // Swipe should control only XZ speed.
         // Y speed controlled by gravity.
         // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
@@ -209,22 +209,22 @@ namespace MagneticBall3D
 
     void Player::selectNextModel()
     {
-        for(const auto& item : m_allModels)
-        {
-            if(item->getXZRadius() > m_obj->getXZRadius())
-            {
-                item->enableCollisionMesh();
-                item->enableUpdate();
-                item->enableDraw();
-                item->setOrigin(m_obj->getOrigin());
-                item->setLinearVelocity(m_obj->getLinearVelocity());
-                item->setAngularVelocity(m_obj->getAngularVelocity());
-
-                m_obj->disableForEver();
-                m_obj = item;
-
-                break;
-            }
-        }
+//        for(const auto& item : m_allModels)
+//        {
+//            if(item->getXZRadius() > m_obj->getXZRadius())
+//            {
+//                item->enableCollisionMesh();
+//                item->enableUpdate();
+//                item->enableDraw();
+//                item->setOrigin(m_obj->getOrigin());
+//                item->setLinearVelocity(m_obj->getLinearVelocity());
+//                item->setAngularVelocity(m_obj->getAngularVelocity());
+//
+//                m_obj->disableForEver();
+//                m_obj = item;
+//
+//                break;
+//            }
+//        }
     }
 }

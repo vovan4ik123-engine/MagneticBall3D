@@ -14,6 +14,8 @@ namespace MagneticBall3D
         m_guiObjects.push_back(m_statistics1);
         m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 2.5f);
         m_guiObjects.push_back(m_statistics2);
+        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 000000  Time: 00000000", EnumsAndVariables::FontsPath::ROBOTO, 2.0f, 0, 4.75f);
+        m_guiObjects.push_back(m_swipeCount);
 
 //        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
 //        m_guiObjects.push_back(sliderImpulse);
@@ -22,9 +24,6 @@ namespace MagneticBall3D
 //        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 1);
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
-
-        swipeCount = std::make_shared<Beryll::Text>("0000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 4.75f);
-        m_guiObjects.push_back(swipeCount);
 
         sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
@@ -49,15 +48,12 @@ namespace MagneticBall3D
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 96, 80, 4);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 96, 100, 4);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarXP->setProgressColor(0.0f, 0.2275f, 1.0f, 1.0f);
         progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
         progressBarXP->setProgress(0.0f);
-
-        buttonA = std::make_shared<Beryll::ButtonWithText>("A", EnumsAndVariables::FontsPath::ROBOTO, 5, 80, 90, 10 * screenAR, 10);
-        m_guiObjects.push_back(buttonA);
 
         buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
         m_guiObjects.push_back(buttonPause);
@@ -102,6 +98,11 @@ namespace MagneticBall3D
             stream << "  Logic: " << (Beryll::GameLoop::getCPUTime() - Beryll::Physics::getSimulationTime());
             stream << "  GPU: " << Beryll::GameLoop::getGPUTime() << "      ";
             m_statistics2->text = stream.str();
+
+            stream.str("");
+            stream << "Swipe: " << EnumsAndVariables::mapSwipeCount;
+            stream << "  Time: " << int(EnumsAndVariables::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVariables::mapPlayTimeSec, 60.0f)) << "       ";
+            m_swipeCount->text = stream.str();
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }

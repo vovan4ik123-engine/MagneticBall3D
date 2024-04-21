@@ -12,35 +12,28 @@ namespace MagneticBall3D
     {
         for(const ImprovementInfo& inf : info)
         {
+            // Select only texture path here. Rest is same for all blocks. !!!
+            std::string texturePath;
             if(inf.type == ImprovementType::PLAYER_SIZE)
             {
-                auto b = std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/IncreaseSize.jpg", "",
-                                                                               m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
-
-                auto prt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
-                                                                      m_leftDefault, m_progressTop);
-                prt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
-
-                ImprovementGUIBlock guiBlock(inf, b, prt);
-                m_allAvailableGUIBlocks.push_back(guiBlock);
-
+                texturePath = "GUI/improvements/IncreaseSize.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_SIZE.");
             }
             else if(inf.type == ImprovementType::PLAYER_MAX_SPEED)
             {
-                auto b = std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/MaxSpeed.jpg", "",
-                                                                     m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
-
-                auto prt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
-                                                          m_leftDefault, m_progressTop);
-                prt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
-
-                ImprovementGUIBlock guiBlock(inf, b, prt);
-                m_allAvailableGUIBlocks.push_back(guiBlock);
-
+                texturePath = "GUI/improvements/MaxSpeed.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_MAX_SPEED.");
             }
 
+            auto b = std::make_shared<Beryll::ButtonWithTexture>(texturePath.c_str(), "",
+                                                                 m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
+
+            auto txt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
+                                                      m_leftDefault, m_progressTop);
+            txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
+
+            ImprovementGUIBlock guiBlock(inf, b, txt);
+            m_allAvailableGUIBlocks.push_back(guiBlock);
         }
     }
 
