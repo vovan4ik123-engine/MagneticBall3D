@@ -9,8 +9,17 @@ namespace MagneticBall3D
     enum class ImprovementType
     {
         NONE,
-        PLAYER_SIZE,
-        PLAYER_MAX_SPEED
+        PLAYER_MAX_SPEED,
+        PLAYER_ACCELERATE_FASTER_ON_GROUND,
+        PLAYER_MOVE_FASTER_THROUGH_ENEMIES,
+        PLAYER_BETTER_CLUTCH_WITH_BUILDINGS,
+        PLAYER_INCREASE_SIZE,
+        PLAYER_INCREASE_MAX_HP,
+        PLAYER_REDUCE_DAMAGE,
+        PLAYER_TAKE_MORE_XP,
+        PLAYER_HEAL_AT_NEW_LVL,
+        GARBAGE_SPAWN_MORE_ON_MAP,
+        GARBAGE_REDUCE_DAMAGE
     };
 
     struct ImprovementInfo

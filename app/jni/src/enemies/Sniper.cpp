@@ -2,5 +2,5 @@
 
 namespace MagneticBall3D
 {
-
+    // m_canMove = false;
 }

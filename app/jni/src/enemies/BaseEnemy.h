@@ -53,7 +53,7 @@ namespace MagneticBall3D
         static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
         UnitType getUnitType() { return m_UnitType; }
         AttackType getAttackType() { return m_attackType; }
-        int getDamage() { return m_damage; }
+        float getDamage() { return m_damage; }
         float getAttackDistance() { return m_attackDistance; }
         float getDamageRadius() { return m_damageRadius; }
         int getGarbageAmountToDie() { return m_garbageAmountToDie; }
@@ -68,6 +68,7 @@ namespace MagneticBall3D
         glm::vec3 currentPointToMove3DFloats{0.0f};
         glm::ivec2 currentPointToMove2DIntegers{0};
         std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
+        bool getIsCanMove() { return m_isCanMove; }
 
         UnitState unitState = UnitState::MOVE;
         bool isSeePlayerOrGarbage = false;
@@ -81,9 +82,10 @@ namespace MagneticBall3D
         bool m_isEnabled = false;
         UnitType m_UnitType = UnitType::NONE;
         AttackType m_attackType = AttackType::NONE;
+        bool m_isCanMove = true; // false for SNIPER.
 
         // Attack data.
-        int m_damage = 0;
+        float m_damage = 0.0f;
         float m_attackDistance = 10.0f;
         float m_damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float m_lastAttackTime = 0.0f; // Sec.
@@ -91,7 +93,7 @@ namespace MagneticBall3D
         float m_prepareToFirstAttackStartTime = 0.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
-        // Death .
+        // Death.
         int m_garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
         float m_reducePlayerSpeedWhenDie = 0.0f;
         int m_experienceWhenDie = 0;

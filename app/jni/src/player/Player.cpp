@@ -1,10 +1,9 @@
 #include "Player.h"
-#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
-    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, int health)
-    : m_obj(std::move(so)), maxHP(health), currentHP(health)
+    Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float health)
+    : m_obj(std::move(so)), m_maxHP(health), m_currentHP(health)
     {
         m_obj->enableCollisionMesh();
         m_obj->enableUpdate();
@@ -83,25 +82,25 @@ namespace MagneticBall3D
         }
 
         // Update HP.
-        if(currentHP <= 0)
+        if(m_currentHP <= 0.0f)
         {
             //BR_INFO("%s", "Reset HP");
-            currentHP = maxHP;
+            m_currentHP = m_maxHP;
         }
 
         // Update XP.
-        if(m_currentLevel < m_maxLevel && m_currentLevelExp >= m_currentLevelMaxExp)
+        if(m_currentLevelExp >= m_currentLevelMaxExp)
         {
             ++m_currentLevel;
-            BR_INFO("Got level: %d", m_currentLevel);
+            BR_INFO("Got level: %d. Healed for: %f", m_currentLevel, EnumsAndVariables::playerRestoreHPAtNewLevel);
             m_nextLevelAchieved = true; // Achievement should be handled by Improvements class.
+            m_currentHP += EnumsAndVariables::playerRestoreHPAtNewLevel;
+            if(m_currentHP > m_maxHP)
+                m_currentHP = m_maxHP;
 
-            if(m_currentLevel < m_maxLevel)
-            {
-                int levelExpOverflow = m_currentLevelExp - m_currentLevelMaxExp;
-                m_currentLevelExp = std::max(0, levelExpOverflow);
-                BR_INFO("Reset level exp to: %d", m_currentLevelExp);
-            }
+            int levelExpOverflow = m_currentLevelExp - m_currentLevelMaxExp;
+            m_currentLevelExp = std::max(0, levelExpOverflow);
+            BR_INFO("Reset level exp to: %d", m_currentLevelExp);
         }
     }
 
@@ -174,6 +173,8 @@ namespace MagneticBall3D
         if(speedToReduce <= 0.0f)
             return;
 
+        speedToReduce *= EnumsAndVariables::playerSpeedReductionMultiplier;
+
         // When player move as meteor his speed will reduced 50% less from normal reduction.
         if(m_isMeteor)
             speedToReduce *= 0.5f;
@@ -198,9 +199,9 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float diameter = m_obj->getXZRadius() * 2.0f;
+        float diameter = m_obj->getXZRadius() * 1.4f;
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * diameter)};
-        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.014f;
+        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.015f;
 
         Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.5f,
                                                     {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
@@ -209,22 +210,35 @@ namespace MagneticBall3D
 
     void Player::selectNextModel()
     {
-//        for(const auto& item : m_allModels)
-//        {
-//            if(item->getXZRadius() > m_obj->getXZRadius())
-//            {
-//                item->enableCollisionMesh();
-//                item->enableUpdate();
-//                item->enableDraw();
-//                item->setOrigin(m_obj->getOrigin());
-//                item->setLinearVelocity(m_obj->getLinearVelocity());
-//                item->setAngularVelocity(m_obj->getAngularVelocity());
-//
-//                m_obj->disableForEver();
-//                m_obj = item;
-//
-//                break;
-//            }
-//        }
+        for(const auto& item : m_allModels)
+        {
+            if(item->getXZRadius() > m_obj->getXZRadius())
+            {
+                item->enableCollisionMesh();
+                item->enableUpdate();
+                item->enableDraw();
+                item->setOrigin(m_obj->getOrigin());
+                item->setLinearVelocity(m_obj->getLinearVelocity());
+                item->setAngularVelocity(m_obj->getAngularVelocity());
+
+                m_obj->disableForEver();
+                m_obj = item;
+
+                break;
+            }
+        }
+    }
+
+    void Player::addToMaxHP(float value)
+    {
+        if(value <= 0.0f)
+            return;
+
+        float oldMax = m_maxHP;
+        float newMax = m_maxHP + value;
+        float ratio = newMax / oldMax;
+
+        m_maxHP *= ratio;
+        m_currentHP *= ratio;
     }
 }

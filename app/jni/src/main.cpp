@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
     //Beryll::Camera::setCameraFov(45.0f);
     Beryll::Camera::setProjectionNearClipPlane(5.0f);
-    Beryll::Camera::setProjectionFarClipPlane(1500.0f);
+    Beryll::Camera::setProjectionFarClipPlane(1800.0f);
     Beryll::Camera::setObjectsViewDistance(1000.0f);
 
     //Beryll::Physics::setResolution(1);

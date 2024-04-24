@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineHeaders.h"
+#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
@@ -8,7 +9,7 @@ namespace MagneticBall3D
     {
     public:
         Player() = delete;
-        Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, int health);
+        Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float health);
         ~Player();
 
         void update();
@@ -32,7 +33,7 @@ namespace MagneticBall3D
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
         void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
 
-        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += exp; } }
+        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnumsAndVariables::playerXPMultiplier); } }
 
         int getCurrentLevelExp() { return m_currentLevelExp; }
         int getCurrentLevelMaxExp() { return m_currentLevelMaxExp; }
@@ -41,9 +42,11 @@ namespace MagneticBall3D
 
         void setAllModels(std::vector<std::shared_ptr<Beryll::SimpleCollidingObject>> models) { m_allModels = std::move(models); }
         void selectNextModel();
+        void addToMaxHP(float value); // Will add to m_maxHP + recalculate m_currentHP.
 
-        int currentHP = 0;
-        const int maxHP = 0;
+        float getCurrentHP() { return m_currentHP; }
+        float getMaxHP() { return m_maxHP; }
+        void takeDamage(float damage) { m_currentHP -= (damage * EnumsAndVariables::playerDamageTakenMultiplier); }
 
     private:
         void updateSpeed();
@@ -73,12 +76,14 @@ namespace MagneticBall3D
         uint64_t m_spamMeteorParticlesTime = 0; // Millisec.
         uint64_t m_spamMeteorParticlesDelay = 40; // Millisec.
 
-        // Level.
-        static constexpr int m_maxLevel = 5;
-        //const std::array<const int, m_maxLevel> m_expPerLevel{5, 5, 5, 5};
+        // HP.
+        float m_currentHP = 0;
+        float m_maxHP = 0;
+
+        // Level. XP.
         int m_currentLevel = 0;
         int m_currentLevelExp = 0;
-        int m_currentLevelMaxExp = 5;
+        int m_currentLevelMaxExp = 100;
         bool m_nextLevelAchieved = false;
     };
 }

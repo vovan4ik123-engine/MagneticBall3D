@@ -32,13 +32,13 @@ namespace MagneticBall3D
 
         if(!m_allowedPointsToSpawnGarbage.empty() &&
            Garbage::getActiveCommonGarbageCount() < EnumsAndVariables::garbageCommonMaxActive &&
-           EnumsAndVariables::lastTimeSpawnCommonGarbage + EnumsAndVariables::spawnCommonGarbageDelay < Beryll::TimeStep::getSecFromStart())
+           EnumsAndVariables::garbageCommonSpawnTime + EnumsAndVariables::garbageCommonSpawnDelay < Beryll::TimeStep::getSecFromStart())
         {
             const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
-            spawnGarbage(10, GarbageType::COMMON, spawnPoint3D);
-            EnumsAndVariables::lastTimeSpawnCommonGarbage = Beryll::TimeStep::getSecFromStart();
+            spawnGarbage(EnumsAndVariables::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
+            EnumsAndVariables::garbageCommonSpawnTime = Beryll::TimeStep::getSecFromStart();
         }
 
         handleJumpPads();
@@ -295,8 +295,6 @@ namespace MagneticBall3D
 
             // Apply impulse to garbage too.
             glm::vec3 impulseForGarbage = powerForImpulse * factorImpulseApplied * EnumsAndVariables::playerMassToGarbageMassRatio;
-            // We apply only impulse for garbage. But for player were applied impulse + torque.
-            // This compensate player speed increased by torque.
             impulseForGarbage *= garbageImpulseMultiplier;
             for(const auto& wrapper : m_allGarbage)
             {
@@ -408,13 +406,13 @@ namespace MagneticBall3D
                 }
 
                 // 2.
-                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnEnemies && distanceToCurrent < EnumsAndVariables::maxDistanceToSpawnEnemies)
+                if(distanceToCurrent > EnumsAndVariables::enemiesMinDistanceToSpawn && distanceToCurrent < EnumsAndVariables::enemiesMaxDistanceToSpawn)
                 {
                     // We can spawn enemy at this point.
                     m_allowedPointsToSpawnEnemies.push_back(point);
                 }
 
-                if(distanceToCurrent > EnumsAndVariables::minDistanceToSpawnGarbage && distanceToCurrent < EnumsAndVariables::maxDistanceToSpawnGarbage)
+                if(distanceToCurrent > EnumsAndVariables::garbageCommonSpawnMinDistance && distanceToCurrent < EnumsAndVariables::garbageCommonSpawnMaxDistance)
                 {
                     // We can spawn garbage at this point.
                     m_allowedPointsToSpawnGarbage.push_back(point);
@@ -442,13 +440,13 @@ namespace MagneticBall3D
         else if(m_pathFindingIteration == 2)
         {
             int enemiesUpdated = 0;
-            int& i = EnumsAndVariables::currentPathfindingEnemyIndex;
+            int& i = EnumsAndVariables::enemiesCurrentPathfindingIndex;
             for( ; i < m_allAnimatedEnemies.size(); ++i)
             {
-                if(enemiesUpdated >= EnumsAndVariables::maxPathfindingInOneFrame)
+                if(enemiesUpdated >= EnumsAndVariables::enemiesMaxPathfindingInOneFrame)
                     break;
 
-                if(m_allAnimatedEnemies[i]->getIsEnabledUpdate())
+                if(m_allAnimatedEnemies[i]->getIsEnabledUpdate() && m_allAnimatedEnemies[i]->getIsCanMove())
                 {
                     m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
                     m_allAnimatedEnemies[i]->indexInPathArray = 0;
@@ -463,10 +461,10 @@ namespace MagneticBall3D
                 }
             }
 
-            if(EnumsAndVariables::currentPathfindingEnemyIndex + 1 >= m_allAnimatedEnemies.size())
+            if(EnumsAndVariables::enemiesCurrentPathfindingIndex + 1 >= m_allAnimatedEnemies.size())
             {
                 // All enemies were updated.
-                EnumsAndVariables::currentPathfindingEnemyIndex = 0;
+                EnumsAndVariables::enemiesCurrentPathfindingIndex = 0;
                 m_pathFindingIteration = 0; // Start from start again in next frame.
             }
 
@@ -527,7 +525,7 @@ namespace MagneticBall3D
                     {
                         // Player attacked.
                         //BR_INFO("%s", "Player attacked");
-                        m_player->currentHP -= enemy->getDamage();
+                        m_player->takeDamage(enemy->getDamage());
 
                     }
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
@@ -540,7 +538,7 @@ namespace MagneticBall3D
                             {
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
-                                    wrapper.currentHP -= enemy->getDamage();
+                                    wrapper.takeDamage(enemy->getDamage());
                                     break;
                                 }
                             }
@@ -553,7 +551,7 @@ namespace MagneticBall3D
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID() &&
                                    glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->getDamageRadius())
                                 {
-                                    wrapper.currentHP -= enemy->getDamage();
+                                    wrapper.takeDamage(enemy->getDamage());
                                 }
                             }
                         }
@@ -594,7 +592,7 @@ namespace MagneticBall3D
         int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
-            if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::radiusToKillEnemies)
+            if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::playerRadiusToKillEnemies)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
@@ -675,7 +673,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 15.0f;
 
-        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.15f;
+        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.16f;
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.
@@ -724,12 +722,12 @@ namespace MagneticBall3D
             }
         }
 
-        BR_INFO(" Garbage::getActiveCommon: %d", Garbage::getActiveCommonGarbageCount());
+        //BR_INFO(" Garbage::getActiveCommon: %d", Garbage::getActiveCommonGarbageCount());
     }
 
     void BaseMap::updateGUI()
     {
-        m_gui->progressBarHP->setProgress(float(m_player->currentHP) / float(m_player->maxHP));
+        m_gui->progressBarHP->setProgress(float(m_player->getCurrentHP()) / float(m_player->getMaxHP()));
         m_gui->progressBarXP->setProgress(float(m_player->getCurrentLevelExp()) / float(m_player->getCurrentLevelMaxExp()));
     }
 

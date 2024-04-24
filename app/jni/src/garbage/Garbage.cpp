@@ -4,10 +4,10 @@ namespace MagneticBall3D
 {
     int Garbage::m_activeCommonGarbageCount = 0;
 
-    Garbage::Garbage(std::shared_ptr<Beryll::SimpleCollidingObject> so, GarbageType type, int health)
-    : obj(std::move(so)), m_type(type), m_maxHP(health)
+    Garbage::Garbage(std::shared_ptr<Beryll::SimpleCollidingObject> so, GarbageType type, float health)
+    : obj(std::move(so)), m_type(type), m_maxHP(health), m_currentHP(health)
     {
-        currentHP = m_maxHP;
+
     }
 
     Garbage::~Garbage()
@@ -18,7 +18,7 @@ namespace MagneticBall3D
     void Garbage::update()
     {
         // Garbage nas no HP or dropped down from map border.
-        if(currentHP <= 0 || obj->getOrigin().y < -500.0f)
+        if(m_currentHP <= 0 || obj->getOrigin().y < -500.0f)
         {
             disableGarbage();
         }
@@ -36,7 +36,7 @@ namespace MagneticBall3D
 
         m_isEnabled = true;
 
-        currentHP = m_maxHP;
+        m_currentHP = m_maxHP;
     }
 
     void Garbage::disableGarbage()

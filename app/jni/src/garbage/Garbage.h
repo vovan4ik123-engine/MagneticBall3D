@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineHeaders.h"
+#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
@@ -26,7 +27,7 @@ namespace MagneticBall3D
     {
     public:
         Garbage() = delete;
-        Garbage(std::shared_ptr<Beryll::SimpleCollidingObject> so, GarbageType type, int health);
+        Garbage(std::shared_ptr<Beryll::SimpleCollidingObject> so, GarbageType type, float health);
         ~Garbage();
 
         void update();
@@ -39,7 +40,9 @@ namespace MagneticBall3D
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
         bool isMagnetized = false;
 
-        int currentHP = 0;
+        float getCurrentHP() { return m_currentHP; }
+        float getMaxHP() { return m_maxHP; }
+        void takeDamage(float damage) { m_currentHP -= (damage * EnumsAndVariables::garbageDamageTakenMultiplier); }
 
     private:
         bool m_isEnabled = true;
@@ -47,6 +50,7 @@ namespace MagneticBall3D
         GarbageType m_type = GarbageType::NONE;
 
         // Hp.
-        const int m_maxHP = 0;
+        float m_currentHP = 0;
+        const float m_maxHP = 0;
     };
 }

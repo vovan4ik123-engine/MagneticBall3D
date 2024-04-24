@@ -101,7 +101,7 @@ namespace MagneticBall3D
 
             stream.str("");
             stream << "Swipe: " << EnumsAndVariables::mapSwipeCount;
-            stream << "  Time: " << int(EnumsAndVariables::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVariables::mapPlayTimeSec, 60.0f)) << "       ";
+            stream << "  Time: " << int(EnumsAndVariables::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVariables::mapPlayTimeSec, 60.0f)) << "       .";
             m_swipeCount->text = stream.str();
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
