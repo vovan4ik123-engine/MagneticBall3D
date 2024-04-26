@@ -125,15 +125,15 @@ namespace MagneticBall3D
         }
 
         // Handle meteor.
-//        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
-//            m_isMeteor = true;
-//        else
-//            m_isMeteor = false;
+        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
+            m_isMeteor = true;
+        else
+            m_isMeteor = false;
     }
 
     float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque)
     {
-        //BR_INFO("before swipe m_playerMoveSpeed %f", m_playerMoveSpeed);
+        //BR_INFO("Speed before swipe %f", m_playerMoveSpeed);
         // Swipe should control only XZ speed.
         // Y speed controlled by gravity.
         // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
@@ -155,6 +155,7 @@ namespace MagneticBall3D
         newVelocityXZ.y = m_playerLinearVelocity.y;
         m_obj->setLinearVelocity(newVelocityXZ);
         updateSpeed();
+        //BR_INFO("Speed after swipe %f", m_playerMoveSpeed);
 
         if(impulseReduceFactor == 1.0f)
         {
@@ -199,11 +200,11 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float diameter = m_obj->getXZRadius() * 1.4f;
+        float diameter = m_obj->getXZRadius() * 1.3f;
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * diameter)};
-        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.015f;
+        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.012f;
 
-        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.5f,
+        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.6f,
                                                     {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
                                                     orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
     }

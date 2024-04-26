@@ -1,5 +1,4 @@
 #include "BaseEnemy.h"
-#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
@@ -67,7 +66,7 @@ namespace MagneticBall3D
                     {
                         //BR_INFO("%s", " prepareToFirstAttack");
                         m_prepareToFirstAttack = false;
-                        m_prepareToFirstAttackStartTime = Beryll::TimeStep::getSecFromStart();
+                        m_prepareToFirstAttackStartTime = EnumsAndVariables::mapPlayTimeSec;
                     }
                     else
                     {
@@ -122,7 +121,7 @@ namespace MagneticBall3D
         //BR_INFO("%s", "BaseEnemy::attack()");
         rotateToPoint(playerOrigin, true);
         setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::attack, true, true);
-        m_lastAttackTime = Beryll::TimeStep::getSecFromStart();
+        m_lastAttackTime = EnumsAndVariables::mapPlayTimeSec;
         unitState = UnitState::ATTACKING;
     }
 

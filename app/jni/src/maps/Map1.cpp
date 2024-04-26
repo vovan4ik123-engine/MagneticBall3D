@@ -12,27 +12,27 @@ namespace MagneticBall3D
         // Specific for this map only.
         loadPlayer();
         loadEnv();
-        //loadGarbage();
+        loadGarbage();
         loadEnemies();
 
         // Defined in base class. Common for all maps.
         loadShaders();
         handleCamera();
 
-        m_minX = -810.0f;
-        m_maxX = 810.0f;
-        m_minZ = -810.0f;
-        m_maxZ = 810.0f;
-        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 30);
-//        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathWalls.fbx");
-//        for(const auto& wall : walls)
-//        {
-//            m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-//        }
-//
-//        BR_INFO("Map1 pathfinder walls.size() %d", walls.size());
+        m_minX = -800.0f;
+        m_maxX = 800.0f;
+        m_minZ = -800.0f;
+        m_maxZ = 800.0f;
+        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesWalls.fbx");
+        for(const auto& wall : walls)
+        {
+            m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+        }
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathAllowedPositions.fbx");
+        BR_INFO("Map1 pathfinder walls.size() %d", walls.size());
+
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
@@ -57,7 +57,8 @@ namespace MagneticBall3D
                                                             {ImprovementType::PLAYER_TAKE_MORE_XP, 5},
                                                             {ImprovementType::PLAYER_HEAL_AT_NEW_LVL, 5},
                                                             {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP, 5},
-                                                            {ImprovementType::GARBAGE_REDUCE_DAMAGE, 5}});
+                                                            {ImprovementType::GARBAGE_REDUCE_DAMAGE, 5}
+                                                            });
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
@@ -99,7 +100,7 @@ namespace MagneticBall3D
         m_player = std::make_shared<Player>(playerAllBalls[0], 200);
         m_player->setAllModels(playerAllBalls);
 
-        //m_player->setOrigin(glm::vec3(-140.0f, 5.0f,-140.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-550.0f, 131.0f,-223.5f));
         m_player->getObj()->setGravity(EnumsAndVariables::playerGravityOnGround);
         m_player->getObj()->setFriction(EnumsAndVariables::playerFriction);
         m_player->getObj()->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
@@ -118,32 +119,16 @@ namespace MagneticBall3D
         m_staticEnv.push_back(ground);
         ground->setFriction(EnumsAndVariables::staticEnvFriction);
 
-//        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
-//                                                                                       0.0f,
-//                                                                                       false,
-//                                                                                       Beryll::CollisionFlags::STATIC,
-//                                                                                       Beryll::CollisionGroups::BUILDING,
-//                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-//                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
-//                                                                                       Beryll::SceneObjectGroups::BUILDING);
-//
-//        for(const auto& obj : objects1)
-//        {
-//            m_staticEnv.push_back(obj);
-//            m_simpleObjForShadowMap.push_back(obj);
-//            obj->setFriction(EnumsAndVariables::staticEnvFriction);
-//        }
+        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
+                                                                                       0.0f,
+                                                                                       false,
+                                                                                       Beryll::CollisionFlags::STATIC,
+                                                                                       Beryll::CollisionGroups::BUILDING,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                       Beryll::SceneObjectGroups::BUILDING);
 
-        const auto envColliders1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/EnvColliders.fbx",
-                                                                                            0.0f,
-                                                                                            false,
-                                                                                            Beryll::CollisionFlags::STATIC,
-                                                                                            Beryll::CollisionGroups::BUILDING,
-                                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                            Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                            Beryll::SceneObjectGroups::BUILDING);
-
-        for(const auto& obj : envColliders1)
+        for(const auto& obj : objects1)
         {
             m_staticEnv.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
@@ -191,7 +176,7 @@ namespace MagneticBall3D
             m_animatedOrDynamicObjects.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
 
-            obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
+            obj->setDamping(EnumsAndVariables::garbageLinearDamping, EnumsAndVariables::garbageAngularDamping);
             obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
 
         }

@@ -74,7 +74,7 @@ namespace MagneticBall3D
                                                                  m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
 
             auto txt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
-                                                      m_leftDefault, m_progressTop);
+                                                      m_leftDefault, m_progressTop, 20, 5.5f);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
             ImprovementGUIBlock guiBlock(inf, b, txt);
@@ -213,8 +213,8 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_ACCELERATE_FASTER_ON_GROUND)
                     {
-                        EnumsAndVariables::playerImpulseFactorOnGround += 0.1f;
-                        EnumsAndVariables::playerTorqueFactorOnGround += 0.1f;
+                        EnumsAndVariables::playerImpulseFactorOnGround += 0.012f;
+                        EnumsAndVariables::playerTorqueFactorOnGround += 0.006f;
                         BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER_ON_GROUND pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
@@ -226,14 +226,14 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
                     {
-                        EnumsAndVariables::playerImpulseFactorOnBuilding += 0.1f;
-                        EnumsAndVariables::playerTorqueFactorOnBuilding += 0.2f;
+                        EnumsAndVariables::playerImpulseFactorOnBuilding += 0.01f;
+                        EnumsAndVariables::playerTorqueFactorOnBuilding += 0.037f;
                         BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
-                        EnumsAndVariables::playerRadiusToKillEnemies += 8.0f;
-                        EnumsAndVariables::playerMagneticRadius += 8.0f;
+                        EnumsAndVariables::playerRadiusToKillEnemies += 5.0f;
+                        EnumsAndVariables::playerMagneticRadius += 4.0f;
                         EnumsAndVariables::garbageMaxCountMagnetized += 45;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");

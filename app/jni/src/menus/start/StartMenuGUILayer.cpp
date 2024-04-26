@@ -25,7 +25,7 @@ namespace MagneticBall3D
         buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "", 66.3f, 90, 34.0f, 10);
         m_guiObjects.push_back(buttonSettings);
 
-        textCrystals = std::make_shared<Beryll::Text>("Crystals: X X X X", EnumsAndVariables::FontsPath::CREAMY, 2.4f, 60, 0);
+        textCrystals = std::make_shared<Beryll::Text>("Crystals: X X X X", EnumsAndVariables::FontsPath::CREAMY, 2.4f, 60, 0, 30, 3);
         m_guiObjects.push_back(textCrystals);
     }
 

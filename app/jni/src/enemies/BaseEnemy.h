@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineHeaders.h"
+#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
@@ -58,9 +59,9 @@ namespace MagneticBall3D
         float getDamageRadius() { return m_damageRadius; }
         int getGarbageAmountToDie() { return m_garbageAmountToDie; }
         float getPlayerSpeedReduceWhenDie() { return m_reducePlayerSpeedWhenDie; }
-        bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < Beryll::TimeStep::getSecFromStart(); }
-        bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
-        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + m_timeBetweenAttacks) > Beryll::TimeStep::getSecFromStart(); }
+        bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + m_timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
         int getExperienceWhenDie() { return m_experienceWhenDie; }
 
         // Pathfinding.

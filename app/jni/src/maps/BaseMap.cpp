@@ -129,9 +129,9 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
 
-        m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
-        m_simpleObjSunLightShadows->set1Float("sunLightStrength", m_gui->sliderSunPower->getValue());
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", m_gui->sliderSpecularPower->getValue());
+        m_simpleObjSunLightShadows->set1Float("ambientLight", 0.7f);
+        m_simpleObjSunLightShadows->set1Float("sunLightStrength", 0.8f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
         m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
@@ -247,7 +247,7 @@ namespace MagneticBall3D
         {
             m_fingerDownID = -1;
 
-            if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 1.0f)
+            if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 10.0f)
                 return;
 
             ++EnumsAndVariables::mapSwipeCount;
@@ -268,39 +268,35 @@ namespace MagneticBall3D
             glm::vec3 powerForImpulse{0.0f};
             glm::vec3 powerForTorque{0.0f};
             float garbageImpulseMultiplier = 0.0f;
+            float swipeFactorBasedOnAngleAndSpeed = 0.0f;
+            if(m_player->getMoveSpeed() > 0.0f)
+            {
+                float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
+                swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
+
+                if(moveToSwipeAngle > 2.6f) // > 150 degrees.
+                    swipeFactorBasedOnAngleAndSpeed *= 1.35f;
+            }
+
             if(m_player->getIsOnGround())
             {
                 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
-
-                float swipeFactorBasedOnAngleAndSpeed = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(powerForImpulse)) *
-                                                        (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                garbageImpulseMultiplier = 0.75f;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
             }
             else if(m_player->getIsOnBuilding())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
+                powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding * m_player->getObj()->getXZRadius();
-                garbageImpulseMultiplier = 0.4f;
             }
             else // if(m_player->getIsOnAir())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnAir;
                 powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnAir;
-                garbageImpulseMultiplier = 0.2f;
             }
 
-            float factorImpulseApplied = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
-
-            // Apply impulse to garbage too.
-            glm::vec3 impulseForGarbage = powerForImpulse * factorImpulseApplied * EnumsAndVariables::playerMassToGarbageMassRatio;
-            impulseForGarbage *= garbageImpulseMultiplier;
-            for(const auto& wrapper : m_allGarbage)
-            {
-                if(wrapper.isMagnetized)
-                    wrapper.obj->applyCentralImpulse(impulseForGarbage);
-            }
+            m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
         }
     }
 
@@ -333,6 +329,7 @@ namespace MagneticBall3D
             {
                 ++EnumsAndVariables::garbageCountMagnetized;
                 wrapper.isMagnetized = true;
+                wrapper.obj->activate();
             }
         }
 
@@ -341,21 +338,14 @@ namespace MagneticBall3D
             gravPower = EnumsAndVariables::garbageMaxGravityPower;
 
         //int resetCount = 0;
-        float speedToResetVelocity = m_player->getMoveSpeed() * 1.6f;
+        float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
 
         for(auto& wrapper : m_allGarbage)
         {
             if(wrapper.isMagnetized)
             {
                 glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
-                if(Beryll::Physics::getIsCollision(m_player->getObj()->getID(), wrapper.obj->getID()))
-                {
-                    wrapper.obj->setGravity(-(gravDir * gravPower * 0.05f), false, false);
-                }
-                else
-                {
-                    wrapper.obj->setGravity(gravDir * gravPower, false, true);
-                }
+                wrapper.obj->setGravity(gravDir * gravPower, false, false);
 
                 // Stop garbage if it stats rotating around player too fast.
                 const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
@@ -396,7 +386,7 @@ namespace MagneticBall3D
 
             for(const glm::ivec2& point : m_pathAllowedPositionsXZ)
             {
-                distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(point));
+                distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y)));
 
                 // 1.
                 if(distanceToCurrent < distanceToClosestPoint)
@@ -716,6 +706,8 @@ namespace MagneticBall3D
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
             {
                 wrapper.enableGarbage();
+                spawnPoint.x += (Beryll::RandomGenerator::getFloat() - 0.5f) * 6.0f;
+                spawnPoint.z += (Beryll::RandomGenerator::getFloat() - 0.5f) * 4.0f;
                 wrapper.obj->setOrigin(spawnPoint);
 
                 ++spawnedCount;
@@ -736,7 +728,7 @@ namespace MagneticBall3D
         if(m_player->getIsOnJumpPad())
         {
             BR_INFO("%s", "Apply jumppad.");
-            const float powerToOneKg = m_gui->sliderJumppad->getValue();
+            const float powerToOneKg = EnumsAndVariables::jumpPadPower; // m_gui->sliderJumppad->getValue();
 
             m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
 

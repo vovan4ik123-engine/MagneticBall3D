@@ -21,7 +21,11 @@ namespace MagneticBall3D
         void reduceSpeed(float speedToReduce);
         float getMoveSpeed() { return m_playerMoveSpeed; }
         float getMoveSpeedXZ() { return m_playerMoveSpeedXZ; }
-        const glm::vec3& getMoveDir() { return m_playerMoveDir; }
+        const glm::vec3& getMoveDir()
+        {
+            BR_ASSERT((!glm::isnan(m_playerMoveSpeed) && m_playerMoveSpeed > 0.0f), "%s", "You call getMoveDir() when m_playerMoveSpeed = 0.");
+            return m_playerMoveDir;
+        }
         const glm::vec3& getMoveDirXZ() { return m_playerMoveDirXZ; }
         bool getIsOnGround() { return m_isOnGround; }
         bool getIsOnBuilding() { return m_isOnBuilding; }
