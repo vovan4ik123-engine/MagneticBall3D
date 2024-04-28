@@ -10,6 +10,8 @@ namespace MagneticBall3D
     // https://en.wikipedia.org/wiki/A*_search_algorithm
     struct Node
     {
+        Node(glm::ivec2 coords, Node* par) : coordinates(coords), parent(par) {}
+
         int G = 0; // Score from start to this node.
         int H = 0; // Estimated score from this node to end.
         int F = 0; // G + H.
@@ -19,8 +21,6 @@ namespace MagneticBall3D
 
         glm::ivec2 coordinates{0, 0};
         Node* parent = nullptr;
-
-        Node(glm::ivec2 coords, Node* par) : coordinates(coords), parent(par) {}
     };
 
     class AStar final

@@ -4,6 +4,7 @@
 #include "enemies/CopWithPistolShield.h"
 #include "enemies/CopWithGrenadeLauncher.h"
 #include "enemies/Tank.h"
+#include "enemies/Sniper.h"
 
 namespace MagneticBall3D
 {
@@ -14,6 +15,25 @@ namespace MagneticBall3D
         loadEnv();
         //loadGarbage();
         //loadEnemies();
+
+        Sniper::sniperPositions = std::vector<SniperPosAndRange>{{glm::vec3(79.0f, 260.0f, -644.0f), 2500.0f},
+                                                                 {glm::vec3(68.0f, 257.0f, -448.0f), 2500.0f},
+                                                                 {glm::vec3(65.0f, 219.0f, -265.0f), 2500.0f},
+                                                                 {glm::vec3(62.0f, 255.0f, -122.0f), 2500.0f},
+                                                                 {glm::vec3(77.0f, 255.0f, -53.0f), 2500.0f},
+                                                                 {glm::vec3(127.0f, 255.0f, -55.0f), 2500.0f},
+                                                                 {glm::vec3(270.0f, 220.0f, -62.5f), 2500.0f},
+                                                                 {glm::vec3(313.0f, 220.0f, -63.0f), 2500.0f},
+                                                                 {glm::vec3(460.0f, 248.0f, -59.0f), 2500.0f},
+                                                                 {glm::vec3(644.5f, 260.5f, -64.0f), 2500.0f},
+                                                                 {glm::vec3(64.0f, 309.5f, 429.0f), 2500.0f},
+                                                                 {glm::vec3(64.0f, 309.5f, 490.0f), 2500.0f},
+                                                                 {glm::vec3(176.0f, 309.5f, 403.5f), 2500.0f},
+
+
+
+
+        };
 
         // Defined in base class. Common for all maps.
         loadShaders();
@@ -531,7 +551,7 @@ namespace MagneticBall3D
                     ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 15 && enemy->getUnitType() == UnitType::SNIPER)
+                else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
@@ -580,7 +600,7 @@ namespace MagneticBall3D
                     ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 15 && enemy->getUnitType() == UnitType::SNIPER)
+                else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
@@ -629,7 +649,7 @@ namespace MagneticBall3D
                     ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 15 && enemy->getUnitType() == UnitType::SNIPER)
+                else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
@@ -658,6 +678,8 @@ namespace MagneticBall3D
 
             BR_INFO("prepare wave 12. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
+
+        bool sortSnipersPositions = true;
 
         // Spawn enemies on ground.
         int spawnedCount = 0;
@@ -696,9 +718,42 @@ namespace MagneticBall3D
                 }
                 else
                 {
-                    // Spawn snipers on buildings prepared positions.
+                    if(sortSnipersPositions)
+                    {
+                        sortSnipersPositions = false;
 
+                        // Sort by distance from player.
+                        std::sort(Sniper::sniperPositions.begin(), Sniper::sniperPositions.end(),
+                                  [&](const SniperPosAndRange& pos1, const SniperPosAndRange& pos2)
+                                  { return glm::distance(m_player->getObj()->getOrigin(), pos1.position) < glm::distance(m_player->getObj()->getOrigin(), pos2.position); });
 
+                        for(const SniperPosAndRange& posAndRange : Sniper::sniperPositions)
+                        {
+                            BR_INFO("Distance from player to sniper: %d", glm::distance(m_player->getObj()->getOrigin(), posAndRange.position));
+                        }
+                    }
+
+                    for(SniperPosAndRange& posAndRange : Sniper::sniperPositions)
+                    {
+                        Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_player->getObj()->getOrigin(),
+                                                                                                  posAndRange.position,
+                                                                                                  Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                                  Beryll::CollisionGroups::BUILDING);
+
+                        // Check position in free + not closest than 150m + sniper see player(rayBuildingHit does not hit).
+                        if(posAndRange.isFreePosition &&
+                           glm::distance(m_player->getObj()->getOrigin(), posAndRange.position) > 150.0f &&
+                           !rayBuildingHit)
+                        {
+                            posAndRange.isFreePosition = false;
+
+                            enemy->enableEnemy();
+                            enemy->disableDraw();
+                            enemy->setOrigin(posAndRange.position);
+
+                            break;
+                        }
+                    }
                 }
             }
         }

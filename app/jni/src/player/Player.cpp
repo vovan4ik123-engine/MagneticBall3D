@@ -75,8 +75,8 @@ namespace MagneticBall3D
             }
 
             if(m_isOnBuildingWall && m_isOnAir &&
-               m_lastTimeOnGround + 1.0f < EnumsAndVariables::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 1.0f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 1 sec.
+               m_lastTimeOnGround + 0.85f < EnumsAndVariables::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 0.85f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
             {
                 m_obj->resetVelocities();
             }
