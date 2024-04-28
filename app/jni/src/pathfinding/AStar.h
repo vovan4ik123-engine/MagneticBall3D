@@ -20,7 +20,7 @@ namespace MagneticBall3D
         glm::ivec2 coordinates{0, 0};
         Node* parent = nullptr;
 
-        Node(glm::ivec2 coords, Node* par = nullptr) : coordinates(coords), parent(par) {}
+        Node(glm::ivec2 coords, Node* par) : coordinates(coords), parent(par) {}
     };
 
     class AStar final

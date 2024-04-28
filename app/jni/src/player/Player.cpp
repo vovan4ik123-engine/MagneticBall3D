@@ -9,7 +9,7 @@ namespace MagneticBall3D
         m_obj->enableUpdate();
         m_obj->enableDraw();
 
-        //BR_ASSERT((m_maxLevel == m_expPerLevel.size()), "%s", "m_maxLevel != m_expNeedPerLevel.size()");
+        m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
     }
 
     Player::~Player()
@@ -25,7 +25,7 @@ namespace MagneticBall3D
         // Update gravity.
         if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
         {
-            if(m_lastTimeOnJumpPad + 1.0f < Beryll::TimeStep::getSecFromStart())
+            if(m_lastTimeOnJumpPad + 1.0f < EnumsAndVariables::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
                 m_isOnJumpPad = true;
@@ -36,23 +36,55 @@ namespace MagneticBall3D
             }
 
             m_isOnGround = false;
-            m_isOnBuilding = false;
+            m_isOnBuildingRoof = false;
+            m_isOnBuildingWall = false;
             m_isOnAir = false;
-            m_lastTimeOnJumpPad = Beryll::TimeStep::getSecFromStart();
+            m_lastTimeOnJumpPad = EnumsAndVariables::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
-            if(!m_isOnBuilding)
+            if(!m_isOnBuildingRoof && !m_isOnBuildingWall)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnBuilding);
                 m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
             }
 
+            bool collisionWithWall = false;
+            std::vector<const int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING);
+
+            std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), buildingsID);
+            for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
+            {
+                if( ! BeryllUtils::Common::getIsVectorsParallelInSameDir(point.second, BeryllConstants::worldUp) &&
+                   BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp) > 0.52f) // < 30 degrees.
+                {
+                    collisionWithWall = true;
+                    break;
+                }
+            }
+
+            if(collisionWithWall)
+            {
+                m_isOnBuildingRoof = false;
+                m_isOnBuildingWall = true;
+            }
+            else
+            {
+                m_isOnBuildingRoof = true;
+                m_isOnBuildingWall = false;
+            }
+
+            if(m_isOnBuildingWall && m_isOnAir &&
+               m_lastTimeOnGround + 1.0f < EnumsAndVariables::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 1.0f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 1 sec.
+            {
+                m_obj->resetVelocities();
+            }
+
             m_isOnGround = false;
-            m_isOnBuilding = true;
             m_isOnAir = false;
             m_isOnJumpPad = false;
-            m_lastTimeOnBuilding = Beryll::TimeStep::getSecFromStart();
+            m_lastTimeOnBuilding = EnumsAndVariables::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
@@ -63,20 +95,23 @@ namespace MagneticBall3D
             }
 
             m_isOnGround = true;
-            m_isOnBuilding = false;
+            m_isOnBuildingRoof = false;
+            m_isOnBuildingWall = false;
             m_isOnAir = false;
             m_isOnJumpPad = false;
+            m_lastTimeOnGround = EnumsAndVariables::mapPlayTimeSec;
         }
         else
         {
-            if(m_lastTimeOnBuilding + m_applyAirGravityDelay < Beryll::TimeStep::getSecFromStart())
+            if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnumsAndVariables::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.5f);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.4f);
             }
 
             m_isOnGround = false;
-            m_isOnBuilding = false;
+            m_isOnBuildingRoof = false;
+            m_isOnBuildingWall = false;
             m_isOnAir = true;
             m_isOnJumpPad = false;
         }
@@ -101,6 +136,11 @@ namespace MagneticBall3D
             int levelExpOverflow = m_currentLevelExp - m_currentLevelMaxExp;
             m_currentLevelExp = std::max(0, levelExpOverflow);
             BR_INFO("Reset level exp to: %d", m_currentLevelExp);
+
+            if(m_currentLevel < m_expPerLevel.size())
+                m_currentLevelMaxExp = m_expPerLevel[m_currentLevel];
+            else
+                m_currentLevelMaxExp = m_expPerLevel.back();
         }
     }
 
@@ -200,12 +240,12 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float diameter = m_obj->getXZRadius() * 1.3f;
+        float diameter = m_obj->getXZRadius() * 1.0f;
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * diameter)};
-        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.012f;
+        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.01f;
 
         Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.6f,
-                                                    {0.98f, 0.75f, 0.0f, 1.0f}, {0.5f, 0.066f, 0.0f, 0.0f},
+                                                    {0.98f, 0.75f, 0.0f, 0.6f}, {0.5f, 0.066f, 0.0f, 0.0f},
                                                     orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
     }
 

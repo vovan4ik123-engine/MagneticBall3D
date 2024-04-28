@@ -28,7 +28,8 @@ namespace MagneticBall3D
         }
         const glm::vec3& getMoveDirXZ() { return m_playerMoveDirXZ; }
         bool getIsOnGround() { return m_isOnGround; }
-        bool getIsOnBuilding() { return m_isOnBuilding; }
+        bool getIsOnBuildingRoof() { return m_isOnBuildingRoof; }
+        bool getIsOnBuildingWall() { return m_isOnBuildingWall; }
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
@@ -68,10 +69,12 @@ namespace MagneticBall3D
 
         // Gravity.
         float m_lastTimeOnBuilding = 0.0f; // Sec.
+        float m_lastTimeOnGround = 0.0f; // Sec.
         float m_lastTimeOnJumpPad = 0.0f; // Sec.
         const float m_applyAirGravityDelay = 0.5f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
-        bool m_isOnBuilding = false;
+        bool m_isOnBuildingRoof = false;
+        bool m_isOnBuildingWall = false;
         bool m_isOnAir = false;
         bool m_isOnJumpPad = false;
 
@@ -87,6 +90,8 @@ namespace MagneticBall3D
         // Level. XP.
         int m_currentLevel = 0;
         int m_currentLevelExp = 0;
+        const std::array<int, 19> m_expPerLevel{100, 150, 200, 250, 300, 350, 400, 450, 500, 550,
+                                                600, 650, 700, 750, 800, 850, 900, 950, 1000};
         int m_currentLevelMaxExp = 100;
         bool m_nextLevelAchieved = false;
     };

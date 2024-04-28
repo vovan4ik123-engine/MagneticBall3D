@@ -15,6 +15,11 @@ namespace MagneticBall3D
         EnumsAndVariables::mapPlayTimeSec = 0.0f;
         EnumsAndVariables::mapSwipeCount = 0;
 
+        EnumsAndVariables::gameOnPause = false;
+        EnumsAndVariables::improvementSystemOnScreen = false;
+
+        Beryll::Physics::enableSimulation();
+
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
         //BR_INFO(" %f", );

@@ -41,6 +41,7 @@ namespace MagneticBall3D
 
     void Garbage::disableGarbage()
     {
+        obj->resetVelocities();
         obj->disableDraw();
         obj->disableUpdate();
         obj->disableCollisionMesh();

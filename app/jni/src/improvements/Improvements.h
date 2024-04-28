@@ -10,7 +10,7 @@ namespace MagneticBall3D
     {
         NONE,
         PLAYER_MAX_SPEED,
-        PLAYER_ACCELERATE_FASTER_ON_GROUND,
+        PLAYER_ACCELERATE_FASTER,
         PLAYER_MOVE_FASTER_THROUGH_ENEMIES,
         PLAYER_BETTER_CLUTCH_WITH_BUILDINGS,
         PLAYER_INCREASE_SIZE,
@@ -79,8 +79,8 @@ namespace MagneticBall3D
         // Positions of GUI block in % of screen. Range 0.0f...100.0f.
         // To create blocks.
         float m_leftDefault = 0.0f;
-        float m_totalWidth = 30.0f;
-        float m_buttonTop = 35.0f;
+        float m_buttonWidth = 30.0f;
+        float m_buttonTop = 25.0f;
         float m_buttonHeight = 25.0f;
         float m_progressTop = 55.0f;
         float m_progressHeight = 5.0f;

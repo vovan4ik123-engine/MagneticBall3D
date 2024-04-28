@@ -71,15 +71,15 @@ namespace MagneticBall3D
         while(openSetCount > 0)
         {
             current = nullptr;
-            for(Node& n : m_allNodesCreated)
+            for(Node& node : m_allNodesCreated)
             {
-                if(current == nullptr && n.nodeInOpenSet)
+                if(current == nullptr && node.nodeInOpenSet)
                 {
-                    current = &n;
+                    current = &node;
                 }
-                else if(n.nodeInOpenSet && n.F <= current->F)
+                else if(node.nodeInOpenSet && node.F <= current->F)
                 {
-                    current = &n;
+                    current = &node;
                 }
             }
 

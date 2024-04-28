@@ -32,13 +32,13 @@ namespace MagneticBall3D
 
         if(!m_allowedPointsToSpawnGarbage.empty() &&
            Garbage::getActiveCommonGarbageCount() < EnumsAndVariables::garbageCommonMaxActive &&
-           EnumsAndVariables::garbageCommonSpawnTime + EnumsAndVariables::garbageCommonSpawnDelay < Beryll::TimeStep::getSecFromStart())
+           EnumsAndVariables::garbageCommonSpawnTime + EnumsAndVariables::garbageCommonSpawnDelay < EnumsAndVariables::mapPlayTimeSec)
         {
             const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
             spawnGarbage(EnumsAndVariables::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
-            EnumsAndVariables::garbageCommonSpawnTime = Beryll::TimeStep::getSecFromStart();
+            EnumsAndVariables::garbageCommonSpawnTime = EnumsAndVariables::mapPlayTimeSec;
         }
 
         handleJumpPads();
@@ -95,7 +95,6 @@ namespace MagneticBall3D
         }
 
         handleEnemiesAttacks();
-        killEnemies();
 
         for(auto& garbage : m_allGarbage)
         {
@@ -104,6 +103,8 @@ namespace MagneticBall3D
         }
 
         magnetizeGarbageAndUpdateGravity();
+
+        killEnemies();
 
         handleCamera(); // Last call before draw.
 
@@ -267,28 +268,37 @@ namespace MagneticBall3D
 
             glm::vec3 powerForImpulse{0.0f};
             glm::vec3 powerForTorque{0.0f};
-            float garbageImpulseMultiplier = 0.0f;
             float swipeFactorBasedOnAngleAndSpeed = 0.0f;
-            if(m_player->getMoveSpeed() > 0.0f)
+            if(m_player->getMoveSpeed() > 2.0f)
             {
-                float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
-                swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
+                if( ! BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
+                {
+                    float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
+                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
 
-                if(moveToSwipeAngle > 2.6f) // > 150 degrees.
-                    swipeFactorBasedOnAngleAndSpeed *= 1.35f;
+                    if(moveToSwipeAngle > 2.6f) // > 150 degrees.
+                        swipeFactorBasedOnAngleAndSpeed *= 1.8f;
+                }
             }
 
             if(m_player->getIsOnGround())
             {
                 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround * m_player->getObj()->getXZRadius();
+                powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
             }
-            else if(m_player->getIsOnBuilding())
+            else if(m_player->getIsOnBuildingRoof())
             {
-                powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuilding;
+                powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuildingRoof;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuilding * m_player->getObj()->getXZRadius();
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingRoof * m_player->getObj()->getXZRadius();
+                powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
+            }
+            else if(m_player->getIsOnBuildingWall())
+            {
+                powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuildingWall;
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingWall * m_player->getObj()->getXZRadius();
             }
             else // if(m_player->getIsOnAir())
             {
@@ -582,7 +592,9 @@ namespace MagneticBall3D
         int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
-            if(enemy->getIsEnabledUpdate() && glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::playerRadiusToKillEnemies)
+            if(enemy->getIsEnabledUpdate() &&
+               enemy->getGarbageAmountToDie() < EnumsAndVariables::garbageCountMagnetized &&
+               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::playerRadiusToKillEnemies)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
@@ -638,10 +650,10 @@ namespace MagneticBall3D
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
         }
 
-        if(EnumsAndVariables::cameraRotateTime + EnumsAndVariables::cameraRotateDelay < Beryll::TimeStep::getSecFromStart() &&
+        if(EnumsAndVariables::cameraRotateTime + EnumsAndVariables::cameraRotateDelay < EnumsAndVariables::mapPlayTimeSec &&
            !glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
         {
-            EnumsAndVariables::cameraRotateTime = Beryll::TimeStep::getSecFromStart();
+            EnumsAndVariables::cameraRotateTime = EnumsAndVariables::mapPlayTimeSec;
 
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
@@ -728,7 +740,7 @@ namespace MagneticBall3D
         if(m_player->getIsOnJumpPad())
         {
             BR_INFO("%s", "Apply jumppad.");
-            const float powerToOneKg = EnumsAndVariables::jumpPadPower; // m_gui->sliderJumppad->getValue();
+            const float powerToOneKg = EnumsAndVariables::jumpPadPower;
 
             m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
 

@@ -19,10 +19,10 @@ namespace MagneticBall3D
                 texturePath = "GUI/improvements/PLAYER_MAX_SPEED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_MAX_SPEED.");
             }
-            else if(inf.type == ImprovementType::PLAYER_ACCELERATE_FASTER_ON_GROUND)
+            else if(inf.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
             {
-                texturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER_ON_GROUND.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_ACCELERATE_FASTER_ON_GROUND.");
+                texturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_ACCELERATE_FASTER.");
             }
             else if(inf.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
             {
@@ -71,7 +71,7 @@ namespace MagneticBall3D
             }
 
             auto b = std::make_shared<Beryll::ButtonWithTexture>(texturePath.c_str(), "",
-                                                                 m_leftDefault, m_buttonTop, m_totalWidth, m_buttonHeight);
+                                                                 m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
 
             auto txt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
                                                       m_leftDefault, m_progressTop, 20, 5.5f);
@@ -211,11 +211,13 @@ namespace MagneticBall3D
                         EnumsAndVariables::playerMaxSpeedXZ += 10.0f;
                         BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed.");
                     }
-                    else if(block.info.type == ImprovementType::PLAYER_ACCELERATE_FASTER_ON_GROUND)
+                    else if(block.info.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
                     {
-                        EnumsAndVariables::playerImpulseFactorOnGround += 0.012f;
-                        EnumsAndVariables::playerTorqueFactorOnGround += 0.006f;
-                        BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER_ON_GROUND pressed.");
+                        EnumsAndVariables::playerImpulseFactorOnGround += 0.01f;
+                        EnumsAndVariables::playerTorqueFactorOnGround += 0.01f;
+                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.01f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.01f;
+                        BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
                     {
@@ -226,14 +228,13 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
                     {
-                        EnumsAndVariables::playerImpulseFactorOnBuilding += 0.01f;
-                        EnumsAndVariables::playerTorqueFactorOnBuilding += 0.037f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.02f;
                         BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
-                        EnumsAndVariables::playerRadiusToKillEnemies += 5.0f;
-                        EnumsAndVariables::playerMagneticRadius += 4.0f;
+                        EnumsAndVariables::playerRadiusToKillEnemies += 3.5f;
+                        EnumsAndVariables::playerMagneticRadius += 4.5f;
                         EnumsAndVariables::garbageMaxCountMagnetized += 45;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");
@@ -252,7 +253,7 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_TAKE_MORE_XP)
                     {
-                        EnumsAndVariables::playerXPMultiplier += 0.1f;
+                        EnumsAndVariables::playerXPMultiplier += 0.05f;
                         BR_INFO("%s", "Block PLAYER_TAKE_MORE_XP pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
