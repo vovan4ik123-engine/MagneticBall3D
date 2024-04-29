@@ -40,14 +40,14 @@ namespace EnumsAndVariables
     inline float playerMagneticRadius = 25.0f;
     inline float playerImpulseFactorOnGround = 0.09f;
     inline float playerTorqueFactorOnGround = 0.08f;
-    inline float playerImpulseFactorOnBuildingRoof = 0.08f;
-    inline float playerTorqueFactorOnBuildingRoof = 0.08f;
-    inline float playerImpulseFactorOnBuildingWall = 0.12f;
-    inline float playerTorqueFactorOnBuildingWall = 0.22f;
+    inline float playerImpulseFactorOnBuildingRoof = 0.06f;
+    inline float playerTorqueFactorOnBuildingRoof = 0.06f;
+    inline float playerImpulseFactorOnBuildingWall = 0.15f;
+    inline float playerTorqueFactorOnBuildingWall = 0.25f;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
     constexpr inline float playerLinearDamping = 0.1f;
-    constexpr inline float playerAngularDamping = 0.15f;
+    constexpr inline float playerAngularDamping = 0.05f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
@@ -71,15 +71,15 @@ namespace EnumsAndVariables
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -70.0f, 0.0f};
-    inline int garbageMaxCountMagnetized = 80;
+    inline int garbageMaxCountMagnetized = 70;
     inline int garbageCountMagnetized = 0;
     inline float garbageDamageTakenMultiplier = 1.0f;
-    constexpr inline int garbageCommonMaxActive = 100; // Limit of active GarbageType::COMMON on map.
+    constexpr inline int garbageCommonMaxActive = 500; // Limit of active GarbageType::COMMON on map.
     constexpr inline float garbageCommonSpawnMinDistance = 50.0f;
     constexpr inline float garbageCommonSpawnMaxDistance = 300.0f;
     inline float garbageCommonSpawnTime = 0.0f; // Sec.
-    inline float garbageCommonSpawnDelay = 2.0f; // Sec.
-    inline int garbageCommonSpawnCount = 4.0f;
+    inline float garbageCommonSpawnDelay = 1.0f; // Sec.
+    inline int garbageCommonSpawnCount = 2.0f;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);

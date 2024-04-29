@@ -13,8 +13,8 @@ namespace MagneticBall3D
         // Specific for this map only.
         loadPlayer();
         loadEnv();
-        //loadGarbage();
-        //loadEnemies();
+        loadGarbage();
+        loadEnemies();
 
         Sniper::sniperPositions = std::vector<SniperPosAndRange>{{glm::vec3(79.0f, 260.0f, -644.0f), 2500.0f},
                                                                  {glm::vec3(68.0f, 257.0f, -448.0f), 2500.0f},
@@ -28,11 +28,7 @@ namespace MagneticBall3D
                                                                  {glm::vec3(644.5f, 260.5f, -64.0f), 2500.0f},
                                                                  {glm::vec3(64.0f, 309.5f, 429.0f), 2500.0f},
                                                                  {glm::vec3(64.0f, 309.5f, 490.0f), 2500.0f},
-                                                                 {glm::vec3(176.0f, 309.5f, 403.5f), 2500.0f},
-
-
-
-
+                                                                 {glm::vec3(176.0f, 309.5f, 403.5f), 2500.0f}
         };
 
         // Defined in base class. Common for all maps.
@@ -50,7 +46,7 @@ namespace MagneticBall3D
             m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
-        BR_INFO("Map1 pathfinder walls.size() %d", walls.size());
+        BR_INFO("Map1 pathfinder walls: %d", walls.size());
 
         std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
@@ -59,7 +55,7 @@ namespace MagneticBall3D
             m_pathAllowedPositionsXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
         }
 
-        BR_INFO("Map1 pathfinder m_pathGridXZ.size() %d", m_pathAllowedPositionsXZ.size());
+        BR_INFO("Map1 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
         m_allowedPointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_allowedPointsToSpawnGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
@@ -178,72 +174,31 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage3.fbx",
-                                                                                       EnumsAndVariables::garbageMass,
-                                                                                       false,
-                                                                                       Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::GARBAGE,
-                                                                                       Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                       Beryll::SceneObjectGroups::GARBAGE);
-
-        for(const auto& obj : objects1)
+        for(int i = 0; i < 20; ++i)
         {
-            m_allGarbage.emplace_back(obj, GarbageType::COMMON, 30);
-            m_allGarbage.back().disableGarbage();
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
+                                                                                           EnumsAndVariables::garbageMass,
+                                                                                           false,
+                                                                                           Beryll::CollisionFlags::DYNAMIC,
+                                                                                           Beryll::CollisionGroups::GARBAGE,
+                                                                                           Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                           Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                           Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                           Beryll::SceneObjectGroups::GARBAGE);
 
-            m_animatedOrDynamicObjects.push_back(obj);
-            m_simpleObjForShadowMap.push_back(obj);
+            for(const auto& obj : garbageCommon)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 30);
+                m_allGarbage.back().disableGarbage();
 
-            obj->setDamping(EnumsAndVariables::garbageLinearDamping, EnumsAndVariables::garbageAngularDamping);
-            obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
 
+                obj->setDamping(EnumsAndVariables::garbageLinearDamping, EnumsAndVariables::garbageAngularDamping);
+                obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
+
+            }
         }
-
-//        const auto objects2 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage2.fbx",
-//                                                                                       EnumsAndVariables::garbageMass,
-//                                                                                       false,
-//                                                                                       Beryll::CollisionFlags::DYNAMIC,
-//                                                                                       Beryll::CollisionGroups::GARBAGE,
-//                                                                                       Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-//                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-//                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
-//                                                                                       Beryll::SceneObjectGroups::GARBAGE);
-//
-//        for(const auto& obj : objects2)
-//        {
-//            m_allGarbage.emplace_back(obj, GarbageType::COMMON, 10);
-//            m_allGarbage.back().disableGarbage();
-//
-//            m_animatedOrDynamicObjects.push_back(obj);
-//            m_simpleObjForShadowMap.push_back(obj);
-//
-//            obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
-//            obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
-//        }
-
-//        const auto objects3 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/prototypeMap/Garbage1.fbx",
-//                                                                                       EnumsAndVariables::garbageMass,
-//                                                                                       false,
-//                                                                                       Beryll::CollisionFlags::DYNAMIC,
-//                                                                                       Beryll::CollisionGroups::GARBAGE,
-//                                                                                       Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-//                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-//                                                                                       Beryll::CollisionGroups::ENEMY_ATTACK,
-//                                                                                       Beryll::SceneObjectGroups::GARBAGE);
-//
-//        for(const auto& obj : objects3)
-//        {
-//            m_allGarbage.emplace_back(obj, GarbageType::COMMON, 10);
-//            m_allGarbage.back().disableGarbage();
-//
-//            m_animatedOrDynamicObjects.push_back(obj);
-//            m_simpleObjForShadowMap.push_back(obj);
-//
-//            obj->setDamping(EnumsAndVariables::garbageDamping, EnumsAndVariables::garbageDamping);
-//            obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
-//        }
     }
 
     void Map1::loadEnemies()

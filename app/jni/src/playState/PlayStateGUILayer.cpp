@@ -48,7 +48,7 @@ namespace MagneticBall3D
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 96, 100, 4);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 96, 100, 4.5f);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarXP->setProgressColor(0.0f, 0.2275f, 1.0f, 1.0f);

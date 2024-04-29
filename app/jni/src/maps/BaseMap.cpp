@@ -66,7 +66,7 @@ namespace MagneticBall3D
         if(EnumsAndVariables::improvementSystemOnScreen || EnumsAndVariables::gameOnPause)
             return;
 
-        const float distanceToEnableObjects = m_cameraDistance * 0.65f;
+        const float distanceToEnableObjects = m_cameraDistance * 1.5f;
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
@@ -78,7 +78,7 @@ namespace MagneticBall3D
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.1f))
+                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.2f))
                         so->enableDraw();
                     else
                         so->disableDraw();
@@ -132,7 +132,7 @@ namespace MagneticBall3D
 
         m_simpleObjSunLightShadows->set1Float("ambientLight", 0.7f);
         m_simpleObjSunLightShadows->set1Float("sunLightStrength", 0.8f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 2.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
         m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
@@ -154,6 +154,8 @@ namespace MagneticBall3D
             }
         }
 
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+
         for(const auto& staticObj : m_staticEnv)
         {
             if(staticObj->getIsEnabledDraw())
@@ -170,7 +172,7 @@ namespace MagneticBall3D
         m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_animatedObjSunLightShadows->set1Float("ambientLight", 0.65f);
-        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
+        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
@@ -675,7 +677,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 15.0f;
 
-        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.16f;
+        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.18f;
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.
@@ -719,7 +721,7 @@ namespace MagneticBall3D
             {
                 wrapper.enableGarbage();
                 spawnPoint.x += (Beryll::RandomGenerator::getFloat() - 0.5f) * 6.0f;
-                spawnPoint.z += (Beryll::RandomGenerator::getFloat() - 0.5f) * 4.0f;
+                spawnPoint.z += (Beryll::RandomGenerator::getFloat() - 0.5f) * 8.0f;
                 wrapper.obj->setOrigin(spawnPoint);
 
                 ++spawnedCount;

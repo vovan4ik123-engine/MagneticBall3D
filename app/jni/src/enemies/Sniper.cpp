@@ -2,6 +2,8 @@
 
 namespace MagneticBall3D
 {
+    std::vector<SniperPosAndRange> Sniper::sniperPositions{};
+
     Sniper::Sniper(const char* filePath,
                                  float collisionMassKg,
                                  bool wantCollisionCallBack,

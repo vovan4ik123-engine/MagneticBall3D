@@ -56,7 +56,7 @@ namespace MagneticBall3D
             for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
             {
                 if( ! BeryllUtils::Common::getIsVectorsParallelInSameDir(point.second, BeryllConstants::worldUp) &&
-                   BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp) > 0.52f) // < 30 degrees.
+                   BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp) > 0.785f) // > 45 degrees.
                 {
                     collisionWithWall = true;
                     break;
@@ -74,11 +74,12 @@ namespace MagneticBall3D
                 m_isOnBuildingWall = false;
             }
 
-            if(m_isOnBuildingWall && m_isOnAir &&
-               m_lastTimeOnGround + 0.85f < EnumsAndVariables::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 0.85f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
+            if(m_isOnBuildingWall &&
+               m_lastTimeOnGround + 0.8f < EnumsAndVariables::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 0.8f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
             {
                 m_obj->resetVelocities();
+                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 60.0f);
             }
 
             m_isOnGround = false;
@@ -106,7 +107,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnumsAndVariables::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.4f);
+                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.3f);
             }
 
             m_isOnGround = false;
@@ -240,11 +241,11 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float diameter = m_obj->getXZRadius() * 1.0f;
+        float diameter = m_obj->getXZRadius() * 1.1f;
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * diameter)};
-        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.01f;
+        float sizeBegin = diameter + EnumsAndVariables::garbageCountMagnetized * 0.02f;
 
-        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.6f,
+        Beryll::ParticleSystem::EmitCubesFromCenter(5, 1, sizeBegin, sizeBegin * 0.35f,
                                                     {0.98f, 0.75f, 0.0f, 0.6f}, {0.5f, 0.066f, 0.0f, 0.0f},
                                                     orig, glm::vec3{0.0f, 100.0f, 0.0f}, 5.0f);
     }

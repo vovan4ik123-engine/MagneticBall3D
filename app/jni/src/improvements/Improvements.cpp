@@ -215,8 +215,8 @@ namespace MagneticBall3D
                     {
                         EnumsAndVariables::playerImpulseFactorOnGround += 0.01f;
                         EnumsAndVariables::playerTorqueFactorOnGround += 0.01f;
-                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.01f;
-                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.01f;
+                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.009f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.009f;
                         BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
@@ -228,14 +228,15 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
                     {
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.02f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.023f;
                         BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.005f;
                         EnumsAndVariables::playerRadiusToKillEnemies += 3.5f;
                         EnumsAndVariables::playerMagneticRadius += 4.5f;
-                        EnumsAndVariables::garbageMaxCountMagnetized += 45;
+                        EnumsAndVariables::garbageMaxCountMagnetized += 35;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");
                     }
@@ -263,7 +264,7 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP)
                     {
-                        EnumsAndVariables::garbageCommonSpawnDelay -= 0.2f;
+                        EnumsAndVariables::garbageCommonSpawnDelay -= 0.1f;
                         if(EnumsAndVariables::garbageCommonSpawnDelay < 0.0f)
                             EnumsAndVariables::garbageCommonSpawnDelay = 0.0f;
                         BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed.");
