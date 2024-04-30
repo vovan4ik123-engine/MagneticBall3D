@@ -1,5 +1,6 @@
 #include "PlayStateSceneLayer.h"
 #include "maps/Map1.h"
+#include "GameStateHelper.h"
 
 namespace MagneticBall3D
 {
@@ -7,18 +8,11 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::PLAY_SCENE;
 
-        Beryll::Physics::hardRemoveAllObjects();
+        GameStateHelper::resetAllVariables();
 
         m_map = std::make_shared<Map1>(gui);
 
-        EnumsAndVariables::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
-        EnumsAndVariables::mapPlayTimeSec = 0.0f;
-        EnumsAndVariables::mapSwipeCount = 0;
-
-        EnumsAndVariables::gameOnPause = false;
-        EnumsAndVariables::improvementSystemOnScreen = false;
-
-        Beryll::Physics::enableSimulation();
+        GameStateHelper::prepareVariablesForPlay();
 
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");

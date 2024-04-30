@@ -70,13 +70,13 @@ namespace EnumsAndVariables
     constexpr inline float garbageMaxGravityPower = 700.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
-    constexpr inline glm::vec3 garbageGravityDefault{0.0f, -70.0f, 0.0f};
+    constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     inline int garbageMaxCountMagnetized = 70;
     inline int garbageCountMagnetized = 0;
     inline float garbageDamageTakenMultiplier = 1.0f;
     constexpr inline int garbageCommonMaxActive = 500; // Limit of active GarbageType::COMMON on map.
-    constexpr inline float garbageCommonSpawnMinDistance = 50.0f;
-    constexpr inline float garbageCommonSpawnMaxDistance = 300.0f;
+    constexpr inline float garbageCommonSpawnMinDistance = 80.0f;
+    constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     inline float garbageCommonSpawnTime = 0.0f; // Sec.
     inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     inline int garbageCommonSpawnCount = 2.0f;
@@ -102,4 +102,45 @@ namespace EnumsAndVariables
     inline float mapStartTimeSec = 0.0f;
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
+
+    inline void resetAllVariables()
+    {
+        // Camera.
+        cameraRotateTime = 0.0f; // Sec.
+
+        // Player.
+        playerMagneticRadius = 25.0f;
+        playerImpulseFactorOnGround = 0.09f;
+        playerTorqueFactorOnGround = 0.08f;
+        playerImpulseFactorOnBuildingRoof = 0.08f;
+        playerTorqueFactorOnBuildingRoof = 0.07f;
+        playerImpulseFactorOnBuildingWall = 0.15f;
+        playerTorqueFactorOnBuildingWall = 0.15f;
+        playerMaxSpeedXZ = 90.0f;
+        playerDamageTakenMultiplier = 1.0f;
+        playerSpeedReductionMultiplier = 1.0f;
+        playerRestoreHPAtNewLevel = 0.0f;
+        playerXPMultiplier = 1.0f;
+
+        // Garbage.
+        garbageMaxCountMagnetized = 70;
+        garbageCountMagnetized = 0;
+        garbageDamageTakenMultiplier = 1.0f;
+        garbageCommonSpawnTime = 0.0f; // Sec.
+        garbageCommonSpawnDelay = 1.0f; // Sec.
+        garbageCommonSpawnCount = 2.0f;
+
+        // Enemies.
+        enemiesMaxActiveCountOnGround = 0;
+        enemiesCurrentPathfindingIndex = 0;
+
+        // Pause.
+        gameOnPause = false;
+        improvementSystemOnScreen = false;
+
+        // Map.
+        mapStartTimeSec = 0.0f;
+        mapPlayTimeSec = 0.0f;
+        mapSwipeCount = 0.0f;
+    }
 }

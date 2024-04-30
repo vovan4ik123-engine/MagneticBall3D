@@ -64,16 +64,16 @@ namespace MagneticBall3D
         m_sunDistance = 600.0f;
 
         m_improvements = Improvements(m_player, {{ImprovementType::PLAYER_MAX_SPEED,                    5},
-//                                                            {ImprovementType::PLAYER_ACCELERATE_FASTER,            5},
-//                                                            {ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES,  5},
-//                                                            {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS, 5},
+                                                            {ImprovementType::PLAYER_ACCELERATE_FASTER,            5},
+                                                            {ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES,  5},
+                                                            {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS, 5},
                                                             {ImprovementType::PLAYER_INCREASE_SIZE,                5},
-//                                                            {ImprovementType::PLAYER_INCREASE_MAX_HP,              5},
-//                                                            {ImprovementType::PLAYER_REDUCE_DAMAGE,                5},
-//                                                            {ImprovementType::PLAYER_TAKE_MORE_XP,                 5},
-//                                                            {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,              5},
-//                                                            {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,           5},
-//                                                            {ImprovementType::GARBAGE_REDUCE_DAMAGE,               5}
+                                                            {ImprovementType::PLAYER_INCREASE_MAX_HP,              5},
+                                                            {ImprovementType::PLAYER_REDUCE_DAMAGE,                5},
+                                                            {ImprovementType::PLAYER_TAKE_MORE_XP,                 5},
+                                                            {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,              5},
+                                                            {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,           5},
+                                                            {ImprovementType::GARBAGE_REDUCE_DAMAGE,               5}
                                                             });
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
@@ -174,7 +174,7 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < 20; ++i)
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
                                                                                            EnumsAndVariables::garbageMass,

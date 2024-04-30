@@ -6,6 +6,7 @@
 #include "menus/shop/ShopGUILayer.h"
 #include "menus/playerTalents/PlayerTalentsGUILayer.h"
 #include "menus/settings/SettingsMenuGUILayer.h"
+#include "enemies/Sniper.h"
 
 namespace MagneticBall3D
 {
@@ -69,5 +70,18 @@ namespace MagneticBall3D
     void GameStateHelper::popState()
     {
         Beryll::GameStateMachine::popState();
+    }
+
+    void GameStateHelper::resetAllVariables()
+    {
+        Beryll::Physics::hardRemoveAllObjects();
+        EnumsAndVariables::resetAllVariables();
+        Sniper::sniperPositions = {};
+    }
+
+    void GameStateHelper::prepareVariablesForPlay()
+    {
+        Beryll::Physics::enableSimulation();
+        EnumsAndVariables::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
     }
 }

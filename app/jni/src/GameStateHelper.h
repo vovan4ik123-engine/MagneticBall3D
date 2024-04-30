@@ -11,5 +11,8 @@ namespace MagneticBall3D
         static void pushPlayerTalentsState();
         static void pushSettingsState();
         static void popState();
+
+        static void resetAllVariables();
+        static void prepareVariablesForPlay();
     };
 }

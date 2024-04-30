@@ -1,5 +1,4 @@
 #include "BaseMap.h"
-#include "EnumsAndVariables.h"
 #include "DataBaseHelper.h"
 
 namespace MagneticBall3D
