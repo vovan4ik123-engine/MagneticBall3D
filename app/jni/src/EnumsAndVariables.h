@@ -40,10 +40,10 @@ namespace EnumsAndVariables
     inline float playerMagneticRadius = 25.0f;
     inline float playerImpulseFactorOnGround = 0.09f;
     inline float playerTorqueFactorOnGround = 0.08f;
-    inline float playerImpulseFactorOnBuildingRoof = 0.06f;
-    inline float playerTorqueFactorOnBuildingRoof = 0.06f;
+    inline float playerImpulseFactorOnBuildingRoof = 0.08f;
+    inline float playerTorqueFactorOnBuildingRoof = 0.07f;
     inline float playerImpulseFactorOnBuildingWall = 0.15f;
-    inline float playerTorqueFactorOnBuildingWall = 0.25f;
+    inline float playerTorqueFactorOnBuildingWall = 0.15f;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
     constexpr inline float playerLinearDamping = 0.1f;
@@ -52,11 +52,11 @@ namespace EnumsAndVariables
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
-    constexpr inline glm::vec3 playerGravityOnBuilding{0.0f, -30.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -10.0f, 0.0f};
     inline float playerMaxSpeedXZ = 90.0f;
     constexpr inline float playerSpeedForMeteor = 100.0f;
     constexpr inline float playerLeftRightTurnPower = 0.013f;
-    inline float playerRadiusToKillEnemies = 10.0f;
     inline float playerDamageTakenMultiplier = 1.0f;
     inline float playerSpeedReductionMultiplier = 1.0f;
     inline float playerRestoreHPAtNewLevel = 0.0f;

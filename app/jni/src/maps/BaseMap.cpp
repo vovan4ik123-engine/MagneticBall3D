@@ -279,28 +279,31 @@ namespace MagneticBall3D
                     swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeed() * EnumsAndVariables::playerLeftRightTurnPower);
 
                     if(moveToSwipeAngle > 2.6f) // > 150 degrees.
-                        swipeFactorBasedOnAngleAndSpeed *= 1.8f;
+                        swipeFactorBasedOnAngleAndSpeed *= 1.9f;
                 }
             }
+
+            // 2 m = radius for default ball. That is base. Start point for controls. Radius can not be less than 2 m.
+            float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.75f);
 
             if(m_player->getIsOnGround())
             {
                 powerForImpulse = m_screenSwipe3D * EnumsAndVariables::playerImpulseFactorOnGround;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround * m_player->getObj()->getXZRadius();
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnGround * radiusForTorqueMultiplier;
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
             }
             else if(m_player->getIsOnBuildingRoof())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuildingRoof;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingRoof * m_player->getObj()->getXZRadius();
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingRoof * radiusForTorqueMultiplier;
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
             }
             else if(m_player->getIsOnBuildingWall())
             {
                 powerForImpulse = m_screenSwipe3D *  EnumsAndVariables::playerImpulseFactorOnBuildingWall;
-                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingWall * m_player->getObj()->getXZRadius();
+                powerForTorque = m_screenSwipe3D * EnumsAndVariables::playerTorqueFactorOnBuildingWall * radiusForTorqueMultiplier;
             }
             else // if(m_player->getIsOnAir())
             {
@@ -590,13 +593,15 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
+        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.6f) + EnumsAndVariables::garbageCountMagnetized * 0.15f;
+
         float speedToReduce = 0.0f;
         int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate() &&
                enemy->getGarbageAmountToDie() < EnumsAndVariables::garbageCountMagnetized &&
-               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < EnumsAndVariables::playerRadiusToKillEnemies)
+               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->getPlayerSpeedReduceWhenDie();

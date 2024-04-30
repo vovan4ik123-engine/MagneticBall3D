@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 
     Beryll::Renderer::enableFaceCulling();
 
-    MagneticBall3D::GameStateHelper::pushPlayState();
-    //MagneticBall3D::GameStateHelper::pushStartMenuState();
+    //MagneticBall3D::GameStateHelper::pushPlayState();
+    MagneticBall3D::GameStateHelper::pushStartMenuState();
 
     Beryll::GameLoop::run();
 

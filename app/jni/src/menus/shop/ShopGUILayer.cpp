@@ -11,7 +11,7 @@ namespace MagneticBall3D
         m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 90, 30, 10);
         m_guiObjects.push_back(m_buttonBack);
 
-        m_shopText = std::make_shared<Beryll::Text>("Shop", EnumsAndVariables::FontsPath::ROBOTO, 5, 38, 0, 30, 3);
+        m_shopText = std::make_shared<Beryll::Text>("Shop", EnumsAndVariables::FontsPath::ROBOTO, 5, 38, 0, 25, 5.5f);
         m_guiObjects.push_back(m_shopText);
 
         button70crystals = std::make_shared<Beryll::ButtonWithText>("      1$\n70 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 5, 10, 40, 10);

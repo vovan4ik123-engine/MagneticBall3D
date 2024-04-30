@@ -215,8 +215,8 @@ namespace MagneticBall3D
                     {
                         EnumsAndVariables::playerImpulseFactorOnGround += 0.01f;
                         EnumsAndVariables::playerTorqueFactorOnGround += 0.01f;
-                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.009f;
-                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.009f;
+                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.008f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.008f;
                         BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
@@ -228,15 +228,14 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
                     {
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.023f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.025f;
                         BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.005f;
-                        EnumsAndVariables::playerRadiusToKillEnemies += 3.5f;
                         EnumsAndVariables::playerMagneticRadius += 4.5f;
                         EnumsAndVariables::garbageMaxCountMagnetized += 35;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.01f;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");
                     }
