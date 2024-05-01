@@ -233,15 +233,15 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
-                        EnumsAndVariables::playerMagneticRadius += 4.5f;
-                        EnumsAndVariables::garbageMaxCountMagnetized += 35;
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.01f;
+                        EnumsAndVariables::playerMagneticRadius += 4.0f;
+                        EnumsAndVariables::garbageMaxCountMagnetized += 30;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.015f;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_MAX_HP)
                     {
-                        m_player->addToMaxHP(50.0f);
+                        m_player->addToMaxHP(EnumsAndVariables::playerStartHP * 0.1f);
                         BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_REDUCE_DAMAGE)

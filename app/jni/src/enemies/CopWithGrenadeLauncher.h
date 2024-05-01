@@ -17,6 +17,6 @@ namespace MagneticBall3D
                                Beryll::SceneObjectGroups sceneGroup);
         ~CopWithGrenadeLauncher() override;
 
-        void toMakeClassAbstract() override {};
+        void freeSniperPosition() override {};
     };
 }

@@ -241,7 +241,7 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float radius = m_obj->getXZRadius();
+        float radius = std::max(4.0f, m_obj->getXZRadius());
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * radius)};
         float sizeBegin = radius + EnumsAndVariables::garbageCountMagnetized * 0.017f;
 
@@ -276,9 +276,12 @@ namespace MagneticBall3D
         if(value <= 0.0f)
             return;
 
-        float ratio = m_maxHP + value / m_maxHP;
+        float oldMaxHP = m_maxHP;
+        float newMaxHP = m_maxHP + value;
 
-        m_maxHP *= ratio;
-        m_currentHP *= ratio;
+        float ratio = newMaxHP / oldMaxHP;
+
+        m_maxHP = m_maxHP * ratio;
+        m_currentHP = m_currentHP * ratio;
     }
 }

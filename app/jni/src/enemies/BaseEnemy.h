@@ -7,7 +7,7 @@ namespace MagneticBall3D
 {
     enum class UnitState
     {
-        MOVE, IN_ATTACK_RADIUS, IDLE, ATTACKING, CAN_ATTACK
+        MOVE, IN_ATTACK_RADIUS, STAND_AIMING, ATTACKING, CAN_ATTACK
     };
 
     enum class UnitType
@@ -42,7 +42,7 @@ namespace MagneticBall3D
         ~BaseEnemy() override;
 
 
-        virtual void toMakeClassAbstract() = 0;
+        virtual void freeSniperPosition() = 0; // Implement for Sniper.
 
         // Good fit for movable range enemies. For other types you will probably override these two methods.
         virtual void update(const glm::vec3& playerOrigin);
@@ -54,15 +54,9 @@ namespace MagneticBall3D
         static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
         UnitType getUnitType() { return m_UnitType; }
         AttackType getAttackType() { return m_attackType; }
-        float getDamage() { return m_damage; }
-        float getAttackDistance() { return m_attackDistance; }
-        float getDamageRadius() { return m_damageRadius; }
-        int getGarbageAmountToDie() { return m_garbageAmountToDie; }
-        float getPlayerSpeedReduceWhenDie() { return m_reducePlayerSpeedWhenDie; }
-        bool getIsTimeToAttack() { return (m_lastAttackTime + m_timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsAttacking() { return (m_lastAttackTime + m_timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + m_timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
-        int getExperienceWhenDie() { return m_experienceWhenDie; }
+        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
 
         // Pathfinding.
         int indexInPathArray = 0;
@@ -76,6 +70,15 @@ namespace MagneticBall3D
 
         bool isCanBeSpawned = false;
 
+        float damage = 0.0f;
+        float attackDistance = 10.0f;
+        float damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
+        float timeBetweenAttacks = 0.0f; // Sec.
+
+        int garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
+        float reducePlayerSpeedWhenDie = 0.0f;
+        int experienceWhenDie = 0;
+
     protected:
         void move();
 
@@ -86,17 +89,8 @@ namespace MagneticBall3D
         bool m_isCanMove = true; // false for SNIPER.
 
         // Attack data.
-        float m_damage = 0.0f;
-        float m_attackDistance = 10.0f;
-        float m_damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float m_lastAttackTime = 0.0f; // Sec.
-        float m_timeBetweenAttacks = 0.0f; // Sec.
         float m_prepareToFirstAttackStartTime = 0.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
-
-        // Death.
-        int m_garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
-        float m_reducePlayerSpeedWhenDie = 0.0f;
-        int m_experienceWhenDie = 0;
     };
 }

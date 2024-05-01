@@ -21,13 +21,13 @@ namespace MagneticBall3D
         m_UnitType = UnitType::COP_WITH_PISTOL_SHIELD;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
-        m_damage = 5.0f;
-        m_attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
-        m_timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+        damage = 5.0f;
+        attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
+        timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
-        m_garbageAmountToDie = 10;
-        m_reducePlayerSpeedWhenDie = 12.0f;
-        m_experienceWhenDie = 20;
+        garbageAmountToDie = 10;
+        reducePlayerSpeedWhenDie = 12.0f;
+        experienceWhenDie = 20;
         getController().moveSpeed = 20.0f;
 
         m_lastAttackTime = 0.0f;

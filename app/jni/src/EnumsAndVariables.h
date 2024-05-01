@@ -37,17 +37,17 @@ namespace EnumsAndVariables
     constexpr inline float swipePowerMultiplier = 2.2f;
 
     // Player.
-    inline float playerMagneticRadius = 25.0f;
+    inline float playerMagneticRadius = 30.0f;
     inline float playerImpulseFactorOnGround = 0.09f;
     inline float playerTorqueFactorOnGround = 0.08f;
     inline float playerImpulseFactorOnBuildingRoof = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = 0.07f;
     inline float playerImpulseFactorOnBuildingWall = 0.15f;
-    inline float playerTorqueFactorOnBuildingWall = 0.15f;
+    inline float playerTorqueFactorOnBuildingWall = 0.16f;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
     constexpr inline float playerLinearDamping = 0.1f;
-    constexpr inline float playerAngularDamping = 0.05f;
+    constexpr inline float playerAngularDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
@@ -61,13 +61,14 @@ namespace EnumsAndVariables
     inline float playerSpeedReductionMultiplier = 1.0f;
     inline float playerRestoreHPAtNewLevel = 0.0f;
     inline float playerXPMultiplier = 1.0f;
+    constexpr inline float playerStartHP = 500.0f;
 
     // Garbage.
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.3f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 150.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 700.0f;
+    constexpr inline float garbageMinGravityPower = 130.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMaxGravityPower = 650.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
@@ -109,13 +110,13 @@ namespace EnumsAndVariables
         cameraRotateTime = 0.0f; // Sec.
 
         // Player.
-        playerMagneticRadius = 25.0f;
+        playerMagneticRadius = 30.0f;
         playerImpulseFactorOnGround = 0.09f;
         playerTorqueFactorOnGround = 0.08f;
         playerImpulseFactorOnBuildingRoof = 0.08f;
         playerTorqueFactorOnBuildingRoof = 0.07f;
         playerImpulseFactorOnBuildingWall = 0.15f;
-        playerTorqueFactorOnBuildingWall = 0.15f;
+        playerTorqueFactorOnBuildingWall = 0.16f;
         playerMaxSpeedXZ = 90.0f;
         playerDamageTakenMultiplier = 1.0f;
         playerSpeedReductionMultiplier = 1.0f;

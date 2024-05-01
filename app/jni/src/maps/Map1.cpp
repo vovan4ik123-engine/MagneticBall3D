@@ -16,19 +16,20 @@ namespace MagneticBall3D
         loadGarbage();
         loadEnemies();
 
-        Sniper::sniperPositions = std::vector<SniperPosAndRange>{{glm::vec3(79.0f, 260.0f, -644.0f), 2500.0f},
-                                                                 {glm::vec3(68.0f, 257.0f, -448.0f), 2500.0f},
-                                                                 {glm::vec3(65.0f, 219.0f, -265.0f), 2500.0f},
-                                                                 {glm::vec3(62.0f, 255.0f, -122.0f), 2500.0f},
-                                                                 {glm::vec3(77.0f, 255.0f, -53.0f), 2500.0f},
-                                                                 {glm::vec3(127.0f, 255.0f, -55.0f), 2500.0f},
-                                                                 {glm::vec3(270.0f, 220.0f, -62.5f), 2500.0f},
-                                                                 {glm::vec3(313.0f, 220.0f, -63.0f), 2500.0f},
-                                                                 {glm::vec3(460.0f, 248.0f, -59.0f), 2500.0f},
-                                                                 {glm::vec3(644.5f, 260.5f, -64.0f), 2500.0f},
-                                                                 {glm::vec3(64.0f, 309.5f, 429.0f), 2500.0f},
-                                                                 {glm::vec3(64.0f, 309.5f, 490.0f), 2500.0f},
-                                                                 {glm::vec3(176.0f, 309.5f, 403.5f), 2500.0f}
+        Sniper::sniperPositions = std::vector<SniperPosAndAttackDist>{{glm::vec3(65.0f, 255.0f, -642.0f), 2500.0f},
+                                                                      {glm::vec3(65.0f, 252.0f, -445.0f), 2500.0f},
+                                                                      {glm::vec3(65.0f, 214.0f, -264.0f), 2500.0f},
+                                                                      {glm::vec3(56.5f, 250.0f, -129.5f), 2500.0f},
+                                                                      {glm::vec3(71.0f, 250.0f, -60.0f),  2500.0f},
+                                                                      {glm::vec3(129.0f, 250.0f, -55.5f), 2500.0f},
+                                                                      {glm::vec3(260.5f, 215.0f, -61.0f), 2500.0f},
+                                                                      {glm::vec3(320.0f, 215.0f, -61.0f), 2500.0f},
+                                                                      {glm::vec3(458.5f, 242.0f, -62.0f), 2500.0f},
+                                                                      {glm::vec3(639.0f, 255.0f, -58.0f), 2500.0f},
+                                                                      {glm::vec3(56.0f, 305.5f, 414.5f),  2500.0f},
+                                                                      {glm::vec3(56.0f, 305.5f, 497.5f), 2500.0f},
+                                                                      {glm::vec3(179.0f, 305.5f, 396.5f), 2500.0f},
+
         };
 
         // Defined in base class. Common for all maps.
@@ -113,7 +114,7 @@ namespace MagneticBall3D
             m_simpleObjForShadowMap.push_back(item);
         }
 
-        m_player = std::make_shared<Player>(playerAllBalls[0], 500);
+        m_player = std::make_shared<Player>(playerAllBalls[0], EnumsAndVariables::playerStartHP);
         m_player->setAllModels(playerAllBalls);
 
         m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,0.0f));
@@ -203,9 +204,9 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int i = 0; i < 150; ++i)
+        for(int i = 0; i < 100; ++i)
         {
-            auto unit = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
+            auto copPistol = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
                                                         0.0f,
                                                         false,
                                                         Beryll::CollisionFlags::STATIC,
@@ -213,17 +214,16 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            unit->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
-            unit->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
+            copPistol->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            copPistol->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
 
-            m_animatedOrDynamicObjects.push_back(unit);
-            m_allAnimatedEnemies.push_back(unit);
-            m_animatedObjForShadowMap.push_back(unit);
+            m_animatedOrDynamicObjects.push_back(copPistol);
+            m_allAnimatedEnemies.push_back(copPistol);
         }
 
-        for(int i = 0; i < 185; ++i)
+        for(int i = 0; i < 125; ++i)
         {
-            auto unit3 = std::make_shared<CopWithPistolShield>("models3D/enemies/CopWithPistolShield.fbx",
+            auto copShield = std::make_shared<CopWithPistolShield>("models3D/enemies/CopWithPistolShield.fbx",
                                                                0.0f,
                                                                false,
                                                                Beryll::CollisionFlags::STATIC,
@@ -231,17 +231,16 @@ namespace MagneticBall3D
                                                                Beryll::CollisionGroups::NONE,
                                                                Beryll::SceneObjectGroups::ENEMY);
 
-            unit3->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
-            unit3->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
+            copShield->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            copShield->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
 
-            m_animatedOrDynamicObjects.push_back(unit3);
-            m_allAnimatedEnemies.push_back(unit3);
-            m_animatedObjForShadowMap.push_back(unit3);
+            m_animatedOrDynamicObjects.push_back(copShield);
+            m_allAnimatedEnemies.push_back(copShield);
         }
 
-        for(int i = 0; i < 150; ++i)
+        for(int i = 0; i < 180; ++i)
         {
-            auto unit2 = std::make_shared<CopWithGrenadeLauncher>("models3D/enemies/CopWithGrenadeLauncher.fbx",
+            auto copGrenade = std::make_shared<CopWithGrenadeLauncher>("models3D/enemies/CopWithGrenadeLauncher.fbx",
                                                                   0.0f,
                                                                   false,
                                                                   Beryll::CollisionFlags::STATIC,
@@ -249,15 +248,14 @@ namespace MagneticBall3D
                                                                   Beryll::CollisionGroups::NONE,
                                                                   Beryll::SceneObjectGroups::ENEMY);
 
-            unit2->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
-            unit2->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
+            copGrenade->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+            copGrenade->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
 
-            m_animatedOrDynamicObjects.push_back(unit2);
-            m_allAnimatedEnemies.push_back(unit2);
-            m_animatedObjForShadowMap.push_back(unit2);
+            m_animatedOrDynamicObjects.push_back(copGrenade);
+            m_allAnimatedEnemies.push_back(copGrenade);
         }
 
-        for(int i = 0; i < 20; ++i)
+        for(int i = 0; i < 30; ++i)
         {
             auto tank = std::make_shared<Tank>("models3D/enemies/Tank.fbx",
                                                                   0.0f,
@@ -272,7 +270,23 @@ namespace MagneticBall3D
 
             m_animatedOrDynamicObjects.push_back(tank);
             m_allAnimatedEnemies.push_back(tank);
-            m_animatedObjForShadowMap.push_back(tank);
+        }
+
+        for(int i = 0; i < 13; ++i)
+        {
+            auto sniper = std::make_shared<Sniper>("models3D/enemies/Sniper.fbx",
+                                                 0.0f,
+                                                 false,
+                                                 Beryll::CollisionFlags::STATIC,
+                                                 Beryll::CollisionGroups::NONE,
+                                                 Beryll::CollisionGroups::NONE,
+                                                 Beryll::SceneObjectGroups::ENEMY);
+
+            sniper->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
+            sniper->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
+
+            m_animatedOrDynamicObjects.push_back(sniper);
+            m_allAnimatedEnemies.push_back(sniper);
         }
     }
 
@@ -405,8 +419,8 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
-            int copWithGrenadeLauncherCount = 0;
             int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
@@ -423,16 +437,16 @@ namespace MagneticBall3D
                     ++copWithPistolShieldCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
-                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
-                }
                 else if(sniperCount < 8 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
+                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -481,8 +495,8 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
-            int copWithGrenadeLauncherCount = 0;
             int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
@@ -500,16 +514,16 @@ namespace MagneticBall3D
                     ++copWithPistolShieldCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 85 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
-                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
-                }
                 else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
+                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 85 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 10 && enemy->getUnitType() == UnitType::TANK)
@@ -530,14 +544,14 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
-            int copWithGrenadeLauncherCount = 0;
             int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 90 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -549,16 +563,16 @@ namespace MagneticBall3D
                     ++copWithPistolShieldCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 150 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
-                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
-                }
                 else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
+                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 150 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 20 && enemy->getUnitType() == UnitType::TANK)
@@ -579,35 +593,35 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
-            int copWithGrenadeLauncherCount = 0;
             int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 80 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 150 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
-                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
-                }
-                else if(copWithGrenadeLauncherCount < 235 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 13 && enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
+                    ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 180 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
                     ++EnumsAndVariables::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 30 && enemy->getUnitType() == UnitType::TANK)
@@ -679,32 +693,29 @@ namespace MagneticBall3D
 
                         // Sort by distance from player.
                         std::sort(Sniper::sniperPositions.begin(), Sniper::sniperPositions.end(),
-                                  [&](const SniperPosAndRange& pos1, const SniperPosAndRange& pos2)
+                                  [&](const SniperPosAndAttackDist& pos1, const SniperPosAndAttackDist& pos2)
                                   { return glm::distance(m_player->getObj()->getOrigin(), pos1.position) < glm::distance(m_player->getObj()->getOrigin(), pos2.position); });
-
-                        for(const SniperPosAndRange& posAndRange : Sniper::sniperPositions)
-                        {
-                            BR_INFO("Distance from player to sniper: %d", glm::distance(m_player->getObj()->getOrigin(), posAndRange.position));
-                        }
                     }
 
-                    for(SniperPosAndRange& posAndRange : Sniper::sniperPositions)
+                    for(SniperPosAndAttackDist& posAndDist : Sniper::sniperPositions)
                     {
                         Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_player->getObj()->getOrigin(),
-                                                                                                  posAndRange.position,
+                                                                                                  posAndDist.position,
                                                                                                   Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
                                                                                                   Beryll::CollisionGroups::BUILDING);
 
                         // Check position in free + not closest than 150m + sniper see player(rayBuildingHit does not hit).
-                        if(posAndRange.isFreePosition &&
-                           glm::distance(m_player->getObj()->getOrigin(), posAndRange.position) > 150.0f &&
+                        if(posAndDist.isFreePosition &&
+                           glm::distance(m_player->getObj()->getOrigin(), posAndDist.position) > 150.0f &&
                            !rayBuildingHit)
                         {
-                            posAndRange.isFreePosition = false;
+                            posAndDist.isFreePosition = false;
 
                             enemy->enableEnemy();
                             enemy->disableDraw();
-                            enemy->setOrigin(posAndRange.position);
+                            enemy->setOrigin(posAndDist.position);
+                            enemy->attackDistance = posAndDist.attackDist;
+                            BR_INFO("%s", "spawn sniper");
 
                             break;
                         }

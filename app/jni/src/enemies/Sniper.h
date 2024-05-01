@@ -4,12 +4,12 @@
 
 namespace MagneticBall3D
 {
-    struct SniperPosAndRange
+    struct SniperPosAndAttackDist
     {
-        SniperPosAndRange(const glm::vec3& pos, const float range) : position(pos), attackRange(range) {}
+        SniperPosAndAttackDist(const glm::vec3& pos, const float dist) : position(pos), attackDist(dist) {}
 
         glm::vec3 position{0.0f};
-        float attackRange = 0.0f;
+        float attackDist = 0.0f;
         bool isFreePosition = true;
     };
 
@@ -26,8 +26,9 @@ namespace MagneticBall3D
                Beryll::SceneObjectGroups sceneGroup);
         ~Sniper() override;
 
-        void toMakeClassAbstract() override {};
+        void update(const glm::vec3& playerOrigin) override;
+        void freeSniperPosition() override;
 
-        static std::vector<SniperPosAndRange> sniperPositions;
+        static std::vector<SniperPosAndAttackDist> sniperPositions;
     };
 }

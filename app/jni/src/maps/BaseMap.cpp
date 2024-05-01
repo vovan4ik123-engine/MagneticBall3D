@@ -65,7 +65,7 @@ namespace MagneticBall3D
         if(EnumsAndVariables::improvementSystemOnScreen || EnumsAndVariables::gameOnPause)
             return;
 
-        const float distanceToEnableObjects = m_cameraDistance * 1.5f;
+        const float distanceToEnableObjects = m_cameraDistance * 1.2f;
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
@@ -119,7 +119,7 @@ namespace MagneticBall3D
         glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 230.0f) + (m_dirToSun * m_sunDistance);
         updateSunPosition(sunPos, 700, 700, m_sunDistance * 2.0f);
         Beryll::Renderer::disableFaceCulling();
-        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
@@ -128,9 +128,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-
         m_simpleObjSunLightShadows->set1Float("ambientLight", 0.7f);
-        m_simpleObjSunLightShadows->set1Float("sunLightStrength", 0.8f);
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", 2.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -167,21 +165,19 @@ namespace MagneticBall3D
             }
         }
 
-        m_animatedObjSunLightShadows->bind();
-        m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
-        m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_animatedObjSunLightShadows->set1Float("ambientLight", 0.65f);
-        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_animatedObjSunLight->bind();
+        m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
+        m_animatedObjSunLight->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_animatedObjSunLight->set1Float("ambientLight", 0.7f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
             if(animObj->getIsEnabledDraw())
             {
                 modelMatrix = animObj->getModelMatrix();
-                m_animatedObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
-                m_animatedObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
-                m_animatedObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLightShadows);
+                m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLight);
             }
         }
 
@@ -204,13 +200,18 @@ namespace MagneticBall3D
 //        m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
 //        m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
 
-        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
-                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
-        m_animatedObjSunLightShadows->bind();
-        m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
-        m_animatedObjSunLightShadows->activateShadowMapTexture();
+//        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
+//                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
+//        m_animatedObjSunLightShadows->bind();
+//        m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
+//        m_animatedObjSunLightShadows->activateShadowMapTexture();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(2500, 2500);
+        m_animatedObjSunLight = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLight.vert",
+                                                               "shaders/GLES/AnimatedObjectSunLight.frag");
+        m_animatedObjSunLight->bind();
+        m_animatedObjSunLight->activateDiffuseTextureMat1();
+
+        m_shadowMap = Beryll::Renderer::createShadowMap(2200, 2200);
     }
 
     void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
@@ -484,24 +485,25 @@ namespace MagneticBall3D
                 glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
 
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                   enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                   enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
+                   enemy->getUnitType() == UnitType::SNIPER)
                 {
-                    from.y += enemy->getFromOriginToTop() * 0.7f;
-                    from += enemy->getFaceDirXZ() * 8.0f;
+                    from.y += enemy->getFromOriginToTop() * 0.75f;
+                    from += enemy->getFaceDirXZ() * 10.0f;
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     from.y += 0.0f;
-                    from += enemy->getFaceDirXZ() * 8.0f;
+                    from += enemy->getFaceDirXZ() * 10.0f;
                 }
                 else if(enemy->getUnitType() == UnitType::TANK)
                 {
                     from.y += enemy->getFromOriginToTop() * 0.8f;
-                    from += enemy->getFaceDirXZ() * 25.0f;
+                    from += enemy->getFaceDirXZ() * 30.0f;
                 }
 
                 glm::vec3 target = m_player->getObj()->getOrigin();
-                target.y += 1.8f;
+                target.y += m_player->getObj()->getFromOriginToTop() * 0.8f;
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from, target,
                                                                                      Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                      Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE);
@@ -509,18 +511,28 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Spam particles.
-                    if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_ONE)
+                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
+                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->getUnitType() == UnitType::SNIPER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
-                                          glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), 1);
+                                          glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.5f), 0.6f);
                     }
-                    else if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_RADIUS)
+                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     {
-                        emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
-                                          glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), 1);
+                        emitParticlesLine(from, rayAttack.hitPoint, 0.4f, 0.4f,
+                                          glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.5f), 0.8f);
 
-                        emitParticlesExplosion(rayAttack.hitPoint, 10, 0.5f, 0.5f,
-                                               glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), 1);
+                        emitParticlesExplosion(rayAttack.hitPoint, 10, 1.0f, 1.0f,
+                                               glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.5f), 0.9f);
+                    }
+                    else if(enemy->getUnitType() == UnitType::TANK)
+                    {
+                        emitParticlesLine(from, rayAttack.hitPoint, 2.0f, 2.0f,
+                                          glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 2.0f);
+
+                        emitParticlesExplosion(rayAttack.hitPoint, 10, 3.0f, 3.0f,
+                                               glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 2.2f);
                     }
 
                     enemy->attack(m_player->getObj()->getOrigin());
@@ -529,7 +541,7 @@ namespace MagneticBall3D
                     {
                         // Player attacked.
                         //BR_INFO("%s", "Player attacked");
-                        m_player->takeDamage(enemy->getDamage());
+                        m_player->takeDamage(enemy->damage);
 
                     }
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
@@ -542,7 +554,7 @@ namespace MagneticBall3D
                             {
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
-                                    wrapper.takeDamage(enemy->getDamage());
+                                    wrapper.takeDamage(enemy->damage);
                                     break;
                                 }
                             }
@@ -553,9 +565,9 @@ namespace MagneticBall3D
                             for(auto& wrapper : m_allGarbage)
                             {
                                 if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID() &&
-                                   glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->getDamageRadius())
+                                   glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->damageRadius)
                                 {
-                                    wrapper.takeDamage(enemy->getDamage());
+                                    wrapper.takeDamage(enemy->damage);
                                 }
                             }
                         }
@@ -568,10 +580,11 @@ namespace MagneticBall3D
     void BaseMap::emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
                                                 const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime)
     {
-        glm::vec3 dir = glm::normalize(to - from);
-        float distance = glm::distance(to, from);
-        const float spamOffsetMeters = 0.6f;
+        const glm::vec3 dir = glm::normalize(to - from);
+        const float distance = glm::distance(to, from);
+        const float spamOffsetMeters = sizeBegin * 3.0f;
         glm::vec3 spamPoint{0.0f};
+
         for(float i = 0.0f; i < distance; i += spamOffsetMeters)
         {
             spamPoint = from + (dir * i);
@@ -592,19 +605,19 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
-        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.6f) + EnumsAndVariables::garbageCountMagnetized * 0.15f;
+        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVariables::garbageCountMagnetized * 0.13f;
 
         float speedToReduce = 0.0f;
         int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate() &&
-               enemy->getGarbageAmountToDie() < EnumsAndVariables::garbageCountMagnetized &&
+               enemy->garbageAmountToDie < EnumsAndVariables::garbageCountMagnetized &&
                glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill)
             {
                 enemy->disableEnemy();
-                speedToReduce += enemy->getPlayerSpeedReduceWhenDie();
-                addToExp += enemy->getExperienceWhenDie();
+                speedToReduce += enemy->reducePlayerSpeedWhenDie;
+                addToExp += enemy->experienceWhenDie;
 
                 // Spawn one garbage.
                 spawnGarbage(1, GarbageType::COMMON, enemy->getOrigin());
@@ -623,7 +636,7 @@ namespace MagneticBall3D
                 }
                 else if(enemy->getUnitType() == UnitType::SNIPER)
                 {
-
+                    enemy->freeSniperPosition();
                 }
                 else if(enemy->getUnitType() == UnitType::TANK)
                 {

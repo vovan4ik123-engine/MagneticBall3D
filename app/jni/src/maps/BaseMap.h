@@ -71,6 +71,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadowsNormals;
         std::shared_ptr<Beryll::Shader> m_animatedObjSunLightShadows;
+        std::shared_ptr<Beryll::Shader> m_animatedObjSunLight;
         std::unique_ptr<Beryll::ShadowMap> m_shadowMap;
         glm::mat4 m_sunLightVPMatrix{1.0f};
         // Assign in subclass constructor.
