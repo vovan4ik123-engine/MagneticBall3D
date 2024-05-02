@@ -25,6 +25,7 @@ namespace MagneticBall3D
         void loadShaders();
 
         // Before physics.
+        void handlePlayerDie();
         void handleScreenSwipe();
         void magnetizeGarbageAndUpdateGravity();
         void updatePathfindingAndSpawnEnemies();

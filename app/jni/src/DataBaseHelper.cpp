@@ -160,6 +160,9 @@ namespace DataBaseHelper
 
     void storeCurrencyBalanceCrystals(int value)
     {
+        if(value < 0)
+            return;
+
         try
         {
             Beryll::DataBase::openDataBase(dataBaseName);

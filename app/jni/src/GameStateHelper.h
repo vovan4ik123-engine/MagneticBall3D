@@ -14,5 +14,7 @@ namespace MagneticBall3D
 
         static void resetAllVariables();
         static void prepareVariablesForPlay();
+        static void pauseGame();
+        static void resumeGame();
     };
 }

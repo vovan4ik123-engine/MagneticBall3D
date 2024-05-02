@@ -52,6 +52,8 @@ namespace MagneticBall3D
         float getCurrentHP() { return m_currentHP; }
         float getMaxHP() { return m_maxHP; }
         void takeDamage(float damage) { m_currentHP -= (damage * EnumsAndVariables::playerDamageTakenMultiplier); }
+        bool getIsDie() { return m_currentHP <= 0; }
+        void resurrect() { m_currentHP = m_maxHP; }
 
     private:
         void updateSpeed();

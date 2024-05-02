@@ -14,6 +14,12 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
+        void showResurrectMenu();
+        void hideResurrectMenu();
+        void showResurrectNoCrystalsMenu();
+        void showLoseMenu();
+
+
         //std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
         //std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
         std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
@@ -22,9 +28,26 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::SliderHorizontal> sliderJumppad;
         std::shared_ptr<Beryll::ProgressBar> progressBarHP;
         std::shared_ptr<Beryll::ProgressBar> progressBarXP;
-        std::shared_ptr<Beryll::ButtonWithText> buttonPause;
-        std::shared_ptr<Beryll::ButtonWithText> buttonResume;
+
         std::shared_ptr<Beryll::ButtonWithText> buttonExit;
+
+        // Pause.
+        std::shared_ptr<Beryll::ButtonWithText> buttonPause;
+        std::shared_ptr<Beryll::ButtonWithText> buttonPauseResume;
+        // + buttonExit.
+
+        // Resurrect.
+        std::shared_ptr<Beryll::GUITexture> textureResurrect;
+        std::shared_ptr<Beryll::ButtonWithText> buttonResurrectOk;
+        // + buttonExit.
+
+        // Resurrect No Crystals.
+        std::shared_ptr<Beryll::GUITexture> textureResurrectNoCrystals;
+        // + buttonExit.
+
+        // Lose.
+        std::shared_ptr<Beryll::GUITexture> textureLose;
+        // + buttonExit.
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;

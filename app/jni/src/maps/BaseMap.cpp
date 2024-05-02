@@ -15,6 +15,8 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
+        handlePlayerDie();
+
         if(EnumsAndVariables::gameOnPause)
             return;
 
@@ -694,7 +696,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 15.0f;
 
-        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.18f;
+        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.21f;
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.
@@ -767,6 +769,38 @@ namespace MagneticBall3D
             {
                 if(wrapper.isMagnetized)
                     wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
+            }
+        }
+    }
+
+    void BaseMap::handlePlayerDie()
+    {
+        if(m_player->getIsDie())
+        {
+            if(EnumsAndVariables::playerResurrectionAttempts > 0)
+            {
+                if(EnumsAndVariables::CurrencyBalance::crystals >= EnumsAndVariables::playerCostOfResurrectionCrystals)
+                {
+                    m_gui->showResurrectMenu();
+                }
+                else // Can resurrect but no crystals.
+                {
+                    m_gui->showResurrectNoCrystalsMenu();
+                }
+            }
+            else // Lose menu.
+            {
+                m_gui->showLoseMenu();
+            }
+
+            if(m_gui->buttonResurrectOk->getIsPressed())
+            {
+                --EnumsAndVariables::playerResurrectionAttempts;
+                EnumsAndVariables::CurrencyBalance::crystals -= EnumsAndVariables::playerCostOfResurrectionCrystals;
+                DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
+                m_player->resurrect();
+                m_gui->hideResurrectMenu();
+                BR_INFO("%s", "m_player->resurrect();");
             }
         }
     }

@@ -55,16 +55,34 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
-        m_guiObjects.push_back(buttonPause);
-
-        buttonResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 45, 40, 10);
-        m_guiObjects.push_back(buttonResume);
-        buttonResume->disable();
-
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 60, 40, 10);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 50, 30, 7);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
+
+        // Pause.
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
+        m_guiObjects.push_back(buttonPause);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 40, 40, 7);
+        m_guiObjects.push_back(buttonPauseResume);
+        buttonPauseResume->disable();
+
+        // Resurrect.
+        textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureResurrect);
+        textureResurrect->disable();
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 50, 50, 30, 7);
+        m_guiObjects.push_back(buttonResurrectOk);
+        buttonResurrectOk->disable();
+
+        // Lose.
+        textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureLose);
+        textureLose->disable();
+
+        // Resurrect тo crystals.
+        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureResurrectNoCrystals);
+        textureResurrectNoCrystals->disable();
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -109,22 +127,20 @@ namespace MagneticBall3D
 
         if(buttonPause->getIsPressed())
         {
-            Beryll::Physics::disableSimulation();
-            EnumsAndVariables::gameOnPause = true;
-            buttonResume->enable();
+            GameStateHelper::pauseGame();
+            buttonPauseResume->enable();
+            buttonExit->leftPos = 0.35f;
             buttonExit->enable();
         }
-        else if(buttonResume->getIsPressed())
+        else if(buttonPauseResume->getIsPressed())
         {
-            Beryll::Physics::enableSimulation();
-            EnumsAndVariables::gameOnPause = false;
-            buttonResume->disable();
+            GameStateHelper::resumeGame();
+            buttonPauseResume->disable();
             buttonExit->disable();
         }
         else if(buttonExit->getIsPressed())
         {
-            Beryll::Physics::enableSimulation();
-            EnumsAndVariables::gameOnPause = false;
+            GameStateHelper::resumeGame();
             GameStateHelper::popState();
             return;
         }
@@ -144,5 +160,38 @@ namespace MagneticBall3D
                 go->draw();
             }
         }
+    }
+
+    void PlayStateGUILayer::showResurrectMenu()
+    {
+        GameStateHelper::pauseGame();
+        textureResurrect->enable();
+        buttonResurrectOk->enable();
+        buttonExit->leftPos = 0.2f;
+        buttonExit->enable();
+    }
+
+    void PlayStateGUILayer::hideResurrectMenu()
+    {
+        GameStateHelper::resumeGame();
+        textureResurrect->disable();
+        buttonResurrectOk->disable();
+        buttonExit->disable();
+    }
+
+    void PlayStateGUILayer::showResurrectNoCrystalsMenu()
+    {
+        GameStateHelper::pauseGame();
+        textureResurrectNoCrystals->enable();
+        buttonExit->leftPos = 0.35f;
+        buttonExit->enable();
+    }
+
+    void PlayStateGUILayer::showLoseMenu()
+    {
+        GameStateHelper::pauseGame();
+        textureLose->enable();
+        buttonExit->leftPos = 0.35f;
+        buttonExit->enable();
     }
 }

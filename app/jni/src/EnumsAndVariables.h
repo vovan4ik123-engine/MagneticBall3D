@@ -23,7 +23,7 @@ namespace EnumsAndVariables
 
     struct CurrencyBalance
     {
-        static inline int crystals = 300;
+        static inline int crystals = 70;
     };
 
     // Camera.
@@ -62,6 +62,8 @@ namespace EnumsAndVariables
     inline float playerRestoreHPAtNewLevel = 0.0f;
     inline float playerXPMultiplier = 1.0f;
     constexpr inline float playerStartHP = 500.0f;
+    inline int playerResurrectionAttempts = 2;
+    constexpr inline int playerCostOfResurrectionCrystals = 10;
 
     // Garbage.
     constexpr inline float garbageLinearDamping = 0.1f;
@@ -122,6 +124,7 @@ namespace EnumsAndVariables
         playerSpeedReductionMultiplier = 1.0f;
         playerRestoreHPAtNewLevel = 0.0f;
         playerXPMultiplier = 1.0f;
+        playerResurrectionAttempts = 2;
 
         // Garbage.
         garbageMaxCountMagnetized = 70;

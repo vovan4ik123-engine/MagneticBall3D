@@ -84,4 +84,16 @@ namespace MagneticBall3D
         Beryll::Physics::enableSimulation();
         EnumsAndVariables::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
     }
+
+    void GameStateHelper::pauseGame()
+    {
+        Beryll::Physics::disableSimulation();
+        EnumsAndVariables::gameOnPause = true;
+    }
+
+    void GameStateHelper::resumeGame()
+    {
+        Beryll::Physics::enableSimulation();
+        EnumsAndVariables::gameOnPause = false;
+    }
 }
