@@ -83,7 +83,7 @@ namespace MagneticBall3D
         // Meteor.
         bool m_isMeteor = false;
         uint64_t m_spamMeteorParticlesTime = 0; // Millisec.
-        uint64_t m_spamMeteorParticlesDelay = 40; // Millisec.
+        uint64_t m_spamMeteorParticlesDelay = 50; // Millisec.
 
         // HP.
         float m_currentHP = 0;

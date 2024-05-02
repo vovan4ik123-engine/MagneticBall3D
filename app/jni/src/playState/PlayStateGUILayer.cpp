@@ -140,7 +140,9 @@ namespace MagneticBall3D
         }
         else if(buttonExit->getIsPressed())
         {
-            GameStateHelper::resumeGame();
+            // Pause game before exit to avoid update scene layer.
+            GameStateHelper::pauseGame();
+
             GameStateHelper::popState();
             return;
         }

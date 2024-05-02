@@ -107,7 +107,7 @@ namespace MagneticBall3D
 
         killEnemies();
 
-        handleCamera(); // Last call before draw.
+        handleCamera();
 
         updateGUI();
     }
@@ -138,8 +138,6 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
         m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
         Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
-        if(m_player->getIsMeteor())
-            m_player->spamMeteorParticles();
 
         for(const auto& wrapper : m_allGarbage)
         {
@@ -518,23 +516,23 @@ namespace MagneticBall3D
                        enemy->getUnitType() == UnitType::SNIPER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
-                                          glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.5f), 0.6f);
+                                          glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), glm::vec4(0.1f, 0.1f, 0.1f, 0.6f), 0.4f);
                     }
                     else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.4f, 0.4f,
-                                          glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.5f), 0.8f);
+                                          glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.6f), 0.4f);
 
-                        emitParticlesExplosion(rayAttack.hitPoint, 10, 1.0f, 1.0f,
-                                               glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.5f), 0.9f);
+                        emitParticlesExplosion(rayAttack.hitPoint, 6, 0.8f, 0.8f,
+                                               glm::vec4(1.0f, 0.95f, 0.0f, 1.0f), glm::vec4(1.0f, 0.95f, 0.0f, 0.6f), 0.4f);
                     }
                     else if(enemy->getUnitType() == UnitType::TANK)
                     {
-                        emitParticlesLine(from, rayAttack.hitPoint, 2.0f, 2.0f,
-                                          glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 2.0f);
+                        emitParticlesLine(from, rayAttack.hitPoint, 1.0f, 1.0f,
+                                          glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 0.8f);
 
-                        emitParticlesExplosion(rayAttack.hitPoint, 10, 3.0f, 3.0f,
-                                               glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 2.2f);
+                        emitParticlesExplosion(rayAttack.hitPoint, 8, 2.0f, 2.0f,
+                                               glm::vec4(1.0f, 0.45f, 0.0f, 1.0f), glm::vec4(1.0f, 0.45f, 0.0f, 0.5f), 0.8f);
                     }
 
                     enemy->attack(m_player->getObj()->getOrigin());
@@ -584,7 +582,7 @@ namespace MagneticBall3D
     {
         const glm::vec3 dir = glm::normalize(to - from);
         const float distance = glm::distance(to, from);
-        const float spamOffsetMeters = sizeBegin * 3.0f;
+        const float spamOffsetMeters = sizeBegin * 7.0f;
         glm::vec3 spamPoint{0.0f};
 
         for(float i = 0.0f; i < distance; i += spamOffsetMeters)

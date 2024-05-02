@@ -69,6 +69,8 @@ namespace MagneticBall3D
 
     void GameStateHelper::popState()
     {
+        Beryll::ParticleSystem::disableAll(); // Before state exited.
+
         Beryll::GameStateMachine::popState();
     }
 
