@@ -74,15 +74,23 @@ namespace MagneticBall3D
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
+        // Resurrect no crystals.
+        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureResurrectNoCrystals);
+        textureResurrectNoCrystals->disable();
+
         // Lose.
         textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureLose);
         textureLose->disable();
 
-        // Resurrect тo crystals.
-        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 20, 25, 60, 25);
-        m_guiObjects.push_back(textureResurrectNoCrystals);
-        textureResurrectNoCrystals->disable();
+        // Kill all enemies before boss.
+        textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureKillAll);
+        textureKillAll->disable();
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 50, 30, 7);
+        m_guiObjects.push_back(buttonKillAllOk);
+        buttonKillAllOk->disable();
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -125,7 +133,7 @@ namespace MagneticBall3D
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
-        if(buttonPause->getIsPressed())
+        if(buttonPause->getIsPressed() && !EnumsAndVariables::gameOnPause)
         {
             GameStateHelper::pauseGame();
             buttonPauseResume->enable();
@@ -145,6 +153,12 @@ namespace MagneticBall3D
 
             GameStateHelper::popState();
             return;
+        }
+        else if(buttonKillAllOk->getIsPressed())
+        {
+            GameStateHelper::resumeGame();
+            textureKillAll->disable();
+            buttonKillAllOk->disable();
         }
     }
 
@@ -195,5 +209,12 @@ namespace MagneticBall3D
         textureLose->enable();
         buttonExit->leftPos = 0.35f;
         buttonExit->enable();
+    }
+
+    void PlayStateGUILayer::showKillAllBeforeBossMenu()
+    {
+        GameStateHelper::pauseGame();
+        textureKillAll->enable();
+        buttonKillAllOk->enable();
     }
 }

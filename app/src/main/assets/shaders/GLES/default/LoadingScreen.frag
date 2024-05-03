@@ -8,15 +8,30 @@ out vec4 outColor;
 
 uniform sampler2D diffuseTexture;
 uniform float loadingProgressInScreenSpace;
+uniform int displayPortraitOrientation; // 1 = PORTRAIT, 0 = LANDSCAPE
 
 void main()
 {
-    if(gl_FragCoord.x < loadingProgressInScreenSpace)
+    if(displayPortraitOrientation == 1)
     {
-        outColor = texture(diffuseTexture, textureCoords);
+        if(gl_FragCoord.y < loadingProgressInScreenSpace)
+        {
+            outColor = texture(diffuseTexture, textureCoords);
+        }
+        else
+        {
+            outColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        }
     }
     else
     {
-        outColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        if(gl_FragCoord.x < loadingProgressInScreenSpace)
+        {
+            outColor = texture(diffuseTexture, textureCoords);
+        }
+        else
+        {
+            outColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        }
     }
 }

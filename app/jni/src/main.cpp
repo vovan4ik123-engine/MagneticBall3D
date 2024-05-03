@@ -22,6 +22,8 @@ int main(int argc, char* argv[])
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
 
+    Beryll::LoadingScreen::setTextures({"loadingScreen/M1Screen.jpg"});
+
     Beryll::Renderer::enableFaceCulling();
 
     //MagneticBall3D::GameStateHelper::pushPlayState();

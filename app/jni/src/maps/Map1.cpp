@@ -10,11 +10,18 @@ namespace MagneticBall3D
 {
     Map1::Map1(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
+        Beryll::LoadingScreen::setTextureByIndex(0);
+        Beryll::LoadingScreen::showProgress(10.0f);
+
         // Specific for this map only.
         loadPlayer();
+        Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
+        Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
+        Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
+        Beryll::LoadingScreen::showProgress(80.0f);
 
         Sniper::sniperPositions = std::vector<SniperPosAndAttackDist>{{glm::vec3(65.0f, 255.0f, -642.0f), 2500.0f},
                                                                       {glm::vec3(65.0f, 252.0f, -445.0f), 2500.0f},
@@ -78,6 +85,8 @@ namespace MagneticBall3D
                                                             });
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
+
+        Beryll::LoadingScreen::showProgress(100.0f);
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");
@@ -175,7 +184,7 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        for(int i = 0; i < 20; ++i)
+        for(int i = 0; i < 6; ++i)
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
                                                                                            EnumsAndVariables::garbageMass,
@@ -644,6 +653,8 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
             }
+
+            m_gui->showKillAllBeforeBossMenu();
 
             BR_INFO("prepare wave 12. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }

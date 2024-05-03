@@ -10,7 +10,7 @@ namespace MagneticBall3D
 
         Beryll::Window::getInstance()->setClearColor(0.0666f * 0.7f, 0.7333f * 0.7f, 0.2f * 0.7f, 1.0f);
 
-        map1Texture = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map1.jpg", 15, 10, 70, 50);
+        map1Texture = std::make_shared<Beryll::GUITexture>("loadingScreen/M1Screen.jpg", 15, 10, 70, 50);
         m_guiObjects.push_back(map1Texture);
 
         buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.jpg", "", 25, 70, 50, 10);

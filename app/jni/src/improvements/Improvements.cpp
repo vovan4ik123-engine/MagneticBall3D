@@ -208,13 +208,13 @@ namespace MagneticBall3D
                     // Handle click.
                     if(block.info.type == ImprovementType::PLAYER_MAX_SPEED)
                     {
-                        EnumsAndVariables::playerMaxSpeedXZ += 10.0f;
+                        EnumsAndVariables::playerMaxSpeedXZ += 15.0f;
                         BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
                     {
-                        EnumsAndVariables::playerImpulseFactorOnGround += 0.01f;
-                        EnumsAndVariables::playerTorqueFactorOnGround += 0.01f;
+                        EnumsAndVariables::playerImpulseFactorOnGround += 0.015f;
+                        EnumsAndVariables::playerTorqueFactorOnGround += 0.015f;
                         EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.008f;
                         EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.008f;
                         BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed.");
@@ -228,13 +228,13 @@ namespace MagneticBall3D
                     }
                     else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
                     {
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.025f;
+                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.035f;
                         BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
                     }
                     else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
                     {
                         EnumsAndVariables::playerMagneticRadius += 4.0f;
-                        EnumsAndVariables::garbageMaxCountMagnetized += 30;
+                        EnumsAndVariables::garbageMaxCountMagnetized += 25;
                         EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.015f;
                         m_player->selectNextModel();
                         BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");

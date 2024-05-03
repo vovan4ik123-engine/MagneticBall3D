@@ -2,8 +2,6 @@
 
 namespace MagneticBall3D
 {
-    int Garbage::m_activeCommonGarbageCount = 0;
-
     Garbage::Garbage(std::shared_ptr<Beryll::SimpleCollidingObject> so, GarbageType type, float health)
     : obj(std::move(so)), m_type(type), m_maxHP(health), m_currentHP(health)
     {
@@ -31,10 +29,6 @@ namespace MagneticBall3D
         obj->enableUpdate();
         obj->enableCollisionMesh();
 
-        // Count DEFAULT garbage because it has limit on map.
-        if(m_type == GarbageType::COMMON)
-            ++Garbage::m_activeCommonGarbageCount;
-
         m_isEnabled = true;
 
         m_currentHP = m_maxHP;
@@ -46,10 +40,6 @@ namespace MagneticBall3D
         obj->disableDraw();
         obj->disableUpdate();
         obj->disableCollisionMesh();
-
-        // Count DEFAULT garbage because it has limit on map.
-        if(Garbage::m_activeCommonGarbageCount > 0 && m_type == GarbageType::COMMON)
-            --Garbage::m_activeCommonGarbageCount;
 
         m_isEnabled = false;
         isMagnetized = false;

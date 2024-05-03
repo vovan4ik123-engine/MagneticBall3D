@@ -34,7 +34,6 @@ namespace MagneticBall3D
         void enableGarbage();
         void disableGarbage();
         bool getIsEnabled() { return m_isEnabled; }
-        static int getActiveCommonGarbageCount() { return Garbage::m_activeCommonGarbageCount; }
         GarbageType getType() { return m_type; }
 
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
@@ -46,7 +45,6 @@ namespace MagneticBall3D
 
     private:
         bool m_isEnabled = true;
-        static int m_activeCommonGarbageCount;
         GarbageType m_type = GarbageType::NONE;
 
         // Hp.

@@ -17,6 +17,7 @@ namespace MagneticBall3D
         void showResurrectMenu();
         void hideResurrectMenu();
         void showResurrectNoCrystalsMenu();
+        void showKillAllBeforeBossMenu();
         void showLoseMenu();
 
 
@@ -48,6 +49,13 @@ namespace MagneticBall3D
         // Lose.
         std::shared_ptr<Beryll::GUITexture> textureLose;
         // + buttonExit.
+
+        // Kill all enemies before boss.
+        std::shared_ptr<Beryll::GUITexture> textureKillAll;
+        std::shared_ptr<Beryll::ButtonWithText> buttonKillAllOk;
+
+        // Win.
+
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;

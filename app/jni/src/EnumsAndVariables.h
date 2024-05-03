@@ -43,7 +43,7 @@ namespace EnumsAndVariables
     inline float playerImpulseFactorOnBuildingRoof = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = 0.07f;
     inline float playerImpulseFactorOnBuildingWall = 0.15f;
-    inline float playerTorqueFactorOnBuildingWall = 0.16f;
+    inline float playerTorqueFactorOnBuildingWall = 0.2f;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
     constexpr inline float playerLinearDamping = 0.1f;
@@ -77,7 +77,6 @@ namespace EnumsAndVariables
     inline int garbageMaxCountMagnetized = 70;
     inline int garbageCountMagnetized = 0;
     inline float garbageDamageTakenMultiplier = 1.0f;
-    constexpr inline int garbageCommonMaxActive = 500; // Limit of active GarbageType::COMMON on map.
     constexpr inline float garbageCommonSpawnMinDistance = 80.0f;
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     inline float garbageCommonSpawnTime = 0.0f; // Sec.
@@ -110,7 +109,7 @@ namespace EnumsAndVariables
     {
         // Camera.
         cameraRotateTime = 0.0f; // Sec.
-
+        
         // Player.
         playerMagneticRadius = 30.0f;
         playerImpulseFactorOnGround = 0.09f;
@@ -118,7 +117,7 @@ namespace EnumsAndVariables
         playerImpulseFactorOnBuildingRoof = 0.08f;
         playerTorqueFactorOnBuildingRoof = 0.07f;
         playerImpulseFactorOnBuildingWall = 0.15f;
-        playerTorqueFactorOnBuildingWall = 0.16f;
+        playerTorqueFactorOnBuildingWall = 0.2f;
         playerMaxSpeedXZ = 90.0f;
         playerDamageTakenMultiplier = 1.0f;
         playerSpeedReductionMultiplier = 1.0f;
