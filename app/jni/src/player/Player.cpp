@@ -107,7 +107,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnumsAndVariables::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, 0.3f);
+                m_obj->setDamping(0.2f, 0.3f);
             }
 
             m_isOnGround = false;
@@ -244,9 +244,9 @@ namespace MagneticBall3D
         m_spamMeteorParticlesTime = Beryll::TimeStep::getMilliSecFromStart();
 
         // Spawn fire before ball.
-        float radius = std::max(5.5f, m_obj->getXZRadius());
+        float radius = std::max(6.0f, m_obj->getXZRadius());
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * radius)};
-        float sizeBegin = radius + EnumsAndVariables::garbageCountMagnetized * 0.017f;
+        float sizeBegin = radius + EnumsAndVariables::garbageCountMagnetized * 0.015f;
 
         Beryll::ParticleSystem::EmitCubesFromCenter(3, 0.7f, sizeBegin, sizeBegin * 0.3f,
                                                     {0.98f, 0.75f, 0.0f, 0.6f}, {0.5f, 0.066f, 0.0f, 0.0f},

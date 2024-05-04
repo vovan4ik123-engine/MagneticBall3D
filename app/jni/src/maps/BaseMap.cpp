@@ -34,11 +34,12 @@ namespace MagneticBall3D
         if(!m_allowedPointsToSpawnGarbage.empty() &&
            EnumsAndVariables::garbageCommonSpawnTime + EnumsAndVariables::garbageCommonSpawnDelay < EnumsAndVariables::mapPlayTimeSec)
         {
+            EnumsAndVariables::garbageCommonSpawnTime = EnumsAndVariables::mapPlayTimeSec;
+
             const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnGarbage[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
             spawnGarbage(EnumsAndVariables::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
-            EnumsAndVariables::garbageCommonSpawnTime = EnumsAndVariables::mapPlayTimeSec;
         }
 
         handleJumpPads();
@@ -283,7 +284,7 @@ namespace MagneticBall3D
             }
 
             // 2 m = radius for default ball. That is base. Start point for controls. Radius can not be less than 2 m.
-            float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.75f);
+            float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.7f);
 
             if(m_player->getIsOnGround())
             {
@@ -311,6 +312,20 @@ namespace MagneticBall3D
             }
 
             m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
+
+            if(m_player->getIsOnBuildingWall())
+            {
+                const glm::vec3 playerImpulse = BeryllConstants::worldUp * 60.0f;
+                const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVariables::playerMassToGarbageMassRatio * 1.25f;
+
+                m_player->getObj()->applyCentralImpulse(playerImpulse);
+
+                for(const auto& wrapper : m_allGarbage)
+                {
+                    if(wrapper.isMagnetized)
+                        wrapper.obj->applyCentralImpulse(garbageImpulse);
+                }
+            }
         }
     }
 
@@ -683,7 +698,7 @@ namespace MagneticBall3D
             if(angleDifference > 0.035f) // More than 2 degrees.
             {
                 const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
-                                                               angleDifference * 0.024f + 0.006f,
+                                                               angleDifference * 0.024f + 0.015f,
                                                                glm::normalize(glm::axis(rotation)));
                 m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
             }
@@ -691,13 +706,15 @@ namespace MagneticBall3D
 
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.035f + (EnumsAndVariables::cameraYAccordingPlayerY * m_player->getObj()->getOrigin().y) + (EnumsAndVariables::garbageCountMagnetized * 0.002f);
+        m_cameraOffset.y = 0.036f +
+                           (m_player->getObj()->getOrigin().y * 0.005f) +
+                           (EnumsAndVariables::garbageCountMagnetized * 0.0021f);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
-        m_cameraFront.y += 13.0f + m_player->getObj()->getXZRadius();
+        m_cameraFront.y += 15.0f + m_player->getObj()->getXZRadius();
 
-        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.25f;
+        float maxCameraDistance = m_startCameraDistance + EnumsAndVariables::garbageCountMagnetized * 0.26f;
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.
@@ -760,14 +777,15 @@ namespace MagneticBall3D
         if(m_player->getIsOnJumpPad())
         {
             BR_INFO("%s", "Apply jumppad.");
-            const float powerToOneKg = EnumsAndVariables::jumpPadPower;
+            const glm::vec3 playerImpulse = BeryllConstants::worldUp * EnumsAndVariables::jumpPadPower;
+            const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVariables::playerMassToGarbageMassRatio;
 
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * m_player->getObj()->getCollisionMass(), 0.0f));
+            m_player->getObj()->applyCentralImpulse(playerImpulse);
 
             for(const auto& wrapper : m_allGarbage)
             {
                 if(wrapper.isMagnetized)
-                    wrapper.obj->applyCentralImpulse(glm::vec3(0.0f, powerToOneKg * wrapper.obj->getCollisionMass(), 0.0f));
+                    wrapper.obj->applyCentralImpulse(garbageImpulse);
             }
         }
     }

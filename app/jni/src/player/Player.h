@@ -92,8 +92,9 @@ namespace MagneticBall3D
         // Level. XP.
         int m_currentLevel = 0;
         int m_currentLevelExp = 0;
-        const std::array<int, 19> m_expPerLevel{100, 150, 200, 250, 300, 350, 400, 450, 500, 550,
-                                                600, 650, 700, 750, 800, 850, 900, 950, 1000};
+        const std::array<int, 20> m_expPerLevel{100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+                                                1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000};
+
         int m_currentLevelMaxExp = 100;
         bool m_nextLevelAchieved = false;
     };

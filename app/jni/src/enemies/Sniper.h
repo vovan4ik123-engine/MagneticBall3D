@@ -30,5 +30,7 @@ namespace MagneticBall3D
         void freeSniperPosition() override;
 
         static std::vector<SniperPosAndAttackDist> sniperPositions;
+        static float spawnTime; // Sec.
+        static float spawnDelay; // Sec
     };
 }

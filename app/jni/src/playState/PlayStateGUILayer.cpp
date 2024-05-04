@@ -55,14 +55,14 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 50, 30, 7);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
         // Pause.
         buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
         m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 30, 40, 40, 7);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
         m_guiObjects.push_back(buttonPauseResume);
         buttonPauseResume->disable();
 
@@ -70,7 +70,7 @@ namespace MagneticBall3D
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureResurrect);
         textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 50, 50, 30, 7);
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 50, 18, 30, 7);
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
@@ -88,7 +88,7 @@ namespace MagneticBall3D
         textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureKillAll);
         textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 50, 30, 7);
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
     }

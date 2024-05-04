@@ -3,6 +3,8 @@
 namespace MagneticBall3D
 {
     std::vector<SniperPosAndAttackDist> Sniper::sniperPositions{};
+    float Sniper::spawnTime = 0.0f;
+    float Sniper::spawnDelay = 20.0f;
 
     Sniper::Sniper(const char* filePath,
                                  float collisionMassKg,
@@ -23,11 +25,11 @@ namespace MagneticBall3D
         m_UnitType = UnitType::SNIPER;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
-        damage = 10.0f;
+        damage = 20.0f;
         attackDistance = 0.0f; // Will set outside class. During spawn.
         timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
-        garbageAmountToDie = 40;
+        garbageAmountToDie = 10;
         reducePlayerSpeedWhenDie = 10.0f;
         experienceWhenDie = 20;
 

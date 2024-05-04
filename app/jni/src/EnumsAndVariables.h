@@ -29,7 +29,6 @@ namespace EnumsAndVariables
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 150.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
-    constexpr inline float cameraYAccordingPlayerY = 0.005f; // Multiply by player.y and add to m_cameraOffset.y.
     constexpr inline float cameraRotateDelay = 0.02f;
     inline float cameraRotateTime = 0.0f; // Sec.
 
@@ -70,7 +69,7 @@ namespace EnumsAndVariables
     constexpr inline float garbageAngularDamping = 0.3f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 130.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 650.0f;
+    constexpr inline float garbageMaxGravityPower = 750.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
@@ -81,7 +80,7 @@ namespace EnumsAndVariables
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     inline float garbageCommonSpawnTime = 0.0f; // Sec.
     inline float garbageCommonSpawnDelay = 1.0f; // Sec.
-    inline int garbageCommonSpawnCount = 2.0f;
+    constexpr inline int garbageCommonSpawnCount = 2.0f;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -90,15 +89,15 @@ namespace EnumsAndVariables
     inline int enemiesMaxActiveCountOnGround = 0;
     constexpr inline int enemiesMaxPathfindingInOneFrame = 8;
     inline int enemiesCurrentPathfindingIndex = 0;
-    constexpr inline float enemiesMinDistanceToSpawn = 300.0f;
-    constexpr inline float enemiesMaxDistanceToSpawn = 700.0f;
+    constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
+    constexpr inline float enemiesMaxDistanceToSpawn = 400.0f;
 
     // Pause.
     inline bool gameOnPause = false;
     inline bool improvementSystemOnScreen = false;
 
     // Jump pad.
-    constexpr inline float jumpPadPower = 130.0f;
+    constexpr inline float jumpPadPower = 130.0f * playerMass; // Power for player.
 
     // Map.
     inline float mapStartTimeSec = 0.0f;
@@ -131,8 +130,7 @@ namespace EnumsAndVariables
         garbageDamageTakenMultiplier = 1.0f;
         garbageCommonSpawnTime = 0.0f; // Sec.
         garbageCommonSpawnDelay = 1.0f; // Sec.
-        garbageCommonSpawnCount = 2.0f;
-
+        
         // Enemies.
         enemiesMaxActiveCountOnGround = 0;
         enemiesCurrentPathfindingIndex = 0;
@@ -140,7 +138,7 @@ namespace EnumsAndVariables
         // Pause.
         gameOnPause = false;
         improvementSystemOnScreen = false;
-
+        
         // Map.
         mapStartTimeSec = 0.0f;
         mapPlayTimeSec = 0.0f;
