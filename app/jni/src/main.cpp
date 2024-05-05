@@ -2,6 +2,7 @@
 #include "GameStateHelper.h"
 #include "DataBaseHelper.h"
 #include "EnumsAndVariables.h"
+#include "Sounds.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
     //Beryll::Camera::setCameraFov(45.0f);
     Beryll::Camera::setProjectionNearClipPlane(5.0f);
     Beryll::Camera::setProjectionFarClipPlane(1600.0f);
-    Beryll::Camera::setObjectsViewDistance(1200.0f);
+    Beryll::Camera::setObjectsViewDistance(1000.0f);
 
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
@@ -25,6 +26,8 @@ int main(int argc, char* argv[])
     Beryll::LoadingScreen::setTextures({"loadingScreen/M1Screen.jpg"});
 
     Beryll::Renderer::enableFaceCulling();
+
+    MagneticBall3D::Sounds::loadSounds();
 
     //MagneticBall3D::GameStateHelper::pushPlayState();
     MagneticBall3D::GameStateHelper::pushStartMenuState();

@@ -7,6 +7,7 @@
 #include "menus/playerTalents/PlayerTalentsGUILayer.h"
 #include "menus/settings/SettingsMenuGUILayer.h"
 #include "enemies/Sniper.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -78,8 +79,17 @@ namespace MagneticBall3D
     {
         Beryll::Physics::hardRemoveAllObjects();
         EnumsAndVariables::resetAllVariables();
+
         Sniper::sniperPositions = {};
         Sniper::spawnTime = 0.0f;
+
+        Sounds::pistolShotTime = 0.0f;
+        Sounds::pistolHitTime = 0.0f;
+        Sounds::grenadeLauncherShotTime = 0.0f;
+        Sounds::grenadeLauncherHitTime = 0.0f;
+        Sounds::tankShotTime = 0.0f;
+        Sounds::tankHitTime = 0.0f;
+        Sounds::smashTime = 0.0f;
     }
 
     void GameStateHelper::prepareVariablesForPlay()

@@ -1,5 +1,6 @@
 #include "BaseMap.h"
 #include "DataBaseHelper.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -524,6 +525,16 @@ namespace MagneticBall3D
 
                 if(rayAttack)
                 {
+                    // Play shot sounds.
+                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
+                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->getUnitType() == UnitType::SNIPER)
+                        Sounds::playSound(SoundType::PISTOL_SHOT);
+                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                        Sounds::playSound(SoundType::GRENADE_LAUNCHER_SHOT);
+                    else if(enemy->getUnitType() == UnitType::TANK)
+                        Sounds::playSound(SoundType::TANK_SHOT);
+
                     // Spam particles.
                     if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
                        enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
@@ -590,6 +601,16 @@ namespace MagneticBall3D
                             }
                         }
                     }
+
+                    // Play hit sounds.
+                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
+                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->getUnitType() == UnitType::SNIPER)
+                        Sounds::playSound(SoundType::PISTOL_HIT);
+                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                        Sounds::playSound(SoundType::GRENADE_LAUNCHER_HIT);
+                    else if(enemy->getUnitType() == UnitType::TANK)
+                        Sounds::playSound(SoundType::TANK_HIT);
                 }
             }
         }
@@ -643,22 +664,27 @@ namespace MagneticBall3D
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     // Spawn garbage COP_WITH_PISTOL + PISTOL.
+
+                    Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     // Spawn garbage COP_WITH_GRENADE_LAUNCHER + GRENADE_LAUNCHER.
+
+                    Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
-
+                    Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::SNIPER)
                 {
                     enemy->freeSniperPosition();
+                    Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::TANK)
                 {
-
+                    Sounds::playSound(SoundType::SMASH_COP); // Tank.
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
@@ -817,7 +843,13 @@ namespace MagneticBall3D
                 DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
                 m_player->resurrect();
                 m_gui->hideResurrectMenu();
-                BR_INFO("%s", "m_player->resurrect();");
+                BR_INFO("%s", "m_player->resurrect(); + respawn all enemies.");
+
+                for(const auto& enemy : m_allAnimatedEnemies)
+                {
+                    if(enemy->getIsEnabledUpdate())
+                        enemy->disableEnemy();
+                }
             }
         }
     }

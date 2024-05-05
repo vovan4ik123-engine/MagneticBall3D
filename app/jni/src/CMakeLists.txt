@@ -12,6 +12,7 @@ add_compile_options(-fexceptions -frtti)
 add_library(main SHARED main.cpp
                         GameStateHelper.cpp
                         DataBaseHelper.cpp
+                        Sounds.cpp
 
                         # Menu.
                         menus/start/StartMenuGUILayer.cpp

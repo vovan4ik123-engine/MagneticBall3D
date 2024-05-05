@@ -72,7 +72,8 @@ namespace EnumsAndVariables
     constexpr inline float playerXPMultiplierDefault = 1.0f;
     inline float playerXPMultiplier = playerXPMultiplierDefault;
     constexpr inline float playerStartHP = 500.0f;
-    constexpr inline int playerResurrectionAttempts = 2;
+    constexpr inline int playerResurrectionAttemptsDefault = 2;
+    inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;
     constexpr inline int playerCostOfResurrectionCrystals = 10;
 
     // Garbage.
@@ -104,7 +105,7 @@ namespace EnumsAndVariables
     // Enemies.
     constexpr inline int enemiesMaxActiveCountOnGroundDefault = 0;
     inline int enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
-    constexpr inline int enemiesMaxPathfindingInOneFrame = 8;
+    constexpr inline int enemiesMaxPathfindingInOneFrame = 10;
     constexpr inline int enemiesCurrentPathfindingIndexDefault = 0;
     inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
@@ -139,6 +140,7 @@ namespace EnumsAndVariables
         playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
         playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
         playerXPMultiplier = playerXPMultiplierDefault;
+        playerResurrectionAttempts = playerResurrectionAttemptsDefault;
 
         // Garbage.
         garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;

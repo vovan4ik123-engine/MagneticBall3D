@@ -472,19 +472,6 @@ namespace MagneticBall3D
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
-            for(auto& enemy : m_allAnimatedEnemies)
-            {
-                enemy->isCanBeSpawned = false;
-            }
-
-            BR_INFO("prepare wave 7. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
-        }
-        else if(m_prepareWave8 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave8Time)
-        {
-            m_prepareWave8 = false;
-
-            EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
-
             int copWithPistolCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
@@ -499,11 +486,11 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 8. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 7. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareWave9 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave9Time)
+        else if(m_prepareWave8 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave8Time)
         {
-            m_prepareWave9 = false;
+            m_prepareWave8 = false;
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
@@ -549,11 +536,11 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 9. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 8. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareWave10 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave10Time)
+        else if(m_prepareWave9 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave9Time)
         {
-            m_prepareWave10 = false;
+            m_prepareWave9 = false;
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
@@ -599,11 +586,11 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 10. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 9. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareWave11 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave11Time)
+        else if(m_prepareWave10 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave10Time)
         {
-            m_prepareWave11 = false;
+            m_prepareWave10 = false;
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
@@ -649,11 +636,11 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 11. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 10. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareWave12 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave12Time)
+        else if(m_prepareWave11 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave11Time)
         {
-            m_prepareWave12 = false;
+            m_prepareWave11 = false;
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
@@ -664,7 +651,7 @@ namespace MagneticBall3D
 
             m_gui->showKillAllBeforeBossMenu();
 
-            BR_INFO("prepare wave 12. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 11. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
 
         bool sortSnipersPositions = true;
