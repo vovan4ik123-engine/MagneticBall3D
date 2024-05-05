@@ -36,13 +36,19 @@ namespace EnumsAndVariables
     constexpr inline float swipePowerMultiplier = 2.2f;
 
     // Player.
-    inline float playerMagneticRadius = 30.0f;
-    inline float playerImpulseFactorOnGround = 0.09f;
-    inline float playerTorqueFactorOnGround = 0.08f;
-    inline float playerImpulseFactorOnBuildingRoof = 0.08f;
-    inline float playerTorqueFactorOnBuildingRoof = 0.07f;
-    inline float playerImpulseFactorOnBuildingWall = 0.15f;
-    inline float playerTorqueFactorOnBuildingWall = 0.2f;
+    constexpr inline float playerMagneticRadiusDefault = 30.0f;
+    inline float playerMagneticRadius = playerMagneticRadiusDefault;
+    constexpr inline float playerImpulseFactorOnGroundDefault = 0.09f;
+    inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
+    constexpr inline float playerTorqueFactorOnGroundDefault = 0.08f;
+    inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.08f;
+    inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
+    inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.22f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.2f;
+    inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
     constexpr inline float playerLinearDamping = 0.1f;
@@ -53,15 +59,20 @@ namespace EnumsAndVariables
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -10.0f, 0.0f};
-    inline float playerMaxSpeedXZ = 90.0f;
+    constexpr inline float playerMaxSpeedXZDefault = 90.0f;
+    inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     constexpr inline float playerSpeedForMeteor = 100.0f;
     constexpr inline float playerLeftRightTurnPower = 0.013f;
-    inline float playerDamageTakenMultiplier = 1.0f;
-    inline float playerSpeedReductionMultiplier = 1.0f;
-    inline float playerRestoreHPAtNewLevel = 0.0f;
-    inline float playerXPMultiplier = 1.0f;
+    constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
+    inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
+    constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;
+    inline float playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
+    constexpr inline float playerRestoreHPAtNewLevelDefault = 0.0f;
+    inline float playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
+    constexpr inline float playerXPMultiplierDefault = 1.0f;
+    inline float playerXPMultiplier = playerXPMultiplierDefault;
     constexpr inline float playerStartHP = 500.0f;
-    inline int playerResurrectionAttempts = 2;
+    constexpr inline int playerResurrectionAttempts = 2;
     constexpr inline int playerCostOfResurrectionCrystals = 10;
 
     // Garbage.
@@ -73,22 +84,29 @@ namespace EnumsAndVariables
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
-    inline int garbageMaxCountMagnetized = 70;
-    inline int garbageCountMagnetized = 0;
-    inline float garbageDamageTakenMultiplier = 1.0f;
+    constexpr inline int garbageMaxCountMagnetizedDefault = 70;
+    inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
+    constexpr inline int garbageCountMagnetizedDefault = 0;
+    inline int garbageCountMagnetized = garbageCountMagnetizedDefault;
+    constexpr inline float garbageDamageTakenMultiplierDefault = 1.0f;
+    inline float garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
     constexpr inline float garbageCommonSpawnMinDistance = 80.0f;
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
-    inline float garbageCommonSpawnTime = 0.0f; // Sec.
-    inline float garbageCommonSpawnDelay = 1.0f; // Sec.
+    constexpr inline float garbageCommonSpawnTimeDefault = 0.0f; // Sec.
+    inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
+    constexpr inline float garbageCommonSpawnDelayDefault = 1.0f; // Sec.
+    inline float garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault; // Sec.
     constexpr inline int garbageCommonSpawnCount = 2.0f;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
     // Enemies.
-    inline int enemiesMaxActiveCountOnGround = 0;
+    constexpr inline int enemiesMaxActiveCountOnGroundDefault = 0;
+    inline int enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
     constexpr inline int enemiesMaxPathfindingInOneFrame = 8;
-    inline int enemiesCurrentPathfindingIndex = 0;
+    constexpr inline int enemiesCurrentPathfindingIndexDefault = 0;
+    inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
     constexpr inline float enemiesMaxDistanceToSpawn = 400.0f;
 
@@ -108,33 +126,30 @@ namespace EnumsAndVariables
     {
         // Camera.
         cameraRotateTime = 0.0f; // Sec.
-        
+
         // Player.
-        playerMagneticRadius = 30.0f;
-        playerImpulseFactorOnGround = 0.09f;
-        playerTorqueFactorOnGround = 0.08f;
-        playerImpulseFactorOnBuildingRoof = 0.08f;
-        playerTorqueFactorOnBuildingRoof = 0.07f;
-        playerImpulseFactorOnBuildingWall = 0.15f;
-        playerTorqueFactorOnBuildingWall = 0.2f;
-        playerMaxSpeedXZ = 90.0f;
-        playerDamageTakenMultiplier = 1.0f;
-        playerSpeedReductionMultiplier = 1.0f;
-        playerRestoreHPAtNewLevel = 0.0f;
-        playerXPMultiplier = 1.0f;
-        playerResurrectionAttempts = 2;
+        playerMagneticRadius = playerMagneticRadiusDefault;
+        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
+        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
+        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
+        playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
+        playerMaxSpeedXZ = playerMaxSpeedXZDefault;
+        playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
+        playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
+        playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
+        playerXPMultiplier = playerXPMultiplierDefault;
 
         // Garbage.
-        garbageMaxCountMagnetized = 70;
-        garbageCountMagnetized = 0;
-        garbageDamageTakenMultiplier = 1.0f;
-        garbageCommonSpawnTime = 0.0f; // Sec.
-        garbageCommonSpawnDelay = 1.0f; // Sec.
-        
-        // Enemies.
-        enemiesMaxActiveCountOnGround = 0;
-        enemiesCurrentPathfindingIndex = 0;
+        garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
+        garbageCountMagnetized = garbageCountMagnetizedDefault;
+        garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
+        garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
+        garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault;
 
+        // Enemies.
+        enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
+        enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
         // Pause.
         gameOnPause = false;
         improvementSystemOnScreen = false;

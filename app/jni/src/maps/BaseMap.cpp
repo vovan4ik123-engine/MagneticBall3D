@@ -315,7 +315,7 @@ namespace MagneticBall3D
 
             if(m_player->getIsOnBuildingWall())
             {
-                const glm::vec3 playerImpulse = BeryllConstants::worldUp * 60.0f;
+                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 60.0f) + m_player->getObj()->getXZRadius() * 4.0f;
                 const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVariables::playerMassToGarbageMassRatio * 1.25f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);

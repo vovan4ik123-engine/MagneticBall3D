@@ -79,6 +79,7 @@ namespace MagneticBall3D
         Beryll::Physics::hardRemoveAllObjects();
         EnumsAndVariables::resetAllVariables();
         Sniper::sniperPositions = {};
+        Sniper::spawnTime = 0.0f;
     }
 
     void GameStateHelper::prepareVariablesForPlay()
