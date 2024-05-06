@@ -316,8 +316,8 @@ namespace MagneticBall3D
 
             if(m_player->getIsOnBuildingWall())
             {
-                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 60.0f) + m_player->getObj()->getXZRadius() * 4.0f;
-                const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVariables::playerMassToGarbageMassRatio * 1.25f;
+                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 6.0f);
+                const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVariables::playerMassToGarbageMassRatio * 1.3f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
 
@@ -843,13 +843,55 @@ namespace MagneticBall3D
                 DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
                 m_player->resurrect();
                 m_gui->hideResurrectMenu();
-                BR_INFO("%s", "m_player->resurrect(); + respawn all enemies.");
+                BR_INFO("%s", "m_player->resurrect();");
 
-                for(const auto& enemy : m_allAnimatedEnemies)
-                {
-                    if(enemy->getIsEnabledUpdate())
-                        enemy->disableEnemy();
-                }
+                float mapXLength = glm::distance(m_minX, m_maxX);
+                float mapZLength = glm::distance(m_minZ, m_maxZ);
+                if(mapXLength > mapZLength)
+                    respawnEnemiesAtNewDistance(mapXLength * 0.3f, mapXLength * 0.6f);
+                else
+                    respawnEnemiesAtNewDistance(mapZLength * 0.3f, mapZLength * 0.6f);
+            }
+        }
+    }
+
+    void BaseMap::respawnEnemiesAtNewDistance(float minDistance, float maxDistance)
+    {
+        if(minDistance <= 0.0f || maxDistance <= 0.0f || minDistance >= maxDistance)
+            return;
+
+        std::vector<glm::ivec2> newPositions;
+        glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
+        float distanceToCurrent = 0.0f;
+
+        for(const glm::ivec2& point : m_pathAllowedPositionsXZ)
+        {
+            distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y)));
+            if(distanceToCurrent > minDistance && distanceToCurrent < maxDistance)
+            {
+                // We can move enemy to this point.
+                newPositions.push_back(point);
+            }
+        }
+
+        if(newPositions.empty())
+            return;
+
+        for(const auto &enemy: m_allAnimatedEnemies)
+        {
+            if(enemy->getIsEnabledUpdate())
+            {
+                const glm::ivec2& spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
+                glm::vec3 spawnPoint3D{spawnPoint2D.x,
+                                       enemy->getFromOriginToBottom(),
+                                       spawnPoint2D.y};
+                enemy->setOrigin(spawnPoint3D);
+
+                // Will calculated during pathfinding.
+                enemy->pathArray = {};
+                enemy->indexInPathArray = 0;
+                enemy->currentPointToMove2DIntegers = spawnPoint2D;
+                enemy->currentPointToMove3DFloats = spawnPoint3D;
             }
         }
     }

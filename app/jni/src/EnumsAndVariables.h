@@ -105,7 +105,7 @@ namespace EnumsAndVariables
     // Enemies.
     constexpr inline int enemiesMaxActiveCountOnGroundDefault = 0;
     inline int enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
-    constexpr inline int enemiesMaxPathfindingInOneFrame = 10;
+    constexpr inline int enemiesMaxPathfindingInOneFrame = 8;
     constexpr inline int enemiesCurrentPathfindingIndexDefault = 0;
     inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;

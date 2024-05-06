@@ -108,12 +108,6 @@ namespace MagneticBall3D
                                                        getFromOriginToBottom(),
                                                        currentPointToMove2DIntegers.y);
             }
-//            else
-//            {
-//                BR_INFO("%s", "idle because indexInPathArray >= pathArray.size() - 1");
-//                unitState = UnitState::STAND_AIMING;
-//                setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
-//            }
         }
     }
 
