@@ -59,7 +59,7 @@ namespace MagneticBall3D
         return false;
     }
 
-    std::vector<glm::ivec2> AStar::findPath(glm::ivec2 start, glm::ivec2 end, int pathNodeMaxCount)
+    std::vector<glm::ivec2> AStar::findPath(const glm::ivec2 start, const glm::ivec2 end, const int pathNodeMaxCount)
     {
         if(isCollisionWithWallOrBlocked(start))
             return {start};

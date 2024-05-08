@@ -99,7 +99,7 @@ namespace MagneticBall3D
             //BR_INFO("%s", "NOT   moving");
 
             // Go to next point if exists.
-            if(indexInPathArray < pathArray.size() - 1)
+            if(indexInPathArray + 1 < pathArray.size())
             {
                 ++indexInPathArray;
 

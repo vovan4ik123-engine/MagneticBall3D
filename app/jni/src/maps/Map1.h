@@ -17,6 +17,7 @@ namespace MagneticBall3D
         void loadEnv();
         void loadGarbage();
         void loadEnemies();
+        void loadBoss();
 
         void spawnEnemies() override;
         void startBossPhase() override;

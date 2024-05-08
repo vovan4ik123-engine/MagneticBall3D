@@ -22,6 +22,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
+        loadBoss();
 
         Sniper::sniperPositions = std::vector<SniperPosAndAttackDist>{{glm::vec3(65.0f, 255.0f, -642.0f), 2500.0f},
                                                                       {glm::vec3(65.0f, 252.0f, -445.0f), 2500.0f},
@@ -280,7 +281,6 @@ namespace MagneticBall3D
 
                 obj->setDamping(EnumsAndVariables::garbageLinearDamping, EnumsAndVariables::garbageAngularDamping);
                 obj->setGravity(EnumsAndVariables::garbageGravityDefault, false, false);
-
             }
         }
     }
@@ -371,6 +371,11 @@ namespace MagneticBall3D
             m_animatedOrDynamicObjects.push_back(sniper);
             m_allAnimatedEnemies.push_back(sniper);
         }
+    }
+
+    void Map1::loadBoss()
+    {
+
     }
 
     void Map1::spawnEnemies()
@@ -793,7 +798,7 @@ namespace MagneticBall3D
                             enemy->disableDraw();
                             enemy->setOrigin(posAndDist.position);
                             enemy->attackDistance = posAndDist.attackDist;
-                            BR_INFO("Spawn sniper. Y = %f", posAndDist.position.y);
+                            //BR_INFO("Spawn sniper. Y = %f", posAndDist.position.y);
 
                             Sniper::spawnTime = EnumsAndVariables::mapPlayTimeSec;
                             break;

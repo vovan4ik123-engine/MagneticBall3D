@@ -368,9 +368,10 @@ namespace MagneticBall3D
                 }
             }
 
-            if(EnumsAndVariables::enemiesCurrentPathfindingIndex + 1 >= m_allAnimatedEnemies.size())
+            if(EnumsAndVariables::enemiesCurrentPathfindingIndex >= m_allAnimatedEnemies.size())
             {
                 // All enemies were updated.
+                //BR_INFO("Path for all enemies updated. Last index: %d", EnumsAndVariables::enemiesCurrentPathfindingIndex);
                 EnumsAndVariables::enemiesCurrentPathfindingIndex = 0;
                 m_pathFindingIteration = 0; // Start from start again in next frame.
             }
@@ -779,7 +780,7 @@ namespace MagneticBall3D
 
         for(const auto &enemy: m_allAnimatedEnemies)
         {
-            if(enemy->getIsEnabledUpdate())
+            if(enemy->getIsEnabledUpdate() && enemy->getIsCanMove())
             {
                 const glm::ivec2& spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
                 glm::vec3 spawnPoint3D{spawnPoint2D.x,
@@ -787,11 +788,16 @@ namespace MagneticBall3D
                                        spawnPoint2D.y};
                 enemy->setOrigin(spawnPoint3D);
 
-                // Will calculated during pathfinding.
-                enemy->pathArray = {};
-                enemy->indexInPathArray = 0;
-                enemy->currentPointToMove2DIntegers = spawnPoint2D;
-                enemy->currentPointToMove3DFloats = spawnPoint3D;
+                enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 4);
+                if(enemy->pathArray.size() > 1)
+                    enemy->indexInPathArray = 1;
+                else
+                    enemy->indexInPathArray = 0;
+
+                enemy->currentPointToMove2DIntegers = enemy->pathArray[enemy->indexInPathArray];
+                enemy->currentPointToMove3DFloats = glm::vec3(enemy->currentPointToMove2DIntegers.x,
+                                                              enemy->getFromOriginToBottom(),
+                                                              enemy->currentPointToMove2DIntegers.y);
             }
         }
     }

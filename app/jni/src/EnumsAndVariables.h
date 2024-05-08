@@ -157,6 +157,7 @@ namespace EnumsAndVariables
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
+
         // Pause.
         gameOnPause = false;
         improvementSystemOnScreen = false;

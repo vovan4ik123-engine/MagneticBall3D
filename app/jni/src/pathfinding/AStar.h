@@ -33,7 +33,7 @@ namespace MagneticBall3D
         void addWallPosition(glm::ivec2 wall);
         void addBlockedPosition(glm::ivec2 pos);
         void clearBlockedPositions() { m_blockedPositions.clear(); }
-        std::vector<glm::ivec2> findPath(glm::ivec2 start, glm::ivec2 end, int pathNodeMaxCount = -1); // -1 = return all nodes from start to end.
+        std::vector<glm::ivec2> findPath(const glm::ivec2 start, const glm::ivec2 end, const int pathNodeMaxCount = -1); // -1 = return all nodes from start to end.
 
     private:
         static constexpr int m_costMovePerpendicular = 10;
