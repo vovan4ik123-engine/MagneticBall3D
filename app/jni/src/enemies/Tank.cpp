@@ -18,7 +18,7 @@ namespace MagneticBall3D
                            sceneGroup)
     {
         unitState = UnitState::MOVE;
-        m_UnitType = UnitType::TANK;
+        m_unitType = UnitType::TANK;
         m_attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
         damage = 20.0f;

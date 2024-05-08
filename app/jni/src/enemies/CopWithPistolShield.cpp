@@ -18,7 +18,7 @@ namespace MagneticBall3D
                                                          sceneGroup)
     {
         unitState = UnitState::MOVE;
-        m_UnitType = UnitType::COP_WITH_PISTOL_SHIELD;
+        m_unitType = UnitType::COP_WITH_PISTOL_SHIELD;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
         damage = 7.0f;

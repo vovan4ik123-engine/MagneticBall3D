@@ -22,7 +22,7 @@ namespace MagneticBall3D
                                              sceneGroup)
     {
         unitState = UnitState::STAND_AIMING;
-        m_UnitType = UnitType::SNIPER;
+        m_unitType = UnitType::SNIPER;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
         damage = 20.0f;
@@ -46,24 +46,24 @@ namespace MagneticBall3D
     {
         if(getIsAttacking())
         {
-            //BR_INFO("%s", "is attacking");
+            //BR_INFO("%s", "Sniper is attacking");
             // Do nothing. Attack animation should be playing now.
         }
         else if(getIsDelayBeforeFirstAttack())
         {
-            //BR_INFO("%s", "DelayBeforeFirstAttack");
+            //BR_INFO("%s", "Sniper DelayBeforeFirstAttack");
             unitState = UnitState::STAND_AIMING;
             setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) < attackDistance)
         {
-            //BR_INFO("%s", "IN_ATTACK_RADIUS");
+            //BR_INFO("%s", "Sniper IN_ATTACK_RADIUS");
             unitState = UnitState::IN_ATTACK_RADIUS;
 
             if(getIsTimeToAttack())
             {
-                //BR_INFO("%s", "if(getIsTimeToAttack())");
+                //BR_INFO("%s", "Sniper if(getIsTimeToAttack())");
                 // Check if enemy see player.
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
                                                                                      playerOrigin,
@@ -74,13 +74,13 @@ namespace MagneticBall3D
                 {
                     if(m_prepareToFirstAttack)
                     {
-                        //BR_INFO("%s", " prepareToFirstAttack");
+                        //BR_INFO("%s", "Sniper prepareToFirstAttack");
                         m_prepareToFirstAttack = false;
                         m_prepareToFirstAttackStartTime = EnumsAndVariables::mapPlayTimeSec;
                     }
                     else
                     {
-                        //BR_INFO("%s", "UnitState::CAN_ATTACK");
+                        //BR_INFO("%s", "Sniper CAN_ATTACK");
                         unitState = UnitState::CAN_ATTACK;
                     }
                 }

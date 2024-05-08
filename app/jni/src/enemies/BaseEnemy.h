@@ -17,8 +17,7 @@ namespace MagneticBall3D
         COP_WITH_PISTOL_SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
         SNIPER,
-        TANK,
-        BOSS_TANK
+        TANK
     };
 
     enum class AttackType
@@ -33,8 +32,8 @@ namespace MagneticBall3D
     public:
         BaseEnemy() = delete;
         BaseEnemy(const char* filePath,  // Common params.
-                                   float collisionMassKg,    // Physics params.
-                                   bool wantCollisionCallBack,
+                  float collisionMassKg,    // Physics params.
+                  bool wantCollisionCallBack,
                   Beryll::CollisionFlags collFlag,
                   Beryll::CollisionGroups collGroup,
                   Beryll::CollisionGroups collMask,
@@ -51,9 +50,10 @@ namespace MagneticBall3D
         void enableEnemy();
         void disableEnemy();
         bool getIsEnabled() { return m_isEnabled; }
-        static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
-        UnitType getUnitType() { return m_UnitType; }
+        UnitType getUnitType() { return m_unitType; }
         AttackType getAttackType() { return m_attackType; }
+        bool getIsCanMove() { return m_isCanMove; }
+        static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
         bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
         bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
         bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
@@ -63,10 +63,8 @@ namespace MagneticBall3D
         glm::vec3 currentPointToMove3DFloats{0.0f};
         glm::ivec2 currentPointToMove2DIntegers{0};
         std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
-        bool getIsCanMove() { return m_isCanMove; }
 
         UnitState unitState = UnitState::MOVE;
-        bool isSeePlayerOrGarbage = false;
 
         bool isCanBeSpawned = false;
 
@@ -84,7 +82,7 @@ namespace MagneticBall3D
 
         static int m_activeEnemiesCount;
         bool m_isEnabled = false;
-        UnitType m_UnitType = UnitType::NONE;
+        UnitType m_unitType = UnitType::NONE;
         AttackType m_attackType = AttackType::NONE;
         bool m_isCanMove = true; // false for SNIPER.
 

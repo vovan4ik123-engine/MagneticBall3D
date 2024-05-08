@@ -39,16 +39,17 @@ namespace MagneticBall3D
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
         bool isMagnetized = false;
 
-        float getCurrentHP() { return m_currentHP; }
         float getMaxHP() { return m_maxHP; }
-        void takeDamage(float damage) { m_currentHP -= (damage * EnumsAndVariables::garbageDamageTakenMultiplier); }
+        float getCurrentHP() { return m_currentHP; }
+        void takeDamage(float d) { m_currentHP -= (d * EnumsAndVariables::garbageDamageTakenMultiplier); }
+        bool getIsDie() { return m_currentHP <= 0.0f; }
 
     private:
         bool m_isEnabled = true;
         GarbageType m_type = GarbageType::NONE;
 
         // Hp.
-        float m_currentHP = 0;
-        const float m_maxHP = 0;
+        const float m_maxHP = 0.0f;
+        float m_currentHP = 0.0f;
     };
 }

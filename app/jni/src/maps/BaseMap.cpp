@@ -712,8 +712,6 @@ namespace MagneticBall3D
     {
         if(m_player->getIsDie())
         {
-            BR_INFO("%s", "m_player->getIsDie().");
-
             if(EnumsAndVariables::playerResurrectionAttempts > 0)
             {
                 if(EnumsAndVariables::CurrencyBalance::crystals >= EnumsAndVariables::playerCostOfResurrectionCrystals)

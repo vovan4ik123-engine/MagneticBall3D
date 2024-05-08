@@ -32,29 +32,29 @@ namespace MagneticBall3D
     {
         if(getIsAttacking())
         {
-            //BR_INFO("%s", "is attacking");
+            //BR_INFO("%s", "BaseEnemy is attacking");
             // Do nothing. Attack animation should be playing now.
         }
         else if(getIsDelayBeforeFirstAttack())
         {
-            //BR_INFO("%s", "DelayBeforeFirstAttack");
+            //BR_INFO("%s", "BaseEnemy DelayBeforeFirstAttack");
             unitState = UnitState::STAND_AIMING;
             setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > attackDistance)
         {
-            //BR_INFO("%s", "move because distance");
+            //BR_INFO("%s", "BaseEnemy move because distance");
             move();
         }
         else
         {
-            //BR_INFO("%s", "IN_ATTACK_RADIUS");
+            //BR_INFO("%s", "BaseEnemy IN_ATTACK_RADIUS");
             unitState = UnitState::IN_ATTACK_RADIUS;
 
             if(getIsTimeToAttack())
             {
-                //BR_INFO("%s", "if(getIsTimeToAttack())");
+                //BR_INFO("%s", "BaseEnemy if(getIsTimeToAttack())");
                 // Check if enemy see player.
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
                                                                                      playerOrigin,
@@ -65,19 +65,19 @@ namespace MagneticBall3D
                 {
                     if(m_prepareToFirstAttack)
                     {
-                        //BR_INFO("%s", " prepareToFirstAttack");
+                        //BR_INFO("%s", "BaseEnemy prepareToFirstAttack");
                         m_prepareToFirstAttack = false;
                         m_prepareToFirstAttackStartTime = EnumsAndVariables::mapPlayTimeSec;
                     }
                     else
                     {
-                        //BR_INFO("%s", "UnitState::CAN_ATTACK");
+                        //BR_INFO("%s", "BaseEnemy CAN_ATTACK");
                         unitState = UnitState::CAN_ATTACK;
                     }
                 }
                 else
                 {
-                    //BR_INFO("%s", "move because dont see");
+                    //BR_INFO("%s", "BaseEnemy move because dont see");
                     move();
                 }
             }
@@ -140,7 +140,6 @@ namespace MagneticBall3D
             --BaseEnemy::m_activeEnemiesCount;
 
         m_isEnabled = false;
-        isSeePlayerOrGarbage = false;
         m_lastAttackTime = 0.0f;
         m_prepareToFirstAttackStartTime = 0.0f;
         m_prepareToFirstAttack = true;

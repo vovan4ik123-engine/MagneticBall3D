@@ -49,10 +49,10 @@ namespace MagneticBall3D
         void selectNextModel();
         void addToMaxHP(float value); // Will add to m_maxHP + recalculate m_currentHP.
 
-        float getCurrentHP() { return m_currentHP; }
         float getMaxHP() { return m_maxHP; }
-        void takeDamage(float damage) { m_currentHP -= (damage * EnumsAndVariables::playerDamageTakenMultiplier); }
-        bool getIsDie() { return m_currentHP <= 0; }
+        float getCurrentHP() { return m_currentHP; }
+        void takeDamage(float d) { m_currentHP -= (d * EnumsAndVariables::playerDamageTakenMultiplier); }
+        bool getIsDie() { return m_currentHP <= 0.0f; }
         void resurrect() { m_currentHP = m_maxHP; }
 
     private:
@@ -86,8 +86,8 @@ namespace MagneticBall3D
         uint64_t m_spamMeteorParticlesDelay = 50; // Millisec.
 
         // HP.
-        float m_currentHP = 0;
-        float m_maxHP = 0;
+        float m_maxHP = 0.0f;
+        float m_currentHP = 0.0f;
 
         // Level. XP.
         int m_currentLevel = 0;

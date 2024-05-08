@@ -793,7 +793,7 @@ namespace MagneticBall3D
                             enemy->disableDraw();
                             enemy->setOrigin(posAndDist.position);
                             enemy->attackDistance = posAndDist.attackDist;
-                            BR_INFO("%s", "Spawn sniper.");
+                            BR_INFO("Spawn sniper. Y = %f", posAndDist.position.y);
 
                             Sniper::spawnTime = EnumsAndVariables::mapPlayTimeSec;
                             break;
@@ -813,6 +813,8 @@ namespace MagneticBall3D
         m_gui->showMenuBossTankWithCommander();
         EnumsAndVariables::bossPhase = true;
         EnumsAndVariables::prepareToBossPhase = false;
+
+        // Enable boss.
     }
 
     void Map1::handlePossPhase()
