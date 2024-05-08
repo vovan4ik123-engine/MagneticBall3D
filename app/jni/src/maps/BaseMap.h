@@ -16,35 +16,44 @@ namespace MagneticBall3D
         BaseMap(std::shared_ptr<PlayStateGUILayer> gui);
         virtual ~BaseMap();
 
-        // Can be overriden in subclass.
         virtual void updateBeforePhysics();
         virtual void updateAfterPhysics();
-        virtual void draw();
+        virtual void draw() = 0;
 
         // Load.
         void loadShaders();
 
         // Before physics.
         void handlePlayerDie();
+        void handlePlayerWin();
         void handleScreenSwipe();
-        void magnetizeGarbageAndUpdateGravity();
         void updatePathfindingAndSpawnEnemies();
-        virtual void spawnEnemies() = 0;
-        void handleEnemiesAttacks();
+        virtual void spawnEnemies() = 0; // In subclass.
+        void spawnCommonGarbage();
         void handleJumpPads();
+        void checkPlayerOutOfMap();
+
 
         // After physics.
+        void updateEnemiesAndTheirsAttacks();
+        void updateAndMagnetizeGarbage();
+        void killEnemies();
+        void handleCamera();
+        void updateGUI();
+
         void emitParticlesLine(const glm::vec3& from, const glm::vec3& to, const float sizeBegin, const float sizeEnd,
                                const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
         void emitParticlesExplosion(const glm::vec3& orig, const int count, const float sizeBegin, const float sizeEnd,
                                     const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
-        void killEnemies();
-        void handleCamera();
-        void spawnGarbage(const int count, GarbageType type, glm::vec3 spawnPoint);
-        void updateGUI();
+        void spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint);
 
         void updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
         void respawnEnemiesAtNewDistance(float minDistance, float maxDistance);
+
+        // Boss phase.
+        void prepareToBossPhase(); // At last enemies wave.
+        virtual void startBossPhase() = 0;
+        virtual void handlePossPhase() = 0;
 
     protected:
         std::shared_ptr<PlayStateGUILayer> m_gui;
@@ -84,7 +93,7 @@ namespace MagneticBall3D
 
         glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 160.0f; // For player without garbage.
+        const float m_startCameraDistance = 60.0f; // For player without garbage.
         float m_cameraDistance = m_startCameraDistance;
 
         // Screen swipe.
@@ -98,8 +107,8 @@ namespace MagneticBall3D
         AStar m_pathFinder; // Assign new object with map size in constructor of specific map.
         std::vector<glm::ivec2> m_pathAllowedPositionsXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
-        std::vector<glm::ivec2> m_allowedPointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
-        std::vector<glm::ivec2> m_allowedPointsToSpawnGarbage; // From m_allowedPointsToMoveXZ.
+        std::vector<glm::ivec2> m_pointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
+        std::vector<glm::ivec2> m_pointsToSpawnCommonGarbage; // From m_allowedPointsToMoveXZ.
         int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.
 
         // Improvements

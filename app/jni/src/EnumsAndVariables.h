@@ -27,7 +27,7 @@ namespace EnumsAndVariables
     };
 
     // Camera.
-    constexpr inline float cameraZoomMaxSpeed = 150.0f; // Meters in sec.
+    constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
     constexpr inline float cameraRotateDelay = 0.02f;
     inline float cameraRotateTime = 0.0f; // Sec.
@@ -122,6 +122,11 @@ namespace EnumsAndVariables
     inline float mapStartTimeSec = 0.0f;
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
+    inline bool mapPlayerWin = false; // true = player win.
+
+    // Boss.
+    inline bool prepareToBossPhase = false;
+    inline bool bossPhase = false;
 
     inline void resetAllVariables()
     {
@@ -160,5 +165,10 @@ namespace EnumsAndVariables
         mapStartTimeSec = 0.0f;
         mapPlayTimeSec = 0.0f;
         mapSwipeCount = 0.0f;
+        mapPlayerWin = false;
+
+        // Boss.
+        prepareToBossPhase = false;
+        bossPhase = false;
     }
 }

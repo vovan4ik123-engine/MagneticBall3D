@@ -25,21 +25,17 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
 
-//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
-//        m_guiObjects.push_back(sliderAmbient);
-//        sliderAmbient->setValue(0.7f);
-//
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 3);
-//        m_guiObjects.push_back(sliderSunPower);
-//        sliderSunPower->setValue(0.8f);
-//
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 3);
-//        m_guiObjects.push_back(sliderSpecularPower);
-//        sliderSpecularPower->setValue(1.0f);
-//
-//        sliderJumppad = std::make_shared<Beryll::SliderHorizontal>("jumppad", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 16, 40, 2, 50, 200);
-//        m_guiObjects.push_back(sliderJumppad);
-//        sliderJumppad->setValue(120.0f);
+        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
+        m_guiObjects.push_back(sliderAmbient);
+        sliderAmbient->setValue(0.6f);
+
+        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+        m_guiObjects.push_back(sliderSunPower);
+        sliderSunPower->setValue(1.0f);
+
+        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
+        m_guiObjects.push_back(sliderSpecularPower);
+        sliderSpecularPower->setValue(1.0f);
 
         progressBarHP = std::make_shared<Beryll::ProgressBar>( 60, 0, 40, 3);
         m_guiObjects.push_back(progressBarHP);
@@ -91,6 +87,15 @@ namespace MagneticBall3D
         buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
+
+        // Menus before specific bosses.
+        // Tank with commander.
+        textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureTankWithCommander);
+        textureTankWithCommander->disable();
+        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        m_guiObjects.push_back(buttonTankWithCommanderOk);
+        buttonTankWithCommanderOk->disable();
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -160,6 +165,12 @@ namespace MagneticBall3D
             textureKillAll->disable();
             buttonKillAllOk->disable();
         }
+        else if(buttonTankWithCommanderOk->getIsPressed())
+        {
+            GameStateHelper::resumeGame();
+            textureTankWithCommander->disable();
+            buttonTankWithCommanderOk->disable();
+        }
     }
 
     void PlayStateGUILayer::updateAfterPhysics()
@@ -178,7 +189,7 @@ namespace MagneticBall3D
         }
     }
 
-    void PlayStateGUILayer::showResurrectMenu()
+    void PlayStateGUILayer::showMenuResurrect()
     {
         GameStateHelper::pauseGame();
         textureResurrect->enable();
@@ -187,7 +198,7 @@ namespace MagneticBall3D
         buttonExit->enable();
     }
 
-    void PlayStateGUILayer::hideResurrectMenu()
+    void PlayStateGUILayer::hideMenuResurrect()
     {
         GameStateHelper::resumeGame();
         textureResurrect->disable();
@@ -195,7 +206,7 @@ namespace MagneticBall3D
         buttonExit->disable();
     }
 
-    void PlayStateGUILayer::showResurrectNoCrystalsMenu()
+    void PlayStateGUILayer::showMenuResurrectNoCrystals()
     {
         GameStateHelper::pauseGame();
         textureResurrectNoCrystals->enable();
@@ -203,7 +214,7 @@ namespace MagneticBall3D
         buttonExit->enable();
     }
 
-    void PlayStateGUILayer::showLoseMenu()
+    void PlayStateGUILayer::showMenuLose()
     {
         GameStateHelper::pauseGame();
         textureLose->enable();
@@ -211,10 +222,17 @@ namespace MagneticBall3D
         buttonExit->enable();
     }
 
-    void PlayStateGUILayer::showKillAllBeforeBossMenu()
+    void PlayStateGUILayer::showMenuKillAllBeforeBoss()
     {
         GameStateHelper::pauseGame();
         textureKillAll->enable();
         buttonKillAllOk->enable();
+    }
+
+    void PlayStateGUILayer::showMenuBossTankWithCommander()
+    {
+        GameStateHelper::pauseGame();
+        textureTankWithCommander->enable();
+        buttonTankWithCommanderOk->enable();
     }
 }

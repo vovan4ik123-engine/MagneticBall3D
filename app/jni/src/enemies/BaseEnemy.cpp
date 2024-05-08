@@ -11,13 +11,13 @@ namespace MagneticBall3D
                          Beryll::CollisionGroups collGroup,
                          Beryll::CollisionGroups collMask,
                          Beryll::SceneObjectGroups sceneGroup)
-                                                   : AnimatedCollidingCharacter(filePath,
-                                                                                collisionMassKg,
-                                                                                wantCollisionCallBack,
-                                                                                collFlag,
-                                                                                collGroup,
-                                                                                collMask,
-                                                                                sceneGroup)
+                         : AnimatedCollidingCharacter(filePath,
+                                                      collisionMassKg,
+                                                      wantCollisionCallBack,
+                                                      collFlag,
+                                                      collGroup,
+                                                      collMask,
+                                                      sceneGroup)
     {
         disableEnemy();
     }

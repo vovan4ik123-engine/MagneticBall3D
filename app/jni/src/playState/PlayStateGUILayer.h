@@ -14,19 +14,21 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        void showResurrectMenu();
-        void hideResurrectMenu();
-        void showResurrectNoCrystalsMenu();
-        void showKillAllBeforeBossMenu();
-        void showLoseMenu();
+        void showMenuResurrect();
+        void hideMenuResurrect();
+        void showMenuResurrectNoCrystals();
+        void showMenuKillAllBeforeBoss();
+        void showMenuLose();
 
+        // Menus before specific bosses.
+        void showMenuBossTankWithCommander();
 
         //std::shared_ptr<Beryll::SliderHorizontal> sliderImpulse;
         //std::shared_ptr<Beryll::SliderHorizontal> sliderTorque;
         std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSunPower;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderJumppad;
+
         std::shared_ptr<Beryll::ProgressBar> progressBarHP;
         std::shared_ptr<Beryll::ProgressBar> progressBarXP;
 
@@ -56,6 +58,10 @@ namespace MagneticBall3D
 
         // Win.
 
+        // Menus before specific bosses.
+        // Tank with commander.
+        std::shared_ptr<Beryll::GUITexture> textureTankWithCommander;
+        std::shared_ptr<Beryll::ButtonWithText> buttonTankWithCommanderOk;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;

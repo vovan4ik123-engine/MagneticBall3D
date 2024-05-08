@@ -64,8 +64,8 @@ namespace MagneticBall3D
         }
 
         BR_INFO("Map1 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
-        m_allowedPointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
-        m_allowedPointsToSpawnGarbage.reserve(m_pathAllowedPositionsXZ.size());
+        m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
+        m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.5f, -0.8f));
         m_sunLightDir = -m_dirToSun;
@@ -95,6 +95,80 @@ namespace MagneticBall3D
     Map1::~Map1()
     {
 
+    }
+
+    void Map1::draw()
+    {
+        m_improvements.draw();
+
+        //BR_INFO("%s", "scene draw call");
+        // 1. Draw into shadow map.
+        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 250.0f) + (m_dirToSun * m_sunDistance);
+        updateSunPosition(sunPos, 700, 700, m_sunDistance * 2.0f);
+        Beryll::Renderer::disableFaceCulling();
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
+        Beryll::Renderer::enableFaceCulling();
+
+        // 2. Draw scene.
+        glm::mat4 modelMatrix{1.0f};
+
+        m_simpleObjSunLightShadows->bind();
+        m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
+        m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", m_gui->sliderSpecularPower->getValue());
+        m_simpleObjSunLightShadows->set1Float("sunPower", m_gui->sliderSunPower->getValue());
+
+        modelMatrix = m_player->getObj()->getModelMatrix();
+        m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+        m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+        m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+        Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
+
+        for(const auto& wrapper : m_allGarbage)
+        {
+            if(wrapper.obj->getIsEnabledDraw())
+            {
+                modelMatrix = wrapper.obj->getModelMatrix();
+                m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(wrapper.obj, modelMatrix, m_simpleObjSunLightShadows);
+            }
+        }
+
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", m_gui->sliderSpecularPower->getValue());
+
+        for(const auto& staticObj : m_staticEnv)
+        {
+            if(staticObj->getIsEnabledDraw())
+            {
+                modelMatrix = staticObj->getModelMatrix();
+                m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(staticObj, modelMatrix, m_simpleObjSunLightShadows);
+            }
+        }
+
+        m_animatedObjSunLight->bind();
+        m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
+        m_animatedObjSunLight->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_animatedObjSunLight->set1Float("ambientLight", 0.7f);
+
+        for(const auto& animObj : m_allAnimatedEnemies)
+        {
+            if(animObj->getIsEnabledDraw())
+            {
+                modelMatrix = animObj->getModelMatrix();
+                m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLight);
+            }
+        }
+
+        m_skyBox->draw();
+        Beryll::ParticleSystem::draw();
     }
 
     void Map1::loadPlayer()
@@ -638,9 +712,9 @@ namespace MagneticBall3D
 
             BR_INFO("prepare wave 10. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareWave11 && EnumsAndVariables::mapPlayTimeSec > m_enemiesWave11Time)
+        else if(m_prepareToBoss && EnumsAndVariables::mapPlayTimeSec > m_prepareToBossTime)
         {
-            m_prepareWave11 = false;
+            m_prepareToBoss = false;
 
             EnumsAndVariables::enemiesMaxActiveCountOnGround = 0;
 
@@ -649,15 +723,15 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
             }
 
-            m_gui->showKillAllBeforeBossMenu();
+            prepareToBossPhase();
 
-            BR_INFO("prepare wave 11. Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepareToBossPhase(). Max enemies: %d", EnumsAndVariables::enemiesMaxActiveCountOnGround);
         }
 
         bool sortSnipersPositions = true;
 
         // Spawn enemies on ground.
-        if(!m_allowedPointsToSpawnEnemies.empty())
+        if(!m_pointsToSpawnEnemies.empty())
         {
             for(const auto& enemy : m_allAnimatedEnemies)
             {
@@ -672,7 +746,7 @@ namespace MagneticBall3D
                     enemy->enableEnemy();
                     enemy->disableDraw();
 
-                    const glm::ivec2& spawnPoint2D = m_allowedPointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_allowedPointsToSpawnEnemies.size() - 1)];
+                    const glm::ivec2& spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
                     glm::vec3 spawnPoint3D{spawnPoint2D.x,
                                            enemy->getFromOriginToBottom(),
                                            spawnPoint2D.y};
@@ -730,5 +804,22 @@ namespace MagneticBall3D
         }
 
         //BR_INFO("BaseEnemy::getActiveCount(): %d", BaseEnemy::getActiveCount());
+    }
+
+    void Map1::startBossPhase()
+    {
+        BR_INFO("%s", "startBossPhase()");
+
+        m_gui->showMenuBossTankWithCommander();
+        EnumsAndVariables::bossPhase = true;
+        EnumsAndVariables::prepareToBossPhase = false;
+    }
+
+    void Map1::handlePossPhase()
+    {
+        // Handle boss specific to this map: Tank with commander.
+
+        // if doss defeated:
+        //EnumsAndVariables::mapPlayerWin = true;
     }
 }
