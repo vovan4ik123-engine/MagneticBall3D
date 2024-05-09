@@ -7,6 +7,7 @@
 #include "player/Player.h"
 #include "garbage/Garbage.h"
 #include "enemies/BaseEnemy.h"
+#include "bosses/BaseBoss.h"
 
 namespace MagneticBall3D
 {
@@ -65,6 +66,8 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_staticEnv;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
+
+        std::shared_ptr<BaseBoss> m_boss;
 
 //        std::function<void(std::vector<std::shared_ptr<Beryll::SceneObject>>&, int, int)> m_updateAfterPhysics;
 //        m_updateAfterPhysics = [](std::vector<std::shared_ptr<Beryll::SceneObject>>& v, int begin, int end) -> void // -> void = return type.

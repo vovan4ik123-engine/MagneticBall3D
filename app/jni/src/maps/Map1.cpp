@@ -5,6 +5,7 @@
 #include "enemies/CopWithGrenadeLauncher.h"
 #include "enemies/Tank.h"
 #include "enemies/Sniper.h"
+#include "bosses/TankWithCommander.h"
 
 namespace MagneticBall3D
 {
@@ -23,6 +24,7 @@ namespace MagneticBall3D
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
+        Beryll::LoadingScreen::showProgress(90.0f);
 
         Sniper::sniperPositions = std::vector<SniperPosAndAttackDist>{{glm::vec3(65.0f, 255.0f, -642.0f), 2500.0f},
                                                                       {glm::vec3(65.0f, 252.0f, -445.0f), 2500.0f},
@@ -168,6 +170,14 @@ namespace MagneticBall3D
             }
         }
 
+        if(m_boss->getIsEnabledDraw())
+        {
+            modelMatrix = m_boss->getModelMatrix();
+            m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
+            m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+            Beryll::Renderer::drawObject(m_boss, modelMatrix, m_animatedObjSunLight);
+        }
+
         m_skyBox->draw();
         Beryll::ParticleSystem::draw();
     }
@@ -181,7 +191,7 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionGroups::PLAYER,
                                                                                 Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
                                                                                 Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK |
-                                                                                Beryll::CollisionGroups::JUMPPAD,
+                                                                                Beryll::CollisionGroups::JUMPPAD | Beryll::CollisionGroups::BOSS,
                                                                                 Beryll::SceneObjectGroups::PLAYER);
 
         // Sort by radius from small to large.
@@ -226,7 +236,7 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK  | Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK | Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : objects1)
@@ -375,7 +385,19 @@ namespace MagneticBall3D
 
     void Map1::loadBoss()
     {
+        m_boss = std::make_shared<TankWithCommander>("models3D/bosses/BossTankWithCommander.fbx",
+                                                     0.0f,
+                                                     false,
+                                                     Beryll::CollisionFlags::STATIC,
+                                                     Beryll::CollisionGroups::BOSS,
+                                                     Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::CAMERA,
+                                                     Beryll::SceneObjectGroups::BOSS,
+                                                     100.0f);
 
+        m_boss->setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+        m_boss->setDefaultAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand);
+
+        m_animatedOrDynamicObjects.push_back(m_boss);
     }
 
     void Map1::spawnEnemies()
@@ -820,13 +842,43 @@ namespace MagneticBall3D
         EnumsAndVariables::prepareToBossPhase = false;
 
         // Enable boss.
+        m_boss->enableBoss();
+
+        const glm::ivec2& spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
+        glm::vec3 spawnPoint3D{spawnPoint2D.x,
+                               m_boss->getFromOriginToBottom(),
+                               spawnPoint2D.y};
+        m_boss->setOrigin(spawnPoint3D);
+
+        m_boss->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
+        if(m_boss->pathArray.size() > 1)
+            m_boss->indexInPathArray = 1;
+        else
+            m_boss->indexInPathArray = 0;
+
+        m_boss->currentPointToMove2DIntegers = m_boss->pathArray[m_boss->indexInPathArray];
+        m_boss->currentPointToMove3DFloats = glm::vec3(m_boss->currentPointToMove2DIntegers.x,
+                                                       m_boss->getFromOriginToBottom(),
+                                                       m_boss->currentPointToMove2DIntegers.y);
     }
 
     void Map1::handlePossPhase()
     {
         // Handle boss specific to this map: Tank with commander.
+        m_boss->pathArray = m_pathFinder.findPath(m_boss->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
+        m_boss->indexInPathArray = 0;
+        m_boss->currentPointToMove2DIntegers = m_boss->pathArray[m_boss->indexInPathArray];
+        m_boss->currentPointToMove3DFloats = glm::vec3(m_boss->currentPointToMove2DIntegers.x,
+                                                       m_boss->getFromOriginToBottom(),
+                                                       m_boss->currentPointToMove2DIntegers.y);
 
-        // if doss defeated:
-        //EnumsAndVariables::mapPlayerWin = true;
+        m_boss->update(m_player->getObj()->getOrigin());
+        if(m_boss->bossState == BossState::CAN_ATTACK)
+        {
+            BR_INFO("%s", "BossState::CAN_ATTACK");
+        }
+
+        if(m_boss->getIsDie())
+            EnumsAndVariables::mapPlayerWin = true;
     }
 }

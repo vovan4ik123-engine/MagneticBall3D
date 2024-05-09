@@ -56,12 +56,17 @@ namespace MagneticBall3D
             {
                 //BR_INFO("%s", "BaseEnemy if(getIsTimeToAttack())");
                 // Check if enemy see player.
-                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
-                                                                                     playerOrigin,
-                                                                                     Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                     Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::PLAYER);
+                Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_origin,
+                                                                                          playerOrigin,
+                                                                                          Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                          Beryll::CollisionGroups::BUILDING);
 
-                if(rayAttack && rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                if(rayBuildingHit)
+                {
+                    //BR_INFO("%s", "BaseEnemy move because dont see");
+                    move();
+                }
+                else
                 {
                     if(m_prepareToFirstAttack)
                     {
@@ -74,11 +79,6 @@ namespace MagneticBall3D
                         //BR_INFO("%s", "BaseEnemy CAN_ATTACK");
                         unitState = UnitState::CAN_ATTACK;
                     }
-                }
-                else
-                {
-                    //BR_INFO("%s", "BaseEnemy move because dont see");
-                    move();
                 }
             }
         }

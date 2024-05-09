@@ -65,12 +65,17 @@ namespace MagneticBall3D
             {
                 //BR_INFO("%s", "Sniper if(getIsTimeToAttack())");
                 // Check if enemy see player.
-                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_origin,
-                                                                                     playerOrigin,
-                                                                                     Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                     Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::PLAYER);
+                Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_origin,
+                                                                                          playerOrigin,
+                                                                                          Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                          Beryll::CollisionGroups::BUILDING);
 
-                if(rayAttack && rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                if(rayBuildingHit)
+                {
+                    unitState = UnitState::STAND_AIMING;
+                    m_prepareToFirstAttack = true;
+                }
+                else
                 {
                     if(m_prepareToFirstAttack)
                     {
@@ -83,11 +88,6 @@ namespace MagneticBall3D
                         //BR_INFO("%s", "Sniper CAN_ATTACK");
                         unitState = UnitState::CAN_ATTACK;
                     }
-                }
-                else
-                {
-                    unitState = UnitState::STAND_AIMING;
-                    m_prepareToFirstAttack = true;
                 }
             }
         }

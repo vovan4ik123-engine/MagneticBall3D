@@ -42,6 +42,7 @@ add_library(main SHARED main.cpp
                         enemies/Tank.cpp
 
                         bosses/BaseBoss.cpp
+                        bosses/TankWithCommander.cpp
             )
 
 target_include_directories(main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

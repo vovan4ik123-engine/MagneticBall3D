@@ -381,6 +381,9 @@ namespace MagneticBall3D
 
     void BaseMap::updateEnemiesAndTheirsAttacks()
     {
+        glm::vec3 target = m_player->getObj()->getOrigin();
+        target.y += m_player->getObj()->getFromOriginToTop() * 0.8f;
+
         for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(!enemy->getIsEnabledUpdate())
@@ -392,29 +395,8 @@ namespace MagneticBall3D
             // 2. Handle enemy attack.
             if(enemy->unitState == UnitState::CAN_ATTACK)
             {
-                glm::vec3 from = enemy->getOrigin(); // Calculate bullet start point.
-
-                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                   enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
-                   enemy->getUnitType() == UnitType::SNIPER)
-                {
-                    from.y += enemy->getFromOriginToTop() * 0.8f;
-                    from += enemy->getFaceDirXZ() * 10.0f;
-                }
-                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    from.y += 0.0f;
-                    from += enemy->getFaceDirXZ() * 10.0f;
-                }
-                else if(enemy->getUnitType() == UnitType::TANK)
-                {
-                    from.y += enemy->getFromOriginToTop() * 0.8f;
-                    from += enemy->getFaceDirXZ() * 30.0f;
-                }
-
-                glm::vec3 target = m_player->getObj()->getOrigin();
-                target.y += m_player->getObj()->getFromOriginToTop() * 0.8f;
-                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(from, target,
+                Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(enemy->getOrigin(),
+                                                                                     target,
                                                                                      Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                      Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE);
 
@@ -431,6 +413,26 @@ namespace MagneticBall3D
                         Sounds::playSound(SoundType::TANK_SHOT);
 
                     // Spam particles.
+                    glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
+
+                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
+                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->getUnitType() == UnitType::SNIPER)
+                    {
+                        from.y += enemy->getFromOriginToTop() * 0.8f;
+                        from += enemy->getFaceDirXZ() * 10.0f;
+                    }
+                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    {
+                        from.y += 0.0f;
+                        from += enemy->getFaceDirXZ() * 10.0f;
+                    }
+                    else if(enemy->getUnitType() == UnitType::TANK)
+                    {
+                        from.y += enemy->getFromOriginToTop() * 0.8f;
+                        from += enemy->getFaceDirXZ() * 30.0f;
+                    }
+
                     if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
                        enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                     {
@@ -628,9 +630,9 @@ namespace MagneticBall3D
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
         m_cameraOffset.y = 0.09f +
-                           (m_player->getObj()->getOrigin().y * 0.005f) +
-                           (EnumsAndVariables::garbageCountMagnetized * 0.0018f);
-        m_cameraOffset.y = std::min(1.8f, m_cameraOffset.y);
+                           (m_player->getObj()->getOrigin().y * 0.0055f) +
+                           (EnumsAndVariables::garbageCountMagnetized * 0.002f);
+        m_cameraOffset.y = std::min(2.0f, m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
@@ -642,8 +644,8 @@ namespace MagneticBall3D
         // Check camera ray collisions.
         Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
                                                                                  cameraPosForRay,
-                                                                                 Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
-                                                                                 Beryll::CollisionGroups::BUILDING);
+                                                                                 Beryll::CollisionGroups::CAMERA,
+                                                                                 Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::BOSS);
 
         if(rayBuildingHit)
         {
