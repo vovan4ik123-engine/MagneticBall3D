@@ -45,12 +45,13 @@ namespace MagneticBall3D
         {
             bool collisionWithWall = false;
             std::vector<const int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING);
+            m_collidingBuildingID = buildingsID.back();
 
             std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), buildingsID);
             for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
             {
                 float buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp);
-                if(buildingNormalAngle > 0.87f && buildingNormalAngle < 2.27f) // > 50 && < 130 degrees.
+                if(buildingNormalAngle > 0.35f && buildingNormalAngle < 2.79f) // > 20 && < 160 degrees.
                 {
                     collisionWithWall = true;
                     break;

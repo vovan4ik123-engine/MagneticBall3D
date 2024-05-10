@@ -21,7 +21,7 @@ namespace MagneticBall3D
         m_unitType = UnitType::TANK;
         m_attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
-        damage = 20.0f;
+        damage = 1.0f;
         attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
         damageRadius = 40.0f;
         timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;

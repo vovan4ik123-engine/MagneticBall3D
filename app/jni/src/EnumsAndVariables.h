@@ -34,6 +34,7 @@ namespace EnumsAndVariables
 
     // Swipe.
     constexpr inline float swipePowerMultiplier = 2.2f;
+    constexpr inline float playerSpeedToPlayEngineSound = 91.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
@@ -123,6 +124,7 @@ namespace EnumsAndVariables
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
     inline bool mapPlayerWin = false; // true = player win.
+    constexpr inline int mapWinCrystalsPrize = 12;
 
     // Boss.
     inline bool prepareToBossPhase = false;

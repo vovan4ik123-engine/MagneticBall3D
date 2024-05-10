@@ -24,7 +24,9 @@ namespace MagneticBall3D
 
         damage = 0.0f;
         attackDistance = 400.0f;
-        timeBetweenAttacks = 2.5f;
+        timeBetweenAttacks = 3.0f;
+
+        m_takeDamageDelay = 3.0f;
 
         getController().moveSpeed = 50.0f;
 

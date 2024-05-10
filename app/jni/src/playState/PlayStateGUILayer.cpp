@@ -1,6 +1,7 @@
 #include "PlayStateGUILayer.h"
 #include "EnumsAndVariables.h"
 #include "GameStateHelper.h"
+#include "DataBaseHelper.h"
 
 namespace MagneticBall3D
 {
@@ -88,6 +89,14 @@ namespace MagneticBall3D
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
 
+        // Win.
+        textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 20, 25, 60, 25);
+        m_guiObjects.push_back(textureWin);
+        textureWin->disable();
+        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        m_guiObjects.push_back(buttonWinOk);
+        buttonWinOk->disable();
+
         // Menus before specific bosses.
         // Tank with commander.
         textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 20, 25, 60, 25);
@@ -165,6 +174,17 @@ namespace MagneticBall3D
             textureKillAll->disable();
             buttonKillAllOk->disable();
         }
+        else if(buttonWinOk->getIsPressed())
+        {
+            EnumsAndVariables::CurrencyBalance::crystals += EnumsAndVariables::mapWinCrystalsPrize;
+            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
+
+            // Pause game before exit to avoid update scene layer.
+            GameStateHelper::pauseGame();
+
+            GameStateHelper::popState();
+            return;
+        }
         else if(buttonTankWithCommanderOk->getIsPressed())
         {
             GameStateHelper::resumeGame();
@@ -227,6 +247,13 @@ namespace MagneticBall3D
         GameStateHelper::pauseGame();
         textureKillAll->enable();
         buttonKillAllOk->enable();
+    }
+
+    void PlayStateGUILayer::showMenuWin()
+    {
+        GameStateHelper::pauseGame();
+        textureWin->enable();
+        buttonWinOk->enable();
     }
 
     void PlayStateGUILayer::showMenuBossTankWithCommander()

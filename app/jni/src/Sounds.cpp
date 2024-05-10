@@ -5,6 +5,9 @@ namespace MagneticBall3D
 {
     bool Sounds::m_loaded = false;
 
+    std::string Sounds::m_swipeEngine1 = "sounds/SwipeEngine1.wav";
+    std::string Sounds::m_swipeEngine2 = "sounds/SwipeEngine2.wav";
+
     std::string Sounds::m_pistolShot1 = "sounds/PistolShot1.wav";
     std::string Sounds::m_pistolShot2 = "sounds/PistolShot2.wav";
     std::string Sounds::m_pistolShot3 = "sounds/PistolShot3.wav";
@@ -44,6 +47,8 @@ namespace MagneticBall3D
     {
         if(m_loaded)  { return; }
 
+        Beryll::SoundsManager::loadWAV(m_swipeEngine1);
+        Beryll::SoundsManager::loadWAV(m_swipeEngine2);
 
         Beryll::SoundsManager::loadWAV(m_pistolShot1);
         Beryll::SoundsManager::loadWAV(m_pistolShot2);
@@ -71,7 +76,17 @@ namespace MagneticBall3D
 
     void Sounds::playSound(SoundType type)
     {
-        if(type == SoundType::PISTOL_SHOT)
+        if(type == SoundType::SWIPE_ENGINE)
+        {
+            float randomValue = Beryll::RandomGenerator::getFloat();
+
+            if(randomValue < 0.65f)
+                Beryll::SoundsManager::playWAV(m_swipeEngine1);
+            else
+                Beryll::SoundsManager::playWAV(m_swipeEngine2);
+
+        }
+        else if(type == SoundType::PISTOL_SHOT)
         {
             if(pistolShotTime + pistolShotDelay < EnumsAndVariables::mapPlayTimeSec)
             {

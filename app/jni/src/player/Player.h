@@ -30,6 +30,7 @@ namespace MagneticBall3D
         bool getIsOnGround() { return m_isOnGround; }
         bool getIsOnBuildingRoof() { return m_isOnBuildingRoof; }
         bool getIsOnBuildingWall() { return m_isOnBuildingWall; }
+        int getCollidingBuildingID() { return m_collidingBuildingID; }
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
@@ -79,6 +80,7 @@ namespace MagneticBall3D
         bool m_isOnBuildingWall = false;
         bool m_isOnAir = false;
         bool m_isOnJumpPad = false;
+        int m_collidingBuildingID = 0;
 
         // Meteor.
         bool m_isMeteor = false;

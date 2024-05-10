@@ -19,6 +19,7 @@ namespace MagneticBall3D
         void showMenuResurrectNoCrystals();
         void showMenuKillAllBeforeBoss();
         void showMenuLose();
+        void showMenuWin();
 
         // Menus before specific bosses.
         void showMenuBossTankWithCommander();
@@ -57,6 +58,8 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::ButtonWithText> buttonKillAllOk;
 
         // Win.
+        std::shared_ptr<Beryll::GUITexture> textureWin;
+        std::shared_ptr<Beryll::ButtonWithText> buttonWinOk;
 
         // Menus before specific bosses.
         // Tank with commander.

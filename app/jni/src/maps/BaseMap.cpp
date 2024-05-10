@@ -145,6 +145,9 @@ namespace MagneticBall3D
 
             ++EnumsAndVariables::mapSwipeCount;
 
+            if(m_player->getMoveSpeed() > EnumsAndVariables::playerSpeedToPlayEngineSound)
+                Sounds::playSound(SoundType::SWIPE_ENGINE);
+
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
             float screenSwipeLength = glm::length(m_screenSwipe3D);
@@ -478,7 +481,7 @@ namespace MagneticBall3D
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
                             for(auto& wrapper : m_allGarbage)
                             {
-                                if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID())
+                                if(rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
                                     wrapper.takeDamage(enemy->damage);
                                     break;
@@ -490,7 +493,7 @@ namespace MagneticBall3D
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_RADIUS");
                             for(auto& wrapper : m_allGarbage)
                             {
-                                if(wrapper.obj->getIsEnabledUpdate() && rayAttack.hittedObjectID == wrapper.obj->getID() &&
+                                if(wrapper.isMagnetized &&
                                    glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < enemy->damageRadius)
                                 {
                                     wrapper.takeDamage(enemy->damage);
@@ -754,7 +757,7 @@ namespace MagneticBall3D
     {
         if(EnumsAndVariables::mapPlayerWin)
         {
-            BR_INFO("%s", "Map Player Win.");
+            m_gui->showMenuWin();
         }
     }
 
@@ -834,7 +837,7 @@ namespace MagneticBall3D
         if(playerOutOfMap)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->setLinearVelocity(glm::normalize(-playerOrig) * 35.0f);
+            m_player->getObj()->applyCentralImpulse(glm::normalize(-playerOrig) * 100.0f);
         }
     }
 

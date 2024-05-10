@@ -68,6 +68,7 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 
         std::shared_ptr<BaseBoss> m_boss;
+        Beryll::BannerProgressTwoColors m_bossHpBar{30.0f, 5.0f, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
 
 //        std::function<void(std::vector<std::shared_ptr<Beryll::SceneObject>>&, int, int)> m_updateAfterPhysics;
 //        m_updateAfterPhysics = [](std::vector<std::shared_ptr<Beryll::SceneObject>>& v, int begin, int end) -> void // -> void = return type.
@@ -106,13 +107,17 @@ namespace MagneticBall3D
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
         glm::vec3 m_screenSwipe3D{0.0f};
 
-        // Pathfinding.
+        // Pathfinding for enemies.
         AStar m_pathFinder; // Assign new object with map size in constructor of specific map.
         std::vector<glm::ivec2> m_pathAllowedPositionsXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_pointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_pointsToSpawnCommonGarbage; // From m_allowedPointsToMoveXZ.
         int m_pathFindingIteration = 0; // To separate complicated calculations between many frames.
+
+        // Pathfinding for boss.
+        AStar m_pathFinderBoss;
+        std::vector<glm::ivec2> m_pathAllowedPositionsXZBoss;
 
         // Improvements
         Improvements m_improvements; // Assign new object with improvements in constructor of specific map.

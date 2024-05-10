@@ -25,7 +25,7 @@ namespace MagneticBall3D
         m_unitType = UnitType::SNIPER;
         m_attackType = AttackType::RANGE_DAMAGE_ONE;
 
-        damage = 20.0f;
+        damage = 1.0f;
         attackDistance = 0.0f; // Will set outside class. During spawn.
         timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 

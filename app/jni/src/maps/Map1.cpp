@@ -6,6 +6,7 @@
 #include "enemies/Tank.h"
 #include "enemies/Sniper.h"
 #include "bosses/TankWithCommander.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -70,6 +71,24 @@ namespace MagneticBall3D
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
+        m_pathFinderBoss = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 40);
+        std::vector<glm::vec3> wallsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossWalls.fbx");
+        for(const auto& wall : wallsBoss)
+        {
+            m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+        }
+
+        BR_INFO("Map1 pathfinder boss walls: %d", walls.size());
+
+        std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
+        m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
+        for(const auto& point : allowedPointsBoss)
+        {
+            m_pathAllowedPositionsXZBoss.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+        }
+
+        BR_INFO("Map1 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
+
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.5f, -0.8f));
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
@@ -115,12 +134,50 @@ namespace MagneticBall3D
         // 2. Draw scene.
         glm::mat4 modelMatrix{1.0f};
 
+        m_animatedObjSunLight->bind();
+        m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
+        m_animatedObjSunLight->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_animatedObjSunLight->set1Float("ambientLight", 0.7f);
+
+        for(const auto& animObj : m_allAnimatedEnemies)
+        {
+            if(animObj->getIsEnabledDraw())
+            {
+                modelMatrix = animObj->getModelMatrix();
+                m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
+                m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLight);
+            }
+        }
+
+        if(m_boss->getIsEnabledDraw())
+        {
+            modelMatrix = m_boss->getModelMatrix();
+            m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
+            m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+            Beryll::Renderer::drawObject(m_boss, modelMatrix, m_animatedObjSunLight);
+
+            // Sync HP bar rotations with camera direction.
+            m_bossHpBar.addToRotation(glm::rotation(m_bossHpBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXZ()));
+            m_bossHpBar.addToRotation(glm::rotation(m_bossHpBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+            glm::vec3 bossHPOrigin = m_boss->getOrigin();
+            bossHPOrigin.y += 41.0f;
+            m_bossHpBar.setOrigin(bossHPOrigin);
+            m_bossHpBar.progress = 1.0f - float(m_boss->getCurrentHP()) / float(m_boss->getMaxHP());
+
+            m_bossHpBar.draw();
+        }
+
+        // If player is on building roof this building should be semitransparent.
+        std::shared_ptr<Beryll::BaseSimpleObject> semiTransparentBuilding = nullptr;
+
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", m_gui->sliderSpecularPower->getValue());
         m_simpleObjSunLightShadows->set1Float("sunPower", m_gui->sliderSunPower->getValue());
+        m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
         m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
@@ -146,36 +203,30 @@ namespace MagneticBall3D
         {
             if(staticObj->getIsEnabledDraw())
             {
-                modelMatrix = staticObj->getModelMatrix();
-                m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
-                m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
-                m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-                Beryll::Renderer::drawObject(staticObj, modelMatrix, m_simpleObjSunLightShadows);
+                if(m_player->getIsOnBuildingRoof() && staticObj->getID() == m_player->getCollidingBuildingID())
+                {
+                    // Store this building and draw it last.
+                    semiTransparentBuilding = staticObj;
+                }
+                else
+                {
+                    modelMatrix = staticObj->getModelMatrix();
+                    m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+                    m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+                    m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+                    Beryll::Renderer::drawObject(staticObj, modelMatrix, m_simpleObjSunLightShadows);
+                }
             }
         }
 
-        m_animatedObjSunLight->bind();
-        m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
-        m_animatedObjSunLight->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_animatedObjSunLight->set1Float("ambientLight", 0.7f);
-
-        for(const auto& animObj : m_allAnimatedEnemies)
+        if(semiTransparentBuilding)
         {
-            if(animObj->getIsEnabledDraw())
-            {
-                modelMatrix = animObj->getModelMatrix();
-                m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
-                m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-                Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLight);
-            }
-        }
-
-        if(m_boss->getIsEnabledDraw())
-        {
-            modelMatrix = m_boss->getModelMatrix();
-            m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
-            m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-            Beryll::Renderer::drawObject(m_boss, modelMatrix, m_animatedObjSunLight);
+            modelMatrix = semiTransparentBuilding->getModelMatrix();
+            m_simpleObjSunLightShadows->set1Float("alphaTransparency", 0.5f);
+            m_simpleObjSunLightShadows->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+            m_simpleObjSunLightShadows->setMatrix4x4Float("modelMatrix", modelMatrix);
+            m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+            Beryll::Renderer::drawObject(semiTransparentBuilding, modelMatrix, m_simpleObjSunLightShadows);
         }
 
         m_skyBox->draw();
@@ -844,13 +895,39 @@ namespace MagneticBall3D
         // Enable boss.
         m_boss->enableBoss();
 
-        const glm::ivec2& spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
+        std::vector<glm::ivec2> pointsToSpawnBoss;
+        pointsToSpawnBoss.reserve(200);
+        glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
+        float distanceToClosestPoint = std::numeric_limits<float>::max();
+        float distanceToCurrent = 0.0f;
+        glm::ivec2 playerClosestAllowedPos;
+
+        for(const glm::ivec2& point : m_pathAllowedPositionsXZBoss)
+        {
+            distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y)));
+
+            if(distanceToCurrent < distanceToClosestPoint)
+            {
+                distanceToClosestPoint = distanceToCurrent;
+                playerClosestAllowedPos = point;
+            }
+
+            if(glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y))) > 500.0f)
+            {
+                pointsToSpawnBoss.push_back(point);
+            }
+        }
+
+        BR_INFO("pointsToSpawnBoss.size() %d", pointsToSpawnBoss.size());
+        BR_ASSERT((pointsToSpawnBoss.empty() == false), "%s", "pointsToSpawnBoss.empty()");
+
+        const glm::ivec2& spawnPoint2D = pointsToSpawnBoss[Beryll::RandomGenerator::getInt(pointsToSpawnBoss.size() - 1)];
         glm::vec3 spawnPoint3D{spawnPoint2D.x,
                                m_boss->getFromOriginToBottom(),
                                spawnPoint2D.y};
         m_boss->setOrigin(spawnPoint3D);
 
-        m_boss->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
+        m_boss->pathArray = m_pathFinderBoss.findPath(spawnPoint2D, playerClosestAllowedPos, 10);
         if(m_boss->pathArray.size() > 1)
             m_boss->indexInPathArray = 1;
         else
@@ -865,7 +942,23 @@ namespace MagneticBall3D
     void Map1::handlePossPhase()
     {
         // Handle boss specific to this map: Tank with commander.
-        m_boss->pathArray = m_pathFinder.findPath(m_boss->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
+        // 1. Update boss.
+        glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
+        float distanceToClosestPoint = std::numeric_limits<float>::max();
+        float distanceToCurrent = 0.0f;
+        glm::ivec2 playerClosestAllowedPos;
+
+        for(const glm::ivec2& point : m_pathAllowedPositionsXZBoss)
+        {
+            distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y)));
+
+            if(distanceToCurrent < distanceToClosestPoint)
+            {
+                distanceToClosestPoint = distanceToCurrent;
+                playerClosestAllowedPos = point;
+            }
+        }
+        m_boss->pathArray = m_pathFinderBoss.findPath(m_boss->currentPointToMove2DIntegers, playerClosestAllowedPos, 10);
         m_boss->indexInPathArray = 0;
         m_boss->currentPointToMove2DIntegers = m_boss->pathArray[m_boss->indexInPathArray];
         m_boss->currentPointToMove3DFloats = glm::vec3(m_boss->currentPointToMove2DIntegers.x,
@@ -873,9 +966,76 @@ namespace MagneticBall3D
                                                        m_boss->currentPointToMove2DIntegers.y);
 
         m_boss->update(m_player->getObj()->getOrigin());
+
+        // 3. Boss attack.
         if(m_boss->bossState == BossState::CAN_ATTACK)
         {
             BR_INFO("%s", "BossState::CAN_ATTACK");
+
+            glm::vec3 target = m_player->getObj()->getOrigin();
+            target.y += m_player->getObj()->getFromOriginToTop() * 0.8f;
+            Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(m_boss->getOrigin(),
+                                                                                 target,
+                                                                                 Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                 Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE);
+
+            if(rayAttack)
+            {
+                m_boss->attack(m_player->getObj()->getOrigin());
+
+                // Spam particles.
+                glm::vec3 from = m_boss->getOrigin(); // Calculate particles start point.
+                from.y += m_boss->getFromOriginToTop() * 0.8f;
+                from += m_boss->getFaceDirXZ() * 40.0f;
+                emitParticlesLine(from, rayAttack.hitPoint, 2.0f, 2.0f,
+                                  glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.6f);
+
+                emitParticlesExplosion(rayAttack.hitPoint, 6, 4.0f, 4.0f,
+                                       glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 1.2f);
+
+                Sounds::playSound(SoundType::GRENADE_LAUNCHER_SHOT);
+
+                if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                {
+                    m_player->takeDamage(20.0f);
+                }
+                else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
+                {
+                    for(auto& wrapper : m_allGarbage)
+                    {
+                        if(wrapper.isMagnetized &&
+                           glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < 10.0f)
+                        {
+                            wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 3.5f);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Player attack boss.
+        if(Beryll::Physics::getIsCollisionWithGroup(m_player->getObj()->getID(), Beryll::CollisionGroups::BOSS))
+        {
+            BR_INFO("%s", "Player collision with boss.");
+
+            if(m_player->getObj()->getOrigin().y > m_boss->getOrigin().y + m_boss->getFromOriginToTop())
+            {
+                BR_INFO("%s", "Damage boss.");
+                m_boss->takeDamage(m_boss->getMaxHP() * 0.35f); // Boss should die after 3 times damaged.
+
+                // Move player away from boss.
+                glm::vec3 moveAwayDir = Beryll::Camera::getCameraFrontDirectionXZ();
+                moveAwayDir.y = 0.8f;
+                m_player->getObj()->resetVelocities();
+                m_player->getObj()->applyCentralImpulse(glm::normalize(moveAwayDir) * 1000.0f);
+            }
+            else
+            {
+                BR_INFO("%s", "Player is on boss side.");
+                glm::vec3 moveAwayDir = m_player->getObj()->getOrigin() - m_boss->getOrigin();
+                moveAwayDir.y = 0.0f;
+                m_player->getObj()->applyCentralImpulse(glm::normalize(moveAwayDir) * 30.0f);
+            }
         }
 
         if(m_boss->getIsDie())

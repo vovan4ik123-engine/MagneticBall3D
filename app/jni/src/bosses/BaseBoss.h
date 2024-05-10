@@ -45,7 +45,14 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d) { m_currentHP -= d; }
+        void takeDamage(float d)
+        {
+            if(m_takeDamageTime + m_takeDamageDelay < EnumsAndVariables::mapPlayTimeSec)
+            {
+                m_takeDamageTime = EnumsAndVariables::mapPlayTimeSec;
+                m_currentHP -= d;
+            }
+        }
         bool getIsDie() { return m_currentHP <= 0.0f; }
 
         // Pathfinding.
@@ -75,5 +82,9 @@ namespace MagneticBall3D
         // HP.
         float m_maxHP = 0.0f;
         float m_currentHP = 0.0f;
+
+        // Take damage.
+        float m_takeDamageTime = 0.0f;
+        float m_takeDamageDelay = 0.0f;
     };
 }

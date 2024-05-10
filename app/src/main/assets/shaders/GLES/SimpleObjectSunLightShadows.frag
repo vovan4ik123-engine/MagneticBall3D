@@ -19,6 +19,8 @@ uniform float ambientLight;
 uniform float specularLightStrength;
 uniform float sunPower;
 
+uniform float alphaTransparency;
+
 void main()
 {
     // diffuse
@@ -42,5 +44,5 @@ void main()
 
     vec3 textureCollor = texture(diffuseTexture, textureCoords).rgb;
     float applyShadow = (diffuse + specular) * shadowMultiplier;
-    outColor = vec4((ambientLight + applyShadow) * textureCollor, 1.0f);
+    outColor = vec4((ambientLight + applyShadow) * textureCollor, alphaTransparency);
 }
