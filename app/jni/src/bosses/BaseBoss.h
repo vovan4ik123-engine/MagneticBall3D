@@ -39,17 +39,17 @@ namespace MagneticBall3D
         bool getIsEnabled() { return m_isEnabled; }
         BossType getBossType() { return m_bossType; }
         bool getIsCanMove() { return m_isCanMove; }
-        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnAndVars::mapPlayTimeSec; }
+        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
         void takeDamage(float d)
         {
-            if(m_takeDamageTime + m_takeDamageDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(m_takeDamageTime + m_takeDamageDelay < EnAndVars::mapPlayTimeSec)
             {
-                m_takeDamageTime = EnumsAndVariables::mapPlayTimeSec;
+                m_takeDamageTime = EnAndVars::mapPlayTimeSec;
                 m_currentHP -= d;
             }
         }

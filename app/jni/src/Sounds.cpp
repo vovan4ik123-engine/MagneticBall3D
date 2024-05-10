@@ -88,7 +88,7 @@ namespace MagneticBall3D
         }
         else if(type == SoundType::PISTOL_SHOT)
         {
-            if(pistolShotTime + pistolShotDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(pistolShotTime + pistolShotDelay < EnAndVars::mapPlayTimeSec)
             {
                 float randomValue = Beryll::RandomGenerator::getFloat();
 
@@ -101,12 +101,12 @@ namespace MagneticBall3D
                 else if(randomValue < 1.0f)
                     Beryll::SoundsManager::playWAV(m_pistolShot4);
 
-                pistolShotTime = EnumsAndVariables::mapPlayTimeSec;
+                pistolShotTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::PISTOL_HIT)
         {
-            if(pistolHitTime + pistolHitDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(pistolHitTime + pistolHitDelay < EnAndVars::mapPlayTimeSec)
             {
                 float randomValue = Beryll::RandomGenerator::getFloat();
 
@@ -119,44 +119,44 @@ namespace MagneticBall3D
                 else if(randomValue < 1.0f)
                     Beryll::SoundsManager::playWAV(m_pistolHit4);
 
-                pistolHitTime = EnumsAndVariables::mapPlayTimeSec;
+                pistolHitTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::GRENADE_LAUNCHER_SHOT)
         {
-            if(grenadeLauncherShotTime + grenadeLauncherShotDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(grenadeLauncherShotTime + grenadeLauncherShotDelay < EnAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_grenadeLauncherShot1);
-                grenadeLauncherShotTime = EnumsAndVariables::mapPlayTimeSec;
+                grenadeLauncherShotTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::GRENADE_LAUNCHER_HIT)
         {
-            if(grenadeLauncherHitTime + grenadeLauncherHitDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(grenadeLauncherHitTime + grenadeLauncherHitDelay < EnAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_grenadeLauncherHit1);
-                grenadeLauncherHitTime = EnumsAndVariables::mapPlayTimeSec;
+                grenadeLauncherHitTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::TANK_SHOT)
         {
-            if(tankShotTime + tankShotDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(tankShotTime + tankShotDelay < EnAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_tankShot1);
-                tankShotTime = EnumsAndVariables::mapPlayTimeSec;
+                tankShotTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::TANK_HIT)
         {
-            if(tankHitTime + tankHitDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(tankHitTime + tankHitDelay < EnAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_tankHit1);
-                tankHitTime = EnumsAndVariables::mapPlayTimeSec;
+                tankHitTime = EnAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::SMASH_COP)
         {
-            if(smashTime + smashDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(smashTime + smashDelay < EnAndVars::mapPlayTimeSec)
             {
                 float randomValue = Beryll::RandomGenerator::getFloat();
 
@@ -171,7 +171,7 @@ namespace MagneticBall3D
                 else if(randomValue < 1.0f)
                     Beryll::SoundsManager::playWAV(m_smash5);
 
-                smashTime = EnumsAndVariables::mapPlayTimeSec;
+                smashTime = EnAndVars::mapPlayTimeSec;
             }
         }
     }

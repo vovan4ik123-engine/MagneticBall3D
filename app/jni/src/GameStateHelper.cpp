@@ -78,7 +78,7 @@ namespace MagneticBall3D
     void GameStateHelper::resetAllVariables()
     {
         Beryll::Physics::hardRemoveAllObjects();
-        EnumsAndVariables::resetAllVariables();
+        EnAndVars::resetAllVariables();
 
         Sniper::sniperPositions = {};
         Sniper::spawnTime = 0.0f;
@@ -95,18 +95,18 @@ namespace MagneticBall3D
     void GameStateHelper::prepareVariablesForPlay()
     {
         Beryll::Physics::enableSimulation();
-        EnumsAndVariables::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
+        EnAndVars::mapStartTimeSec = Beryll::TimeStep::getSecFromStart();
     }
 
     void GameStateHelper::pauseGame()
     {
         Beryll::Physics::disableSimulation();
-        EnumsAndVariables::gameOnPause = true;
+        EnAndVars::gameOnPause = true;
     }
 
     void GameStateHelper::resumeGame()
     {
         Beryll::Physics::enableSimulation();
-        EnumsAndVariables::gameOnPause = false;
+        EnAndVars::gameOnPause = false;
     }
 }

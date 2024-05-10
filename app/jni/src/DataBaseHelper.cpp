@@ -45,7 +45,7 @@ namespace DataBaseHelper
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowSettings);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeSettingsFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+                storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
 
                 // Create table CurrencyBalance and insert 1 row.
                 Beryll::DataBase::openDataBase(dataBaseName);
@@ -53,7 +53,7 @@ namespace DataBaseHelper
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowCurrencyBalance);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
+                storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -89,9 +89,9 @@ namespace DataBaseHelper
                 BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "Result of selectSettingsFPSLimit contains wrong data.");
 
                 if(std::holds_alternative<int>(rows[0][0]))
-                    EnumsAndVariables::SettingsMenu::FPSLimit = std::get<int>(rows[0][0]);
+                    EnAndVars::SettingsMenu::FPSLimit = std::get<int>(rows[0][0]);
 
-                BR_INFO("FPSLimit after read: %d", EnumsAndVariables::SettingsMenu::FPSLimit);
+                BR_INFO("FPSLimit after read: %d", EnAndVars::SettingsMenu::FPSLimit);
             }
         }
         catch(const Beryll::DataBaseException& e)
@@ -120,9 +120,9 @@ namespace DataBaseHelper
                 BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
 
                 if(std::holds_alternative<int>(rows[0][0]))
-                    EnumsAndVariables::CurrencyBalance::crystals = std::get<int>(rows[0][0]);
+                    EnAndVars::CurrencyBalance::crystals = std::get<int>(rows[0][0]);
 
-                BR_INFO("crystals after read: %d", EnumsAndVariables::CurrencyBalance::crystals);
+                BR_INFO("crystals after read: %d", EnAndVars::CurrencyBalance::crystals);
             }
         }
         catch(const Beryll::DataBaseException& e)

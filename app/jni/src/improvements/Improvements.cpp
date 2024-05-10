@@ -73,7 +73,7 @@ namespace MagneticBall3D
             auto b = std::make_shared<Beryll::ButtonWithTexture>(texturePath.c_str(), "",
                                                                  m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
 
-            auto txt = std::make_shared<Beryll::Text>("XX / XX", EnumsAndVariables::FontsPath::ROBOTO, m_progressHeight,
+            auto txt = std::make_shared<Beryll::Text>("XX / XX", EnAndVars::FontsPath::ROBOTO, m_progressHeight,
                                                       m_leftDefault, m_progressTop, 20, 5.5f);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
@@ -103,7 +103,7 @@ namespace MagneticBall3D
             if(m_allAvailableGUIBlocks.empty())
             {
                 BR_INFO("%s", "m_allAvailableGUIBlocks.empty(). return;");
-                EnumsAndVariables::improvementSystemOnScreen = false;
+                EnAndVars::improvementSystemOnScreen = false;
                 return;
             }
             else if(m_allAvailableGUIBlocks.size() == 1)
@@ -175,11 +175,11 @@ namespace MagneticBall3D
             }
 
             BR_INFO("%s", "improvementSystemOnScreen = true");
-            EnumsAndVariables::improvementSystemOnScreen = true;
+            EnAndVars::improvementSystemOnScreen = true;
             Beryll::Physics::disableSimulation();
         }
 
-        if(EnumsAndVariables::improvementSystemOnScreen)
+        if(EnAndVars::improvementSystemOnScreen)
         {
             int idToRemove = -1;
 
@@ -192,13 +192,8 @@ namespace MagneticBall3D
 
                 if(block.button->getIsPressed())
                 {
-                    ++block.info.currentLevel;
-
-                    if(block.info.currentLevel >= block.info.maxLevel)
-                        idToRemove = block.getID();
-
                     BR_INFO("%s", "improvementSystemOnScreen = false");
-                    EnumsAndVariables::improvementSystemOnScreen = false;
+                    EnAndVars::improvementSystemOnScreen = false;
                     Beryll::Physics::enableSimulation();
 
                     // Disable all.
@@ -206,75 +201,15 @@ namespace MagneticBall3D
                         blockDisable.onScreen = false;
 
                     // Handle click.
-                    if(block.info.type == ImprovementType::PLAYER_MAX_SPEED)
-                    {
-                        EnumsAndVariables::playerMaxSpeedXZ += 15.0f;
-                        BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
-                    {
-                        EnumsAndVariables::playerImpulseFactorOnGround += 0.015f;
-                        EnumsAndVariables::playerTorqueFactorOnGround += 0.015f;
-                        EnumsAndVariables::playerImpulseFactorOnBuildingRoof += 0.008f;
-                        EnumsAndVariables::playerTorqueFactorOnBuildingRoof += 0.008f;
-                        BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
-                    {
-                        EnumsAndVariables::playerSpeedReductionMultiplier -= 0.1f;
-                        if(EnumsAndVariables::playerSpeedReductionMultiplier < 0.0f)
-                            EnumsAndVariables::playerSpeedReductionMultiplier = 0.0f;
-                        BR_INFO("%s", "Block PLAYER_MOVE_FASTER_THROUGH_ENEMIES pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
-                    {
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.035f;
-                        BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_BUILDINGS pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_INCREASE_SIZE)
-                    {
-                        EnumsAndVariables::playerMagneticRadius += 5.0f;
-                        EnumsAndVariables::garbageMaxCountMagnetized += 30;
-                        EnumsAndVariables::playerTorqueFactorOnBuildingWall += 0.015f;
-                        m_player->selectNextModel();
-                        BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_INCREASE_MAX_HP)
-                    {
-                        m_player->addToMaxHP(EnumsAndVariables::playerStartHP * 0.1f);
-                        BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_REDUCE_DAMAGE)
-                    {
-                        EnumsAndVariables::playerDamageTakenMultiplier -= 0.1f;
-                        if(EnumsAndVariables::playerDamageTakenMultiplier < 0.0f)
-                            EnumsAndVariables::playerDamageTakenMultiplier = 0.0f;
-                        BR_INFO("%s", "Block PLAYER_REDUCE_DAMAGE pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_TAKE_MORE_XP)
-                    {
-                        EnumsAndVariables::playerXPMultiplier += 0.05f;
-                        BR_INFO("%s", "Block PLAYER_TAKE_MORE_XP pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
-                    {
-                        EnumsAndVariables::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f;
-                        BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP)
-                    {
-                        EnumsAndVariables::garbageCommonSpawnDelay -= 0.1f;
-                        if(EnumsAndVariables::garbageCommonSpawnDelay < 0.0f)
-                            EnumsAndVariables::garbageCommonSpawnDelay = 0.0f;
-                        BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed.");
-                    }
-                    else if(block.info.type == ImprovementType::GARBAGE_REDUCE_DAMAGE)
-                    {
-                        EnumsAndVariables::garbageDamageTakenMultiplier -= 0.1f;
-                        if(EnumsAndVariables::garbageDamageTakenMultiplier < 0.0f)
-                            EnumsAndVariables::garbageDamageTakenMultiplier = 0.0f;
-                        BR_INFO("%s", "Block GARBAGE_REDUCE_DAMAGE pressed.");
-                    }
+                    if(block.info.currentLevel < block.info.actions.size())
+                        block.info.actions[block.info.currentLevel](); // Call lambda stored in vector.
+                    else
+                        block.info.actions.back()(); // Call lambda stored in vector.
+
+                    ++block.info.currentLevel;
+
+                    if(block.info.currentLevel >= block.info.maxLevel)
+                        idToRemove = block.getID();
 
                     break;
                 }
@@ -296,7 +231,7 @@ namespace MagneticBall3D
 
     void Improvements::draw()
     {
-        if(EnumsAndVariables::improvementSystemOnScreen)
+        if(EnAndVars::improvementSystemOnScreen)
         {
             for(const auto& block : m_allAvailableGUIBlocks)
             {

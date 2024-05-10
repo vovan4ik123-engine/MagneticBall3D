@@ -24,13 +24,17 @@ namespace MagneticBall3D
 
     struct ImprovementInfo
     {
-        ImprovementInfo(ImprovementType t, int maxLvl)
-        : type(t), maxLevel(maxLvl) {}
+        ImprovementInfo(ImprovementType t, int maxLvl, std::vector<std::function<void()>> action)
+        : type(t), maxLevel(maxLvl), actions(std::move(action))
+        {
+            BR_ASSERT((actions.empty() == false), "%s", "actions can not be empty.")
+        }
 
         ImprovementType type;
         int startLevel = 0;
         int currentLevel = 0;
         int maxLevel = 0;
+        std::vector<std::function<void()>> actions;
     };
 
     struct ImprovementGUIBlock

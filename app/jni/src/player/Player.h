@@ -39,7 +39,7 @@ namespace MagneticBall3D
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
         void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
 
-        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnumsAndVariables::playerXPMultiplier); } }
+        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnAndVars::playerXPMultiplier); } }
 
         int getCurrentLevelExp() { return m_currentLevelExp; }
         int getCurrentLevelMaxExp() { return m_currentLevelMaxExp; }
@@ -52,7 +52,7 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d) { m_currentHP -= (d * EnumsAndVariables::playerDamageTakenMultiplier); }
+        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnAndVars::playerDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
         void resurrect() { m_currentHP = m_maxHP; }
 

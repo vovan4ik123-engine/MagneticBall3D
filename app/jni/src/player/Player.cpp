@@ -25,9 +25,9 @@ namespace MagneticBall3D
         // Update gravity.
         if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
         {
-            if(m_lastTimeOnJumpPad + 1.0f < EnumsAndVariables::mapPlayTimeSec)
+            if(m_lastTimeOnJumpPad + 1.0f < EnAndVars::mapPlayTimeSec)
             {
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
+                m_obj->setGravity(EnAndVars::playerGravityOnAir);
                 m_isOnJumpPad = true;
             }
             else
@@ -39,7 +39,7 @@ namespace MagneticBall3D
             m_isOnBuildingRoof = false;
             m_isOnBuildingWall = false;
             m_isOnAir = false;
-            m_lastTimeOnJumpPad = EnumsAndVariables::mapPlayTimeSec;
+            m_lastTimeOnJumpPad = EnAndVars::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
@@ -63,21 +63,21 @@ namespace MagneticBall3D
                 m_isOnBuildingRoof = false;
                 m_isOnBuildingWall = true;
 
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnBuildingWall);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+                m_obj->setGravity(EnAndVars::playerGravityOnBuildingWall);
+                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
             }
             else
             {
                 m_isOnBuildingRoof = true;
                 m_isOnBuildingWall = false;
 
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnBuildingRoof);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+                m_obj->setGravity(EnAndVars::playerGravityOnBuildingRoof);
+                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
             }
 
             if(m_isOnBuildingWall &&
-               m_lastTimeOnGround + 0.8f < EnumsAndVariables::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 0.8f < EnumsAndVariables::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
+               m_lastTimeOnGround + 0.8f < EnAndVars::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 0.8f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
             {
                 m_obj->resetVelocities();
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 200.0f);
@@ -86,14 +86,14 @@ namespace MagneticBall3D
             m_isOnGround = false;
             m_isOnAir = false;
             m_isOnJumpPad = false;
-            m_lastTimeOnBuilding = EnumsAndVariables::mapPlayTimeSec;
+            m_lastTimeOnBuilding = EnAndVars::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
             if(!m_isOnGround)
             {
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnGround);
-                m_obj->setDamping(EnumsAndVariables::playerLinearDamping, EnumsAndVariables::playerAngularDamping);
+                m_obj->setGravity(EnAndVars::playerGravityOnGround);
+                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
             }
 
             m_isOnGround = true;
@@ -101,13 +101,13 @@ namespace MagneticBall3D
             m_isOnBuildingWall = false;
             m_isOnAir = false;
             m_isOnJumpPad = false;
-            m_lastTimeOnGround = EnumsAndVariables::mapPlayTimeSec;
+            m_lastTimeOnGround = EnAndVars::mapPlayTimeSec;
         }
         else
         {
-            if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnumsAndVariables::mapPlayTimeSec)
+            if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnAndVars::mapPlayTimeSec)
             {
-                m_obj->setGravity(EnumsAndVariables::playerGravityOnAir);
+                m_obj->setGravity(EnAndVars::playerGravityOnAir);
                 m_obj->setDamping(0.2f, 0.3f);
             }
 
@@ -129,9 +129,9 @@ namespace MagneticBall3D
         if(m_currentLevelExp >= m_currentLevelMaxExp)
         {
             ++m_currentLevel;
-            BR_INFO("Got level: %d. Healed for: %f", m_currentLevel, EnumsAndVariables::playerRestoreHPAtNewLevel);
+            BR_INFO("Got level: %d. Healed for: %f", m_currentLevel, EnAndVars::playerRestoreHPAtNewLevel);
             m_nextLevelAchieved = true; // Achievement should be handled by Improvements class.
-            m_currentHP += EnumsAndVariables::playerRestoreHPAtNewLevel;
+            m_currentHP += EnAndVars::playerRestoreHPAtNewLevel;
             if(m_currentHP > m_maxHP)
                 m_currentHP = m_maxHP;
 
@@ -170,7 +170,7 @@ namespace MagneticBall3D
         }
 
         // Handle meteor.
-        if(m_playerMoveSpeed > EnumsAndVariables::playerSpeedForMeteor)
+        if(m_playerMoveSpeed > EnAndVars::playerSpeedForMeteor)
             m_isMeteor = true;
         else
             m_isMeteor = false;
@@ -187,12 +187,12 @@ namespace MagneticBall3D
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
         float impulseReduceFactor = 1.0f;
-        if(newPlayerSpeedXZ > EnumsAndVariables::playerMaxSpeedXZ)
+        if(newPlayerSpeedXZ > EnAndVars::playerMaxSpeedXZ)
         {
             // Apply less impulse because speed limit was exceeded.
-            newVelocityXZ = glm::normalize(newVelocityXZ) * EnumsAndVariables::playerMaxSpeedXZ;
+            newVelocityXZ = glm::normalize(newVelocityXZ) * EnAndVars::playerMaxSpeedXZ;
 
-            float newSpeedLimit = std::max(EnumsAndVariables::playerMaxSpeedXZ - m_playerMoveSpeedXZ, 0.0f);
+            float newSpeedLimit = std::max(EnAndVars::playerMaxSpeedXZ - m_playerMoveSpeedXZ, 0.0f);
             float newSpeedAdded = newPlayerSpeedXZ - m_playerMoveSpeedXZ;
             impulseReduceFactor = newSpeedLimit / newSpeedAdded;
         }
@@ -216,10 +216,10 @@ namespace MagneticBall3D
 
     void Player::reduceSpeed(float speedToReduce)
     {
-        if(speedToReduce <= 0.0f)
+        if(speedToReduce <= 0.0f || EnAndVars::playerSpeedReductionMultiplier <= 0.0f)
             return;
 
-        speedToReduce *= EnumsAndVariables::playerSpeedReductionMultiplier;
+        speedToReduce *= EnAndVars::playerSpeedReductionMultiplier;
 
         // When player move as meteor his speed will reduced 50% less from normal reduction.
         if(m_isMeteor)
@@ -247,7 +247,7 @@ namespace MagneticBall3D
         // Spawn fire before ball.
         float radius = std::max(6.0f, m_obj->getXZRadius());
         glm::vec3 orig{m_obj->getOrigin() + (m_playerMoveDir * radius)};
-        float sizeBegin = radius + EnumsAndVariables::garbageCountMagnetized * 0.015f;
+        float sizeBegin = radius + EnAndVars::garbageCountMagnetized * 0.015f;
 
         Beryll::ParticleSystem::EmitCubesFromCenter(3, 0.7f, sizeBegin, sizeBegin * 0.3f,
                                                     {0.98f, 0.75f, 0.0f, 0.6f}, {0.5f, 0.066f, 0.0f, 0.0f},

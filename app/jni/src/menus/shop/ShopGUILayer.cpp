@@ -11,25 +11,25 @@ namespace MagneticBall3D
         m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 90, 30, 10);
         m_guiObjects.push_back(m_buttonBack);
 
-        m_shopText = std::make_shared<Beryll::Text>("Shop", EnumsAndVariables::FontsPath::ROBOTO, 5, 38, 0, 25, 5.5f);
+        m_shopText = std::make_shared<Beryll::Text>("Shop", EnAndVars::FontsPath::ROBOTO, 5, 38, 0, 25, 5.5f);
         m_guiObjects.push_back(m_shopText);
 
-        button70crystals = std::make_shared<Beryll::ButtonWithText>("      1$\n70 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 5, 10, 40, 10);
+        button70crystals = std::make_shared<Beryll::ButtonWithText>("      1$\n70 crystals", EnAndVars::FontsPath::ROBOTO, 3, 5, 10, 40, 10);
         m_guiObjects.push_back(button70crystals);
 
-        button200crystals = std::make_shared<Beryll::ButtonWithText>("      2.5$\n200 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 55, 10, 40, 10);
+        button200crystals = std::make_shared<Beryll::ButtonWithText>("      2.5$\n200 crystals", EnAndVars::FontsPath::ROBOTO, 3, 55, 10, 40, 10);
         m_guiObjects.push_back(button200crystals);
 
-        button420crystals = std::make_shared<Beryll::ButtonWithText>("       5$\n420 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 5, 25, 40, 10);
+        button420crystals = std::make_shared<Beryll::ButtonWithText>("       5$\n420 crystals", EnAndVars::FontsPath::ROBOTO, 3, 5, 25, 40, 10);
         m_guiObjects.push_back(button420crystals);
 
-        button900crystals = std::make_shared<Beryll::ButtonWithText>("       10$\n900 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 55, 25, 40, 10);
+        button900crystals = std::make_shared<Beryll::ButtonWithText>("       10$\n900 crystals", EnAndVars::FontsPath::ROBOTO, 3, 55, 25, 40, 10);
         m_guiObjects.push_back(button900crystals);
 
-        button2500crystals = std::make_shared<Beryll::ButtonWithText>("       25$\n2500 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 5, 40, 40, 10);
+        button2500crystals = std::make_shared<Beryll::ButtonWithText>("       25$\n2500 crystals", EnAndVars::FontsPath::ROBOTO, 3, 5, 40, 40, 10);
         m_guiObjects.push_back(button2500crystals);
 
-        button15000crystals = std::make_shared<Beryll::ButtonWithText>("      100$\n15000 crystals", EnumsAndVariables::FontsPath::ROBOTO, 3, 55, 40, 40, 10);
+        button15000crystals = std::make_shared<Beryll::ButtonWithText>("      100$\n15000 crystals", EnAndVars::FontsPath::ROBOTO, 3, 55, 40, 40, 10);
         m_guiObjects.push_back(button15000crystals);
     }
 

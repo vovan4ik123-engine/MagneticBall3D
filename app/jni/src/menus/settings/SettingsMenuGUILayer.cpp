@@ -10,34 +10,34 @@ namespace MagneticBall3D
         m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 90, 30, 10);
         m_guiObjects.push_back(m_buttonBack);
 
-        m_settingsText = std::make_shared<Beryll::Text>("Settings", EnumsAndVariables::FontsPath::ROBOTO, 5, 32.3f, 0, 35, 5.5f);
+        m_settingsText = std::make_shared<Beryll::Text>("Settings", EnAndVars::FontsPath::ROBOTO, 5, 32.3f, 0, 35, 5.5f);
         m_guiObjects.push_back(m_settingsText);
 
-        m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnumsAndVariables::FontsPath::ROBOTO, 3, 1, 7, 30, 3);
+        m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnAndVars::FontsPath::ROBOTO, 3, 1, 7, 30, 3);
         m_guiObjects.push_back(m_FPSLimitText);
 
-        m_30FPS = std::make_shared<Beryll::CheckBox>("30 ", EnumsAndVariables::FontsPath::ROBOTO, 3, 26, 7);
+        m_30FPS = std::make_shared<Beryll::CheckBox>("30 ", EnAndVars::FontsPath::ROBOTO, 3, 26, 7);
         m_guiObjects.push_back(m_30FPS);
         m_FPSCheckBoxes.push_back(m_30FPS);
-        if(EnumsAndVariables::SettingsMenu::FPSLimit == 30)
+        if(EnAndVars::SettingsMenu::FPSLimit == 30)
             recheckFPSCheckBoxes(m_30FPS->getID());
 
-        m_60FPS = std::make_shared<Beryll::CheckBox>("60 ", EnumsAndVariables::FontsPath::ROBOTO, 3, 41, 7);
+        m_60FPS = std::make_shared<Beryll::CheckBox>("60 ", EnAndVars::FontsPath::ROBOTO, 3, 41, 7);
         m_guiObjects.push_back(m_60FPS);
         m_FPSCheckBoxes.push_back(m_60FPS);
-        if(EnumsAndVariables::SettingsMenu::FPSLimit == 60)
+        if(EnAndVars::SettingsMenu::FPSLimit == 60)
             recheckFPSCheckBoxes(m_60FPS->getID());
 
-        m_120FPS = std::make_shared<Beryll::CheckBox>("120 ", EnumsAndVariables::FontsPath::ROBOTO, 3, 56, 7);
+        m_120FPS = std::make_shared<Beryll::CheckBox>("120 ", EnAndVars::FontsPath::ROBOTO, 3, 56, 7);
         m_guiObjects.push_back(m_120FPS);
         m_FPSCheckBoxes.push_back(m_120FPS);
-        if(EnumsAndVariables::SettingsMenu::FPSLimit == 120)
+        if(EnAndVars::SettingsMenu::FPSLimit == 120)
             recheckFPSCheckBoxes(m_120FPS->getID());
 
-        m_250FPS = std::make_shared<Beryll::CheckBox>("250 ", EnumsAndVariables::FontsPath::ROBOTO, 3, 74, 7);
+        m_250FPS = std::make_shared<Beryll::CheckBox>("250 ", EnAndVars::FontsPath::ROBOTO, 3, 74, 7);
         m_guiObjects.push_back(m_250FPS);
         m_FPSCheckBoxes.push_back(m_250FPS);
-        if(EnumsAndVariables::SettingsMenu::FPSLimit == 250)
+        if(EnAndVars::SettingsMenu::FPSLimit == 250)
             recheckFPSCheckBoxes(m_250FPS->getID());
 
     }
@@ -67,24 +67,24 @@ namespace MagneticBall3D
         {
             if(checkBox->getIsValueChangingToMarked())
             {
-                EnumsAndVariables::SettingsMenu::FPSLimit = std::stoi(checkBox->text);
-                BR_INFO("EnumsAndVariables::SettingsMenu::FPSLimit:%d", EnumsAndVariables::SettingsMenu::FPSLimit);
-                Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+                EnAndVars::SettingsMenu::FPSLimit = std::stoi(checkBox->text);
+                BR_INFO("EnumsAndVariables::SettingsMenu::FPSLimit:%d", EnAndVars::SettingsMenu::FPSLimit);
+                Beryll::GameLoop::setFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
 
                 // Also store to data base.
-                DataBaseHelper::storeSettingsFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+                DataBaseHelper::storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
                 break;
             }
         }
 
         // Dont allow all check boxes be unchecked. Always keep one checked.
-        if(EnumsAndVariables::SettingsMenu::FPSLimit == 30)
+        if(EnAndVars::SettingsMenu::FPSLimit == 30)
             recheckFPSCheckBoxes(m_30FPS->getID());
-        else if(EnumsAndVariables::SettingsMenu::FPSLimit == 60)
+        else if(EnAndVars::SettingsMenu::FPSLimit == 60)
             recheckFPSCheckBoxes(m_60FPS->getID());
-        else if(EnumsAndVariables::SettingsMenu::FPSLimit == 120)
+        else if(EnAndVars::SettingsMenu::FPSLimit == 120)
             recheckFPSCheckBoxes(m_120FPS->getID());
-        else if(EnumsAndVariables::SettingsMenu::FPSLimit == 250)
+        else if(EnAndVars::SettingsMenu::FPSLimit == 250)
             recheckFPSCheckBoxes(m_250FPS->getID());
     }
 

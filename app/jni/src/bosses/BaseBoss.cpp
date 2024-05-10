@@ -40,7 +40,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "BaseBoss DelayBeforeFirstAttack");
             bossState = BossState::STAND_AIMING;
-            setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::stand, false, false);
+            setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > attackDistance)
@@ -73,7 +73,7 @@ namespace MagneticBall3D
                     {
                         //BR_INFO("%s", "BaseBoss prepareToFirstAttack");
                         m_prepareToFirstAttack = false;
-                        m_prepareToFirstAttackStartTime = EnumsAndVariables::mapPlayTimeSec;
+                        m_prepareToFirstAttackStartTime = EnAndVars::mapPlayTimeSec;
                     }
                     else
                     {
@@ -91,7 +91,7 @@ namespace MagneticBall3D
 
         m_prepareToFirstAttack = true;
 
-        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::run, false, false);
+        setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
 
         getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
 
@@ -116,8 +116,8 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "BaseBoss::attack()");
         rotateToPoint(playerOrigin, true);
-        setCurrentAnimationByIndex(EnumsAndVariables::AnimationIndexes::attack, true, true);
-        m_lastAttackTime = EnumsAndVariables::mapPlayTimeSec;
+        setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::attack, true, true);
+        m_lastAttackTime = EnAndVars::mapPlayTimeSec;
         bossState = BossState::ATTACKING;
     }
 

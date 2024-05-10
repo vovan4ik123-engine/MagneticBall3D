@@ -54,9 +54,9 @@ namespace MagneticBall3D
         AttackType getAttackType() { return m_attackType; }
         bool getIsCanMove() { return m_isCanMove; }
         static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
-        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
-        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVariables::mapPlayTimeSec; }
+        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnAndVars::mapPlayTimeSec; }
+        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
 
         // Pathfinding.
         int indexInPathArray = 0;

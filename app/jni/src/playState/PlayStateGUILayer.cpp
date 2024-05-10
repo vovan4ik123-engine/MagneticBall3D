@@ -11,11 +11,11 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 0, 50, 3);
+        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::ROBOTO, 2.5f, 0, 0, 50, 3);
         m_guiObjects.push_back(m_statistics1);
-        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.5f, 0, 2.5f, 70, 3);
+        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::ROBOTO, 2.5f, 0, 2.5f, 70, 3);
         m_guiObjects.push_back(m_statistics2);
-        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnumsAndVariables::FontsPath::ROBOTO, 2.0f, 0, 4.75f, 45, 2.5f);
+        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::ROBOTO, 2.0f, 0, 4.75f, 45, 2.5f);
         m_guiObjects.push_back(m_swipeCount);
 
 //        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
@@ -26,15 +26,15 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
 
-        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
+        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
         sliderAmbient->setValue(0.6f);
 
-        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderSunPower);
         sliderSunPower->setValue(1.0f);
 
-        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
+        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
         m_guiObjects.push_back(sliderSpecularPower);
         sliderSpecularPower->setValue(1.0f);
 
@@ -52,14 +52,14 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnumsAndVariables::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnAndVars::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
         m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnumsAndVariables::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
         m_guiObjects.push_back(buttonPauseResume);
         buttonPauseResume->disable();
 
@@ -67,7 +67,7 @@ namespace MagneticBall3D
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureResurrect);
         textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 50, 18, 30, 7);
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 50, 18, 30, 7);
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
@@ -85,7 +85,7 @@ namespace MagneticBall3D
         textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureKillAll);
         textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
 
@@ -93,7 +93,7 @@ namespace MagneticBall3D
         textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureWin);
         textureWin->disable();
-        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonWinOk);
         buttonWinOk->disable();
 
@@ -102,7 +102,7 @@ namespace MagneticBall3D
         textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 20, 25, 60, 25);
         m_guiObjects.push_back(textureTankWithCommander);
         textureTankWithCommander->disable();
-        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnumsAndVariables::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
         m_guiObjects.push_back(buttonTankWithCommanderOk);
         buttonTankWithCommanderOk->disable();
     }
@@ -114,7 +114,7 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::updateBeforePhysics()
     {
-        if(EnumsAndVariables::improvementSystemOnScreen)
+        if(EnAndVars::improvementSystemOnScreen)
             return;
 
         for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
@@ -140,14 +140,14 @@ namespace MagneticBall3D
             m_statistics2->text = stream.str();
 
             stream.str("");
-            stream << "Swipe: " << EnumsAndVariables::mapSwipeCount;
-            stream << "  Time: " << int(EnumsAndVariables::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVariables::mapPlayTimeSec, 60.0f));
+            stream << "Swipe: " << EnAndVars::mapSwipeCount;
+            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
             m_swipeCount->text = stream.str();
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
-        if(buttonPause->getIsPressed() && !EnumsAndVariables::gameOnPause)
+        if(buttonPause->getIsPressed() && !EnAndVars::gameOnPause)
         {
             GameStateHelper::pauseGame();
             buttonPauseResume->enable();
@@ -176,8 +176,8 @@ namespace MagneticBall3D
         }
         else if(buttonWinOk->getIsPressed())
         {
-            EnumsAndVariables::CurrencyBalance::crystals += EnumsAndVariables::mapWinCrystalsPrize;
-            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVariables::CurrencyBalance::crystals);
+            EnAndVars::CurrencyBalance::crystals += EnAndVars::mapWinCrystalsPrize;
+            DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
 
             // Pause game before exit to avoid update scene layer.
             GameStateHelper::pauseGame();
