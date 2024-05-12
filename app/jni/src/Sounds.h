@@ -23,7 +23,7 @@ namespace MagneticBall3D
         ~Sounds() = delete;
 
         static void loadSounds();
-
+        static void update();
         static void playSound(SoundType type);
 
         static float pistolShotTime;
@@ -38,11 +38,10 @@ namespace MagneticBall3D
         static float tankShotDelay;
         static float tankHitTime;
         static float tankHitDelay;
-        static float smashTime;
-        static float smashDelay;
 
     private:
         static bool m_loaded;
+        static int m_numberOfCurrentlyPlayingWAV;
 
         // Sounds.
         static std::string m_swipeEngine1;
@@ -63,10 +62,13 @@ namespace MagneticBall3D
         static std::string m_tankShot1;
         static std::string m_tankHit1;
 
-        static std::string m_smash1;
-        static std::string m_smash2;
-        static std::string m_smash3;
-        static std::string m_smash4;
-        static std::string m_smash5;
+        static std::string m_pop1;
+        static std::string m_pop2;
+        static std::string m_pop3;
+        static std::string m_pop4;
+        static std::string m_pop5;
+        static std::string m_pop6;
+        static std::string m_pop7;
+        static std::string m_pop8;
     };
 }

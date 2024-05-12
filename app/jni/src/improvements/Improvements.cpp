@@ -73,8 +73,8 @@ namespace MagneticBall3D
             auto b = std::make_shared<Beryll::ButtonWithTexture>(texturePath.c_str(), "",
                                                                  m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
 
-            auto txt = std::make_shared<Beryll::Text>("XX / XX", EnAndVars::FontsPath::ROBOTO, m_progressHeight,
-                                                      m_leftDefault, m_progressTop, 20, 5.5f);
+            auto txt = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::ROBOTO, m_progressHeight,
+                                                      m_leftDefault, m_progressTop, 20, 5.5f, false, true);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
             ImprovementGUIBlock guiBlock(inf, b, txt);
@@ -177,9 +177,10 @@ namespace MagneticBall3D
             BR_INFO("%s", "improvementSystemOnScreen = true");
             EnAndVars::improvementSystemOnScreen = true;
             Beryll::Physics::disableSimulation();
+            m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
         }
 
-        if(EnAndVars::improvementSystemOnScreen)
+        if(EnAndVars::improvementSystemOnScreen && m_timeAppearsOnScreen + m_delayBeforeCanBeClicked < Beryll::TimeStep::getSecFromStart())
         {
             int idToRemove = -1;
 
@@ -222,7 +223,7 @@ namespace MagneticBall3D
 
                 if(iter != m_allAvailableGUIBlocks.end())
                 {
-                    BR_INFO("%s", "Remove from m_allAvailableGUIBlocks");
+                    BR_INFO("%s", "Remove from m_allAvailableGUIBlocks.");
                     m_allAvailableGUIBlocks.erase(iter);
                 }
             }

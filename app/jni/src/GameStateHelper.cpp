@@ -89,7 +89,6 @@ namespace MagneticBall3D
         Sounds::grenadeLauncherHitTime = 0.0f;
         Sounds::tankShotTime = 0.0f;
         Sounds::tankHitTime = 0.0f;
-        Sounds::smashTime = 0.0f;
     }
 
     void GameStateHelper::prepareVariablesForPlay()

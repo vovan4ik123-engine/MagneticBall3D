@@ -23,12 +23,12 @@ namespace MagneticBall3D
 
         damage = 1.0f;
         attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
-        damageRadius = 20.0f;
+        damageRadius = 3.0f;
         timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
         garbageAmountToDie = 10;
         reducePlayerSpeedWhenDie = 8.0f;
-        experienceWhenDie = 30;
+        experienceWhenDie = 50;
         getController().moveSpeed = 20.0f;
 
         m_lastAttackTime = 0.0f;

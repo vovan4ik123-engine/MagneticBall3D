@@ -34,7 +34,7 @@ namespace EnAndVars
 
     // Swipe.
     constexpr inline float swipePowerMultiplier = 2.2f;
-    constexpr inline float playerSpeedToPlayEngineSound = 91.0f;
+    constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
@@ -81,7 +81,7 @@ namespace EnAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.3f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 100.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMinGravityPower = 30.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 900.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.

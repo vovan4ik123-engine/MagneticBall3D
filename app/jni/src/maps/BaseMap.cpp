@@ -29,6 +29,8 @@ namespace MagneticBall3D
 
         EnAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
+        Sounds::update();
+
         handleScreenSwipe();
         updatePathfindingAndSpawnEnemies();
         spawnCommonGarbage();

@@ -28,24 +28,24 @@ namespace MagneticBall3D
 
         sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
-        sliderAmbient->setValue(0.6f);
+        sliderAmbient->setValue(0.8f);
 
-        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
-        m_guiObjects.push_back(sliderSunPower);
-        sliderSunPower->setValue(1.0f);
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+//        m_guiObjects.push_back(sliderSunPower);
+//        sliderSunPower->setValue(1.0f);
+//
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
+//        m_guiObjects.push_back(sliderSpecularPower);
+//        sliderSpecularPower->setValue(1.0f);
 
-        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
-        m_guiObjects.push_back(sliderSpecularPower);
-        sliderSpecularPower->setValue(1.0f);
-
-        progressBarHP = std::make_shared<Beryll::ProgressBar>( 60, 0, 40, 3);
+        progressBarHP = std::make_shared<Beryll::ProgressBar>(0, 94.4f, 100, 3);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 96, 100, 5.0f);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 97, 100, 4.0f);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarXP->setProgressColor(0.0f, 0.2275f, 1.0f, 1.0f);
@@ -57,7 +57,7 @@ namespace MagneticBall3D
         buttonExit->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithText>("P", EnAndVars::FontsPath::ROBOTO, 3, 100 - 7 * screenAR, 3, 7 * screenAR, 7);
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 2.5f, 100 - 6 * screenAR, 0, 6 * screenAR, 4);
         m_guiObjects.push_back(buttonPause);
         buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
         m_guiObjects.push_back(buttonPauseResume);

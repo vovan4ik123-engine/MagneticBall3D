@@ -84,9 +84,9 @@ namespace MagneticBall3D
         // To create blocks.
         float m_leftDefault = 0.0f;
         float m_buttonWidth = 30.0f;
-        float m_buttonTop = 20.0f;
+        float m_buttonTop = 35.0f;
         float m_buttonHeight = 25.0f;
-        float m_progressTop = 40.0f;
+        float m_progressTop = 55.0f;
         float m_progressHeight = 5.0f;
         // To position before show on screen. Only left-right pos should be changed. Range 0.0f...1.0f.
         float m_leftPos1BlockButton = 0.35f;
@@ -95,5 +95,9 @@ namespace MagneticBall3D
         glm::vec2 m_leftPos2BlocksTexts{0.22f, 0.62f};
         glm::vec3 m_leftPos3BlocksButtons{0.02f, 0.35f, 0.68f};
         glm::vec3 m_leftPos3BlocksTexts{0.09f, 0.42f, 0.75f};
+
+        float m_timeAppearsOnScreen = 0.0f;
+        // Because user can accidentally click when he actively swipe and buttons appears on screen.
+        float m_delayBeforeCanBeClicked = 1.1f;
     };
 }

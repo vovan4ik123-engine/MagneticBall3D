@@ -5,6 +5,8 @@ namespace MagneticBall3D
     Player::Player(std::shared_ptr<Beryll::SimpleCollidingObject> so, float health)
     : m_obj(std::move(so)), m_maxHP(health), m_currentHP(health)
     {
+        BR_ASSERT((m_expPerLevel.empty() == false), "%s", "m_expPerLevel can not be empty.")
+
         m_obj->enableCollisionMesh();
         m_obj->enableUpdate();
         m_obj->enableDraw();
