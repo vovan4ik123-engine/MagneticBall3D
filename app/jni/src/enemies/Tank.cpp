@@ -21,12 +21,12 @@ namespace MagneticBall3D
         m_unitType = UnitType::TANK;
         m_attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
-        damage = 1.0f;
+        damage = 2.0f;
         attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
         damageRadius = 6.0f;
         timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
-        garbageAmountToDie = 30;
+        garbageAmountToDie = 25;
         reducePlayerSpeedWhenDie = 30.0f;
         experienceWhenDie = 200;
         getController().moveSpeed = 15.0f;

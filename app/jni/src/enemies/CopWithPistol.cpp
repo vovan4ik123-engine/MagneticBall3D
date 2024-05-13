@@ -27,7 +27,7 @@ namespace MagneticBall3D
 
         garbageAmountToDie = 10;
         reducePlayerSpeedWhenDie = 6.0f;
-        experienceWhenDie = 20;
+        experienceWhenDie = 25;
         getController().moveSpeed = 25.0f;
 
         m_lastAttackTime = 0.0f;

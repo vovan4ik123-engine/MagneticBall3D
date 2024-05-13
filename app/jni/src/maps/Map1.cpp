@@ -435,7 +435,7 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int i = 0; i < 125; ++i)
+        for(int i = 0; i < 150; ++i)
         {
             auto copPistol = std::make_shared<CopWithPistol>("models3D/enemies/CopWithPistol.fbx",
                                                         0.0f,
@@ -486,7 +486,7 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(sniper);
         }
 
-        for(int i = 0; i < 70; ++i)
+        for(int i = 0; i < 60; ++i)
         {
             auto copGrenade = std::make_shared<CopWithGrenadeLauncher>("models3D/enemies/CopWithGrenadeLauncher.fbx",
                                                                   0.0f,
@@ -503,7 +503,7 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(copGrenade);
         }
 
-        for(int i = 0; i < 15; ++i)
+        for(int i = 0; i < 20; ++i)
         {
             auto tank = std::make_shared<Tank>("models3D/enemies/Tank.fbx",
                                                                   0.0f,
@@ -646,7 +646,7 @@ namespace MagneticBall3D
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 80 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 75 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -683,7 +683,7 @@ namespace MagneticBall3D
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 75 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -695,7 +695,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 40 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 30 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -718,13 +718,13 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 1.0f;
 
-                if(copWithPistolCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -750,13 +750,13 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 1.0f;
 
-                if(copWithPistolCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -768,7 +768,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 40 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -806,7 +806,7 @@ namespace MagneticBall3D
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 150 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -818,7 +818,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 60 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -850,7 +850,7 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 1.0f;
 
-                if(copWithPistolCount < 125 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 150 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -868,13 +868,13 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 70 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 60 && enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 15 && enemy->getUnitType() == UnitType::TANK)
+                else if(tankCount < 20 && enemy->getUnitType() == UnitType::TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -1061,7 +1061,7 @@ namespace MagneticBall3D
 
         m_boss->update(m_player->getObj()->getOrigin());
 
-        // 3. Boss attack.
+        // 2. Boss attack.
         if(m_boss->bossState == BossState::CAN_ATTACK)
         {
             BR_INFO("%s", "BossState::CAN_ATTACK");
@@ -1091,16 +1091,21 @@ namespace MagneticBall3D
 
                 if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
                 {
-                    m_player->takeDamage(20.0f);
+                    m_player->takeDamage(100.0f);
                 }
                 else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
                 {
                     for(auto& wrapper : m_allGarbage)
                     {
-                        if(wrapper.isMagnetized &&
-                           glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin()) < 10.0f)
+                        if(wrapper.isMagnetized)
                         {
-                            wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 3.5f);
+                            float distance = glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin());
+
+                            if(distance < 8.0f)
+                                wrapper.takeDamage(25.0f);
+
+                            if(distance < 20.0f)
+                                wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 4.0f);
                         }
                     }
                 }

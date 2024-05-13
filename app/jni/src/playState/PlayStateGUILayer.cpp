@@ -28,7 +28,7 @@ namespace MagneticBall3D
 
         sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
-        sliderAmbient->setValue(0.8f);
+        sliderAmbient->setValue(0.7f);
 
 //        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
 //        m_guiObjects.push_back(sliderSunPower);
@@ -38,18 +38,18 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderSpecularPower);
 //        sliderSpecularPower->setValue(1.0f);
 
-        progressBarHP = std::make_shared<Beryll::ProgressBar>(0, 94.4f, 100, 3);
+        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.5f, 95.0f, 101, 2.5f);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( 0, 97, 100, 4.0f);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.5f, 97.5f, 101, 3.0f);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
-        progressBarXP->setProgressColor(0.0f, 0.2275f, 1.0f, 1.0f);
-        progressBarXP->setBackgroundColor(0.64f, 0.89f, 0.93f, 1.0f);
+        progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);
+        progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
         buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
@@ -57,7 +57,7 @@ namespace MagneticBall3D
         buttonExit->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 2.5f, 100 - 6 * screenAR, 0, 6 * screenAR, 4);
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 2.5f, 100 - 6 * screenAR, 0, 6 * screenAR, 4.5f);
         m_guiObjects.push_back(buttonPause);
         buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
         m_guiObjects.push_back(buttonPauseResume);

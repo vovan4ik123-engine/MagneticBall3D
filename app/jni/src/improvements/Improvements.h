@@ -98,6 +98,6 @@ namespace MagneticBall3D
 
         float m_timeAppearsOnScreen = 0.0f;
         // Because user can accidentally click when he actively swipe and buttons appears on screen.
-        float m_delayBeforeCanBeClicked = 1.1f;
+        float m_delayBeforeCanBeClicked = 0.7f;
     };
 }
