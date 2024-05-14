@@ -38,14 +38,14 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderSpecularPower);
 //        sliderSpecularPower->setValue(1.0f);
 
-        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.5f, 95.0f, 101, 2.5f);
+        progressBarHP = std::make_shared<Beryll::ProgressBar>(-1, 95.6f, 102, 2.5f);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.5f, 97.5f, 101, 3.0f);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( -1, 97.6f, 102, 3.0f);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);

@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-project(ANGRY_BALL_3D)
+project(MAGNETIC_BALL_3D)
 
 include_directories(Beryll_engine/libs)
 include_directories(Beryll_engine/src)

@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.magneticBall3D.app"
     compileSdk 34
-    ndkVersion "26.2.11394342"
+    ndkVersion "27.0.11718014"
     
     defaultConfig {
         applicationId "com.magneticBall3D.app"
-        
+    
         minSdk 29 // Android 10 (2019 year).
         targetSdk 34
         versionCode 1
