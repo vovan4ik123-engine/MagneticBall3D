@@ -20,9 +20,9 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        loadGarbage();
+        //loadGarbage();
         Beryll::LoadingScreen::showProgress(60.0f);
-        loadEnemies();
+        //loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
@@ -194,6 +194,10 @@ namespace MagneticBall3D
 
         m_improvements = Improvements(m_player, imprInfo);
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
+
+        EnAndVars::mapCurrentNumber = 1;
+
+        Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("Map1Start");
 
         Beryll::LoadingScreen::showProgress(100.0f);
 

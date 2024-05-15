@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178952271439",
+    "project_id": "magneticball-7b567",
+    "storage_bucket": "magneticball-7b567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178952271439:android:6f2c80276865dfb224dc3a",
+        "android_client_info": {
+          "package_name": "com.magneticBall3D.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjglvBkN3hYXmknCh3NdEo6p5ZGJy4fsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

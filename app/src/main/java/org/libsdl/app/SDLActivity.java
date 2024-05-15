@@ -53,6 +53,7 @@ import android.widget.Toast;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import managers.GoogleAnalyticsManager;
 
 /**
     SDL Activity
@@ -387,6 +388,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         // So we can call stuff from static callbacks
         mSingleton = this;
         SDL.setContext(this);
+
+        GoogleAnalyticsManager.init(mSingleton);
 
         mClipboardHandler = new SDLClipboardHandler();
 

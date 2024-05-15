@@ -123,6 +123,7 @@ namespace EnAndVars
     inline float mapStartTimeSec = 0.0f;
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
+    inline int mapCurrentNumber = 0;
     inline bool mapPlayerWin = false; // true = player win.
     constexpr inline int mapWinCrystalsPrize = 12;
 
@@ -168,6 +169,7 @@ namespace EnAndVars
         mapStartTimeSec = 0.0f;
         mapPlayTimeSec = 0.0f;
         mapSwipeCount = 0.0f;
+        mapCurrentNumber = 0;
         mapPlayerWin = false;
 
         // Boss.
