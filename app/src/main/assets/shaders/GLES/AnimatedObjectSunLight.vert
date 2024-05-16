@@ -10,20 +10,15 @@ layout(location = 4) in vec4 inWeights;
 
 out vec2 textureCoords;
 out vec3 normal;
-out vec3 fragPos;
 
 const int MAX_BONES = 31; // 31 bones should be enough for most models
 
 uniform mat4 bonesMatrices[MAX_BONES];
 uniform mat4 MVPMatrix;
-uniform mat4 modelMatrix;
 uniform mat3 normalMatrix;
 
 void main()
 {
-    textureCoords = inTextureCoords;
-    normal = normalize(normalMatrix * inNormal);
-
     mat4 boneTransf;
 
     boneTransf[0][0] = bonesMatrices[inBoneIDs[0]][0][0] * inWeights[0];
@@ -44,9 +39,8 @@ void main()
 
     boneTransf[3][3] = bonesMatrices[inBoneIDs[0]][3][3] * inWeights[0];
 
-    vec4 posTransformed = boneTransf * vec4(inPosition, 1.0f);
+    textureCoords = inTextureCoords;
+    normal = normalize(normalMatrix * mat3(boneTransf) * inNormal);
 
-    fragPos = (modelMatrix * posTransformed).xyz;
-
-    gl_Position = MVPMatrix * posTransformed;
+    gl_Position = MVPMatrix * boneTransf * vec4(inPosition, 1.0f);
 }

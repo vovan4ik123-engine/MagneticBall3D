@@ -4,14 +4,12 @@ precision highp float; // highp mediump lowp
 
 in vec2 textureCoords;
 in vec3 normal;
-in vec3 fragPos;
 
 out vec4 outColor;
 
 uniform sampler2D diffuseTexture;
 
 uniform vec3 sunLightDir;
-uniform vec3 cameraPos;
 
 uniform float ambientLight;
 

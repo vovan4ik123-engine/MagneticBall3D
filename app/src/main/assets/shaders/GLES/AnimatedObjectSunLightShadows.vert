@@ -23,9 +23,6 @@ uniform mat3 normalMatrix;
 
 void main()
 {
-    textureCoords = inTextureCoords;
-    normal = normalize(normalMatrix * inNormal);
-
     mat4 boneTransf;
 
     boneTransf[0][0] = bonesMatrices[inBoneIDs[0]][0][0] * inWeights[0];
@@ -45,6 +42,9 @@ void main()
     boneTransf[3][2] = bonesMatrices[inBoneIDs[0]][3][2] * inWeights[0];
 
     boneTransf[3][3] = bonesMatrices[inBoneIDs[0]][3][3] * inWeights[0];
+
+    textureCoords = inTextureCoords;
+    normal = normalize(normalMatrix * mat3(boneTransf) * inNormal);
 
     vec4 posTransformed = boneTransf * vec4(inPosition, 1.0f);
 

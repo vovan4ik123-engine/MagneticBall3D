@@ -20,9 +20,9 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        //loadGarbage();
+        loadGarbage();
         Beryll::LoadingScreen::showProgress(60.0f);
-        //loadEnemies();
+        loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
@@ -227,7 +227,6 @@ namespace MagneticBall3D
 
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
-        m_animatedObjSunLight->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_animatedObjSunLight->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
 
         for(const auto& animObj : m_allAnimatedEnemies)
@@ -235,7 +234,6 @@ namespace MagneticBall3D
             if(animObj->getIsEnabledDraw())
             {
                 modelMatrix = animObj->getModelMatrix();
-                m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
                 m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
                 Beryll::Renderer::drawObject(animObj, modelMatrix, m_animatedObjSunLight);
             }
@@ -244,7 +242,6 @@ namespace MagneticBall3D
         if(m_boss->getIsEnabledDraw())
         {
             modelMatrix = m_boss->getModelMatrix();
-            m_animatedObjSunLight->setMatrix4x4Float("modelMatrix", modelMatrix);
             m_animatedObjSunLight->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
             Beryll::Renderer::drawObject(m_boss, modelMatrix, m_animatedObjSunLight);
 
@@ -266,7 +263,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
