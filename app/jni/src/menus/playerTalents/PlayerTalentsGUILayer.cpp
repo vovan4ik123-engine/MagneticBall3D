@@ -6,10 +6,10 @@ namespace MagneticBall3D
 {
     PlayerTalentsGUILayer::PlayerTalentsGUILayer()
     {
-        m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 90, 30, 10);
+        m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 0.9f, 0.3f, 0.1f);
         m_guiObjects.push_back(m_buttonBack);
 
-        m_talentsText = std::make_shared<Beryll::Text>("Talents", EnAndVars::FontsPath::ROBOTO, 5, 33, 0, 35, 5.5f);
+        m_talentsText = std::make_shared<Beryll::Text>("Talents", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.33f, 0, 0.35f, 0.055f);
         m_guiObjects.push_back(m_talentsText);
     }
 

@@ -7,78 +7,108 @@ namespace MagneticBall3D
 
     }
 
-    Improvements::Improvements(std::shared_ptr<Player> player, const std::vector<ImprovementInfo>& info)
+    Improvements::Improvements(std::shared_ptr<Player> player, const std::vector<ImprovementInfo>& infoVector)
     : m_player(std::move(player))
     {
-        for(const ImprovementInfo& inf : info)
+        for(const ImprovementInfo& info : infoVector)
         {
             // Select only texture path here. Rest is same for all blocks. !!!
-            std::string texturePath;
-            if(inf.type == ImprovementType::PLAYER_MAX_SPEED)
+            std::string mainTexturePath;
+            std::string selectedTexturePath;
+            if(info.type == ImprovementType::PLAYER_MAX_SPEED)
             {
-                texturePath = "GUI/improvements/PLAYER_MAX_SPEED.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_MAX_SPEED.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_MAX_SPEED_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_MAX_SPEED.");
             }
-            else if(inf.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
+            else if(info.type == ImprovementType::PLAYER_ACCELERATE_FASTER)
             {
-                texturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_ACCELERATE_FASTER.");
             }
-            else if(inf.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
+            else if(info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
             {
-                texturePath = "GUI/improvements/PLAYER_MOVE_FASTER_THROUGH_ENEMIES.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_MOVE_FASTER_THROUGH_ENEMIES.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_MOVE_FASTER_THROUGH_ENEMIES_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_MOVE_FASTER_THROUGH_ENEMIES.");
             }
-            else if(inf.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
+            else if(info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
             {
-                texturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_BUILDINGS.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_BUILDINGS.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_BUILDINGS_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_BETTER_CLUTCH_WITH_BUILDINGS.");
             }
-            else if(inf.type == ImprovementType::PLAYER_INCREASE_SIZE)
+            else if(info.type == ImprovementType::PLAYER_INCREASE_SIZE)
             {
-                texturePath = "GUI/improvements/PLAYER_INCREASE_SIZE.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_INCREASE_SIZE.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_INCREASE_SIZE_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_INCREASE_SIZE.");
             }
-            else if(inf.type == ImprovementType::PLAYER_INCREASE_MAX_HP)
+            else if(info.type == ImprovementType::PLAYER_INCREASE_MAX_HP)
             {
-                texturePath = "GUI/improvements/PLAYER_INCREASE_MAX_HP.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_INCREASE_MAX_HP.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_INCREASE_MAX_HP_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_INCREASE_MAX_HP.");
             }
-            else if(inf.type == ImprovementType::PLAYER_REDUCE_DAMAGE)
+            else if(info.type == ImprovementType::PLAYER_REDUCE_DAMAGE)
             {
-                texturePath = "GUI/improvements/PLAYER_REDUCE_DAMAGE.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_REDUCE_DAMAGE.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_REDUCE_DAMAGE_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_REDUCE_DAMAGE.");
             }
-            else if(inf.type == ImprovementType::PLAYER_TAKE_MORE_XP)
+            else if(info.type == ImprovementType::PLAYER_TAKE_MORE_XP)
             {
-                texturePath = "GUI/improvements/PLAYER_TAKE_MORE_XP.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_TAKE_MORE_XP.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_TAKE_MORE_XP_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_TAKE_MORE_XP.");
             }
-            else if(inf.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
+            else if(info.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
             {
-                texturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL.jpg";
+                mainTexturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_HEAL_AT_NEW_LVL.");
             }
-            else if(inf.type == ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP)
+            else if(info.type == ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP)
             {
-                texturePath = "GUI/improvements/GARBAGE_SPAWN_MORE_ON_MAP.jpg";
+                mainTexturePath = "GUI/improvements/GARBAGE_SPAWN_MORE_ON_MAP.jpg";
+                selectedTexturePath = "GUI/improvements/GARBAGE_SPAWN_MORE_ON_MAP_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for GARBAGE_SPAWN_MORE_ON_MAP.");
             }
-            else if(inf.type == ImprovementType::GARBAGE_REDUCE_DAMAGE)
+            else if(info.type == ImprovementType::GARBAGE_REDUCE_DAMAGE)
             {
-                texturePath = "GUI/improvements/GARBAGE_REDUCE_DAMAGE.jpg";
+                mainTexturePath = "GUI/improvements/GARBAGE_REDUCE_DAMAGE.jpg";
+                selectedTexturePath = "GUI/improvements/GARBAGE_REDUCE_DAMAGE_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for GARBAGE_REDUCE_DAMAGE.");
             }
 
-            auto b = std::make_shared<Beryll::ButtonWithTexture>(texturePath.c_str(), "",
+            auto b = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
                                                                  m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
 
+            auto st = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
+
             auto txt = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::ROBOTO, m_progressHeight,
-                                                      m_leftDefault, m_progressTop, 20, 5.5f, false, true);
+                                                      m_leftDefault, m_progressTop, 0.2f, 0.055f, false, true);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
-            ImprovementGUIBlock guiBlock(inf, b, txt);
+            ImprovementGUIBlock guiBlock(info, b, st, txt);
             m_allAvailableGUIBlocks.push_back(guiBlock);
+        }
+
+        const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
+
+        for(int i = 0; i < m_maxImprovementsSelectedCount; ++i)
+        {
+            SelectedImprovement selected;
+            selected.leftPos = 0.022f + (i * 0.12f);
+            selected.topPos = 0.25f;
+            selected.width = 0.115f;
+            selected.height = selected.width / screenAR;
+            selected.texture = std::make_shared<Beryll::GUITexture>("GUI/improvements/SELECTED_DEFAULT.jpg",
+                                                                    selected.leftPos, selected.topPos,
+                                                                    selected.width, selected.height);
+
+            m_selectedImprovements.push_back(selected);
         }
     }
 
@@ -95,84 +125,10 @@ namespace MagneticBall3D
         {
             m_player->handleLevelAchievement();
 
-            // Disable all.
-            for(auto& blockDisable : m_allAvailableGUIBlocks)
-                blockDisable.onScreen = false;
-
-            // Enable some blocks.
             if(m_allAvailableGUIBlocks.empty())
-            {
-                BR_INFO("%s", "m_allAvailableGUIBlocks.empty(). return;");
-                EnAndVars::improvementSystemOnScreen = false;
                 return;
-            }
-            else if(m_allAvailableGUIBlocks.size() == 1)
-            {
-                m_allAvailableGUIBlocks[0].button->leftPos = m_leftPos1BlockButton;
-                m_allAvailableGUIBlocks[0].progressText->leftPos = m_leftPos1BlockText;
-                m_allAvailableGUIBlocks[0].progressText->text = std::to_string(m_allAvailableGUIBlocks[0].info.currentLevel);
-                m_allAvailableGUIBlocks[0].progressText->text += "/";
-                m_allAvailableGUIBlocks[0].progressText->text += std::to_string(m_allAvailableGUIBlocks[0].info.maxLevel);
-                m_allAvailableGUIBlocks[0].onScreen = true;
-            }
-            else if(m_allAvailableGUIBlocks.size() == 2)
-            {
-                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
-                {
-                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos2BlocksButtons[i];
-                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos2BlocksTexts[i];
-                    m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
-                    m_allAvailableGUIBlocks[i].progressText->text += "/";
-                    m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
-                    m_allAvailableGUIBlocks[i].onScreen = true;
-                }
-            }
-            else if(m_allAvailableGUIBlocks.size() == 3)
-            {
-                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
-                {
-                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[i];
-                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[i];
-                    m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
-                    m_allAvailableGUIBlocks[i].progressText->text += "/";
-                    m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
-                    m_allAvailableGUIBlocks[i].onScreen = true;
-                }
-            }
-            else
-            {
-                // Exclude randomly all except 3 blocks.
-                const int indexesCountToExclude = m_allAvailableGUIBlocks.size() - 3;
-                std::vector<int> indexesToExclude;
 
-                while(indexesToExclude.size() < indexesCountToExclude)
-                {
-                    int randomIndex = Beryll::RandomGenerator::getInt(m_allAvailableGUIBlocks.size() - 1);
-
-                    if(std::find(indexesToExclude.begin(), indexesToExclude.end(), randomIndex) == indexesToExclude.end())
-                    {
-                        indexesToExclude.push_back(randomIndex);
-                        BR_INFO("index to exclude %d", randomIndex);
-                    }
-                }
-
-                int indexOnScreen = 0;
-                for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
-                {
-                    if(std::find(indexesToExclude.begin(), indexesToExclude.end(), i) == indexesToExclude.end())
-                    {
-                        // Show block.
-                        m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];
-                        m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[indexOnScreen];
-                        m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
-                        m_allAvailableGUIBlocks[i].progressText->text += "/";
-                        m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
-                        m_allAvailableGUIBlocks[i].onScreen = true;
-
-                        ++indexOnScreen;
-                    }
-                }
-            }
+            selectImprovementsToShow();
 
             BR_INFO("%s", "improvementSystemOnScreen = true");
             EnAndVars::improvementSystemOnScreen = true;
@@ -212,19 +168,72 @@ namespace MagneticBall3D
                     if(block.info.currentLevel >= block.info.maxLevel)
                         idToRemove = block.getID();
 
+                    const auto iter = std::find_if(m_IDsSelected.begin(), m_IDsSelected.end(), [&block](int id) { return block.getID() == id; });
+                    if(iter == m_IDsSelected.end())
+                    {
+                        BR_INFO("%s", "Push new unique improvement ID.");
+                        m_IDsSelected.push_back(block.getID());
+
+                        for(auto& selectedImpr : m_selectedImprovements)
+                        {
+                            if(selectedImpr.defaultTexture)
+                            {
+                                selectedImpr.defaultTexture = false;
+
+                                selectedImpr.texture = block.selectedTexture;
+                                selectedImpr.texture->leftPos = selectedImpr.leftPos;
+                                selectedImpr.texture->topPos = selectedImpr.topPos;
+                                selectedImpr.texture->width = selectedImpr.width;
+                                selectedImpr.texture->height = selectedImpr.height;
+
+                                break;
+                            }
+                        }
+                    }
+
                     break;
                 }
             }
 
             if(idToRemove != -1)
             {
-                auto iter = std::find_if(m_allAvailableGUIBlocks.begin(), m_allAvailableGUIBlocks.end(),
+                const auto iter = std::find_if(m_allAvailableGUIBlocks.begin(), m_allAvailableGUIBlocks.end(),
                                               [idToRemove](const ImprovementGUIBlock& b) { return b.getID() == idToRemove; });
 
                 if(iter != m_allAvailableGUIBlocks.end())
                 {
                     BR_INFO("%s", "Remove from m_allAvailableGUIBlocks.");
                     m_allAvailableGUIBlocks.erase(iter);
+                }
+            }
+
+            if(m_IDsSelected.size() == m_maxImprovementsSelectedCount)
+            {
+                //BR_INFO("%s", "m_IDsSelected.size() == m_maxImprovementsSelectedCount.");
+                // Remove all GUI blocks from m_allAvailableGUIBlocks if theirs id is not in m_IDsSelected.
+                std::vector<int> IDsToRemove;
+
+                for(const auto& block : m_allAvailableGUIBlocks)
+                {
+                    const auto iter = std::find_if(m_IDsSelected.begin(), m_IDsSelected.end(), [&block](const int id) { return block.getID() == id; });
+                    if(iter == m_IDsSelected.end())
+                    {
+                        IDsToRemove.push_back(block.getID());
+                    }
+                }
+
+                //BR_INFO("IDsToRemove.size(): %d", IDsToRemove.size());
+
+                for(const int IDToRemove : IDsToRemove)
+                {
+                    const auto iter = std::find_if(m_allAvailableGUIBlocks.begin(), m_allAvailableGUIBlocks.end(),
+                                             [IDToRemove](const ImprovementGUIBlock& b) { return b.getID() == IDToRemove; });
+
+                    if(iter != m_allAvailableGUIBlocks.end())
+                    {
+                        BR_INFO("%s", "Remove from m_allAvailableGUIBlocks because > than m_maxImprovementsSelectedCount.");
+                        m_allAvailableGUIBlocks.erase(iter);
+                    }
                 }
             }
         }
@@ -238,6 +247,93 @@ namespace MagneticBall3D
             {
                 if(block.onScreen)
                     block.draw();
+            }
+
+            for(const auto& selected : m_selectedImprovements)
+            {
+                selected.texture->draw();
+            }
+        }
+    }
+
+    void Improvements::selectImprovementsToShow()
+    {
+        // Disable all.
+        for(auto& blockDisable : m_allAvailableGUIBlocks)
+            blockDisable.onScreen = false;
+
+        // Enable some blocks.
+        if(m_allAvailableGUIBlocks.empty())
+        {
+            BR_INFO("%s", "m_allAvailableGUIBlocks.empty(). return;");
+            EnAndVars::improvementSystemOnScreen = false;
+            return;
+        }
+        else if(m_allAvailableGUIBlocks.size() == 1)
+        {
+            m_allAvailableGUIBlocks[0].button->leftPos = m_leftPos1BlockButton;
+            m_allAvailableGUIBlocks[0].progressText->leftPos = m_leftPos1BlockText;
+            m_allAvailableGUIBlocks[0].progressText->text = std::to_string(m_allAvailableGUIBlocks[0].info.currentLevel);
+            m_allAvailableGUIBlocks[0].progressText->text += "/";
+            m_allAvailableGUIBlocks[0].progressText->text += std::to_string(m_allAvailableGUIBlocks[0].info.maxLevel);
+            m_allAvailableGUIBlocks[0].onScreen = true;
+        }
+        else if(m_allAvailableGUIBlocks.size() == 2)
+        {
+            for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+            {
+                m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos2BlocksButtons[i];
+                m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos2BlocksTexts[i];
+                m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                m_allAvailableGUIBlocks[i].progressText->text += "/";
+                m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                m_allAvailableGUIBlocks[i].onScreen = true;
+            }
+        }
+        else if(m_allAvailableGUIBlocks.size() == 3)
+        {
+            for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+            {
+                m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[i];
+                m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[i];
+                m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                m_allAvailableGUIBlocks[i].progressText->text += "/";
+                m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                m_allAvailableGUIBlocks[i].onScreen = true;
+            }
+        }
+        else
+        {
+            // Exclude randomly all except 3 blocks.
+            const int indexesCountToExclude = m_allAvailableGUIBlocks.size() - 3;
+            std::vector<int> indexesToExclude;
+
+            while(indexesToExclude.size() < indexesCountToExclude)
+            {
+                int randomIndex = Beryll::RandomGenerator::getInt(m_allAvailableGUIBlocks.size() - 1);
+
+                if(std::find(indexesToExclude.begin(), indexesToExclude.end(), randomIndex) == indexesToExclude.end())
+                {
+                    indexesToExclude.push_back(randomIndex);
+                    BR_INFO("index to exclude %d", randomIndex);
+                }
+            }
+
+            int indexOnScreen = 0;
+            for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
+            {
+                if(std::find(indexesToExclude.begin(), indexesToExclude.end(), i) == indexesToExclude.end())
+                {
+                    // Show block.
+                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];
+                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[indexOnScreen];
+                    m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
+                    m_allAvailableGUIBlocks[i].progressText->text += "/";
+                    m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
+                    m_allAvailableGUIBlocks[i].onScreen = true;
+
+                    ++indexOnScreen;
+                }
             }
         }
     }

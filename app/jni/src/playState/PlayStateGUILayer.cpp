@@ -11,98 +11,98 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::ROBOTO, 2.5f, 0, 0, 50, 3);
+        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::ROBOTO, 0.025f, 0, 0, 0.5f, 0.03f);
         m_guiObjects.push_back(m_statistics1);
-        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::ROBOTO, 2.5f, 0, 2.5f, 70, 3);
+        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::ROBOTO, 0.025f, 0, 0.025f, 0.7f, 0.03f);
         m_guiObjects.push_back(m_statistics2);
-        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::ROBOTO, 2.0f, 0, 4.75f, 45, 2.5f);
+        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::ROBOTO, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
         m_guiObjects.push_back(m_swipeCount);
 
-//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 6, 40, 2, 0, 1);
+//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, );
 //        m_guiObjects.push_back(sliderImpulse);
 //        sliderImpulse->setValue(0.15f);
 //
-//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::ROBOTO, 2, 2, 9, 40, 2, 0, 1);
+//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::ROBOTO, );
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
 
-        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 2, 2, 7, 40, 2, 0, 1);
+        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
         sliderAmbient->setValue(0.7f);
 
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 2, 2, 10, 40, 2, 0, 1);
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, );
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(1.0f);
 //
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 2, 2, 13, 40, 2, 0, 2);
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, );
 //        m_guiObjects.push_back(sliderSpecularPower);
 //        sliderSpecularPower->setValue(1.0f);
 
-        progressBarHP = std::make_shared<Beryll::ProgressBar>(-1, 95.6f, 102, 2.5f);
+        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.02f, 0.956f, 1.04f, 0.025f);
         m_guiObjects.push_back(progressBarHP);
         progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
         progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
         progressBarHP->setProgress(1.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( -1, 97.6f, 102, 3.0f);
+        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.02f, 0.976f, 1.04f, 0.03f);
         m_guiObjects.push_back(progressBarXP);
         progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
         progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);
         progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 2.5f, 100 - 6 * screenAR, 0, 6 * screenAR, 4.5f);
+        buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 0.025f, 0.89f, 0, 0.11f, 0.045f);
         m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 5, 25, 40, 50, 10);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.25f, 0.4f, 0.5f, 0.1f);
         m_guiObjects.push_back(buttonPauseResume);
         buttonPauseResume->disable();
 
         // Resurrect.
-        textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 20, 25, 60, 25);
+        textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureResurrect);
         textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 50, 18, 30, 7);
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.5f, 0.18f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
         // Resurrect no crystals.
-        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 20, 25, 60, 25);
+        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureResurrectNoCrystals);
         textureResurrectNoCrystals->disable();
 
         // Lose.
-        textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg", 20, 25, 60, 25);
+        textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureLose);
         textureLose->disable();
 
         // Kill all enemies before boss.
-        textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 20, 25, 60, 25);
+        textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureKillAll);
         textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
 
         // Win.
-        textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 20, 25, 60, 25);
+        textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureWin);
         textureWin->disable();
-        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonWinOk);
         buttonWinOk->disable();
 
         // Menus before specific bosses.
         // Tank with commander.
-        textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 20, 25, 60, 25);
+        textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureTankWithCommander);
         textureTankWithCommander->disable();
-        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 5, 35, 18, 30, 7);
+        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonTankWithCommanderOk);
         buttonTankWithCommanderOk->disable();
     }

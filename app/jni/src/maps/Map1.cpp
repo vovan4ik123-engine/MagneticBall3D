@@ -93,7 +93,7 @@ namespace MagneticBall3D
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
 
-        std::vector<ImprovementInfo> imprInfo{{ImprovementType::PLAYER_MAX_SPEED,           5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
+        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,           5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
                                                                                                                 {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
                                                                                                                 {[&]() { EnAndVars::playerMaxSpeedXZ += 20.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
                                                                                                                 {[&]() { EnAndVars::playerMaxSpeedXZ += 25.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
@@ -192,7 +192,7 @@ namespace MagneticBall3D
                                               };
 
 
-        m_improvements = Improvements(m_player, imprInfo);
+        m_improvements = Improvements(m_player, imprInfoVector);
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         EnAndVars::mapCurrentNumber = 1;
