@@ -741,6 +741,7 @@ namespace MagneticBall3D
                 --EnAndVars::playerResurrectionAttempts;
                 EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
                 DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+
                 m_player->resurrect();
                 m_gui->hideMenuResurrect();
                 BR_INFO("%s", "m_player->resurrect().");
@@ -748,9 +749,9 @@ namespace MagneticBall3D
                 float mapXLength = glm::distance(m_minX, m_maxX);
                 float mapZLength = glm::distance(m_minZ, m_maxZ);
                 if(mapXLength > mapZLength)
-                    respawnEnemiesAtNewDistance(mapXLength * 0.3f, mapXLength * 0.6f);
+                    respawnEnemiesAtNewDistance(mapXLength * 0.4f, mapXLength * 0.8f);
                 else
-                    respawnEnemiesAtNewDistance(mapZLength * 0.3f, mapZLength * 0.6f);
+                    respawnEnemiesAtNewDistance(mapZLength * 0.4f, mapZLength * 0.8f);
             }
         }
     }

@@ -1,4 +1,5 @@
 #include "Improvements.h"
+#include "DataBaseHelper.h"
 
 namespace MagneticBall3D
 {
@@ -110,6 +111,9 @@ namespace MagneticBall3D
 
             m_selectedImprovements.push_back(selected);
         }
+
+        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.35f, 0.65f, 0.3f, 0.05f);
+        buttonReroll->disable();
     }
 
     Improvements::~Improvements()
@@ -130,6 +134,9 @@ namespace MagneticBall3D
 
             selectImprovementsToShow();
 
+            if(m_rerollAttempts > 0)
+                buttonReroll->enable();
+
             BR_INFO("%s", "improvementSystemOnScreen = true");
             EnAndVars::improvementSystemOnScreen = true;
             Beryll::Physics::disableSimulation();
@@ -138,6 +145,23 @@ namespace MagneticBall3D
 
         if(EnAndVars::improvementSystemOnScreen && m_timeAppearsOnScreen + m_delayBeforeCanBeClicked < Beryll::TimeStep::getSecFromStart())
         {
+            if(buttonReroll->getIsEnabled())
+            {
+                buttonReroll->updateBeforePhysics();
+
+                if(EnAndVars::CurrencyBalance::crystals >= m_rerollPrice && buttonReroll->getIsPressed())
+                {
+                    --m_rerollAttempts;
+                    EnAndVars::CurrencyBalance::crystals -= m_rerollPrice;
+                    DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+
+                    selectImprovementsToShow();
+
+                    if(m_rerollAttempts <= 0)
+                        buttonReroll->disable();
+                }
+            }
+
             int idToRemove = -1;
 
             for(auto& block : m_allAvailableGUIBlocks)
@@ -156,6 +180,8 @@ namespace MagneticBall3D
                     // Disable all.
                     for(auto& blockDisable : m_allAvailableGUIBlocks)
                         blockDisable.onScreen = false;
+
+                    buttonReroll->disable();
 
                     // Handle click.
                     if(block.info.currentLevel < block.info.actions.size())
@@ -253,6 +279,9 @@ namespace MagneticBall3D
             {
                 selected.texture->draw();
             }
+
+            if(buttonReroll->getIsEnabled())
+                buttonReroll->draw();
         }
     }
 
@@ -304,25 +333,23 @@ namespace MagneticBall3D
         }
         else
         {
-            // Exclude randomly all except 3 blocks.
-            const int indexesCountToExclude = m_allAvailableGUIBlocks.size() - 3;
-            std::vector<int> indexesToExclude;
+            std::vector<int> randomIndexes; // Select random 3 blocks.
 
-            while(indexesToExclude.size() < indexesCountToExclude)
+            while(randomIndexes.size() < 3)
             {
                 int randomIndex = Beryll::RandomGenerator::getInt(m_allAvailableGUIBlocks.size() - 1);
 
-                if(std::find(indexesToExclude.begin(), indexesToExclude.end(), randomIndex) == indexesToExclude.end())
+                if(std::find(randomIndexes.begin(), randomIndexes.end(), randomIndex) == randomIndexes.end())
                 {
-                    indexesToExclude.push_back(randomIndex);
-                    BR_INFO("index to exclude %d", randomIndex);
+                    randomIndexes.push_back(randomIndex);
+                    BR_INFO("Random index to show: %d", randomIndex);
                 }
             }
 
             int indexOnScreen = 0;
             for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
             {
-                if(std::find(indexesToExclude.begin(), indexesToExclude.end(), i) == indexesToExclude.end())
+                if(std::find(randomIndexes.begin(), randomIndexes.end(), i) != randomIndexes.end())
                 {
                     // Show block.
                     m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];

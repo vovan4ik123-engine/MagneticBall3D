@@ -98,6 +98,9 @@ namespace MagneticBall3D
         static constexpr int m_maxImprovementsSelectedCount = 8; // Max unique improvements can be selected. Rest should be unavailable after reach limit.
         std::vector<int> m_IDsSelected; // Contains IDs of selected improvements.
         std::shared_ptr<Player> m_player;
+        std::shared_ptr<Beryll::ButtonWithTexture> buttonReroll;
+        int m_rerollAttempts = 2;
+        static constexpr int m_rerollPrice = 5;
 
         // Positions of GUI block in range 0...1.
         // To create blocks.
@@ -105,7 +108,7 @@ namespace MagneticBall3D
         float m_buttonWidth = 0.3f;
         float m_buttonTop = 0.35f;
         float m_buttonHeight = 0.25f;
-        float m_progressTop = 0.55f;
+        float m_progressTop = 0.54f;
         float m_progressHeight = 0.05f;
         // To position before show on screen. Only left-right pos should be changed.
         float m_leftPos1BlockButton = 0.35f;
