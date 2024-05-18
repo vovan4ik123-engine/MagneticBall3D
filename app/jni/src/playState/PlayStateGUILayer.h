@@ -15,7 +15,6 @@ namespace MagneticBall3D
         void draw() override;
 
         void showMenuResurrect();
-        void hideMenuResurrect();
         void showMenuResurrectNoCrystals();
         void showMenuKillAllBeforeBoss();
         void showMenuLose();
@@ -66,6 +65,8 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::GUITexture> textureTankWithCommander;
         std::shared_ptr<Beryll::ButtonWithText> buttonTankWithCommanderOk;
 
+        bool resurrectButtonPressed = false;
+
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
@@ -73,5 +74,9 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
         uint32_t m_statisticsUpdateTime = 0;
+
+        float m_timeAppearsOnScreen = 0.0f;
+        // Because user can accidentally click when he actively swipe and buttons appears on screen.
+        float m_delayBeforeCanBeClicked = 0.7f;
     };
 }

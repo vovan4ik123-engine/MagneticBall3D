@@ -10,9 +10,8 @@ namespace MagneticBall3D
         PISTOL_SHOT,
         PISTOL_HIT,
         GRENADE_LAUNCHER_SHOT,
-        GRENADE_LAUNCHER_HIT,
         TANK_SHOT,
-        TANK_HIT,
+        RIFLE_SHOT,
         SMASH_COP
     };
 
@@ -32,12 +31,8 @@ namespace MagneticBall3D
         static float pistolHitDelay;
         static float grenadeLauncherShotTime;
         static float grenadeLauncherShotDelay;
-        static float grenadeLauncherHitTime;
-        static float grenadeLauncherHitDelay;
         static float tankShotTime;
         static float tankShotDelay;
-        static float tankHitTime;
-        static float tankHitDelay;
 
     private:
         static bool m_loaded;
@@ -57,10 +52,10 @@ namespace MagneticBall3D
         static std::string m_pistolHit4;
 
         static std::string m_grenadeLauncherShot1;
-        static std::string m_grenadeLauncherHit1;
 
         static std::string m_tankShot1;
-        static std::string m_tankHit1;
+
+        static std::string m_rifleShot1;
 
         static std::string m_pop1;
         static std::string m_pop2;

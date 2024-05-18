@@ -16,8 +16,25 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
-        handlePlayerDie();
-        handlePlayerWin();
+        if(m_gui->resurrectButtonPressed)
+        {
+            m_gui->resurrectButtonPressed = false;
+
+            --EnAndVars::playerResurrectionAttempts;
+            EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
+            DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+
+            m_player->resurrect();
+
+            BR_INFO("%s", "m_player->resurrect().");
+
+            float mapXLength = glm::distance(m_minX, m_maxX);
+            float mapZLength = glm::distance(m_minZ, m_maxZ);
+            if(mapXLength > mapZLength)
+                respawnEnemiesAtNewDistance(mapXLength * 0.4f, mapXLength * 0.8f);
+            else
+                respawnEnemiesAtNewDistance(mapZLength * 0.4f, mapZLength * 0.8f);
+        }
 
         if(EnAndVars::gameOnPause)
             return;
@@ -30,6 +47,9 @@ namespace MagneticBall3D
         EnAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
         Sounds::update();
+
+        handlePlayerDie();
+        handlePlayerWin();
 
         handleScreenSwipe();
         updatePathfindingAndSpawnEnemies();
@@ -408,9 +428,9 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Play shot sounds.
-                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
-                       enemy->getUnitType() == UnitType::SNIPER)
+                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL || enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                        Sounds::playSound(SoundType::PISTOL_SHOT);
+                    else if(enemy->getUnitType() == UnitType::SNIPER)
                         Sounds::playSound(SoundType::PISTOL_SHOT);
                     else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                         Sounds::playSound(SoundType::GRENADE_LAUNCHER_SHOT);
@@ -509,10 +529,6 @@ namespace MagneticBall3D
                        enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
                        enemy->getUnitType() == UnitType::SNIPER)
                         Sounds::playSound(SoundType::PISTOL_HIT);
-                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                        Sounds::playSound(SoundType::GRENADE_LAUNCHER_HIT);
-                    else if(enemy->getUnitType() == UnitType::TANK)
-                        Sounds::playSound(SoundType::TANK_HIT);
                 }
             }
         }
@@ -734,24 +750,6 @@ namespace MagneticBall3D
             else // Lose menu.
             {
                 m_gui->showMenuLose();
-            }
-
-            if(m_gui->buttonResurrectOk->getIsPressed())
-            {
-                --EnAndVars::playerResurrectionAttempts;
-                EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
-                DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
-
-                m_player->resurrect();
-                m_gui->hideMenuResurrect();
-                BR_INFO("%s", "m_player->resurrect().");
-
-                float mapXLength = glm::distance(m_minX, m_maxX);
-                float mapZLength = glm::distance(m_minZ, m_maxZ);
-                if(mapXLength > mapZLength)
-                    respawnEnemiesAtNewDistance(mapXLength * 0.4f, mapXLength * 0.8f);
-                else
-                    respawnEnemiesAtNewDistance(mapZLength * 0.4f, mapZLength * 0.8f);
             }
         }
     }

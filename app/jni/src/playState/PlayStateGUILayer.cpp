@@ -52,14 +52,14 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
         // Pause.
         buttonPause = std::make_shared<Beryll::ButtonWithText>("||", EnAndVars::FontsPath::ROBOTO, 0.025f, 0.89f, 0, 0.11f, 0.045f);
         m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.25f, 0.4f, 0.5f, 0.1f);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
         m_guiObjects.push_back(buttonPauseResume);
         buttonPauseResume->disable();
 
@@ -67,7 +67,7 @@ namespace MagneticBall3D
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureResurrect);
         textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.5f, 0.18f, 0.3f, 0.07f);
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.5f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
@@ -85,7 +85,7 @@ namespace MagneticBall3D
         textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureKillAll);
         textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
 
@@ -93,7 +93,7 @@ namespace MagneticBall3D
         textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureWin);
         textureWin->disable();
-        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
+        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonWinOk);
         buttonWinOk->disable();
 
@@ -102,7 +102,7 @@ namespace MagneticBall3D
         textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureTankWithCommander);
         textureTankWithCommander->disable();
-        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.18f, 0.3f, 0.07f);
+        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonTankWithCommanderOk);
         buttonTankWithCommanderOk->disable();
     }
@@ -146,6 +146,10 @@ namespace MagneticBall3D
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
+
+        // Only for buttons.
+        if(m_timeAppearsOnScreen + m_delayBeforeCanBeClicked > Beryll::TimeStep::getSecFromStart())
+            return;
 
         if(buttonPause->getIsPressed() && !EnAndVars::gameOnPause)
         {
@@ -191,6 +195,15 @@ namespace MagneticBall3D
             textureTankWithCommander->disable();
             buttonTankWithCommanderOk->disable();
         }
+        else if(buttonResurrectOk->getIsPressed())
+        {
+            resurrectButtonPressed = true;
+
+            GameStateHelper::resumeGame();
+            textureResurrect->disable();
+            buttonResurrectOk->disable();
+            buttonExit->disable();
+        }
     }
 
     void PlayStateGUILayer::updateAfterPhysics()
@@ -211,55 +224,77 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuResurrect()
     {
+        if(textureResurrect->getIsEnabled())
+            return;
+
         GameStateHelper::pauseGame();
         textureResurrect->enable();
         buttonResurrectOk->enable();
         buttonExit->leftPos = 0.2f;
         buttonExit->enable();
-    }
 
-    void PlayStateGUILayer::hideMenuResurrect()
-    {
-        GameStateHelper::resumeGame();
-        textureResurrect->disable();
-        buttonResurrectOk->disable();
-        buttonExit->disable();
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuResurrectNoCrystals()
     {
+        if(textureResurrectNoCrystals->getIsEnabled())
+            return;
+
         GameStateHelper::pauseGame();
         textureResurrectNoCrystals->enable();
         buttonExit->leftPos = 0.35f;
         buttonExit->enable();
-    }
 
-    void PlayStateGUILayer::showMenuLose()
-    {
-        GameStateHelper::pauseGame();
-        textureLose->enable();
-        buttonExit->leftPos = 0.35f;
-        buttonExit->enable();
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuKillAllBeforeBoss()
     {
+        if(textureKillAll->getIsEnabled())
+            return;
+
         GameStateHelper::pauseGame();
         textureKillAll->enable();
         buttonKillAllOk->enable();
+
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
+    }
+
+    void PlayStateGUILayer::showMenuLose()
+    {
+        if(textureLose->getIsEnabled())
+            return;
+
+        GameStateHelper::pauseGame();
+        textureLose->enable();
+        buttonExit->leftPos = 0.35f;
+        buttonExit->enable();
+
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuWin()
     {
+        if(textureWin->getIsEnabled())
+            return;
+
         GameStateHelper::pauseGame();
         textureWin->enable();
         buttonWinOk->enable();
+
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuBossTankWithCommander()
     {
+        if(textureTankWithCommander->getIsEnabled())
+            return;
+
         GameStateHelper::pauseGame();
         textureTankWithCommander->enable();
         buttonTankWithCommanderOk->enable();
+
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 }
