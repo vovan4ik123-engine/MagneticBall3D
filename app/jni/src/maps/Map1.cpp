@@ -196,8 +196,9 @@ namespace MagneticBall3D
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         EnAndVars::mapCurrentNumber = 1;
+        EnAndVars::garbageCommonSpawnCount = 5;
 
-        Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("Map1Start");
+        SendStatisticsHelper::sendMapStart();
 
         Beryll::LoadingScreen::showProgress(100.0f);
 

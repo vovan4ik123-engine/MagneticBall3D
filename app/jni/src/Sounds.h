@@ -21,6 +21,8 @@ namespace MagneticBall3D
         Sounds() = delete;
         ~Sounds() = delete;
 
+        static void reset();
+
         static void loadSounds();
         static void update();
         static void playSound(SoundType type);

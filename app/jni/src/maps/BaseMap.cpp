@@ -24,6 +24,8 @@ namespace MagneticBall3D
             EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
 
+            SendStatisticsHelper::canSendPlayerDie();
+
             m_player->resurrect();
 
             BR_INFO("%s", "m_player->resurrect().");
@@ -230,8 +232,8 @@ namespace MagneticBall3D
 
             if(m_player->getIsOnBuildingWall())
             {
-                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 6.0f);
-                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.3f;
+                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
+                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.45f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
 
@@ -736,6 +738,8 @@ namespace MagneticBall3D
     {
         if(m_player->getIsDie())
         {
+            SendStatisticsHelper::sendPlayerDie();
+
             if(EnAndVars::playerResurrectionAttempts > 0)
             {
                 if(EnAndVars::CurrencyBalance::crystals >= EnAndVars::playerCostOfResurrectionCrystals)
@@ -750,6 +754,8 @@ namespace MagneticBall3D
             else // Lose menu.
             {
                 m_gui->showMenuLose();
+
+                SendStatisticsHelper::sendMapLose();
             }
         }
     }
@@ -758,6 +764,7 @@ namespace MagneticBall3D
     {
         if(EnAndVars::mapPlayerWin)
         {
+            SendStatisticsHelper::sendMapWin();
             m_gui->showMenuWin();
         }
     }

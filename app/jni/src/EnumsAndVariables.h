@@ -82,7 +82,7 @@ namespace EnAndVars
     constexpr inline float garbageAngularDamping = 0.3f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 780.0f;
+    constexpr inline float garbageMaxGravityPower = 750.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 7.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
@@ -98,7 +98,8 @@ namespace EnAndVars
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
     constexpr inline float garbageCommonSpawnDelayDefault = 1.0f; // Sec.
     inline float garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault; // Sec.
-    constexpr inline int garbageCommonSpawnCount = 2.0f;
+    constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
+    inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -131,7 +132,7 @@ namespace EnAndVars
     inline bool prepareToBossPhase = false;
     inline bool bossPhase = false;
 
-    inline void resetAllVariables()
+    inline void reset()
     {
         // Camera.
         cameraRotateTime = 0.0f; // Sec.
@@ -156,6 +157,7 @@ namespace EnAndVars
         garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
         garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
         garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault;
+        garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
 
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;

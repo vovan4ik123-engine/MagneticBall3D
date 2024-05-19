@@ -8,6 +8,7 @@
 #include "garbage/Garbage.h"
 #include "enemies/BaseEnemy.h"
 #include "bosses/BaseBoss.h"
+#include "SendStatisticsHelper.h"
 
 namespace MagneticBall3D
 {

@@ -41,6 +41,14 @@ namespace MagneticBall3D
     std::string Sounds::m_pop7 = "sounds/Pop7.wav";
     std::string Sounds::m_pop8 = "sounds/Pop8.wav";
 
+    void Sounds::reset()
+    {
+        pistolShotTime = 0.0f;
+        pistolHitTime = 0.0f;
+        grenadeLauncherShotTime = 0.0f;
+        tankShotTime = 0.0f;
+    }
+
     void Sounds::loadSounds()
     {
         if(m_loaded)  { return; }
