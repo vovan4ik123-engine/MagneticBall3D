@@ -409,21 +409,146 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        for(int i = 0; i < 8; ++i)
+        for(int i = 0; i < 5; ++i) // 6 * 34 = 204
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
                                                                                                 EnAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
                                                                                                 Beryll::CollisionGroups::GARBAGE,
-                                                                                           Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                           Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                           Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                                 Beryll::SceneObjectGroups::GARBAGE);
 
             for(const auto& obj : garbageCommon)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COMMON, 30);
+                m_allGarbage.back().disableGarbage();
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        {
+            const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopPistol_4items.fbx",
+                                                                                                EnAndVars::garbageMass,
+                                                                                                false,
+                                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                                Beryll::CollisionGroups::GARBAGE,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageCopPistol)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 30);
+                m_allGarbage.back().disableGarbage();
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 5 = 25
+        {
+            const auto garbageCopShield = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopShield_5items.fbx",
+                                                                                                   EnAndVars::garbageMass,
+                                                                                                   false,
+                                                                                                   Beryll::CollisionFlags::DYNAMIC,
+                                                                                                   Beryll::CollisionGroups::GARBAGE,
+                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageCopShield)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_SHIELD, 30);
+                m_allGarbage.back().disableGarbage();
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        {
+            const auto garbageCopGrenade = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopGrenade_3items.fbx",
+                                                                                                   EnAndVars::garbageMass,
+                                                                                                   false,
+                                                                                                   Beryll::CollisionFlags::DYNAMIC,
+                                                                                                   Beryll::CollisionGroups::GARBAGE,
+                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageCopGrenade)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_GRENADE_LAUNCHER, 30);
+                m_allGarbage.back().disableGarbage();
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 2 = 10
+        {
+            const auto garbageCopSniper = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopSniper_2items.fbx",
+                                                                                                   EnAndVars::garbageMass,
+                                                                                                   false,
+                                                                                                   Beryll::CollisionFlags::DYNAMIC,
+                                                                                                   Beryll::CollisionGroups::GARBAGE,
+                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageCopSniper)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::SNIPER, 30);
+                m_allGarbage.back().disableGarbage();
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        {
+            const auto garbageTank = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageTank_3items.fbx",
+                                                                                                   EnAndVars::garbageMass,
+                                                                                                   false,
+                                                                                                   Beryll::CollisionFlags::DYNAMIC,
+                                                                                                   Beryll::CollisionGroups::GARBAGE,
+                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageTank)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::TANK, 30);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);

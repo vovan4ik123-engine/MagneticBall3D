@@ -578,33 +578,31 @@ namespace MagneticBall3D
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
 
-                // Spawn one garbage.
-                spawnGarbage(1, GarbageType::COMMON, enemy->getOrigin());
-
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
-                    // Spawn garbage COP_WITH_PISTOL + PISTOL.
-
+                    spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
                     Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
-                    // Spawn garbage COP_WITH_GRENADE_LAUNCHER + GRENADE_LAUNCHER.
-
+                    spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
                     Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
+                    spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
                     Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::SNIPER)
                 {
+                    spawnGarbage(1, GarbageType::SNIPER, enemy->getOrigin());
                     enemy->freeSniperPosition();
                     Sounds::playSound(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::TANK)
                 {
-                    Sounds::playSound(SoundType::SMASH_COP); // Tank.
+                    spawnGarbage(1, GarbageType::TANK, enemy->getOrigin());
+                    Sounds::playSound(SoundType::SMASH_COP);
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());

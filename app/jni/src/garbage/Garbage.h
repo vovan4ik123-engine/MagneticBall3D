@@ -12,15 +12,10 @@ namespace MagneticBall3D
         COMMON,
         // Appears after killing specific type of enemy.
         COP_WITH_PISTOL,
-        PISTOL,
-        COP_WITH_PISTOL_SHIELD,
-        SHIELD,
+        COP_WITH_SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
-        GRENADE_LAUNCHER,
         SNIPER,
-        SNIPER_GUN,
-        TANK_TRACK,
-        TANK_TURRET
+        TANK
     };
 
     class Garbage
