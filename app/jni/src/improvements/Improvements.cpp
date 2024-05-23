@@ -28,17 +28,17 @@ namespace MagneticBall3D
                 selectedTexturePath = "GUI/improvements/PLAYER_ACCELERATE_FASTER_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_ACCELERATE_FASTER.");
             }
-            else if(info.type == ImprovementType::PLAYER_MOVE_FASTER_THROUGH_ENEMIES)
+            else if(info.type == ImprovementType::PLAYER_PUSH_ENEMIES_BETTER)
             {
-                mainTexturePath = "GUI/improvements/PLAYER_MOVE_FASTER_THROUGH_ENEMIES.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_MOVE_FASTER_THROUGH_ENEMIES_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_MOVE_FASTER_THROUGH_ENEMIES.");
+                mainTexturePath = "GUI/improvements/PLAYER_PUSH_ENEMIES_BETTER.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_PUSH_ENEMIES_BETTER_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_PUSH_ENEMIES_BETTER.");
             }
-            else if(info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_BUILDINGS)
+            else if(info.type == ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS)
             {
-                mainTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_BUILDINGS.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_BUILDINGS_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_BETTER_CLUTCH_WITH_BUILDINGS.");
+                mainTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_WALLS.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_WALLS_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_BETTER_CLUTCH_WITH_WALLS.");
             }
             else if(info.type == ImprovementType::PLAYER_INCREASE_SIZE)
             {
@@ -52,17 +52,17 @@ namespace MagneticBall3D
                 selectedTexturePath = "GUI/improvements/PLAYER_INCREASE_MAX_HP_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_INCREASE_MAX_HP.");
             }
-            else if(info.type == ImprovementType::PLAYER_REDUCE_DAMAGE)
+            else if(info.type == ImprovementType::PLAYER_TAKE_LESS_DAMAGE)
             {
-                mainTexturePath = "GUI/improvements/PLAYER_REDUCE_DAMAGE.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_REDUCE_DAMAGE_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_REDUCE_DAMAGE.");
+                mainTexturePath = "GUI/improvements/PLAYER_TAKE_LESS_DAMAGE.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_TAKE_LESS_DAMAGE_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_TAKE_LESS_DAMAGE.");
             }
-            else if(info.type == ImprovementType::PLAYER_TAKE_MORE_XP)
+            else if(info.type == ImprovementType::PLAYER_EXP_GAIN)
             {
-                mainTexturePath = "GUI/improvements/PLAYER_TAKE_MORE_XP.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_TAKE_MORE_XP_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_TAKE_MORE_XP.");
+                mainTexturePath = "GUI/improvements/PLAYER_EXP_GAIN.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_EXP_GAIN_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_EXP_GAIN.");
             }
             else if(info.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
             {
@@ -76,11 +76,11 @@ namespace MagneticBall3D
                 selectedTexturePath = "GUI/improvements/GARBAGE_SPAWN_MORE_ON_MAP_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for GARBAGE_SPAWN_MORE_ON_MAP.");
             }
-            else if(info.type == ImprovementType::GARBAGE_REDUCE_DAMAGE)
+            else if(info.type == ImprovementType::GARBAGE_TAKE_LESS_DAMAGE)
             {
-                mainTexturePath = "GUI/improvements/GARBAGE_REDUCE_DAMAGE.jpg";
-                selectedTexturePath = "GUI/improvements/GARBAGE_REDUCE_DAMAGE_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for GARBAGE_REDUCE_DAMAGE.");
+                mainTexturePath = "GUI/improvements/GARBAGE_TAKE_LESS_DAMAGE.jpg";
+                selectedTexturePath = "GUI/improvements/GARBAGE_TAKE_LESS_DAMAGE_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for GARBAGE_TAKE_LESS_DAMAGE.");
             }
 
             auto b = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
