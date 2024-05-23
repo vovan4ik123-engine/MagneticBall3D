@@ -30,5 +30,9 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::CheckBox> m_120FPS;
         std::shared_ptr<Beryll::CheckBox> m_250FPS;
         std::vector<std::shared_ptr<Beryll::CheckBox>> m_FPSCheckBoxes;
+
+        // Background music.
+        std::shared_ptr<Beryll::Text> m_musicText;
+        std::shared_ptr<Beryll::CheckBox> m_musicCheckBox;
     };
 }

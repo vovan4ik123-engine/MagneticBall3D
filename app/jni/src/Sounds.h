@@ -12,7 +12,10 @@ namespace MagneticBall3D
         GRENADE_LAUNCHER_SHOT,
         TANK_SHOT,
         RIFLE_SHOT,
-        SMASH_COP
+        SMASH_COP,
+
+
+        BACKGROUND_MUSIC_1
     };
 
     class Sounds
@@ -25,7 +28,9 @@ namespace MagneticBall3D
 
         static void loadSounds();
         static void update();
-        static void playSound(SoundType type);
+        static void playSoundEffect(SoundType type);
+        static void startBackgroundMusic(SoundType type);
+        static void stopBackgroundMusic();
 
         static float pistolShotTime;
         static float pistolShotDelay;
@@ -67,5 +72,8 @@ namespace MagneticBall3D
         static std::string m_pop6;
         static std::string m_pop7;
         static std::string m_pop8;
+
+        // Music.
+        static std::string m_backgroundMusic1;
     };
 }

@@ -202,13 +202,15 @@ namespace MagneticBall3D
 
         Beryll::LoadingScreen::showProgress(100.0f);
 
+        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");
     }
 
     Map1::~Map1()
     {
-
+        Sounds::stopBackgroundMusic();
     }
 
     void Map1::draw()
@@ -226,9 +228,14 @@ namespace MagneticBall3D
         // 2. Draw scene.
         glm::mat4 modelMatrix{1.0f};
 
+        if(EnAndVars::gameOnPause || EnAndVars::improvementSystemOnScreen)
+            m_ambientLight = 0.25f;
+        else
+            m_ambientLight = 0.7f;
+
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);
-        m_animatedObjSunLight->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
+        m_animatedObjSunLight->set1Float("ambientLight", m_ambientLight);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
@@ -263,7 +270,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_simpleObjSunLightShadows->set1Float("ambientLight", m_gui->sliderAmbient->getValue());
+        m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
@@ -692,7 +699,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 15 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -714,7 +721,7 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 1.0f;
 
-                if(copWithPistolCount < 75 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 50 && enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -1214,7 +1221,7 @@ namespace MagneticBall3D
                 emitParticlesExplosion(rayAttack.hitPoint, 6, 4.0f, 4.0f,
                                        glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 1.2f);
 
-                Sounds::playSound(SoundType::GRENADE_LAUNCHER_SHOT);
+                Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
 
                 if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
                 {

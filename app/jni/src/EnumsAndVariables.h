@@ -19,6 +19,7 @@ namespace EnAndVars
     struct SettingsMenu
     {
         static inline int FPSLimit = 60;
+        static inline bool backgroundMusic = true;
     };
 
     struct CurrencyBalance

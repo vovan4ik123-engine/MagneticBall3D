@@ -33,6 +33,7 @@ add_library(main SHARED main.cpp
                         garbage/Garbage.cpp
                         pathfinding/AStar.cpp
                         improvements/Improvements.cpp
+                        energySystem/EnergySystem.cpp
 
                         # Enemies.
                         enemies/BaseEnemy.cpp

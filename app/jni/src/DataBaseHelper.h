@@ -17,7 +17,7 @@ namespace DataBaseHelper
     // -----------------------------------------------------------------------------------------------------------------------------------------------
     // Columns:     ID                  |   ID                  |
     //              FPSLimit            |   Crystals            |
-    //
+    //              BackgroundMusic     |
     //
 
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
@@ -30,16 +30,19 @@ namespace DataBaseHelper
     const inline std::string createTableSettings = "CREATE TABLE IF NOT EXISTS "
                                                    "Settings( "
                                                    "ID INTEGER PRIMARY KEY NOT NULL, "
-                                                   "FPSLimit INTEGER);";
+                                                   "FPSLimit INTEGER, "
+                                                   "BackgroundMusic INTEGER "
+                                                   ");";
 
-    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit) VALUES(NULL, NULL);";
-    const inline std::string selectSettingsAll = "SELECT * FROM Settings;";
-    const inline std::string selectSettingsFPSLimit = "SELECT FPSLimit FROM Settings LIMIT 1;";
+    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit, BackgroundMusic) VALUES(NULL, NULL, NULL);";
+    const inline std::string selectSettingsAll = "SELECT * FROM Settings LIMIT 1;";
     const inline std::string updateSettingsFPSLimit = "UPDATE Settings SET FPSLimit = :FPS;";
+    const inline std::string updateSettingsBackgroundMusic = "UPDATE Settings SET BackgroundMusic = :playMusic;";
 
     bool getIsSettingsTableEmpty();
     void readSettings();
     void storeSettingsFPSLimit(int value);
+    void storeSettingsBackgroundMusic(bool playMusic);
 
     // CurrencyBalance.
     const inline std::string createTableCurrencyBalance = "CREATE TABLE IF NOT EXISTS "

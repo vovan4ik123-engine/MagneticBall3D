@@ -101,7 +101,8 @@ namespace MagneticBall3D
         for(int i = 0; i < m_maxImprovementsSelectedCount; ++i)
         {
             SelectedImprovement selected;
-            selected.leftPos = 0.022f + (i * 0.12f);
+            // selected.leftPos = 0.022f + (i * 0.12f); // if m_maxImprovementsSelectedCount = 8
+            selected.leftPos = 0.142f + (i * 0.12f); // if m_maxImprovementsSelectedCount = 6
             selected.topPos = 0.25f;
             selected.width = 0.115f;
             selected.height = selected.width / screenAR;

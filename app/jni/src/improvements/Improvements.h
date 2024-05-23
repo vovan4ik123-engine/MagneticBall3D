@@ -95,7 +95,7 @@ namespace MagneticBall3D
 
         std::vector<ImprovementGUIBlock> m_allAvailableGUIBlocks;
         std::vector<SelectedImprovement> m_selectedImprovements;
-        static constexpr int m_maxImprovementsSelectedCount = 8; // Max unique improvements can be selected. Rest should be unavailable after reach limit.
+        static constexpr int m_maxImprovementsSelectedCount = 6; // Max unique improvements can be selected. Rest should be unavailable after reach limit.
         std::vector<int> m_IDsSelected; // Contains IDs of selected improvements.
         std::shared_ptr<Player> m_player;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonReroll;

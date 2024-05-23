@@ -62,7 +62,7 @@ namespace MagneticBall3D
 
     void BaseMap::updateAfterPhysics()
     {
-        if(EnAndVars::improvementSystemOnScreen || EnAndVars::gameOnPause)
+        if(EnAndVars::gameOnPause || EnAndVars::improvementSystemOnScreen)
             return;
 
         const float distanceToEnableObjects = m_cameraDistance * 1.2f;
@@ -170,7 +170,7 @@ namespace MagneticBall3D
             ++EnAndVars::mapSwipeCount;
 
             if(m_player->getMoveSpeed() > EnAndVars::playerSpeedToPlayEngineSound)
-                Sounds::playSound(SoundType::SWIPE_ENGINE);
+                Sounds::playSoundEffect(SoundType::SWIPE_ENGINE);
 
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
@@ -431,13 +431,13 @@ namespace MagneticBall3D
                 {
                     // Play shot sounds.
                     if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL || enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
-                        Sounds::playSound(SoundType::PISTOL_SHOT);
+                        Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
                     else if(enemy->getUnitType() == UnitType::SNIPER)
-                        Sounds::playSound(SoundType::PISTOL_SHOT);
+                        Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
                     else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                        Sounds::playSound(SoundType::GRENADE_LAUNCHER_SHOT);
+                        Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
                     else if(enemy->getUnitType() == UnitType::TANK)
-                        Sounds::playSound(SoundType::TANK_SHOT);
+                        Sounds::playSoundEffect(SoundType::TANK_SHOT);
 
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
@@ -530,7 +530,7 @@ namespace MagneticBall3D
                     if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
                        enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
                        enemy->getUnitType() == UnitType::SNIPER)
-                        Sounds::playSound(SoundType::PISTOL_HIT);
+                        Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
             }
         }
@@ -581,28 +581,28 @@ namespace MagneticBall3D
                 if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
-                    Sounds::playSound(SoundType::SMASH_COP);
+                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
-                    Sounds::playSound(SoundType::SMASH_COP);
+                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
-                    Sounds::playSound(SoundType::SMASH_COP);
+                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::SNIPER)
                 {
                     spawnGarbage(1, GarbageType::SNIPER, enemy->getOrigin());
                     enemy->freeSniperPosition();
-                    Sounds::playSound(SoundType::SMASH_COP);
+                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->getUnitType() == UnitType::TANK)
                 {
                     spawnGarbage(1, GarbageType::TANK, enemy->getOrigin());
-                    Sounds::playSound(SoundType::SMASH_COP);
+                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());

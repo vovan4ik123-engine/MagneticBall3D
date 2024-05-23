@@ -41,12 +41,16 @@ namespace MagneticBall3D
     std::string Sounds::m_pop7 = "sounds/Pop7.wav";
     std::string Sounds::m_pop8 = "sounds/Pop8.wav";
 
+    std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
+
     void Sounds::reset()
     {
         pistolShotTime = 0.0f;
         pistolHitTime = 0.0f;
         grenadeLauncherShotTime = 0.0f;
         tankShotTime = 0.0f;
+
+        stopBackgroundMusic();
     }
 
     void Sounds::loadSounds()
@@ -69,7 +73,7 @@ namespace MagneticBall3D
 
         Beryll::SoundsManager::loadWAV(m_tankShot1, 20);
 
-        //Beryll::SoundsManager::loadWAV(m_rifleShot1, 30);
+        Beryll::SoundsManager::loadWAV(m_rifleShot1, 25);
 
         Beryll::SoundsManager::loadWAV(m_pop1, 80);
         Beryll::SoundsManager::loadWAV(m_pop2, 80);
@@ -80,6 +84,8 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_pop7, 80);
         Beryll::SoundsManager::loadWAV(m_pop8, 80);
 
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 30);
+
         m_loaded = true;
     }
 
@@ -89,7 +95,7 @@ namespace MagneticBall3D
         //BR_INFO("m_numberOfCurrentlyPlayingWAV: %d", m_numberOfCurrentlyPlayingWAV);
     }
 
-    void Sounds::playSound(SoundType type)
+    void Sounds::playSoundEffect(SoundType type)
     {
         if(m_numberOfCurrentlyPlayingWAV >= 8)
             return;
@@ -185,7 +191,23 @@ namespace MagneticBall3D
         }
         else if(type == SoundType::RIFLE_SHOT)
         {
-            //Beryll::SoundsManager::playWAV(m_rifleShot1);
+            Beryll::SoundsManager::playWAV(m_rifleShot1);
         }
+    }
+
+    void Sounds::startBackgroundMusic(SoundType type)
+    {
+        if(!EnAndVars::SettingsMenu::backgroundMusic)
+            return;
+
+        if(type == SoundType::BACKGROUND_MUSIC_1)
+        {
+            Beryll::SoundsManager::startBackgroundMP3(m_backgroundMusic1, true);
+        }
+    }
+
+    void Sounds::stopBackgroundMusic()
+    {
+        Beryll::SoundsManager::stopBackgroundMP3();
     }
 }

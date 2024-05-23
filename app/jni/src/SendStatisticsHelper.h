@@ -13,7 +13,6 @@ namespace MagneticBall3D
         static void canSendPlayerDie();
 
         static void sendMapStart();
-        static void canSendMapStart();
 
         static void sendMapWin();
         static void canSendMapWin();
