@@ -35,7 +35,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::ButtonWithText> buttonExit;
 
         // Pause.
-        std::shared_ptr<Beryll::ButtonWithText> buttonPause;
+        std::shared_ptr<Beryll::ButtonWithTexture> buttonPause;
         std::shared_ptr<Beryll::ButtonWithText> buttonPauseResume;
         // + buttonExit.
 
@@ -74,6 +74,8 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
         uint32_t m_statisticsUpdateTime = 0;
+
+        std::shared_ptr<Beryll::Text> m_releaseTimer;
 
         float m_timeAppearsOnScreen = 0.0f;
         // Because user can accidentally click when he actively swipe and buttons appears on screen.

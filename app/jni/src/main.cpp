@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
     DataBaseHelper::prepareDatabase();
 
-    //Beryll::GameLoop::setFPSLimit(EnumsAndVariables::SettingsMenu::FPSLimit);
+    Beryll::GameLoop::setFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
     //Beryll::GameLoop::setFPSLimit(15.0f);
 
     //Beryll::Camera::setCameraFov(45.0f);
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
 
-    Beryll::LoadingScreen::setTextures({"loadingScreen/M1Screen.jpg"});
+    Beryll::LoadingScreen::setTextures({"loadingScreen/Map1Screen.jpg"});
 
     Beryll::Renderer::enableFaceCulling();
 

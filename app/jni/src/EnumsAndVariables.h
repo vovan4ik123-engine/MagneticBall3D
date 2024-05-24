@@ -24,7 +24,7 @@ namespace EnAndVars
 
     struct CurrencyBalance
     {
-        static inline int crystals = 70;
+        static inline int crystals = 900;
     };
 
     // Camera.

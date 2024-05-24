@@ -430,7 +430,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCommon)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -455,7 +455,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopPistol)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -480,7 +480,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopShield)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_SHIELD, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_SHIELD, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -491,7 +491,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
         {
             const auto garbageCopGrenade = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopGrenade_3items.fbx",
                                                                                                    EnAndVars::garbageMass,
@@ -505,7 +505,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopGrenade)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_GRENADE_LAUNCHER, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_GRENADE_LAUNCHER, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -530,7 +530,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopSniper)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::SNIPER, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::SNIPER, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -555,7 +555,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageTank)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::TANK, 30);
+                m_allGarbage.emplace_back(obj, GarbageType::TANK, 40);
                 m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);

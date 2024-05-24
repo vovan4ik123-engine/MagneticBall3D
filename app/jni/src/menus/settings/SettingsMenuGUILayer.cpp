@@ -13,7 +13,7 @@ namespace MagneticBall3D
         m_settingsText = std::make_shared<Beryll::Text>("Settings", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.323f, 0, 0.38f, 0.055f);
         m_guiObjects.push_back(m_settingsText);
 
-        m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.01f, 0.07f, 0.3f, 0.035f);
+        m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.01f, 0.07f, 0.245f, 0.035f);
         m_guiObjects.push_back(m_FPSLimitText);
 
         m_30FPS = std::make_shared<Beryll::CheckBox>("30 ", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.26f, 0.07f);
@@ -40,7 +40,7 @@ namespace MagneticBall3D
         if(EnAndVars::SettingsMenu::FPSLimit == 250)
             recheckFPSCheckBoxes(m_250FPS->getID());
 
-        m_musicText = std::make_shared<Beryll::Text>("Background music:", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.01f, 0.12f, 0.5f, 0.035f);
+        m_musicText = std::make_shared<Beryll::Text>("Background music:", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.01f, 0.12f, 0.49f, 0.035f);
         m_guiObjects.push_back(m_musicText);
 
         m_musicCheckBox = std::make_shared<Beryll::CheckBox>("", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.5f, 0.12f);

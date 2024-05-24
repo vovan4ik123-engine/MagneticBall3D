@@ -78,11 +78,11 @@ namespace MagneticBall3D
             }
 
             if(m_isOnBuildingWall &&
-               m_lastTimeOnGround + 0.8f < EnAndVars::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 0.8f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
+               m_lastTimeOnGround + 1.09f < EnAndVars::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 1.09f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
             {
                 m_obj->resetVelocities();
-                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 200.0f);
+                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
             }
 
             m_isOnGround = false;
