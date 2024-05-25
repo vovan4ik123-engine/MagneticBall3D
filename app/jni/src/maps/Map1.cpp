@@ -202,7 +202,10 @@ namespace MagneticBall3D
 
         Beryll::LoadingScreen::showProgress(100.0f);
 
-        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+        if(Beryll::RandomGenerator::getFloat() < 0.5f)
+            Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+        else
+            Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");

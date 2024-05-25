@@ -15,7 +15,8 @@ namespace MagneticBall3D
         SMASH_COP,
 
 
-        BACKGROUND_MUSIC_1
+        BACKGROUND_MUSIC_1,
+        BACKGROUND_MUSIC_2
     };
 
     class Sounds
@@ -75,5 +76,6 @@ namespace MagneticBall3D
 
         // Music.
         static std::string m_backgroundMusic1;
+        static std::string m_backgroundMusic2;
     };
 }

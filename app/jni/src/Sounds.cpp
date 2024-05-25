@@ -42,6 +42,7 @@ namespace MagneticBall3D
     std::string Sounds::m_pop8 = "sounds/Pop8.wav";
 
     std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
+    std::string Sounds::m_backgroundMusic2 = "sounds/BackgroundMusic2.mp3";
 
     void Sounds::reset()
     {
@@ -60,14 +61,14 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_swipeEngine1, 40);
         Beryll::SoundsManager::loadWAV(m_swipeEngine2, 40);
 
-        Beryll::SoundsManager::loadWAV(m_pistolShot1, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolShot2, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolShot3, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolShot4, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolHit1, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolHit2, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolHit3, 10);
-        Beryll::SoundsManager::loadWAV(m_pistolHit4, 10);
+        Beryll::SoundsManager::loadWAV(m_pistolShot1, 11);
+        Beryll::SoundsManager::loadWAV(m_pistolShot2, 11);
+        Beryll::SoundsManager::loadWAV(m_pistolShot3, 11);
+        Beryll::SoundsManager::loadWAV(m_pistolShot4, 11);
+        Beryll::SoundsManager::loadWAV(m_pistolHit1, 14);
+        Beryll::SoundsManager::loadWAV(m_pistolHit2, 14);
+        Beryll::SoundsManager::loadWAV(m_pistolHit3, 14);
+        Beryll::SoundsManager::loadWAV(m_pistolHit4, 14);
 
         Beryll::SoundsManager::loadWAV(m_grenadeLauncherShot1, 15);
 
@@ -84,7 +85,8 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_pop7, 80);
         Beryll::SoundsManager::loadWAV(m_pop8, 80);
 
-        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 30);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 18);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 18);
 
         m_loaded = true;
     }
@@ -203,6 +205,10 @@ namespace MagneticBall3D
         if(type == SoundType::BACKGROUND_MUSIC_1)
         {
             Beryll::SoundsManager::startBackgroundMP3(m_backgroundMusic1, true);
+        }
+        else if(type == SoundType::BACKGROUND_MUSIC_2)
+        {
+            Beryll::SoundsManager::startBackgroundMP3(m_backgroundMusic2, true);
         }
     }
 

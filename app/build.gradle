@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services' // Add the Google services Gradle plugin
+apply plugin: 'com.google.gms.google-services' // Add the Google services Gradle plugin.
 
 android {
     namespace "com.magneticBall3D.app"
