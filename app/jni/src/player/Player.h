@@ -34,6 +34,9 @@ namespace MagneticBall3D
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
+        bool getIsFalling() { return m_falling; }
+        bool getIsTouchGroundAfterFall() { return m_touchGroundAfterFall; }
+        float getFallDistance() { return m_fallDistance; }
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
@@ -81,6 +84,12 @@ namespace MagneticBall3D
         bool m_isOnAir = false;
         bool m_isOnJumpPad = false;
         int m_collidingBuildingID = 0;
+        float m_previousYPos = 0.0f;
+        bool m_startFalling = false;
+        float m_startFallingHeight = 0.0f;
+        bool m_falling = false;
+        float m_fallDistance = 0.0f;
+        bool m_touchGroundAfterFall = false;
 
         // Meteor.
         bool m_isMeteor = false;

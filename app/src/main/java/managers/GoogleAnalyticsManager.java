@@ -24,7 +24,7 @@ public class GoogleAnalyticsManager {
     }
 
     public static void sendEventStringParam(String eventType, String paramName, String paramValue) {
-        // Example: sendEventStringParam("levelStart", "levelName", "first");
+        // Example: sendEventStringParam("level_start", "level_name", "first");
         Log.v("GoogleAnalyticsManager", "sendEventStringParam(): " + eventType + " " + paramName + " " + paramValue);
 
         Bundle bundle = new Bundle();
@@ -33,12 +33,12 @@ public class GoogleAnalyticsManager {
         firebaseAnalytics.logEvent(eventType, bundle);
     }
 
-    public static void sendEventFloatParam(String eventType, String paramName, float paramValue) {
-        // Example: sendEventFloatParam("playerDie", "second", 145);
-        Log.v("GoogleAnalyticsManager", "sendEventFloatParam(): " + eventType + " " + paramName + " " + paramValue);
+    public static void sendEventIntParam(String eventType, String paramName, int paramValue) {
+        // Example: sendEventIntParam("player_die", "die_time", 145);
+        Log.v("GoogleAnalyticsManager", "sendEventIntParam(): " + eventType + " " + paramName + " " + paramValue);
 
         Bundle bundle = new Bundle();
-        bundle.putFloat(paramName, paramValue);
+        bundle.putInt(paramName, paramValue);
 
         firebaseAnalytics.logEvent(eventType, bundle);
     }

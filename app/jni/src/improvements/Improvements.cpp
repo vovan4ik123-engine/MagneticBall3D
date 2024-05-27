@@ -70,6 +70,12 @@ namespace MagneticBall3D
                 selectedTexturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_HEAL_AT_NEW_LVL.");
             }
+            else if(info.type == ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL)
+            {
+                mainTexturePath = "GUI/improvements/PLAYER_DAMAGE_GROUND_AFTER_FALL.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_DAMAGE_GROUND_AFTER_FALL_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_DAMAGE_GROUND_AFTER_FALL.");
+            }
             else if(info.type == ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP)
             {
                 mainTexturePath = "GUI/improvements/GARBAGE_SPAWN_MORE_ON_MAP.jpg";

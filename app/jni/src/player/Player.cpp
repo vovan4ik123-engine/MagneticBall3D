@@ -24,7 +24,15 @@ namespace MagneticBall3D
         // Update speed.
         updateSpeed();
 
-        // Update gravity.
+        // Update collisions.
+        m_isOnGround = false;
+        m_isOnBuildingRoof = false;
+        m_isOnBuildingWall = false;
+        m_isOnAir = false;
+        m_isOnJumpPad = false;
+        m_touchGroundAfterFall = false;
+        m_fallDistance = 0.0f;
+
         if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
         {
             if(m_lastTimeOnJumpPad + 1.0f < EnAndVars::mapPlayTimeSec)
@@ -32,15 +40,7 @@ namespace MagneticBall3D
                 m_obj->setGravity(EnAndVars::playerGravityOnAir);
                 m_isOnJumpPad = true;
             }
-            else
-            {
-                m_isOnJumpPad = false;
-            }
 
-            m_isOnGround = false;
-            m_isOnBuildingRoof = false;
-            m_isOnBuildingWall = false;
-            m_isOnAir = false;
             m_lastTimeOnJumpPad = EnAndVars::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
@@ -62,7 +62,6 @@ namespace MagneticBall3D
 
             if(collisionWithWall)
             {
-                m_isOnBuildingRoof = false;
                 m_isOnBuildingWall = true;
 
                 m_obj->setGravity(EnAndVars::playerGravityOnBuildingWall);
@@ -71,7 +70,6 @@ namespace MagneticBall3D
             else
             {
                 m_isOnBuildingRoof = true;
-                m_isOnBuildingWall = false;
 
                 m_obj->setGravity(EnAndVars::playerGravityOnBuildingRoof);
                 m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
@@ -85,24 +83,20 @@ namespace MagneticBall3D
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
             }
 
-            m_isOnGround = false;
-            m_isOnAir = false;
-            m_isOnJumpPad = false;
             m_lastTimeOnBuilding = EnAndVars::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
-            if(!m_isOnGround)
+            m_obj->setGravity(EnAndVars::playerGravityOnGround);
+            m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
+
+            if(m_falling)
             {
-                m_obj->setGravity(EnAndVars::playerGravityOnGround);
-                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
+                m_touchGroundAfterFall = true;
+                m_fallDistance = glm::distance(m_startFallingHeight, m_obj->getOrigin().y - m_obj->getFromOriginToBottom());
             }
 
             m_isOnGround = true;
-            m_isOnBuildingRoof = false;
-            m_isOnBuildingWall = false;
-            m_isOnAir = false;
-            m_isOnJumpPad = false;
             m_lastTimeOnGround = EnAndVars::mapPlayTimeSec;
         }
         else
@@ -113,12 +107,30 @@ namespace MagneticBall3D
                 m_obj->setDamping(0.2f, 0.3f);
             }
 
-            m_isOnGround = false;
-            m_isOnBuildingRoof = false;
-            m_isOnBuildingWall = false;
             m_isOnAir = true;
-            m_isOnJumpPad = false;
         }
+
+        if(m_isOnAir && m_previousYPos > m_obj->getOrigin().y) // Ball falling.
+        {
+            if(!m_startFalling)
+            {
+                m_startFalling = true;
+                m_startFallingHeight = m_obj->getOrigin().y - m_obj->getFromOriginToBottom(); // Bottom Y position.
+            }
+
+            m_falling = true;
+            m_fallDistance = glm::distance(m_startFallingHeight, m_obj->getOrigin().y - m_obj->getFromOriginToBottom());
+        }
+        else
+        {
+            m_falling = false;
+            m_startFalling = false;
+        }
+
+        m_previousYPos = m_obj->getOrigin().y;
+
+        if(m_isMeteor)
+            spamMeteorParticles();
 
         // Update HP.
         if(m_currentHP <= 0.0f)
@@ -146,9 +158,6 @@ namespace MagneticBall3D
             else
                 m_currentLevelMaxExp = m_expPerLevel.back();
         }
-
-        if(m_isMeteor)
-            spamMeteorParticles();
     }
 
     void Player::updateSpeed()

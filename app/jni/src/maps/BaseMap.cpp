@@ -566,6 +566,12 @@ namespace MagneticBall3D
     {
         float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnAndVars::garbageCountMagnetized * 0.11f;
 
+        if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
+        {
+            radiusToKill = EnAndVars::playerDamageGroundRadiusAfterFall;
+            BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
+        }
+
         float speedToReduce = 0.0f;
         int addToExp = 0;
         for(const auto& enemy : m_allAnimatedEnemies)

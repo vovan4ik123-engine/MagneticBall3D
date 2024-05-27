@@ -77,6 +77,8 @@ namespace EnAndVars
     constexpr inline int playerResurrectionAttemptsDefault = 2;
     inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;
     constexpr inline int playerCostOfResurrectionCrystals = 10;
+    constexpr inline float playerDamageGroundRadiusAfterFallDefault = 0.0f;
+    inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
     // Garbage.
     constexpr inline float garbageLinearDamping = 0.1f;
@@ -151,6 +153,7 @@ namespace EnAndVars
         playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
         playerXPMultiplier = playerXPMultiplierDefault;
         playerResurrectionAttempts = playerResurrectionAttemptsDefault;
+        playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
         // Garbage.
         garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
