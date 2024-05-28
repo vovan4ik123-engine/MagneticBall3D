@@ -37,11 +37,8 @@ add_library(main SHARED main.cpp
 
                         # Enemies.
                         enemies/BaseEnemy.cpp
-                        enemies/CopWithPistol.cpp
-                        enemies/CopWithPistolShield.cpp
-                        enemies/CopWithGrenadeLauncher.cpp
-                        enemies/Sniper.cpp
-                        enemies/Tank.cpp
+                        enemies/MovableEnemy.cpp
+                        enemies/StaticEnemy.cpp
 
                         bosses/BaseBoss.cpp
                         bosses/TankWithCommander.cpp

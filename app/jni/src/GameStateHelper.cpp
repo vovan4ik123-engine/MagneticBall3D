@@ -6,7 +6,7 @@
 #include "menus/shop/ShopGUILayer.h"
 #include "menus/playerTalents/PlayerTalentsGUILayer.h"
 #include "menus/settings/SettingsMenuGUILayer.h"
-#include "enemies/Sniper.h"
+#include "enemies/StaticEnemy.h"
 #include "Sounds.h"
 #include "SendStatisticsHelper.h"
 
@@ -81,8 +81,8 @@ namespace MagneticBall3D
         Beryll::Physics::hardRemoveAllObjects();
 
         EnAndVars::reset();
-        Sniper::sniperPositions = {};
-        Sniper::spawnTime = 0.0f;
+        StaticEnemy::staticPositions = {};
+        StaticEnemy::spawnTime = 0.0f;
         Sounds::reset();
         SendStatisticsHelper::reset();
     }

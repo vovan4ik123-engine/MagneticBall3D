@@ -41,7 +41,7 @@ namespace MagneticBall3D
         ~BaseEnemy() override;
 
 
-        virtual void freeSniperPosition() = 0; // Implement for Sniper.
+        virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
 
         // Good fit for movable range enemies. For other types you will probably override these two methods.
         virtual void update(const glm::vec3& playerOrigin);
@@ -50,8 +50,6 @@ namespace MagneticBall3D
         void enableEnemy();
         void disableEnemy();
         bool getIsEnabled() { return m_isEnabled; }
-        UnitType getUnitType() { return m_unitType; }
-        AttackType getAttackType() { return m_attackType; }
         bool getIsCanMove() { return m_isCanMove; }
         static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
         bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnAndVars::mapPlayTimeSec; }
@@ -65,6 +63,8 @@ namespace MagneticBall3D
         std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
 
         UnitState unitState = UnitState::MOVE;
+        UnitType unitType = UnitType::NONE;
+        AttackType attackType = AttackType::NONE;
 
         bool isCanBeSpawned = false;
 
@@ -82,9 +82,7 @@ namespace MagneticBall3D
 
         static int m_activeEnemiesCount;
         bool m_isEnabled = false;
-        UnitType m_unitType = UnitType::NONE;
-        AttackType m_attackType = AttackType::NONE;
-        bool m_isCanMove = true; // false for SNIPER.
+        bool m_isCanMove = true; // False for StaticUnit.
 
         // Attack data.
         float m_lastAttackTime = 0.0f; // Sec.

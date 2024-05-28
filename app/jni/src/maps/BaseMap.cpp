@@ -430,43 +430,43 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Play shot sounds.
-                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL || enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                    if(enemy->unitType == UnitType::COP_WITH_PISTOL || enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                         Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
-                    else if(enemy->getUnitType() == UnitType::SNIPER)
+                    else if(enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
-                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                         Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
-                    else if(enemy->getUnitType() == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::TANK)
                         Sounds::playSoundEffect(SoundType::TANK_SHOT);
 
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
-                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
-                       enemy->getUnitType() == UnitType::SNIPER)
+                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
+                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->unitType == UnitType::SNIPER)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
                         from += enemy->getFaceDirXZ() * 10.0f;
                     }
-                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     {
                         from.y += 0.0f;
                         from += enemy->getFaceDirXZ() * 10.0f;
                     }
-                    else if(enemy->getUnitType() == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::TANK)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
                         from += enemy->getFaceDirXZ() * 30.0f;
                     }
 
-                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
+                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.9f, 0.9f, 0.0f, 1.0f), glm::vec4(0.9f, 0.9f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.5f, 0.5f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.4f);
@@ -474,12 +474,12 @@ namespace MagneticBall3D
                         emitParticlesExplosion(rayAttack.hitPoint, 6, 1.5f, 1.5f,
                                                glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.8f);
                     }
-                    else if(enemy->getUnitType() == UnitType::SNIPER)
+                    else if(enemy->unitType == UnitType::SNIPER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.95f, 0.05f, 0.0f, 1.0f), glm::vec4(0.95f, 0.05f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->getUnitType() == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::TANK)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 1.0f, 1.0f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.6f);
@@ -500,7 +500,7 @@ namespace MagneticBall3D
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
                     {
                         // Garbage under attack =).
-                        if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_ONE)
+                        if(enemy->attackType == AttackType::RANGE_DAMAGE_ONE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
                             for(auto& wrapper : m_allGarbage)
@@ -512,7 +512,7 @@ namespace MagneticBall3D
                                 }
                             }
                         }
-                        else if(enemy->getAttackType() == AttackType::RANGE_DAMAGE_RADIUS)
+                        else if(enemy->attackType == AttackType::RANGE_DAMAGE_RADIUS)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_RADIUS");
                             for(auto& wrapper : m_allGarbage)
@@ -527,9 +527,9 @@ namespace MagneticBall3D
                     }
 
                     // Play hit sounds.
-                    if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL ||
-                       enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD ||
-                       enemy->getUnitType() == UnitType::SNIPER)
+                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
+                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD ||
+                       enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
             }
@@ -584,28 +584,28 @@ namespace MagneticBall3D
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
 
-                if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL)
+                if(enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
                     Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
-                else if(enemy->getUnitType() == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
                     Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
-                else if(enemy->getUnitType() == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
                     Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
-                else if(enemy->getUnitType() == UnitType::SNIPER)
+                else if(enemy->unitType == UnitType::SNIPER)
                 {
                     spawnGarbage(1, GarbageType::SNIPER, enemy->getOrigin());
-                    enemy->freeSniperPosition();
+                    enemy->freeStaticPosition();
                     Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
-                else if(enemy->getUnitType() == UnitType::TANK)
+                else if(enemy->unitType == UnitType::TANK)
                 {
                     spawnGarbage(1, GarbageType::TANK, enemy->getOrigin());
                     Sounds::playSoundEffect(SoundType::SMASH_COP);
