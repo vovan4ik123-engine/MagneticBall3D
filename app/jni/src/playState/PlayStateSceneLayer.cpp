@@ -11,8 +11,16 @@ namespace MagneticBall3D
 
         GameStateHelper::resetAllVariables();
 
-        //m_map = std::make_shared<Map0Tutorial>(gui);
-        m_map = std::make_shared<Map1>(gui);
+        Beryll::LoadingScreen::setTextureByIndex(EnAndVars::MapsProgress::currentMapIndex);
+
+        if(EnAndVars::MapsProgress::currentMapIndex == 0)
+            m_map = std::make_shared<Map0Tutorial>(gui);
+        else if(EnAndVars::MapsProgress::currentMapIndex == 1)
+            m_map = std::make_shared<Map1>(gui);
+        else
+        {
+            BR_ASSERT(false, "%s", "Map index does not handled.");
+        }
 
         GameStateHelper::prepareVariablesForPlay();
 

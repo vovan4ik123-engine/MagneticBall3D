@@ -9,7 +9,6 @@ namespace MagneticBall3D
 {
     Map1::Map1(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
-        Beryll::LoadingScreen::setTextureByIndex(0);
         Beryll::LoadingScreen::showProgress(10.0f);
 
         // Specific for this map only.

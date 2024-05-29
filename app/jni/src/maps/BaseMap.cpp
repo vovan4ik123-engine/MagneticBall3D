@@ -802,6 +802,21 @@ namespace MagneticBall3D
     {
         if(EnAndVars::mapPlayerWin)
         {
+            if(EnAndVars::MapsProgress::lastOpenedMapIndex == EnAndVars::MapsProgress::currentMapIndex)
+            {
+                ++EnAndVars::MapsProgress::lastOpenedMapIndex;
+
+                BR_INFO("lastOpenedMapIndex: %d", EnAndVars::MapsProgress::lastOpenedMapIndex);
+                DataBaseHelper::storeMapsProgressLastOpenedMapIndex(EnAndVars::MapsProgress::lastOpenedMapIndex);
+
+                if(EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
+                {
+                    ++EnAndVars::MapsProgress::currentMapIndex;
+                    BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
+                    DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
+                }
+            }
+
             SendStatisticsHelper::sendMapWin();
             m_gui->showMenuWin();
         }

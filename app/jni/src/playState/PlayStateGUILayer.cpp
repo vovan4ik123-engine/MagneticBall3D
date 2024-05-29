@@ -187,6 +187,7 @@ namespace MagneticBall3D
             GameStateHelper::pauseGame();
 
             GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
             return;
         }
         else if(buttonKillAllOk->getIsPressed())
@@ -204,6 +205,7 @@ namespace MagneticBall3D
             GameStateHelper::pauseGame();
 
             GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
             return;
         }
         else if(buttonTankWithCommanderOk->getIsPressed())
