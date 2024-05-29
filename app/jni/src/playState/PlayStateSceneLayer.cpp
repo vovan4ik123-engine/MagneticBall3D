@@ -1,4 +1,5 @@
 #include "PlayStateSceneLayer.h"
+#include "maps/Map0Tutorial.h"
 #include "maps/Map1.h"
 #include "GameStateHelper.h"
 
@@ -10,6 +11,7 @@ namespace MagneticBall3D
 
         GameStateHelper::resetAllVariables();
 
+        //m_map = std::make_shared<Map0Tutorial>(gui);
         m_map = std::make_shared<Map1>(gui);
 
         GameStateHelper::prepareVariablesForPlay();

@@ -16,11 +16,11 @@ namespace MagneticBall3D
         buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.jpg", "", 0.25f, 0.7f, 0.5f, 0.1f);
         m_guiObjects.push_back(buttonPlay);
 
-        buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "", -0.01f, 0.9f, 0.36f, 0.11f);
-        m_guiObjects.push_back(buttonShop);
-
-        buttonPlayerTalents = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/PlayerTalents.jpg", "", 0.33f, 0.9f, 0.35f, 0.11f);
-        m_guiObjects.push_back(buttonPlayerTalents);
+//        buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "", -0.01f, 0.9f, 0.36f, 0.11f);
+//        m_guiObjects.push_back(buttonShop);
+//
+//        buttonPlayerTalents = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/PlayerTalents.jpg", "", 0.33f, 0.9f, 0.35f, 0.11f);
+//        m_guiObjects.push_back(buttonPlayerTalents);
 
         buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "", 0.66f, 0.9f, 0.35f, 0.11f);
         m_guiObjects.push_back(buttonSettings);
@@ -50,14 +50,14 @@ namespace MagneticBall3D
         {
             GameStateHelper::pushPlayState();
         }
-        else if(buttonShop->getIsPressed())
-        {
-            GameStateHelper::pushShopState();
-        }
-        else if(buttonPlayerTalents->getIsPressed())
-        {
-            GameStateHelper::pushPlayerTalentsState();
-        }
+//        else if(buttonShop->getIsPressed())
+//        {
+//            GameStateHelper::pushShopState();
+//        }
+//        else if(buttonPlayerTalents->getIsPressed())
+//        {
+//            GameStateHelper::pushPlayerTalentsState();
+//        }
         else if(buttonSettings->getIsPressed())
         {
             GameStateHelper::pushSettingsState();

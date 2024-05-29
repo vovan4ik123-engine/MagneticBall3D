@@ -27,6 +27,13 @@ namespace EnAndVars
         static inline int crystals = 900;
     };
 
+    struct MapsProgress
+    {
+        static inline int currentMapIndex = 0; // Index of selected map on start screen.
+        static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
+        static constexpr inline int maxMapIndex = 1; // All maps exists in game. Index of last map. Must be hardcoded before release.
+    };
+
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
@@ -127,7 +134,6 @@ namespace EnAndVars
     inline float mapStartTimeSec = 0.0f;
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
-    inline int mapCurrentNumber = 0;
     inline bool mapPlayerWin = false; // true = player win.
     constexpr inline int mapWinCrystalsPrize = 12;
 
@@ -175,7 +181,6 @@ namespace EnAndVars
         mapStartTimeSec = 0.0f;
         mapPlayTimeSec = 0.0f;
         mapSwipeCount = 0.0f;
-        mapCurrentNumber = 0;
         mapPlayerWin = false;
 
         // Boss.

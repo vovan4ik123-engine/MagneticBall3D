@@ -13,12 +13,12 @@ namespace DataBaseHelper
     //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
     // Database schema.
-    // Tables:      Settings            |   CurrencyBalance     |   PlayerTalents
+    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns:     ID                  |   ID                  |
-    //              FPSLimit            |   Crystals            |
-    //              BackgroundMusic     |
-    //
+    // Columns:     ID                  |   ID                  |   ID                  |
+    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |
+    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |
+    //                                  |                       |                       |
 
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
     void prepareDatabase(); // Always call at app launch.
@@ -48,12 +48,30 @@ namespace DataBaseHelper
     const inline std::string createTableCurrencyBalance = "CREATE TABLE IF NOT EXISTS "
                                                           "CurrencyBalance( "
                                                           "ID INTEGER PRIMARY KEY NOT NULL, "
-                                                          "Crystals INTEGER);";
+                                                          "Crystals INTEGER "
+                                                          ");";
 
     const inline std::string insertFirstRowCurrencyBalance = "INSERT INTO CurrencyBalance(ID, Crystals) VALUES(NULL, NULL);";
-    const inline std::string selectCurrencyBalanceCrystals = "SELECT Crystals FROM CurrencyBalance LIMIT 1;";
+    const inline std::string selectCurrencyBalanceCrystals = "SELECT * FROM CurrencyBalance LIMIT 1;";
     const inline std::string updateCurrencyBalanceCrystals = "UPDATE CurrencyBalance SET Crystals = :crystals;";
 
     void readCurrencyBalance();
     void storeCurrencyBalanceCrystals(int value);
+
+    // MapsProgress.
+    const inline std::string createTableMapsProgress = "CREATE TABLE IF NOT EXISTS "
+                                                       "MapsProgress( "
+                                                       "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                       "CurrentMapIndex INTEGER, "
+                                                       "LastOpenedMapIndex INTEGER "
+                                                       ");";
+
+    const inline std::string insertFirstRowMapsProgress = "INSERT INTO MapsProgress(ID, CurrentMapIndex, LastOpenedMapIndex) VALUES(NULL, NULL, NULL);";
+    const inline std::string selectMapsProgressAll = "SELECT * FROM MapsProgress LIMIT 1;";
+    const inline std::string updateMapsProgressCurrentMapIndex = "UPDATE MapsProgress SET CurrentMapIndex = :currentMapIndex;";
+    const inline std::string updateMapsProgressLastOpenedMapIndex = "UPDATE MapsProgress SET LastOpenedMapIndex = :lastOpenedIndex;";
+
+    void readMapsProgress();
+    void storeMapsProgressCurrentMapIndex(int value);
+    void storeMapsProgressLastOpenedMapIndex(int value);
 }

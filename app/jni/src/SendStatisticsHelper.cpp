@@ -22,7 +22,7 @@ namespace MagneticBall3D
         {
             m_isCanSendPlayerDieEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::mapCurrentNumber) + "_player_die";
+            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_player_die";
 
             Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "die_time_sec", int(EnAndVars::mapPlayTimeSec));
         }
@@ -39,7 +39,7 @@ namespace MagneticBall3D
         {
             m_isCanSendMapStartEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::mapCurrentNumber) + "_start";
+            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_start";
 
             Beryll::GoogleAnalytics::getInstance()->sendEventEmpty(eventType);
         }
@@ -51,7 +51,7 @@ namespace MagneticBall3D
         {
             m_isCanSendMapWinEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::mapCurrentNumber) + "_win";
+            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_win";
 
             Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "win_time_sec", int(EnAndVars::mapPlayTimeSec));
         }
@@ -68,7 +68,7 @@ namespace MagneticBall3D
         {
             m_isCanSendMapLoseEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::mapCurrentNumber) + "_lose";
+            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_lose";
 
             Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "lose_time_sec", int(EnAndVars::mapPlayTimeSec));
         }

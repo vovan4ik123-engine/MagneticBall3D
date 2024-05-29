@@ -13,7 +13,6 @@ namespace MagneticBall3D
         void draw() override;
 
     private:
-        void loadPlayer();
         void loadEnv();
         void loadGarbage();
         void loadEnemies();

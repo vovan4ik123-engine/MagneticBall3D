@@ -24,6 +24,7 @@ namespace MagneticBall3D
 
         // Load.
         void loadShaders();
+        void loadPlayer();
 
         // Before physics.
         void handlePlayerDie();
@@ -77,10 +78,10 @@ namespace MagneticBall3D
 //        Beryll::AsyncRun::Run(m_allSceneObjects, m_updateAfterPhysics);
 
         // Map size. Should be assigned in subclasses of specific map.
-        float m_minX = 0.0f;
-        float m_maxX = 0.0f;
-        float m_minZ = 0.0f;
-        float m_maxZ = 0.0f;
+        float m_minX = -999999.0f;
+        float m_maxX = 999999.0f;
+        float m_minZ = -999999.0f;
+        float m_maxZ = 999999.0f;
 
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;

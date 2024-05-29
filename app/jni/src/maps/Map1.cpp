@@ -14,6 +14,7 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
+        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,0.0f));
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
@@ -40,7 +41,6 @@ namespace MagneticBall3D
 
         };
 
-        // Defined in base class. Common for all maps.
         loadShaders();
         handleCamera();
 
@@ -198,7 +198,6 @@ namespace MagneticBall3D
         m_improvements = Improvements(m_player, imprVector);
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnAndVars::mapCurrentNumber = 1;
         EnAndVars::garbageCommonSpawnCount = 5;
 
         SendStatisticsHelper::sendMapStart();
@@ -333,41 +332,6 @@ namespace MagneticBall3D
 
         m_skyBox->draw();
         Beryll::ParticleSystem::draw();
-    }
-
-    void Map1::loadPlayer()
-    {
-        auto playerAllBalls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/player/Player6Models.fbx",
-                                                                                       EnAndVars::playerMass,
-                                                                                       true,
-                                                                                       Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::PLAYER,
-                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK |
-                                                                                Beryll::CollisionGroups::JUMPPAD | Beryll::CollisionGroups::BOSS,
-                                                                                       Beryll::SceneObjectGroups::PLAYER);
-
-        // Sort by radius from small to large.
-        std::sort(playerAllBalls.begin(), playerAllBalls.end(),
-                  [](const std::shared_ptr<Beryll::SimpleCollidingObject>& o1, const std::shared_ptr<Beryll::SimpleCollidingObject>& o2) { return o1->getXZRadius() < o2->getXZRadius(); });
-        // Disable all.
-        for(const auto& item : playerAllBalls)
-        {
-            item->disableCollisionMesh();
-            item->disableUpdate();
-            item->disableDraw();
-
-            m_animatedOrDynamicObjects.push_back(item);
-            m_simpleObjForShadowMap.push_back(item);
-        }
-
-        m_player = std::make_shared<Player>(playerAllBalls[0], EnAndVars::playerStartHP);
-        m_player->setAllModels(playerAllBalls);
-
-        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,0.0f));
-        m_player->getObj()->setGravity(EnAndVars::playerGravityOnGround);
-        m_player->getObj()->setFriction(EnAndVars::playerFriction);
-        m_player->getObj()->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
     }
 
     void Map1::loadEnv()

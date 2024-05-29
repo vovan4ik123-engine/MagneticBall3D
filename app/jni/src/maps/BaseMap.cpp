@@ -107,12 +107,12 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->activateDiffuseTextureMat1();
         m_simpleObjSunLightShadows->activateShadowMapTexture();
 
-//        m_simpleObjSunLightShadowsNormals = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadowsNormals.vert",
-//                                                                           "shaders/GLES/SimpleObjectSunLightShadowsNormals.frag");
-//        m_simpleObjSunLightShadowsNormals->bind();
-//        m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
-//        m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
-//        m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
+        m_simpleObjSunLightShadowsNormals = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadowsNormals.vert",
+                                                                           "shaders/GLES/SimpleObjectSunLightShadowsNormals.frag");
+        m_simpleObjSunLightShadowsNormals->bind();
+        m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
+        m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
+        m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
 
 //        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
 //                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
@@ -126,6 +126,40 @@ namespace MagneticBall3D
         m_animatedObjSunLight->activateDiffuseTextureMat1();
 
         m_shadowMap = Beryll::Renderer::createShadowMap(2200, 2200);
+    }
+
+    void BaseMap::loadPlayer()
+    {
+        auto playerAllBalls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/player/Player6Models.fbx",
+                                                                                       EnAndVars::playerMass,
+                                                                                       true,
+                                                                                       Beryll::CollisionFlags::DYNAMIC,
+                                                                                       Beryll::CollisionGroups::PLAYER,
+                                                                                       Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                       Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK |
+                                                                                       Beryll::CollisionGroups::JUMPPAD | Beryll::CollisionGroups::BOSS,
+                                                                                       Beryll::SceneObjectGroups::PLAYER);
+
+        // Sort by radius from small to large.
+        std::sort(playerAllBalls.begin(), playerAllBalls.end(),
+                  [](const std::shared_ptr<Beryll::SimpleCollidingObject>& o1, const std::shared_ptr<Beryll::SimpleCollidingObject>& o2) { return o1->getXZRadius() < o2->getXZRadius(); });
+        // Disable all.
+        for(const auto& item : playerAllBalls)
+        {
+            item->disableCollisionMesh();
+            item->disableUpdate();
+            item->disableDraw();
+
+            m_animatedOrDynamicObjects.push_back(item);
+            m_simpleObjForShadowMap.push_back(item);
+        }
+
+        m_player = std::make_shared<Player>(playerAllBalls[0], EnAndVars::playerStartHP);
+        m_player->setAllModels(playerAllBalls);
+
+        m_player->getObj()->setGravity(EnAndVars::playerGravityOnGround);
+        m_player->getObj()->setFriction(EnAndVars::playerFriction);
+        m_player->getObj()->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
     }
 
     void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)

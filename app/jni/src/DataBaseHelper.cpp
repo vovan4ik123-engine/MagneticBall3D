@@ -24,7 +24,6 @@ namespace DataBaseHelper
             BR_ERROR("std::exception %s", what.c_str());
         }
 
-        BR_INFO("%s", "Settings table empty.");
         return true;
     }
 
@@ -35,12 +34,11 @@ namespace DataBaseHelper
         // Create all tables we need for app.
         if(getIsSettingsTableEmpty())
         {
-            BR_INFO("%s", "Create all tables + first rows at app first launch.");
+            BR_INFO("%s", "Create database tables + first rows. Looks like first app launch.");
 
             try
             {
                 // Create table Settings and insert 1 row.
-                Beryll::DataBase::openDataBase(dataBaseName);
                 Beryll::DataBase::setSqlQuery(createTableSettings);
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowSettings);
@@ -49,12 +47,20 @@ namespace DataBaseHelper
                 storeSettingsBackgroundMusic(EnAndVars::SettingsMenu::backgroundMusic);
 
                 // Create table CurrencyBalance and insert 1 row.
-                Beryll::DataBase::openDataBase(dataBaseName);
                 Beryll::DataBase::setSqlQuery(createTableCurrencyBalance);
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowCurrencyBalance);
                 Beryll::DataBase::executeNotSelectQuery();
                 storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+
+                // MapsProgress.
+                Beryll::DataBase::setSqlQuery(createTableMapsProgress);
+                Beryll::DataBase::executeNotSelectQuery();
+                Beryll::DataBase::setSqlQuery(insertFirstRowMapsProgress);
+                Beryll::DataBase::executeNotSelectQuery();
+                storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
+                storeMapsProgressLastOpenedMapIndex(EnAndVars::MapsProgress::lastOpenedMapIndex);
+
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -69,10 +75,11 @@ namespace DataBaseHelper
         }
         else
         {
-            BR_INFO("%s", "Read all tables at app launch.");
+            BR_INFO("%s", "Read database tables at app launch.");
 
             readSettings();
             readCurrencyBalance();
+            readMapsProgress();
         }
     }
 
@@ -80,7 +87,6 @@ namespace DataBaseHelper
     {
         try
         {
-            Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(selectSettingsAll);
             std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
             if(!rows.empty())
@@ -116,17 +122,17 @@ namespace DataBaseHelper
     {
         try
         {
-            Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(selectCurrencyBalanceCrystals);
             std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
             if(!rows.empty() && !rows[0].empty())
             {
-                BR_INFO("readCurrencyBalance() rows.size() %d", rows.size());
+                BR_INFO("readCurrencyBalance() rows: %d columns: %d", rows.size(), rows[0].size());
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
+                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
-                if(std::holds_alternative<int>(rows[0][0]))
-                    EnAndVars::CurrencyBalance::crystals = std::get<int>(rows[0][0]);
+                BR_ASSERT((std::holds_alternative<int>(rows[0][1])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
+                if(std::holds_alternative<int>(rows[0][1]))
+                    EnAndVars::CurrencyBalance::crystals = std::get<int>(rows[0][1]);
 
                 BR_INFO("crystals after read: %d", EnAndVars::CurrencyBalance::crystals);
             }
@@ -147,7 +153,6 @@ namespace DataBaseHelper
     {
         try
         {
-            Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(updateSettingsFPSLimit);
             Beryll::DataBase::bindParameterInt(":FPS", value);
             Beryll::DataBase::executeNotSelectQuery();
@@ -172,7 +177,6 @@ namespace DataBaseHelper
 
         try
         {
-            Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(updateSettingsBackgroundMusic);
             Beryll::DataBase::bindParameterInt(":playMusic", intValue);
             Beryll::DataBase::executeNotSelectQuery();
@@ -196,7 +200,6 @@ namespace DataBaseHelper
 
         try
         {
-            Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(updateCurrencyBalanceCrystals);
             Beryll::DataBase::bindParameterInt(":crystals", value);
             Beryll::DataBase::executeNotSelectQuery();
@@ -212,4 +215,82 @@ namespace DataBaseHelper
             BR_ASSERT(false, "std::exception %s", what.c_str());
         }
     }
+
+    void readMapsProgress()
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(selectMapsProgressAll);
+            std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            if(!rows.empty())
+            {
+                BR_INFO("readMapsProgress() rows: %d columns: %d", rows.size(), rows[0].size());
+
+                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+                BR_ASSERT((std::holds_alternative<int>(rows[0][1])), "%s", "CurrentMapIndex contains wrong data.");
+                if(std::holds_alternative<int>(rows[0][1]))
+                    EnAndVars::MapsProgress::currentMapIndex = std::get<int>(rows[0][1]);
+                BR_INFO("currentMapIndex after read: %d", EnAndVars::MapsProgress::currentMapIndex);
+
+                BR_ASSERT((std::holds_alternative<int>(rows[0][2])), "%s", "LastOpenedMapIndex contains wrong data.");
+                if(std::holds_alternative<int>(rows[0][2]))
+                    EnAndVars::MapsProgress::lastOpenedMapIndex = std::get<int>(rows[0][2]);
+                BR_INFO("lastOpenedMapIndex after read: %d", EnAndVars::MapsProgress::lastOpenedMapIndex);
+
+                // EnAndVars::MapsProgress::maxMapIndex is hardcoded and const. Should not be changed during game.
+            }
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("std::exception %s", what.c_str());
+        }
+    }
+
+    void storeMapsProgressCurrentMapIndex(int value)
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(updateMapsProgressCurrentMapIndex);
+            Beryll::DataBase::bindParameterInt(":currentMapIndex", value);
+            Beryll::DataBase::executeNotSelectQuery();
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "std::exception %s", what.c_str());
+        }
+    }
+
+    void storeMapsProgressLastOpenedMapIndex(int value)
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(updateMapsProgressLastOpenedMapIndex);
+            Beryll::DataBase::bindParameterInt(":lastOpenedIndex", value);
+            Beryll::DataBase::executeNotSelectQuery();
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "std::exception %s", what.c_str());
+        }
+    }
+
 }
