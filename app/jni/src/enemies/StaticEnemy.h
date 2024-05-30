@@ -26,10 +26,14 @@ namespace MagneticBall3D
         ~StaticEnemy() override;
 
         void update(const glm::vec3& playerOrigin) override;
+        void attack(const glm::vec3& playerOrigin) override;
         void freeStaticPosition() override;
 
         static std::vector<StaticPosition> staticPositions;
         static float spawnTime; // Sec.
-        static float spawnDelay; // Sec
+        static float spawnDelay; // Sec.
+
+    protected:
+        void move() override;
     };
 }

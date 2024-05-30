@@ -87,6 +87,20 @@ namespace MagneticBall3D
         }
     }
 
+    void StaticEnemy::move()
+    {
+        // Does not need for StaticEnemy.
+    }
+
+    void StaticEnemy::attack(const glm::vec3& playerOrigin)
+    {
+        //BR_INFO("%s", "StaticEnemy::attack()");
+        rotateToPoint(playerOrigin, true);
+        setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::attack, true, true);
+        m_lastAttackTime = EnAndVars::mapPlayTimeSec;
+        unitState = UnitState::ATTACKING;
+    }
+
     void StaticEnemy::freeStaticPosition()
     {
         auto iter = std::find_if(StaticEnemy::staticPositions.begin(), StaticEnemy::staticPositions.end(),

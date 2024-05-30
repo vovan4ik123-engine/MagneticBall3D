@@ -39,13 +39,10 @@ namespace MagneticBall3D
                   Beryll::CollisionGroups collMask,
                   Beryll::SceneObjectGroups sceneGroup);
         ~BaseEnemy() override;
-
-
+        
+        virtual void update(const glm::vec3& playerOrigin) = 0;
+        virtual void attack(const glm::vec3& playerOrigin) = 0;
         virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
-
-        // Good fit for movable range enemies. For other types you will probably override these two methods.
-        virtual void update(const glm::vec3& playerOrigin);
-        virtual void attack(const glm::vec3& playerOrigin);
 
         void enableEnemy();
         void disableEnemy();
@@ -78,7 +75,7 @@ namespace MagneticBall3D
         int experienceWhenDie = 0;
 
     protected:
-        void move();
+        virtual void move() = 0;
 
         static int m_activeEnemiesCount;
         bool m_isEnabled = false;

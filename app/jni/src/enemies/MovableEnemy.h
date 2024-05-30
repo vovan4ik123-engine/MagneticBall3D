@@ -17,6 +17,11 @@ namespace MagneticBall3D
                      Beryll::SceneObjectGroups sceneGroup);
         ~MovableEnemy() override;
 
+        void update(const glm::vec3& playerOrigin) override;
+        void attack(const glm::vec3& playerOrigin) override;
         void freeStaticPosition() override {};
+
+    protected:
+        void move() override;
     };
 }

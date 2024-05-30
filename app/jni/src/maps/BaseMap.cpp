@@ -114,11 +114,11 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
         m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
 
-//        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
-//                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
-//        m_animatedObjSunLightShadows->bind();
-//        m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
-//        m_animatedObjSunLightShadows->activateShadowMapTexture();
+        m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
+                                                                      "shaders/GLES/AnimatedObjectSunLightShadows.frag");
+        m_animatedObjSunLightShadows->bind();
+        m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
+        m_animatedObjSunLightShadows->activateShadowMapTexture();
 
         m_animatedObjSunLight = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLight.vert",
                                                                "shaders/GLES/AnimatedObjectSunLight.frag");

@@ -33,9 +33,13 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderAmbient);
 //        sliderAmbient->setValue(0.7f);
 //
-        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 2);
-        m_guiObjects.push_back(sliderSpecularPower);
-        sliderSpecularPower->setValue(1.0f);
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2);
+//        m_guiObjects.push_back(sliderSpecularPower);
+//        sliderSpecularPower->setValue(1.0f);
+//
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
+//        m_guiObjects.push_back(sliderSunPower);
+//        sliderSunPower->setValue(0.5f);
 
         progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.02f, 0.956f, 1.04f, 0.025f);
         m_guiObjects.push_back(progressBarHP);

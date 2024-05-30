@@ -19,7 +19,7 @@ namespace MagneticBall3D
             m_map = std::make_shared<Map1>(gui);
         else
         {
-            BR_ASSERT(false, "%s", "Map index does not handled.");
+            BR_ASSERT(false, "Map index does not handled: %d", EnAndVars::MapsProgress::currentMapIndex);
         }
 
         GameStateHelper::prepareVariablesForPlay();
