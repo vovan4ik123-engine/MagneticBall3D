@@ -56,11 +56,18 @@ namespace MagneticBall3D
     void Map0Tutorial::updateBeforePhysics()
     {
         if(EnAndVars::gameOnPause)
+        {
+            m_gui->textureTutorialSwipe->disable();
+            m_gui->textTutorialSwipe1->disable();
+            m_gui->textTutorialSwipe2->disable();
             return;
+        }
 
         EnAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
         Sounds::update();
+
+        handlePlayerWin();
 
         handleScreenSwipe();
 
@@ -72,12 +79,12 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().z > 58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 0.0f, -1.0f) * 80.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, -1.0f) * 100.0f);
         }
         else if(m_player->getObj()->getOrigin().z < -58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 0.0f, 1.0f) * 80.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, 1.0f) * 100.0f);
         }
     }
 
@@ -100,6 +107,27 @@ namespace MagneticBall3D
         killEnemies();
         handleCamera();
         updateGUI();
+
+        // Tutorial finished.
+        if(m_player->getObj()->getOrigin().x > 1300.0f)
+            EnAndVars::mapPlayerWin = true;
+
+        // Tutorial tips on screen.
+        if(m_player->getMoveSpeed() < 8.0f)
+            m_gui->textureTutorialSwipe->enable();
+        else
+            m_gui->textureTutorialSwipe->disable();
+
+        if(m_player->getMoveSpeed() > 8.0f && m_player->getMoveSpeed() < 40.0f)
+        {
+            m_gui->textTutorialSwipe1->enable();
+            m_gui->textTutorialSwipe2->enable();
+        }
+        else
+        {
+            m_gui->textTutorialSwipe1->disable();
+            m_gui->textTutorialSwipe2->disable();
+        }
     }
 
     void Map0Tutorial::draw()
@@ -235,7 +263,7 @@ namespace MagneticBall3D
     {
         for(int i = 0; i < 3; ++i) // 3 * 32 = 96
         {
-            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageForMap0Tutorial.fbx",
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCommon.fbx",
                                                                                                 EnAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
@@ -262,7 +290,7 @@ namespace MagneticBall3D
 
         for(int i = 0; i < 15; ++i) // 15 * 4 = 60
         {
-            const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopPistol_4items.fbx",
+            const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCopPistol_4items.fbx",
                                                                                                    EnAndVars::garbageMass,
                                                                                                    false,
                                                                                                    Beryll::CollisionFlags::DYNAMIC,

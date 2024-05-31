@@ -63,6 +63,7 @@ namespace MagneticBall3D
             if(collisionWithWall)
             {
                 m_isOnBuildingWall = true;
+                m_lastTimeOnBuildingWall = EnAndVars::mapPlayTimeSec;
 
                 m_obj->setGravity(EnAndVars::playerGravityOnBuildingWall);
                 m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);

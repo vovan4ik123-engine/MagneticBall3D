@@ -34,6 +34,11 @@ namespace MagneticBall3D
 
         std::shared_ptr<Beryll::ButtonWithText> buttonExit;
 
+        // Map0Tutorial.
+        std::shared_ptr<Beryll::GUITexture> textureTutorialSwipe;
+        std::shared_ptr<Beryll::Text> textTutorialSwipe1;
+        std::shared_ptr<Beryll::Text> textTutorialSwipe2;
+
         // Pause.
         std::shared_ptr<Beryll::ButtonWithTexture> buttonPause;
         std::shared_ptr<Beryll::ButtonWithText> buttonPauseResume;

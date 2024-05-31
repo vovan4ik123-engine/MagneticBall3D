@@ -36,7 +36,7 @@ namespace MagneticBall3D
 
     void Garbage::disableGarbage()
     {
-        BR_INFO("%s", "disableGarbage()");
+        //BR_INFO("%s", "disableGarbage()");
 
         obj->resetVelocities();
         obj->disableDraw();

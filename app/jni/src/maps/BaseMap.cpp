@@ -264,7 +264,7 @@ namespace MagneticBall3D
 
             m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
-            if(m_player->getIsOnBuildingWall())
+            if(m_player->getLastTimeOnBuildingWall() + 1.0f > EnAndVars::mapPlayTimeSec)
             {
                 const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
                 const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.45f;
@@ -603,7 +603,7 @@ namespace MagneticBall3D
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
             radiusToKill = EnAndVars::playerDamageGroundRadiusAfterFall;
-            BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
+            //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
         }
 
         float speedToReduce = 0.0f;

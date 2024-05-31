@@ -37,6 +37,7 @@ namespace MagneticBall3D
         bool getIsFalling() { return m_falling; }
         bool getIsTouchGroundAfterFall() { return m_touchGroundAfterFall; }
         float getFallDistance() { return m_fallDistance; }
+        float getLastTimeOnBuildingWall() { return m_lastTimeOnBuildingWall; }
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
@@ -75,9 +76,10 @@ namespace MagneticBall3D
 
         // Gravity.
         float m_lastTimeOnBuilding = 0.0f; // Sec.
+        float m_lastTimeOnBuildingWall = 0.0f; // Sec.
         float m_lastTimeOnGround = 0.0f; // Sec.
         float m_lastTimeOnJumpPad = 0.0f; // Sec.
-        const float m_applyAirGravityDelay = 0.5f; // Sec. For player after he stop collide with buildings.
+        const float m_applyAirGravityDelay = 1.0f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuildingRoof = false;
         bool m_isOnBuildingWall = false;

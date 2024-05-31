@@ -55,7 +55,7 @@ namespace EnAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.22f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
     constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.2f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
@@ -135,7 +135,6 @@ namespace EnAndVars
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
     inline bool mapPlayerWin = false; // true = player win.
-    constexpr inline int mapWinCrystalsPrize = 12;
 
     // Boss.
     inline bool prepareToBossPhase = false;

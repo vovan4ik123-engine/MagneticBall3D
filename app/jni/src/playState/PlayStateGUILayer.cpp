@@ -59,6 +59,17 @@ namespace MagneticBall3D
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
+        // Map0Tutorial.
+        textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipe.jpg", 0.1f, 0.5f, 0.8f, 0.4f);
+        m_guiObjects.push_back(textureTutorialSwipe);
+        textureTutorialSwipe->disable();
+        textTutorialSwipe1 = std::make_shared<Beryll::Text>("SWIPE = SPEED", EnAndVars::FontsPath::ROBOTO, 0.07f, 0.05f, 0.06f, 0.91f, 0.8f);
+        m_guiObjects.push_back(textTutorialSwipe1);
+        textTutorialSwipe1->disable();
+        textTutorialSwipe2 = std::make_shared<Beryll::Text>("SWIPE FASTER", EnAndVars::FontsPath::ROBOTO, 0.06f, 0.12f, 0.14f, 0.76f, 0.7f);
+        m_guiObjects.push_back(textTutorialSwipe2);
+        textTutorialSwipe2->disable();
+
         // Pause.
         buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/PauseButton.jpg", "", 0.0f, 0.0f, 0.11f, 0.045f);
         m_guiObjects.push_back(buttonPause);
@@ -202,9 +213,6 @@ namespace MagneticBall3D
         }
         else if(buttonWinOk->getIsPressed())
         {
-            EnAndVars::CurrencyBalance::crystals += EnAndVars::mapWinCrystalsPrize;
-            DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
-
             // Pause game before exit to avoid update scene layer.
             GameStateHelper::pauseGame();
 
