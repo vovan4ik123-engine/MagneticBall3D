@@ -267,7 +267,7 @@ namespace MagneticBall3D
             if(m_player->getLastTimeOnBuildingWall() + 1.0f > EnAndVars::mapPlayTimeSec)
             {
                 const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
-                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.45f;
+                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.5f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
 
@@ -802,6 +802,8 @@ namespace MagneticBall3D
     {
         if(EnAndVars::mapPlayerWin)
         {
+            SendStatisticsHelper::sendMapWin();
+
             if(EnAndVars::MapsProgress::lastOpenedMapIndex == EnAndVars::MapsProgress::currentMapIndex)
             {
                 ++EnAndVars::MapsProgress::lastOpenedMapIndex;
@@ -817,7 +819,6 @@ namespace MagneticBall3D
                 }
             }
 
-            SendStatisticsHelper::sendMapWin();
             m_gui->showMenuWin();
         }
     }

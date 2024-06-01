@@ -108,9 +108,23 @@ namespace MagneticBall3D
         handleCamera();
         updateGUI();
 
-        // Tutorial finished.
+        // Tutorial progress.
         if(m_player->getObj()->getOrigin().x > 1300.0f)
             EnAndVars::mapPlayerWin = true;
+        else if(m_player->getObj()->getOrigin().x > 1200.0f)
+            SendStatisticsHelper::sendMap0_1200mPassed();
+        else if(m_player->getObj()->getOrigin().x > 1020.0f)
+            SendStatisticsHelper::sendMap0_onBuilding();
+        else if(m_player->getObj()->getOrigin().x > 800.0f)
+            SendStatisticsHelper::sendMap0_800mPassed();
+        else if(m_player->getObj()->getOrigin().x > 600.0f)
+            SendStatisticsHelper::sendMap0_600mPassed();
+        else if(m_player->getObj()->getOrigin().x > 400.0f)
+            SendStatisticsHelper::sendMap0_400mPassed();
+        else if(m_player->getObj()->getOrigin().x > 200.0f)
+            SendStatisticsHelper::sendMap0_200mPassed();
+        else if(m_player->getObj()->getOrigin().x > 100.0f)
+            SendStatisticsHelper::sendMap0_100mPassed();
 
         // Tutorial tips on screen.
         if(m_player->getMoveSpeed() < 8.0f)

@@ -9,21 +9,35 @@ namespace MagneticBall3D
     public:
         static void reset();
 
+        // Maps progress.
         static void sendPlayerDie();
-        static void canSendPlayerDie();
-
+        static void canSendPlayerDie(); // Can be reset during map play.
         static void sendMapStart();
-
         static void sendMapWin();
-        static void canSendMapWin();
-
         static void sendMapLose();
-        static void canSendMapLose();
+
+        // Map0Tutorial.
+        static void sendMap0_100mPassed();
+        static void sendMap0_200mPassed();
+        static void sendMap0_400mPassed();
+        static void sendMap0_600mPassed();
+        static void sendMap0_800mPassed();
+        static void sendMap0_onBuilding();
+        static void sendMap0_1200mPassed();
 
     private:
-        static bool m_isCanSendPlayerDieEvent;
-        static bool m_isCanSendMapStartEvent;
-        static bool m_isCanSendMapWinEvent;
-        static bool m_isCanSendMapLoseEvent;
+        static bool m_canSendPlayerDieEvent;
+        static bool m_canSendMapStartEvent;
+        static bool m_canSendMapWinEvent;
+        static bool m_canSendMapLoseEvent;
+
+        // Map0Tutorial.
+        static bool m_canSendMap0_100mPassed;
+        static bool m_canSendMap0_200mPassed;
+        static bool m_canSendMap0_400mPassed;
+        static bool m_canSendMap0_600mPassed;
+        static bool m_canSendMap0_800mPassed;
+        static bool m_canSendMap0_onBuilding;
+        static bool m_canSendMap0_1200mPassed;
     };
 }

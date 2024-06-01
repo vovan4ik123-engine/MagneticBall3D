@@ -33,8 +33,7 @@ namespace MagneticBall3D
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
 
-        StaticEnemy::staticPositions = std::vector<StaticPosition>{{glm::vec3(65.0f, 255.0f, -642.0f)},
-                                                                   {glm::vec3(65.0f, 252.0f, -445.0f)},
+        StaticEnemy::staticPositions = std::vector<StaticPosition>{{glm::vec3(65.0f, 252.0f, -445.0f)},
                                                                    {glm::vec3(65.0f, 214.0f, -264.0f)},
                                                                    {glm::vec3(56.5f, 250.0f, -129.5f)},
                                                                    {glm::vec3(71.0f, 250.0f, -60.0f)},
@@ -43,9 +42,9 @@ namespace MagneticBall3D
                                                                    {glm::vec3(320.0f, 215.0f, -61.0f)},
                                                                    {glm::vec3(458.5f, 242.0f, -62.0f)},
                                                                    {glm::vec3(639.0f, 255.0f, -58.0f)},
-                                                                   {glm::vec3(56.0f, 305.5f, 414.5f)},
-                                                                   {glm::vec3(56.0f, 305.5f, 497.5f)},
-                                                                   {glm::vec3(179.0f, 305.5f, 396.5f)},
+                                                                   {glm::vec3(56.0f, 305.5f, 435.0f)},
+                                                                   {glm::vec3(56.0f, 305.5f, 484.0f)},
+                                                                   {glm::vec3(145.0f, 305.5f, 396.5f)},
 
         };
 
@@ -98,108 +97,108 @@ namespace MagneticBall3D
         m_sunLightDir = -m_dirToSun;
         m_sunDistance = 600.0f;
 
-        std::vector<ImprovementInfo> imprVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
+        std::vector<ImprovementInfo> imprVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 20.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 25.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 30.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.008f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.008f;
+                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.013f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.013f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.009f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.009f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.016f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.016f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.019f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.019f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.011f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.011f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.022f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.022f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.012f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
                                                                                                                         }},
-                                              {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,         5, {{[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.05f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.075f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
+                                              {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,         5, {{[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.125f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.15f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.03f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.035f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.045f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.05f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_INCREASE_SIZE,               5, {{[&]() { EnAndVars::playerMagneticRadius += 3.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 14;
+                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_INCREASE_SIZE,               5, {{[&]() { EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 0."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 21;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.011f;
+                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 1."); }},
                                                                                                                          {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 29;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.012f;
+                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 2."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 6.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 38;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.014f;
+                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 3."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 7.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 47;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.017f;
+                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 4."); }},
                                                                                                                          }},
-                                              {ImprovementType::PLAYER_INCREASE_MAX_HP,             5, {{[&]() { m_player->addToMaxHP(20); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
-                                                                                                                        {[&]() { m_player->addToMaxHP(40); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
-                                                                                                                        {[&]() { m_player->addToMaxHP(60); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
-                                                                                                                        {[&]() { m_player->addToMaxHP(80); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 3."); }},
+                                              {ImprovementType::PLAYER_INCREASE_MAX_HP,             5, {{[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
+                                                                                                                        {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
+                                                                                                                        {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
+                                                                                                                        {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 3."); }},
                                                                                                                         {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,            5, {{[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.05f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.075f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 1."); }},
+                                              {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,            5, {{[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.125f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.15f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_EXP_GAIN,                    5, {{[&]() { EnAndVars::playerXPMultiplier += 0.03f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.04f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.05f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_EXP_GAIN,                    5, {{[&]() { EnAndVars::playerXPMultiplier += 0.06f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.06f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.06f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerXPMultiplier += 0.06f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.07f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,             5, {{[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.01f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.02f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.03f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerXPMultiplier += 0.06f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,             5, {{[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.05f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
+                                                                                                                        {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
                                               {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,    5, {{[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
-                                              {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.05f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.07f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.09f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.11f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.13f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
-                                              {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,           5, {{[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.05f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.075f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
+                                              {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
+                                              {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,           5, {{[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.125f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.15f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 4."); }}}}
+                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 4."); }}}}
                                               };
 
 
@@ -544,7 +543,7 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int i = 0; i < 150; ++i)
+        for(int i = 0; i < 140; ++i)
         {
             auto copPistol = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistol.fbx",
                                                             0.0f,
@@ -572,7 +571,7 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(copPistol);
         }
 
-        for(int i = 0; i < 150; ++i)
+        for(int i = 0; i < 130; ++i)
         {
             auto copShield = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistolShield.fbx",
                                                             0.0f,
@@ -600,7 +599,7 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(copShield);
         }
 
-        for(int i = 0; i < 13; ++i)
+        for(int i = 0; i < 10; ++i)
         {
             auto sniper = std::make_shared<StaticEnemy>("models3D/enemies/Sniper.fbx",
                                                         0.0f,
@@ -627,7 +626,7 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(sniper);
         }
 
-        for(int i = 0; i < 60; ++i)
+        for(int i = 0; i < 70; ++i)
         {
             auto copGrenade = std::make_shared<MovableEnemy>("models3D/enemies/CopWithGrenadeLauncher.fbx",
                                                              0.0f,
@@ -750,9 +749,9 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 60 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -773,15 +772,15 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 75 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 60 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 40 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 35 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -799,28 +798,21 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
-            int sniperCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 75 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 70 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 75 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 60 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
-                    ++EnAndVars::enemiesMaxActiveCountOnGround;
-                }
-                else if(sniperCount < 4 && enemy->unitType == UnitType::SNIPER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -836,34 +828,27 @@ namespace MagneticBall3D
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 75 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 80 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 75 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 76 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 8 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 4 && enemy->unitType == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
-                    ++EnAndVars::enemiesMaxActiveCountOnGround;
-                }
-                else if(copWithGrenadeLauncherCount < 30 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -878,21 +863,42 @@ namespace MagneticBall3D
 
             int copWithPistolCount = 0;
             int copWithPistolShieldCount = 0;
+            int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
+            int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 90 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 80 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(sniperCount < 5 && enemy->unitType == UnitType::SNIPER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++sniperCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 20 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 1 && enemy->unitType == UnitType::TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -913,7 +919,7 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -921,25 +927,25 @@ namespace MagneticBall3D
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 90 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 13 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 6 && enemy->unitType == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 40 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 30 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 5 && enemy->unitType == UnitType::TANK)
+                else if(tankCount < 4 && enemy->unitType == UnitType::TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -963,33 +969,33 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 125 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 125 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 13 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 7 && enemy->unitType == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 50 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 40 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 10 && enemy->unitType == UnitType::TANK)
+                else if(tankCount < 8 && enemy->unitType == UnitType::TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -1013,27 +1019,127 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 1.0f;
+                enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 150 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 120 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 150 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 13 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 8 && enemy->unitType == UnitType::SNIPER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++sniperCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 50 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 12 && enemy->unitType == UnitType::TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("prepare wave 10. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave11 && EnAndVars::mapPlayTimeSec > m_enemiesWave11Time)
+        {
+            m_prepareWave11 = false;
+
+            EnAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int copWithPistolCount = 0;
+            int copWithPistolShieldCount = 0;
+            int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
+            int tankCount = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+                enemy->damage += 0.5f;
+
+                if(copWithPistolCount < 130 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithPistolCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithPistolShieldCount < 120 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithPistolShieldCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(sniperCount < 9 && enemy->unitType == UnitType::SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(copWithGrenadeLauncherCount < 60 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithGrenadeLauncherCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 16 && enemy->unitType == UnitType::TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("prepare wave 11. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave12 && EnAndVars::mapPlayTimeSec > m_enemiesWave12Time)
+        {
+            m_prepareWave12 = false;
+
+            EnAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int copWithPistolCount = 0;
+            int copWithPistolShieldCount = 0;
+            int sniperCount = 0;
+            int copWithGrenadeLauncherCount = 0;
+            int tankCount = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+                enemy->damage += 0.5f;
+
+                if(copWithPistolCount < 140 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithPistolCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithPistolShieldCount < 130 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++copWithPistolShieldCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(sniperCount < 10 && enemy->unitType == UnitType::SNIPER)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++sniperCount;
+                    ++EnAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(copWithGrenadeLauncherCount < 70 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -1047,7 +1153,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 10. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("prepare wave 12. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareToBoss && EnAndVars::mapPlayTimeSec > m_prepareToBossTime)
         {

@@ -30,22 +30,26 @@ namespace MagneticBall3D
         bool m_prepareWave3 = true;
         const float m_enemiesWave3Time = 60.0f;
         bool m_prepareWave4 = true;
-        const float m_enemiesWave4Time = 120.0f;
+        const float m_enemiesWave4Time = 90.0f;
         bool m_prepareWave5 = true;
-        const float m_enemiesWave5Time = 180.0f;
+        const float m_enemiesWave5Time = 120.0f;
         bool m_prepareWave6 = true;
-        const float m_enemiesWave6Time = 240.0f;
+        const float m_enemiesWave6Time = 150.0f;
         bool m_prepareWave7 = true;
-        const float m_enemiesWave7Time = 300.0f;
+        const float m_enemiesWave7Time = 180.0f;
         bool m_prepareWave8 = true;
-        const float m_enemiesWave8Time = 360.0f;
+        const float m_enemiesWave8Time = 210.0f;
         bool m_prepareWave9 = true;
-        const float m_enemiesWave9Time = 420.0f;
+        const float m_enemiesWave9Time = 240.0f;
         bool m_prepareWave10 = true;
-        const float m_enemiesWave10Time = 480.0f;
+        const float m_enemiesWave10Time = 270.0f;
+        bool m_prepareWave11 = true;
+        const float m_enemiesWave11Time = 300.0f;
+        bool m_prepareWave12 = true;
+        const float m_enemiesWave12Time = 330.0f;
 
         // Prepare to boss.
         bool m_prepareToBoss = true;
-        const float m_prepareToBossTime = 485.0f;
+        const float m_prepareToBossTime = 360.0f;
     };
 }

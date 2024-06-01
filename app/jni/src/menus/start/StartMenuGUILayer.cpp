@@ -28,12 +28,12 @@ namespace MagneticBall3D
         if(EnAndVars::MapsProgress::currentMapIndex < m_allMapsTextures.size())
             m_allMapsTextures[EnAndVars::MapsProgress::currentMapIndex]->enable();
 
-        m_buttonMapSwipeLeft = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeLeft.jpg", "", 0.1f, 0.325f, 0.1f, 0.05f);
+        m_buttonMapSwipeLeft = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeLeft.jpg", "", 0.05f, 0.3f, 0.15f, 0.1f);
         m_guiObjects.push_back(m_buttonMapSwipeLeft);
         if(EnAndVars::MapsProgress::currentMapIndex == 0)
             m_buttonMapSwipeLeft->disable();
 
-        m_buttonMapSwipeRight = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeRight.jpg", "", 0.8f, 0.325f, 0.1f, 0.05f);
+        m_buttonMapSwipeRight = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeRight.jpg", "", 0.8f, 0.3f, 0.15f, 0.1f);
         m_guiObjects.push_back(m_buttonMapSwipeRight);
         if(EnAndVars::MapsProgress::currentMapIndex == EnAndVars::MapsProgress::lastOpenedMapIndex ||
            EnAndVars::MapsProgress::currentMapIndex == EnAndVars::MapsProgress::maxMapIndex)

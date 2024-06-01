@@ -3,24 +3,44 @@
 
 namespace MagneticBall3D
 {
-    bool SendStatisticsHelper::m_isCanSendPlayerDieEvent = true;
-    bool SendStatisticsHelper::m_isCanSendMapStartEvent = true;
-    bool SendStatisticsHelper::m_isCanSendMapWinEvent = true;
-    bool SendStatisticsHelper::m_isCanSendMapLoseEvent = true;
+    // Maps progress.
+    bool SendStatisticsHelper::m_canSendPlayerDieEvent = true;
+    bool SendStatisticsHelper::m_canSendMapStartEvent = true;
+    bool SendStatisticsHelper::m_canSendMapWinEvent = true;
+    bool SendStatisticsHelper::m_canSendMapLoseEvent = true;
+
+    // Map0Tutorial.
+    bool SendStatisticsHelper::m_canSendMap0_100mPassed = true;
+    bool SendStatisticsHelper::m_canSendMap0_200mPassed = true;
+    bool SendStatisticsHelper::m_canSendMap0_400mPassed = true;
+    bool SendStatisticsHelper::m_canSendMap0_600mPassed = true;
+    bool SendStatisticsHelper::m_canSendMap0_800mPassed = true;
+    bool SendStatisticsHelper::m_canSendMap0_onBuilding = true;
+    bool SendStatisticsHelper::m_canSendMap0_1200mPassed = true;
 
     void SendStatisticsHelper::reset()
     {
-        m_isCanSendPlayerDieEvent = true;
-        m_isCanSendMapStartEvent = true;
-        m_isCanSendMapWinEvent = true;
-        m_isCanSendMapLoseEvent = true;
+        // Maps progress.
+        m_canSendPlayerDieEvent = true;
+        m_canSendMapStartEvent = true;
+        m_canSendMapWinEvent = true;
+        m_canSendMapLoseEvent = true;
+
+        // Map0Tutorial.
+        m_canSendMap0_100mPassed = true;
+        m_canSendMap0_200mPassed = true;
+        m_canSendMap0_400mPassed = true;
+        m_canSendMap0_600mPassed = true;
+        m_canSendMap0_800mPassed = true;
+        m_canSendMap0_onBuilding = true;
+        m_canSendMap0_1200mPassed = true;
     }
 
     void SendStatisticsHelper::sendPlayerDie()
     {
-        if(m_isCanSendPlayerDieEvent)
+        if(m_canSendPlayerDieEvent)
         {
-            m_isCanSendPlayerDieEvent = false;
+            m_canSendPlayerDieEvent = false;
 
             std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_player_die";
 
@@ -30,14 +50,14 @@ namespace MagneticBall3D
 
     void SendStatisticsHelper::canSendPlayerDie()
     {
-        m_isCanSendPlayerDieEvent = true;
+        m_canSendPlayerDieEvent = true;
     }
 
     void SendStatisticsHelper::sendMapStart()
     {
-        if(m_isCanSendMapStartEvent)
+        if(m_canSendMapStartEvent)
         {
-            m_isCanSendMapStartEvent = false;
+            m_canSendMapStartEvent = false;
 
             std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_start";
 
@@ -47,9 +67,9 @@ namespace MagneticBall3D
 
     void SendStatisticsHelper::sendMapWin()
     {
-        if(m_isCanSendMapWinEvent)
+        if(m_canSendMapWinEvent)
         {
-            m_isCanSendMapWinEvent = false;
+            m_canSendMapWinEvent = false;
 
             std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_win";
 
@@ -57,16 +77,11 @@ namespace MagneticBall3D
         }
     }
 
-    void SendStatisticsHelper::canSendMapWin()
-    {
-        m_isCanSendMapWinEvent = true;
-    }
-
     void SendStatisticsHelper::sendMapLose()
     {
-        if(m_isCanSendMapLoseEvent)
+        if(m_canSendMapLoseEvent)
         {
-            m_isCanSendMapLoseEvent = false;
+            m_canSendMapLoseEvent = false;
 
             std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_lose";
 
@@ -74,8 +89,73 @@ namespace MagneticBall3D
         }
     }
 
-    void SendStatisticsHelper::canSendMapLose()
+    void SendStatisticsHelper::sendMap0_100mPassed()
     {
-        m_isCanSendMapLoseEvent = true;
+        if(m_canSendMap0_100mPassed)
+        {
+            m_canSendMap0_100mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_100m_passed");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_200mPassed()
+    {
+        if(m_canSendMap0_200mPassed)
+        {
+            m_canSendMap0_200mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_200m_passed");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_400mPassed()
+    {
+        if(m_canSendMap0_400mPassed)
+        {
+            m_canSendMap0_400mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_400m_passed");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_600mPassed()
+    {
+        if(m_canSendMap0_600mPassed)
+        {
+            m_canSendMap0_600mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_600m_passed");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_800mPassed()
+    {
+        if(m_canSendMap0_800mPassed)
+        {
+            m_canSendMap0_800mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_800m_passed");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_onBuilding()
+    {
+        if(m_canSendMap0_onBuilding)
+        {
+            m_canSendMap0_onBuilding = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_on_building");
+        }
+    }
+
+    void SendStatisticsHelper::sendMap0_1200mPassed()
+    {
+        if(m_canSendMap0_1200mPassed)
+        {
+            m_canSendMap0_1200mPassed = false;
+
+            Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_1200m_passed");
+        }
     }
 }
