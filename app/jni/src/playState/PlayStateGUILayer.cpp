@@ -11,33 +11,33 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::ROBOTO, 0.025f, 0, 0, 0.5f, 0.03f);
-        m_guiObjects.push_back(m_statistics1);
-        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::ROBOTO, 0.025f, 0, 0.025f, 0.7f, 0.03f);
-        m_guiObjects.push_back(m_statistics2);
-        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::ROBOTO, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
-        m_guiObjects.push_back(m_swipeCount);
+//        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0, 0.5f, 0.03f);
+//        m_guiObjects.push_back(m_statistics1);
+//        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0.025f, 0.7f, 0.03f);
+//        m_guiObjects.push_back(m_statistics2);
+//        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
+//        m_guiObjects.push_back(m_swipeCount);
 
-        //m_releaseTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::ROBOTO, 0.03f, 0.424f, 0.0f, 0.2f, 0.033f);
+        //m_releaseTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::roboto, 0.03f, 0.424f, 0.0f, 0.2f, 0.033f);
         //m_guiObjects.push_back(m_releaseTimer);
 
-//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::ROBOTO, );
+//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::roboto, );
 //        m_guiObjects.push_back(sliderImpulse);
 //        sliderImpulse->setValue(0.15f);
 //
-//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::ROBOTO, );
+//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::roboto, );
 //        m_guiObjects.push_back(sliderTorque);
 //        sliderTorque->setValue(0.1f);
 
-//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
+//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderAmbient);
 //        sliderAmbient->setValue(0.7f);
 //
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2);
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2);
 //        m_guiObjects.push_back(sliderSpecularPower);
 //        sliderSpecularPower->setValue(1.0f);
 //
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::ROBOTO, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(0.5f);
 
@@ -55,7 +55,7 @@ namespace MagneticBall3D
         progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
         progressBarXP->setProgress(0.0f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
+        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonExit);
         buttonExit->disable();
 
@@ -63,17 +63,17 @@ namespace MagneticBall3D
         textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipe.jpg", 0.1f, 0.5f, 0.8f, 0.4f);
         m_guiObjects.push_back(textureTutorialSwipe);
         textureTutorialSwipe->disable();
-        textTutorialSwipe1 = std::make_shared<Beryll::Text>("SWIPE = SPEED", EnAndVars::FontsPath::ROBOTO, 0.07f, 0.05f, 0.06f, 0.91f, 0.8f);
+        textTutorialSwipe1 = std::make_shared<Beryll::Text>("SWIPE = SPEED", EnAndVars::FontsPath::roboto, 0.07f, 0.05f, 0.06f, 0.91f, 0.8f);
         m_guiObjects.push_back(textTutorialSwipe1);
         textTutorialSwipe1->disable();
-        textTutorialSwipe2 = std::make_shared<Beryll::Text>("SWIPE FASTER", EnAndVars::FontsPath::ROBOTO, 0.06f, 0.12f, 0.14f, 0.76f, 0.7f);
+        textTutorialSwipe2 = std::make_shared<Beryll::Text>("SWIPE FASTER", EnAndVars::FontsPath::roboto, 0.06f, 0.12f, 0.14f, 0.76f, 0.7f);
         m_guiObjects.push_back(textTutorialSwipe2);
         textTutorialSwipe2->disable();
 
         // Pause.
         buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/PauseButton.jpg", "", 0.0f, 0.0f, 0.11f, 0.045f);
         m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
+        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::roboto, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
         m_guiObjects.push_back(buttonPauseResume);
         buttonPauseResume->disable();
 
@@ -81,7 +81,7 @@ namespace MagneticBall3D
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureResurrect);
         textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.5f, 0.5f, 0.3f, 0.07f);
+        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.5f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonResurrectOk);
         buttonResurrectOk->disable();
 
@@ -99,7 +99,7 @@ namespace MagneticBall3D
         textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureKillAll);
         textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
+        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonKillAllOk);
         buttonKillAllOk->disable();
 
@@ -107,7 +107,7 @@ namespace MagneticBall3D
         textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureWin);
         textureWin->disable();
-        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
+        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonWinOk);
         buttonWinOk->disable();
 
@@ -116,7 +116,7 @@ namespace MagneticBall3D
         textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
         m_guiObjects.push_back(textureTankWithCommander);
         textureTankWithCommander->disable();
-        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::ROBOTO, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
+        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
         m_guiObjects.push_back(buttonTankWithCommanderOk);
         buttonTankWithCommanderOk->disable();
     }
@@ -141,23 +141,23 @@ namespace MagneticBall3D
 
         if(Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
         {
-            std::stringstream stream;
-            stream << std::fixed << std::setprecision(1);
-            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
-            m_statistics1->text = stream.str();
-
-            stream.str(""); // Way to clear std::stringstream.
-            stream << std::fixed << std::setprecision(1);
-            stream << "Phys: " << Beryll::Physics::getSimulationTime();
-            stream << "  Logic: " << (Beryll::GameLoop::getCPUTime() - Beryll::Physics::getSimulationTime());
-            stream << "  GPU: " << Beryll::GameLoop::getGPUTime();
-            m_statistics2->text = stream.str();
-
-            stream.str("");
-            stream << "Swipe: " << EnAndVars::mapSwipeCount;
-            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
-            m_swipeCount->text = stream.str();
-            stream.str("");
+//            std::stringstream stream;
+//            stream << std::fixed << std::setprecision(1);
+//            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
+//            m_statistics1->text = stream.str();
+//
+//            stream.str(""); // Way to clear std::stringstream.
+//            stream << std::fixed << std::setprecision(1);
+//            stream << "Phys: " << Beryll::Physics::getSimulationTime();
+//            stream << "  Logic: " << (Beryll::GameLoop::getCPUTime() - Beryll::Physics::getSimulationTime());
+//            stream << "  GPU: " << Beryll::GameLoop::getGPUTime();
+//            m_statistics2->text = stream.str();
+//
+//            stream.str("");
+//            stream << "Swipe: " << EnAndVars::mapSwipeCount;
+//            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+//            m_swipeCount->text = stream.str();
+//            stream.str("");
 
             //BR_INFO("FPS: %f", Beryll::GameLoop::getFPS());
 

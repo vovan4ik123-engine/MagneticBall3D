@@ -65,7 +65,7 @@ namespace MagneticBall3D
         if(EnAndVars::gameOnPause || EnAndVars::improvementSystemOnScreen)
             return;
 
-        const float distanceToEnableObjects = m_cameraDistance * 1.2f;
+        const float distanceToEnableObjects = m_cameraDistance * 1.1f;
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
@@ -77,11 +77,15 @@ namespace MagneticBall3D
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.2f))
+                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.1f))
                         so->enableDraw();
                     else
                         so->disableDraw();
                 }
+            }
+            else
+            {
+                so->disableDraw();
             }
         }
 
@@ -125,7 +129,7 @@ namespace MagneticBall3D
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->activateDiffuseTextureMat1();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(2200, 2200);
+        m_shadowMap = Beryll::Renderer::createShadowMap(2500, 2500);
     }
 
     void BaseMap::loadPlayer()
@@ -699,7 +703,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 12.0f + m_player->getObj()->getXZRadius();
 
-        float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.0f);
+        float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.1f);
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.

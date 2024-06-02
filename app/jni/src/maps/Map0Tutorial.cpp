@@ -34,7 +34,7 @@ namespace MagneticBall3D
 
         m_dirToSun = glm::normalize(glm::vec3(-0.25f, 3.5f, -1.0f));
         m_sunLightDir = -m_dirToSun;
-        m_sunDistance = 500.0f;
+        m_sunDistance = 300.0f;
 
         m_improvements = Improvements(m_player, {});
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
@@ -148,8 +148,8 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
-        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 250.0f) + (m_dirToSun * m_sunDistance);
-        updateSunPosition(sunPos, 700, 700, m_sunDistance * 2.0f);
+        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) + (m_dirToSun * m_sunDistance);
+        updateSunPosition(sunPos, 500, 500, m_sunDistance * 2.0f);
         Beryll::Renderer::disableFaceCulling();
         m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();

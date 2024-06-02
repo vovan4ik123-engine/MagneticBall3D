@@ -94,7 +94,7 @@ namespace MagneticBall3D
 
             auto st = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
 
-            auto txt = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::ROBOTO, m_progressHeight,
+            auto txt = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::roboto, m_progressHeight,
                                                       m_leftDefault, m_progressTop, 0.2f, 0.055f, false, true);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 

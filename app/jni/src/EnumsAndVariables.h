@@ -4,16 +4,16 @@ namespace EnAndVars
 {
     struct FontsPath
     {
-        static const inline std::string ROBOTO = "fonts/roboto.ttf";
-        static const inline std::string CREAMY = "fonts/creamy.ttf";
-        static const inline std::string COUSINE = "fonts/cousine.ttf";
+        static const inline std::string roboto = "fonts/roboto.ttf";
+        static const inline std::string creamy = "fonts/creamy.ttf";
+        static const inline std::string cousine = "fonts/cousine.ttf";
     };
 
     struct AnimationIndexes
     {
-        static const inline int run = 0;
-        static const inline int stand = 1;
-        static const inline int attack = 2;
+        static constexpr inline int run = 0;
+        static constexpr inline int stand = 1;
+        static constexpr inline int attack = 2;
     };
 
     struct SettingsMenu
