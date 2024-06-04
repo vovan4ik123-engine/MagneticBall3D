@@ -13,11 +13,11 @@ namespace DataBaseHelper
     //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
     // Database schema.
-    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |
+    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem    |
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns:     ID                  |   ID                  |   ID                  |
-    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |
-    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |
+    // Columns:     ID                  |   ID                  |   ID                  |   ID              |
+    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount   |
+    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdate   |
     //                                  |                       |                       |
 
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
@@ -41,7 +41,7 @@ namespace DataBaseHelper
 
     bool getIsSettingsTableEmpty();
     void readSettings();
-    void storeSettingsFPSLimit(int value);
+    void storeSettingsFPSLimit(long long int value);
     void storeSettingsBackgroundMusic(bool playMusic);
 
     // CurrencyBalance.
@@ -56,7 +56,7 @@ namespace DataBaseHelper
     const inline std::string updateCurrencyBalanceCrystals = "UPDATE CurrencyBalance SET Crystals = :crystals;";
 
     void readCurrencyBalance();
-    void storeCurrencyBalanceCrystals(int value);
+    void storeCurrencyBalanceCrystals(long long int value);
 
     // MapsProgress.
     const inline std::string createTableMapsProgress = "CREATE TABLE IF NOT EXISTS "
@@ -72,6 +72,23 @@ namespace DataBaseHelper
     const inline std::string updateMapsProgressLastOpenedMapIndex = "UPDATE MapsProgress SET LastOpenedMapIndex = :lastOpenedIndex;";
 
     void readMapsProgress();
-    void storeMapsProgressCurrentMapIndex(int value);
-    void storeMapsProgressLastOpenedMapIndex(int value);
+    void storeMapsProgressCurrentMapIndex(long long int value);
+    void storeMapsProgressLastOpenedMapIndex(long long int value);
+
+    // EnergySystem.
+    const inline std::string createTableEnergySystem = "CREATE TABLE IF NOT EXISTS "
+                                                       "EnergySystem( "
+                                                       "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                       "CurrentAmount INTEGER, "
+                                                       "LastSecUpdate INTEGER "
+                                                       ");";
+
+    const inline std::string insertFirstRowEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdate) VALUES(NULL, NULL, NULL);";
+    const inline std::string selectEnergySystemAll = "SELECT * FROM EnergySystem LIMIT 1;";
+    const inline std::string updateEnergySystemCurrentAmount = "UPDATE EnergySystem SET CurrentAmount = :amount;";
+    const inline std::string updateEnergySystemLastSecUpdate = "UPDATE EnergySystem SET LastSecUpdate = :lastSecUpdate;";
+
+    void readEnergySystem();
+    void storeEnergySystemCurrentAmount(long long int value);
+    void storeEnergySystemLastSecUpdate(long long int value);
 }

@@ -34,6 +34,12 @@ namespace EnAndVars
         static constexpr inline int maxMapIndex = 1; // All maps exists in game. Index of last map. Must be hardcoded before release.
     };
 
+    struct EnergySystem
+    {
+        static inline int currentAmount = 25;
+        static inline uint64_t lastSecUpdate = 0; // Time in sec since epoch (1.1.1970).
+    };
+
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;

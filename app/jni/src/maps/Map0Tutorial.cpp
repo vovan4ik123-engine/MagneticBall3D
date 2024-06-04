@@ -58,8 +58,8 @@ namespace MagneticBall3D
         if(EnAndVars::gameOnPause)
         {
             m_gui->textureTutorialSwipe->disable();
-            m_gui->textTutorialSwipe1->disable();
-            m_gui->textTutorialSwipe2->disable();
+            m_gui->textureTutorialSwipeFaster->disable();
+            m_gui->textureTutorialSwipeOnBuilding->disable();
             return;
         }
 
@@ -127,20 +127,25 @@ namespace MagneticBall3D
             SendStatisticsHelper::sendMap0_100mPassed();
 
         // Tutorial tips on screen.
-        if(m_player->getMoveSpeed() < 8.0f)
+        if(m_player->getMoveSpeed() < 7.0f)
             m_gui->textureTutorialSwipe->enable();
         else
             m_gui->textureTutorialSwipe->disable();
 
-        if(m_player->getMoveSpeed() > 8.0f && m_player->getMoveSpeed() < 40.0f)
+        if(m_player->getObj()->getOrigin().x > 900.0f && m_player->getObj()->getOrigin().x < 1030.0f)
         {
-            m_gui->textTutorialSwipe1->enable();
-            m_gui->textTutorialSwipe2->enable();
+            m_gui->textureTutorialSwipeFaster->disable();
+            m_gui->textureTutorialSwipeOnBuilding->enable();
+        }
+        else if(m_player->getMoveSpeed() > 7.0f && m_player->getMoveSpeed() < 50.0f)
+        {
+            m_gui->textureTutorialSwipeFaster->enable();
+            m_gui->textureTutorialSwipeOnBuilding->disable();
         }
         else
         {
-            m_gui->textTutorialSwipe1->disable();
-            m_gui->textTutorialSwipe2->disable();
+            m_gui->textureTutorialSwipeFaster->disable();
+            m_gui->textureTutorialSwipeOnBuilding->disable();
         }
     }
 

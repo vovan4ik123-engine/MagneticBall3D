@@ -9,7 +9,7 @@ namespace DataBaseHelper
         {
             Beryll::DataBase::openDataBase(dataBaseName);
             Beryll::DataBase::setSqlQuery(selectSettingsAll);
-            std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            auto rows = Beryll::DataBase::executeSelectQuery();
 
             return rows.empty();
         }
@@ -61,6 +61,13 @@ namespace DataBaseHelper
                 storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
                 storeMapsProgressLastOpenedMapIndex(EnAndVars::MapsProgress::lastOpenedMapIndex);
 
+                // EnergySystem.
+                Beryll::DataBase::setSqlQuery(createTableEnergySystem);
+                Beryll::DataBase::executeNotSelectQuery();
+                Beryll::DataBase::setSqlQuery(insertFirstRowEnergySystem);
+                Beryll::DataBase::executeNotSelectQuery();
+                storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
+                storeEnergySystemLastSecUpdate(EnAndVars::EnergySystem::lastSecUpdate);
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -80,6 +87,7 @@ namespace DataBaseHelper
             readSettings();
             readCurrencyBalance();
             readMapsProgress();
+            readEnergySystem();
         }
     }
 
@@ -88,21 +96,21 @@ namespace DataBaseHelper
         try
         {
             Beryll::DataBase::setSqlQuery(selectSettingsAll);
-            std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
             if(!rows.empty())
             {
                 BR_INFO("readSettings() rows: %d columns: %d", rows.size(), rows[0].size());
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][1])), "%s", "FPSLimit contains wrong data.");
-                if(std::holds_alternative<int>(rows[0][1]))
-                    EnAndVars::SettingsMenu::FPSLimit = std::get<int>(rows[0][1]);
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "FPSLimit contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][1]))
+                    EnAndVars::SettingsMenu::FPSLimit = std::get<long long int>(rows[0][1]);
                 BR_INFO("FPSLimit after read: %d", EnAndVars::SettingsMenu::FPSLimit);
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][2])), "%s", "BackgroundMusic contains wrong data.");
-                if(std::holds_alternative<int>(rows[0][2]))
-                    EnAndVars::SettingsMenu::backgroundMusic = std::get<int>(rows[0][2]) == 1; // True if column contains 1.
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "BackgroundMusic contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][2]))
+                    EnAndVars::SettingsMenu::backgroundMusic = std::get<long long int>(rows[0][2]) == 1; // True if column contains 1.
                 BR_INFO("backgroundMusic after read: %d", int(EnAndVars::SettingsMenu::backgroundMusic));
             }
         }
@@ -123,16 +131,16 @@ namespace DataBaseHelper
         try
         {
             Beryll::DataBase::setSqlQuery(selectCurrencyBalanceCrystals);
-            std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
             if(!rows.empty() && !rows[0].empty())
             {
                 BR_INFO("readCurrencyBalance() rows: %d columns: %d", rows.size(), rows[0].size());
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][1])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
-                if(std::holds_alternative<int>(rows[0][1]))
-                    EnAndVars::CurrencyBalance::crystals = std::get<int>(rows[0][1]);
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][1]))
+                    EnAndVars::CurrencyBalance::crystals = std::get<long long int>(rows[0][1]);
 
                 BR_INFO("crystals after read: %d", EnAndVars::CurrencyBalance::crystals);
             }
@@ -149,12 +157,12 @@ namespace DataBaseHelper
         }
     }
 
-    void storeSettingsFPSLimit(int value)
+    void storeSettingsFPSLimit(long long int value)
     {
         try
         {
             Beryll::DataBase::setSqlQuery(updateSettingsFPSLimit);
-            Beryll::DataBase::bindParameterInt(":FPS", value);
+            Beryll::DataBase::bindParameterLongLongInt(":FPS", value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)
@@ -171,14 +179,14 @@ namespace DataBaseHelper
 
     void storeSettingsBackgroundMusic(bool playMusic)
     {
-        int intValue = 0;
+        long long int intValue = 0;
         if(playMusic)
             intValue = 1;
 
         try
         {
             Beryll::DataBase::setSqlQuery(updateSettingsBackgroundMusic);
-            Beryll::DataBase::bindParameterInt(":playMusic", intValue);
+            Beryll::DataBase::bindParameterLongLongInt(":playMusic", intValue);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)
@@ -193,15 +201,15 @@ namespace DataBaseHelper
         }
     }
 
-    void storeCurrencyBalanceCrystals(int value)
+    void storeCurrencyBalanceCrystals(long long int value)
     {
         if(value < 0)
-            return;
+            value = 0;
 
         try
         {
             Beryll::DataBase::setSqlQuery(updateCurrencyBalanceCrystals);
-            Beryll::DataBase::bindParameterInt(":crystals", value);
+            Beryll::DataBase::bindParameterLongLongInt(":crystals", value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)
@@ -221,21 +229,21 @@ namespace DataBaseHelper
         try
         {
             Beryll::DataBase::setSqlQuery(selectMapsProgressAll);
-            std::vector<std::vector<std::variant<int, float, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
             if(!rows.empty())
             {
                 BR_INFO("readMapsProgress() rows: %d columns: %d", rows.size(), rows[0].size());
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][1])), "%s", "CurrentMapIndex contains wrong data.");
-                if(std::holds_alternative<int>(rows[0][1]))
-                    EnAndVars::MapsProgress::currentMapIndex = std::get<int>(rows[0][1]);
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "CurrentMapIndex contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][1]))
+                    EnAndVars::MapsProgress::currentMapIndex = std::get<long long int>(rows[0][1]);
                 BR_INFO("currentMapIndex after read: %d", EnAndVars::MapsProgress::currentMapIndex);
 
-                BR_ASSERT((std::holds_alternative<int>(rows[0][2])), "%s", "LastOpenedMapIndex contains wrong data.");
-                if(std::holds_alternative<int>(rows[0][2]))
-                    EnAndVars::MapsProgress::lastOpenedMapIndex = std::get<int>(rows[0][2]);
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastOpenedMapIndex contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][2]))
+                    EnAndVars::MapsProgress::lastOpenedMapIndex = std::get<long long int>(rows[0][2]);
                 BR_INFO("lastOpenedMapIndex after read: %d", EnAndVars::MapsProgress::lastOpenedMapIndex);
 
                 // EnAndVars::MapsProgress::maxMapIndex is hardcoded and const. Should not be changed during game.
@@ -253,12 +261,12 @@ namespace DataBaseHelper
         }
     }
 
-    void storeMapsProgressCurrentMapIndex(int value)
+    void storeMapsProgressCurrentMapIndex(long long int value)
     {
         try
         {
             Beryll::DataBase::setSqlQuery(updateMapsProgressCurrentMapIndex);
-            Beryll::DataBase::bindParameterInt(":currentMapIndex", value);
+            Beryll::DataBase::bindParameterLongLongInt(":currentMapIndex", value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)
@@ -273,12 +281,12 @@ namespace DataBaseHelper
         }
     }
 
-    void storeMapsProgressLastOpenedMapIndex(int value)
+    void storeMapsProgressLastOpenedMapIndex(long long int value)
     {
         try
         {
             Beryll::DataBase::setSqlQuery(updateMapsProgressLastOpenedMapIndex);
-            Beryll::DataBase::bindParameterInt(":lastOpenedIndex", value);
+            Beryll::DataBase::bindParameterLongLongInt(":lastOpenedIndex", value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)
@@ -293,4 +301,78 @@ namespace DataBaseHelper
         }
     }
 
+    void readEnergySystem()
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(selectEnergySystemAll);
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            if(!rows.empty())
+            {
+                BR_INFO("readEnergySystem() rows: %d columns: %d", rows.size(), rows[0].size());
+
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "CurrentAmount contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][1]))
+                    EnAndVars::EnergySystem::currentAmount = std::get<long long int>(rows[0][1]);
+                BR_INFO("currentAmount after read: %d", EnAndVars::EnergySystem::currentAmount);
+
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastSecUpdate contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][2]))
+                    EnAndVars::EnergySystem::lastSecUpdate = std::get<long long int>(rows[0][2]);
+                BR_INFO("lastSecUpdate after read: %d", EnAndVars::EnergySystem::lastSecUpdate);
+            }
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("std::exception %s", what.c_str());
+        }
+    }
+
+    void storeEnergySystemCurrentAmount(long long int value)
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(updateEnergySystemCurrentAmount);
+            Beryll::DataBase::bindParameterLongLongInt(":amount", value);
+            Beryll::DataBase::executeNotSelectQuery();
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "std::exception %s", what.c_str());
+        }
+    }
+
+    void storeEnergySystemLastSecUpdate(long long int value)
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecUpdate);
+            Beryll::DataBase::bindParameterLongLongInt(":lastSecUpdate", value);
+            Beryll::DataBase::executeNotSelectQuery();
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "std::exception %s", what.c_str());
+        }
+    }
 }
