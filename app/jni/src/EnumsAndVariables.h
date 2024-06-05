@@ -16,6 +16,7 @@ namespace EnAndVars
         static constexpr inline int attack = 2;
     };
 
+    // Database tables.
     struct SettingsMenu
     {
         static inline int FPSLimit = 60;
@@ -39,6 +40,7 @@ namespace EnAndVars
         static inline int currentAmount = 25;
         static inline uint64_t lastSecUpdate = 0; // Time in sec since epoch (1.1.1970).
     };
+    // Database tables end.
 
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
@@ -47,7 +49,7 @@ namespace EnAndVars
     inline float cameraRotateTime = 0.0f; // Sec.
 
     // Swipe.
-    constexpr inline float swipePowerMultiplier = 2.2f;
+    constexpr inline float swipePowerMultiplier = 2.0f;
     constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.
@@ -61,8 +63,8 @@ namespace EnAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.2f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.18f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.18f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
@@ -94,11 +96,11 @@ namespace EnAndVars
     inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
     // Garbage.
-    constexpr inline float garbageLinearDamping = 0.1f;
-    constexpr inline float garbageAngularDamping = 0.3f;
+    constexpr inline float garbageLinearDamping = 0.15f;
+    constexpr inline float garbageAngularDamping = 0.25f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 750.0f;
+    constexpr inline float garbageMaxGravityPower = 900.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 7.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
@@ -137,7 +139,6 @@ namespace EnAndVars
     constexpr inline float jumpPadPower = 130.0f * playerMass; // Power for player.
 
     // Map.
-    inline float mapStartTimeSec = 0.0f;
     inline float mapPlayTimeSec = 0.0f;
     inline int mapSwipeCount = 0.0f;
     inline bool mapPlayerWin = false; // true = player win.
@@ -183,7 +184,6 @@ namespace EnAndVars
         improvementSystemOnScreen = false;
         
         // Map.
-        mapStartTimeSec = 0.0f;
         mapPlayTimeSec = 0.0f;
         mapSwipeCount = 0.0f;
         mapPlayerWin = false;

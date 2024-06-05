@@ -213,9 +213,9 @@ namespace MagneticBall3D
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
             float screenSwipeLength = glm::length(m_screenSwipe3D);
-            if(screenSwipeLength > 400.0f)
+            if(screenSwipeLength > 500.0f)
             {
-                screenSwipeLength = 400.0f;
+                screenSwipeLength = 500.0f;
                 m_screenSwipe3D = glm::normalize(m_screenSwipe3D) * screenSwipeLength;
             }
 
@@ -228,17 +228,20 @@ namespace MagneticBall3D
             float swipeFactorBasedOnAngleAndSpeed = 0.0f;
             if(m_player->getMoveSpeed() > 2.0f)
             {
-                if( ! BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
+                if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
                 {
                     float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
-                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeed() * EnAndVars::playerLeftRightTurnPower);
+                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeed() * EnAndVars::playerLeftRightTurnPower;
+
+                    //if(moveToSwipeAngle > 0.78f && moveToSwipeAngle < 2.6f) // > 45 && < 150 degrees.
+                    //    swipeFactorBasedOnAngleAndSpeed *= 1.1f;
 
                     if(moveToSwipeAngle > 2.6f) // > 150 degrees.
-                        swipeFactorBasedOnAngleAndSpeed *= 1.9f;
+                        swipeFactorBasedOnAngleAndSpeed *= 1.6f;
                 }
             }
 
-            // 2 m = radius for default ball. That is base. Start point for controls. Radius can not be less than 2 m.
+            // 2 m = radius for default ball.
             float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.7f);
 
             if(m_player->getIsOnGround())

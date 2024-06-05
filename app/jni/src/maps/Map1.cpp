@@ -95,7 +95,7 @@ namespace MagneticBall3D
 
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.5f, -0.8f));
         m_sunLightDir = -m_dirToSun;
-        m_sunDistance = 400.0f;
+        m_sunDistance = 550.0f;
 
         std::vector<ImprovementInfo> imprVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
