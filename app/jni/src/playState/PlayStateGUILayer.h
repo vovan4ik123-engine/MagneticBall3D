@@ -14,6 +14,8 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
+        void disableTimer() { m_releaseTimer->disable(); }
+
         void showMenuResurrect();
         void showMenuResurrectNoCrystals();
         void showMenuKillAllBeforeBoss();

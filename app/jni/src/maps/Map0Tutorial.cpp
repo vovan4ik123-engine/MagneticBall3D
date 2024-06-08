@@ -34,12 +34,14 @@ namespace MagneticBall3D
 
         m_dirToSun = glm::normalize(glm::vec3(-0.25f, 3.5f, -1.0f));
         m_sunLightDir = -m_dirToSun;
-        m_sunDistance = 300.0f;
 
         m_improvements = Improvements(m_player, {});
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         EnAndVars::playerMagneticRadius = 50.0f;
+        EnAndVars::garbageMaxCountMagnetized = 85.0f;
+
+        m_gui->disableTimer();
 
         SendStatisticsHelper::sendMapStart();
 
@@ -153,8 +155,10 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
-        glm::vec3 sunPos = m_player->getObj()->getOrigin() + (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) + (m_dirToSun * m_sunDistance);
-        updateSunPosition(sunPos, 500, 500, m_sunDistance * 2.0f);
+        glm::vec3 sunPos = m_player->getObj()->getOrigin() +
+                (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) +
+                (m_dirToSun * (300.0f - m_player->getObj()->getOrigin().y)); // sunPos.y is 300 max.
+        updateSunPosition(sunPos, 500, 500, 500.0f);
         Beryll::Renderer::disableFaceCulling();
         m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
@@ -280,7 +284,7 @@ namespace MagneticBall3D
 
     void Map0Tutorial::loadGarbage()
     {
-        for(int i = 0; i < 3; ++i) // 3 * 32 = 96
+        for(int i = 0; i < 2; ++i) // 2 * 32 = 64
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCommon.fbx",
                                                                                                 EnAndVars::garbageMass,
@@ -355,7 +359,7 @@ namespace MagneticBall3D
             cop->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 2.0f;
 
             cop->garbageAmountToDie = 10;
-            cop->reducePlayerSpeedWhenDie = 4.0f;
+            cop->reducePlayerSpeedWhenDie = 2.0f;
             cop->experienceWhenDie = 0;
 
             m_animatedOrDynamicObjects.push_back(cop);

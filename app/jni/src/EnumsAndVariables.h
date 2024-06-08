@@ -49,7 +49,7 @@ namespace EnAndVars
     inline float cameraRotateTime = 0.0f; // Sec.
 
     // Swipe.
-    constexpr inline float swipePowerMultiplier = 2.0f;
+    constexpr inline float swipePowerMultiplier = 2.1f;
     constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.

@@ -11,11 +11,11 @@ namespace MagneticBall3D
 
         Beryll::Window::getInstance()->setClearColor(0.0666f * 0.7f, 0.7333f * 0.7f, 0.2f * 0.7f, 1.0f);
 
-        m_map0TutorialTexture = std::make_shared<Beryll::GUITexture>("loadingScreen/Map0Screen.jpg", 0.2f, 0.1f, 0.6f, 0.5f);
+        m_map0TutorialTexture = std::make_shared<Beryll::GUITexture>("loadingScreen/Map0Screen.jpg", 0.2f, 0.1f, 0.6f, 0.55f);
         m_guiObjects.push_back(m_map0TutorialTexture);
         m_allMapsTextures.push_back(m_map0TutorialTexture);
 
-        m_map1Texture = std::make_shared<Beryll::GUITexture>("loadingScreen/Map1Screen.jpg", 0.2f, 0.1f, 0.6f, 0.5f);
+        m_map1Texture = std::make_shared<Beryll::GUITexture>("loadingScreen/Map1Screen.jpg", 0.2f, 0.1f, 0.6f, 0.55f);
         m_guiObjects.push_back(m_map1Texture);
         m_allMapsTextures.push_back(m_map1Texture);
 
@@ -39,7 +39,7 @@ namespace MagneticBall3D
            EnAndVars::MapsProgress::currentMapIndex == EnAndVars::MapsProgress::maxMapIndex)
             m_buttonMapSwipeRight->disable();
 
-        m_buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.jpg", "", 0.25f, 0.7f, 0.5f, 0.1f);
+        m_buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.jpg", "", 0.3f, 0.7f, 0.4f, 0.09f);
         m_guiObjects.push_back(m_buttonPlay);
 
 //        m_buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "", -0.01f, 0.9f, 0.34f, 0.1f);

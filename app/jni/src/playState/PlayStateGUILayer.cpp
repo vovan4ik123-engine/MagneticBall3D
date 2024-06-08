@@ -11,15 +11,15 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0, 0.5f, 0.03f);
-        m_guiObjects.push_back(m_statistics1);
-        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0.025f, 0.7f, 0.03f);
-        m_guiObjects.push_back(m_statistics2);
-        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
-        m_guiObjects.push_back(m_swipeCount);
+//        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0, 0.5f, 0.03f);
+//        m_guiObjects.push_back(m_statistics1);
+//        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0.025f, 0.7f, 0.03f);
+//        m_guiObjects.push_back(m_statistics2);
+//        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
+//        m_guiObjects.push_back(m_swipeCount);
 
-        //m_releaseTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::roboto, 0.03f, 0.424f, 0.0f, 0.25f, 0.035f);
-        //m_guiObjects.push_back(m_releaseTimer);
+        m_releaseTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::roboto, 0.03f, 0.424f, 0.0f, 0.25f, 0.035f);
+        m_guiObjects.push_back(m_releaseTimer);
 
 //        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::roboto, );
 //        m_guiObjects.push_back(sliderImpulse);
@@ -60,18 +60,18 @@ namespace MagneticBall3D
         buttonExit->disable();
 
         // Map0Tutorial.
-        textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipe.jpg", 0.1f, 0.5f, 0.8f, 0.4f);
+        textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeToMove.png", 0.093f, 0.525f, 0.8f, 0.39f);
         m_guiObjects.push_back(textureTutorialSwipe);
         textureTutorialSwipe->disable();
-        textureTutorialSwipeFaster = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeFaster.jpg", 0.05f, 0.07f, 0.9f, 0.15f);
+        textureTutorialSwipeFaster = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeFaster.png", 0.1f, 0.0f, 0.8f, 0.13f);
         m_guiObjects.push_back(textureTutorialSwipeFaster);
         textureTutorialSwipeFaster->disable();
-        textureTutorialSwipeOnBuilding = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeOnBuilding.jpg", 0.05f, 0.08f, 0.9f, 0.08f);
+        textureTutorialSwipeOnBuilding = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeOnBuilding.png", 0.1f, 0.0f, 0.8f, 0.15f);
         m_guiObjects.push_back(textureTutorialSwipeOnBuilding);
         textureTutorialSwipeOnBuilding->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/PauseButton.jpg", "", 0.0f, 0.0f, 0.11f, 0.045f);
+        buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/PauseButton.jpg", "", 0.0f, 0.0f, 0.1f, 0.045f);
         m_guiObjects.push_back(buttonPause);
         buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::roboto, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
         m_guiObjects.push_back(buttonPauseResume);
@@ -142,38 +142,38 @@ namespace MagneticBall3D
         if(Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
         {
             std::stringstream stream;
-            stream << std::fixed << std::setprecision(1);
-            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
-            m_statistics1->text = stream.str();
-
-            stream.str(""); // Way to clear std::stringstream.
-            stream << std::fixed << std::setprecision(1);
-            stream << "Phys: " << Beryll::Physics::getSimulationTime();
-            stream << "  Logic: " << (Beryll::GameLoop::getCPUTime() - Beryll::Physics::getSimulationTime());
-            stream << "  GPU: " << Beryll::GameLoop::getGPUTime();
-            m_statistics2->text = stream.str();
-
-            stream.str("");
-            stream << "Swipe: " << EnAndVars::mapSwipeCount;
-            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
-            m_swipeCount->text = stream.str();
-            stream.str("");
+//            stream << std::fixed << std::setprecision(1);
+//            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
+//            m_statistics1->text = stream.str();
+//
+//            stream.str(""); // Way to clear std::stringstream.
+//            stream << std::fixed << std::setprecision(1);
+//            stream << "Phys: " << Beryll::Physics::getSimulationTime();
+//            stream << "  Logic: " << (Beryll::GameLoop::getCPUTime() - Beryll::Physics::getSimulationTime());
+//            stream << "  GPU: " << Beryll::GameLoop::getGPUTime();
+//            m_statistics2->text = stream.str();
+//
+//            stream.str("");
+//            stream << "Swipe: " << EnAndVars::mapSwipeCount;
+//            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+//            m_swipeCount->text = stream.str();
+//            stream.str("");
 
             //BR_INFO("FPS: %f", Beryll::GameLoop::getFPS());
 
-//            int min = int(EnAndVars::mapPlayTimeSec / 60.0f);
-//            int sec = int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
-//            if(min < 10)
-//                stream << "0";
-//
-//            stream << min << ":";
-//
-//            if(sec < 10)
-//                stream << "0";
-//
-//            stream << sec;
-//
-//            m_releaseTimer->text = stream.str();
+            int min = int(EnAndVars::mapPlayTimeSec / 60.0f);
+            int sec = int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+            if(min < 10)
+                stream << "0";
+
+            stream << min << ":";
+
+            if(sec < 10)
+                stream << "0";
+
+            stream << sec;
+
+            m_releaseTimer->text = stream.str();
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
