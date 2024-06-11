@@ -184,11 +184,11 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,    5, {{[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 15.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,    5, {{[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
                                               {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
@@ -234,7 +234,7 @@ namespace MagneticBall3D
         updateSunPosition(sunPos, 500, 500, 800.0f);
 
         Beryll::Renderer::disableFaceCulling();
-        if(BaseEnemy::getActiveCount() < 180)
+        if(BaseEnemy::getActiveCount() < 150)
             m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         else
             m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);

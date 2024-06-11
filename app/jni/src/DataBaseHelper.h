@@ -13,12 +13,12 @@ namespace DataBaseHelper
     //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
     // Database schema.
-    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem    |
+    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem            |
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns:     ID                  |   ID                  |   ID                  |   ID              |
-    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount   |
-    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdate   |
-    //                                  |                       |                       |
+    // Columns:     ID                  |   ID                  |   ID                  |   ID                      |
+    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount           |
+    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdated          |
+    //                                  |                       |                       |   LastSecOneEnergyRestored|
 
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
     void prepareDatabase(); // Always call at app launch.
@@ -80,15 +80,19 @@ namespace DataBaseHelper
                                                        "EnergySystem( "
                                                        "ID INTEGER PRIMARY KEY NOT NULL, "
                                                        "CurrentAmount INTEGER, "
-                                                       "LastSecUpdate INTEGER "
+                                                       "LastSecUpdated INTEGER, "
+                                                       "LastSecOneEnergyRestored INTEGER "
                                                        ");";
 
-    const inline std::string insertFirstRowEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdate) VALUES(NULL, NULL, NULL);";
+    const inline std::string insertFirstRowEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdated, LastSecOneEnergyRestored) "
+                                                          "VALUES(NULL, NULL, NULL, NULL);";
     const inline std::string selectEnergySystemAll = "SELECT * FROM EnergySystem LIMIT 1;";
     const inline std::string updateEnergySystemCurrentAmount = "UPDATE EnergySystem SET CurrentAmount = :amount;";
-    const inline std::string updateEnergySystemLastSecUpdate = "UPDATE EnergySystem SET LastSecUpdate = :lastSecUpdate;";
+    const inline std::string updateEnergySystemLastSecUpdated = "UPDATE EnergySystem SET LastSecUpdated = :lastSecUpdated;";
+    const inline std::string updateEnergySystemLastSecRestored = "UPDATE EnergySystem SET LastSecOneEnergyRestored = :lastSecOneEnergyRestored;";
 
     void readEnergySystem();
     void storeEnergySystemCurrentAmount(long long int value);
-    void storeEnergySystemLastSecUpdate(long long int value);
+    void storeEnergySystemLastSecUpdated(long long int value);
+    void storeEnergySystemLastSecRestored(long long int value);
 }

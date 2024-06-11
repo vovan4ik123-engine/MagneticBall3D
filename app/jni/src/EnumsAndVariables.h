@@ -19,26 +19,41 @@ namespace EnAndVars
     // Database tables.
     struct SettingsMenu
     {
+        // Stored in DB.
         static inline int FPSLimit = 60;
         static inline bool backgroundMusic = true;
+        // Not stored in DB.
+        // ...
     };
 
     struct CurrencyBalance
     {
+        // Stored in DB.
         static inline int crystals = 900;
+        // Not stored in DB.
+        // ...
     };
 
     struct MapsProgress
     {
+        // Stored in DB.
         static inline int currentMapIndex = 0; // Index of selected map on start screen.
         static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
-        static constexpr inline int maxMapIndex = 1; // All maps exists in game. Index of last map. Must be hardcoded before release.
+        // Not stored in DB.
+        static constexpr inline int maxMapIndex = 1; // Last possible map index (opened or not). Must be hardcoded before release.
     };
 
     struct EnergySystem
     {
+        // Stored in DB.
         static inline int currentAmount = 25;
-        static inline uint64_t lastSecUpdate = 0; // Time in sec since epoch (1.1.1970).
+        static inline uint64_t lastSecUpdated = 0; // Time in sec since epoch (1.1.1970).
+        static inline uint64_t lastSecOneEnergyRestored = 0; // Time in sec since epoch (1.1.1970).
+        // Not stored in DB.
+        static constexpr inline int secToRestoreOneEnergy = 5;
+        static constexpr inline int maxLimitToRestore = 25; // In update method when restore energy by time passes.
+                                                            // If player buy energy for real money dont apply any limit.
+        static constexpr inline int playCost = 5;
     };
     // Database tables end.
 
@@ -53,11 +68,11 @@ namespace EnAndVars
     constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 30.0f;
+    constexpr inline float playerMagneticRadiusDefault = 25.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
-    constexpr inline float playerImpulseFactorOnGroundDefault = 0.09f;
+    constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
-    constexpr inline float playerTorqueFactorOnGroundDefault = 0.08f;
+    constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
     constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.08f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;

@@ -2,6 +2,7 @@
 #include "EnumsAndVariables.h"
 #include "GameStateHelper.h"
 #include "DataBaseHelper.h"
+#include "energySystem/EnergySystem.h"
 
 namespace MagneticBall3D
 {
@@ -51,7 +52,7 @@ namespace MagneticBall3D
         m_buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "", 0.66f, 0.9f, 0.34f, 0.1f);
         m_guiObjects.push_back(m_buttonSettings);
 
-        textCrystals = std::make_shared<Beryll::Text>("Crystals: 00000", EnAndVars::FontsPath::creamy, 0.024f, 0.55f, 0, 0.45f, 0.03f);
+        textCrystals = std::make_shared<Beryll::Text>("Crystals: 00000", EnAndVars::FontsPath::creamy, 0.023f, 0.6f, 0, 0.4f, 0.025f);
         m_guiObjects.push_back(textCrystals);
     }
 
@@ -70,12 +71,23 @@ namespace MagneticBall3D
             }
         }
 
+        EnergySystem::getInstance().update();
+
         textCrystals->text = "Crystals: " + std::to_string(EnAndVars::CurrencyBalance::crystals);
 
         if(m_buttonPlay->getIsPressed())
         {
-            GameStateHelper::popState();
-            GameStateHelper::pushPlayState();
+            if(EnergySystem::getInstance().isEnoughForPlay())
+            {
+                EnergySystem::getInstance().handlePlay();
+
+                GameStateHelper::popState();
+                GameStateHelper::pushPlayState();
+            }
+            else
+            {
+                // Show menu for buy energy.
+            }
         }
 //        else if(m_buttonShop->getIsPressed())
 //        {
@@ -160,5 +172,7 @@ namespace MagneticBall3D
                 go->draw();
             }
         }
+
+        EnergySystem::getInstance().draw();
     }
 }

@@ -67,7 +67,8 @@ namespace DataBaseHelper
                 Beryll::DataBase::setSqlQuery(insertFirstRowEnergySystem);
                 Beryll::DataBase::executeNotSelectQuery();
                 storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
-                storeEnergySystemLastSecUpdate(EnAndVars::EnergySystem::lastSecUpdate);
+                storeEnergySystemLastSecUpdated(EnAndVars::EnergySystem::lastSecUpdated);
+                storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -318,10 +319,15 @@ namespace DataBaseHelper
                     EnAndVars::EnergySystem::currentAmount = std::get<long long int>(rows[0][1]);
                 BR_INFO("currentAmount after read: %d", EnAndVars::EnergySystem::currentAmount);
 
-                BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastSecUpdate contains wrong data.");
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastSecUpdated contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][2]))
-                    EnAndVars::EnergySystem::lastSecUpdate = std::get<long long int>(rows[0][2]);
-                BR_INFO("lastSecUpdate after read: %d", EnAndVars::EnergySystem::lastSecUpdate);
+                    EnAndVars::EnergySystem::lastSecUpdated = std::get<long long int>(rows[0][2]);
+                BR_INFO("lastSecUpdated after read: %d", EnAndVars::EnergySystem::lastSecUpdated);
+
+                BR_ASSERT((std::holds_alternative<long long int>(rows[0][3])), "%s", "LastSecOneEnergyRestored contains wrong data.");
+                if(std::holds_alternative<long long int>(rows[0][3]))
+                    EnAndVars::EnergySystem::lastSecOneEnergyRestored = std::get<long long int>(rows[0][3]);
+                BR_INFO("lastSecOneEnergyRestored after read: %d", EnAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
         }
         catch(const Beryll::DataBaseException& e)
@@ -356,12 +362,32 @@ namespace DataBaseHelper
         }
     }
 
-    void storeEnergySystemLastSecUpdate(long long int value)
+    void storeEnergySystemLastSecUpdated(long long int value)
     {
         try
         {
-            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecUpdate);
-            Beryll::DataBase::bindParameterLongLongInt(":lastSecUpdate", value);
+            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecUpdated);
+            Beryll::DataBase::bindParameterLongLongInt(":lastSecUpdated", value);
+            Beryll::DataBase::executeNotSelectQuery();
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ASSERT(false, "std::exception %s", what.c_str());
+        }
+    }
+
+    void storeEnergySystemLastSecRestored(long long int value)
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecRestored);
+            Beryll::DataBase::bindParameterLongLongInt(":lastSecOneEnergyRestored", value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)

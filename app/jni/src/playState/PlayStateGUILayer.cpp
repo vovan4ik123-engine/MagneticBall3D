@@ -63,7 +63,7 @@ namespace MagneticBall3D
         textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeToMove.png", 0.093f, 0.525f, 0.8f, 0.39f);
         m_guiObjects.push_back(textureTutorialSwipe);
         textureTutorialSwipe->disable();
-        textureTutorialSwipeFaster = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeFaster.png", 0.1f, 0.0f, 0.8f, 0.13f);
+        textureTutorialSwipeFaster = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeFaster.png", 0.1f, 0.0f, 0.8f, 0.1f);
         m_guiObjects.push_back(textureTutorialSwipeFaster);
         textureTutorialSwipeFaster->disable();
         textureTutorialSwipeOnBuilding = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeOnBuilding.png", 0.1f, 0.0f, 0.8f, 0.15f);
