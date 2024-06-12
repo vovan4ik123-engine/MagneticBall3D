@@ -50,7 +50,7 @@ namespace EnAndVars
         static inline uint64_t lastSecUpdated = 0; // Time in sec since epoch (1.1.1970).
         static inline uint64_t lastSecOneEnergyRestored = 0; // Time in sec since epoch (1.1.1970).
         // Not stored in DB.
-        static constexpr inline int secToRestoreOneEnergy = 5;
+        static constexpr inline int secToRestoreOneEnergy = 60;
         static constexpr inline int maxLimitToRestore = 25; // In update method when restore energy by time passes.
                                                             // If player buy energy for real money dont apply any limit.
         static constexpr inline int playCost = 5;

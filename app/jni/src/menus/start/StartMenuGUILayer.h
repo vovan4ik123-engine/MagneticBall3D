@@ -14,19 +14,40 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        std::shared_ptr<Beryll::Text> textCrystals;
-
     private:
-        std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
+        // GUI based on raw ImGUI.
+        // ImGUI flags.
+        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+                                    ImGuiWindowFlags_NoScrollbar;
 
-        std::vector<std::shared_ptr<Beryll::GUITexture>> m_allMapsTextures;
-        std::shared_ptr<Beryll::GUITexture> m_map0TutorialTexture;
-        std::shared_ptr<Beryll::GUITexture> m_map1Texture;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonMapSwipeLeft;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonMapSwipeRight;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonPlay;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonShop;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonPlayerTalents;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonSettings;
+        // Button  play.
+        static const std::string m_buttonPlayID;
+        std::unique_ptr<Beryll::Texture> m_buttonPlayTexture;
+        bool m_buttonPlayPressed = false;
+
+        // Button  settings.
+        static const std::string m_buttonSettingsID;
+        std::unique_ptr<Beryll::Texture> m_buttonSettingsTexture;
+        bool m_buttonSettingsPressed = false;
+
+        // Button map swipe left.
+        static const std::string m_buttonMapSwipeLeftID;
+        std::unique_ptr<Beryll::Texture> m_buttonMapSwipeLeftTexture;
+        bool m_buttonMapSwipeLeftPressed = false;
+
+        // Button map swipe right.
+        static const std::string m_buttonMapSwipeRightID;
+        std::unique_ptr<Beryll::Texture> m_buttonMapSwipeRightTexture;
+        bool m_buttonMapSwipeRightPressed = false;
+
+        // Map texture(preview).
+        static const std::string m_mapTextureID;
+        std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsTextures;
+
+        // Text crystals.
+        static const std::string m_textCrystalsID;
+        ImFont* m_fontCrystals;
+
     };
 }

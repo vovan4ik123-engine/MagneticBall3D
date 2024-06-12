@@ -31,8 +31,11 @@ namespace MagneticBall3D
 
         uint64_t m_currentSec = 0; // Real time clock in seconds.
 
+        // Button energy + texts.
         std::shared_ptr<Beryll::ButtonWithTexture> m_buttonEnergy;
         std::shared_ptr<Beryll::Text> m_textAmount;
         std::shared_ptr<Beryll::Text> m_textRestoreTimer;
+
+        // Menu buy energy.
     };
 }

@@ -24,7 +24,7 @@ namespace MagneticBall3D
 
         if(EnAndVars::EnergySystem::lastSecUpdated < m_currentSec)
         {
-            BR_INFO("if(EnAndVars::EnergySystem::lastSecUpdated < currentSec) %d", m_currentSec);
+            //BR_INFO("if(EnAndVars::EnergySystem::lastSecUpdated < currentSec) %d", m_currentSec);
             EnAndVars::EnergySystem::lastSecUpdated = m_currentSec;
             DataBaseHelper::storeEnergySystemLastSecUpdated(EnAndVars::EnergySystem::lastSecUpdated);
 
@@ -37,7 +37,7 @@ namespace MagneticBall3D
             }
             else if(EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy <= m_currentSec)
             {
-                BR_INFO("%s", "Need and can restore one or more energy.");
+                //BR_INFO("%s", "Need and can restore one or more energy.");
                 // Time when one energy can be restored. Or more if app launched after long time inactive.
                 const int amountCanBeRestored = (m_currentSec - EnAndVars::EnergySystem::lastSecOneEnergyRestored) / EnAndVars::EnergySystem::secToRestoreOneEnergy;
                 const int newAmount = EnAndVars::EnergySystem::currentAmount + amountCanBeRestored;
@@ -53,7 +53,7 @@ namespace MagneticBall3D
                     EnAndVars::EnergySystem::lastSecOneEnergyRestored += EnAndVars::EnergySystem::secToRestoreOneEnergy * amountRestored;
                 }
 
-                BR_INFO("amountCanBeRestored %d after restore %d", amountCanBeRestored, EnAndVars::EnergySystem::currentAmount);
+                //BR_INFO("amountCanBeRestored %d after restore %d", amountCanBeRestored, EnAndVars::EnergySystem::currentAmount);
                 DataBaseHelper::storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
                 DataBaseHelper::storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
