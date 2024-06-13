@@ -29,12 +29,28 @@ namespace MagneticBall3D
         EnergySystem();
         ~EnergySystem();
 
-        uint64_t m_currentSec = 0; // Real time clock in seconds.
+        uint64_t m_currentSec = 0; // Real time clock in seconds. Since epoch (1.1.1970)
 
-        // Button energy + texts.
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonEnergy;
-        std::shared_ptr<Beryll::Text> m_textAmount;
-        std::shared_ptr<Beryll::Text> m_textRestoreTimer;
+        // ImGUI flags.
+        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+                                    ImGuiWindowFlags_NoScrollbar;
+
+        // Texture energy.
+        static const std::string m_energyTextureID;
+        std::unique_ptr<Beryll::Texture> m_energyTexture;
+
+        static const std::string m_textAmountID;
+        ImFont* m_fontAmount;
+
+        static const std::string m_textRestoreTimerID;
+        ImFont* m_fontRestoreTimer;
+        std::string m_textRestoreTimer;
+
+        // Button energy. Transparent. On top of texture + texts.
+        static const std::string m_buttonEnergyID;
+        std::unique_ptr<Beryll::Texture> m_buttonEnergyTexture;
+        bool m_buttonEnergyClicked = false;
 
         // Menu buy energy.
     };

@@ -6,6 +6,7 @@
 
 namespace MagneticBall3D
 {
+    // All there IDs as strings required by ImGUI.
     const std::string StartMenuGUILayer::m_buttonPlayID = std::to_string(BeryllUtils::Common::generateID());
     const std::string StartMenuGUILayer::m_buttonSettingsID = std::to_string(BeryllUtils::Common::generateID());
     const std::string StartMenuGUILayer::m_buttonMapSwipeLeftID = std::to_string(BeryllUtils::Common::generateID());
@@ -38,7 +39,7 @@ namespace MagneticBall3D
     {
         EnergySystem::getInstance().update();
 
-        if(m_buttonPlayPressed)
+        if(m_buttonPlayClicked)
         {
             if(EnergySystem::getInstance().isEnoughForPlay())
             {
@@ -52,25 +53,25 @@ namespace MagneticBall3D
                 // Show menu for buy energy.
             }
         }
-//        else if(m_buttonShop->getIsPressed())
+//        else if(m_buttonShop)
 //        {
 //            GameStateHelper::pushShopState();
 //        }
-//        else if(m_buttonPlayerTalents->getIsPressed())
+//        else if(m_buttonPlayerTalents)
 //        {
 //            GameStateHelper::pushPlayerTalentsState();
 //        }
-        else if(m_buttonSettingsPressed)
+        else if(m_buttonSettingsClicked)
         {
             GameStateHelper::pushSettingsState();
         }
-        else if(m_buttonMapSwipeLeftPressed && EnAndVars::MapsProgress::currentMapIndex > 0)
+        else if(m_buttonMapSwipeLeftClicked && EnAndVars::MapsProgress::currentMapIndex > 0)
         {
             --EnAndVars::MapsProgress::currentMapIndex;
             BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
         }
-        else if(m_buttonMapSwipeRightPressed &&
+        else if(m_buttonMapSwipeRightClicked &&
                 EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::lastOpenedMapIndex &&
                 EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
         {
@@ -95,7 +96,7 @@ namespace MagneticBall3D
 
         ImGui::Begin(m_buttonPlayID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonPlayPressed = ImGui::ImageButton(m_buttonPlayID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPlayTexture->getID()),
+        m_buttonPlayClicked = ImGui::ImageButton(m_buttonPlayID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPlayTexture->getID()),
                                                  ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.09f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
@@ -106,7 +107,7 @@ namespace MagneticBall3D
 
         ImGui::Begin(m_buttonSettingsID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonSettingsPressed = ImGui::ImageButton(m_buttonSettingsID.c_str(),reinterpret_cast<ImTextureID>(m_buttonSettingsTexture->getID()),
+        m_buttonSettingsClicked = ImGui::ImageButton(m_buttonSettingsID.c_str(),reinterpret_cast<ImTextureID>(m_buttonSettingsTexture->getID()),
                                                      ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
@@ -119,7 +120,7 @@ namespace MagneticBall3D
 
             ImGui::Begin(m_buttonMapSwipeLeftID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            m_buttonMapSwipeLeftPressed = ImGui::ImageButton(m_buttonMapSwipeLeftID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeLeftTexture->getID()),
+            m_buttonMapSwipeLeftClicked = ImGui::ImageButton(m_buttonMapSwipeLeftID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeLeftTexture->getID()),
                                                              ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
@@ -134,7 +135,7 @@ namespace MagneticBall3D
 
             ImGui::Begin(m_buttonMapSwipeRightID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            m_buttonMapSwipeRightPressed = ImGui::ImageButton(m_buttonMapSwipeRightID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeRightTexture->getID()),
+            m_buttonMapSwipeRightClicked = ImGui::ImageButton(m_buttonMapSwipeRightID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeRightTexture->getID()),
                                                               ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
@@ -156,13 +157,13 @@ namespace MagneticBall3D
 
         // Text crystals.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0 * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_textCrystalsID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         ImGui::PushFont(m_fontCrystals);
-        ImGui::Text("Crystals:  %d", EnAndVars::CurrencyBalance::crystals);
+        ImGui::Text("Crystals: %d", EnAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
 
         ImGui::End();

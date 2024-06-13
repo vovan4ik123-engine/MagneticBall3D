@@ -21,25 +21,25 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoScrollbar;
 
-        // Button  play.
+        // Button play.
         static const std::string m_buttonPlayID;
         std::unique_ptr<Beryll::Texture> m_buttonPlayTexture;
-        bool m_buttonPlayPressed = false;
+        bool m_buttonPlayClicked = false;
 
-        // Button  settings.
+        // Button settings.
         static const std::string m_buttonSettingsID;
         std::unique_ptr<Beryll::Texture> m_buttonSettingsTexture;
-        bool m_buttonSettingsPressed = false;
+        bool m_buttonSettingsClicked = false;
 
         // Button map swipe left.
         static const std::string m_buttonMapSwipeLeftID;
         std::unique_ptr<Beryll::Texture> m_buttonMapSwipeLeftTexture;
-        bool m_buttonMapSwipeLeftPressed = false;
+        bool m_buttonMapSwipeLeftClicked = false;
 
         // Button map swipe right.
         static const std::string m_buttonMapSwipeRightID;
         std::unique_ptr<Beryll::Texture> m_buttonMapSwipeRightTexture;
-        bool m_buttonMapSwipeRightPressed = false;
+        bool m_buttonMapSwipeRightClicked = false;
 
         // Map texture(preview).
         static const std::string m_mapTextureID;

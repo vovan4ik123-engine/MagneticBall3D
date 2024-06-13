@@ -4,13 +4,21 @@
 
 namespace MagneticBall3D
 {
+    // All there IDs as strings required by ImGUI.
+    const std::string EnergySystem::m_energyTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_textAmountID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_textRestoreTimerID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_buttonEnergyID = std::to_string(BeryllUtils::Common::generateID());
+
     EnergySystem::EnergySystem()
     {
         BR_INFO("%s", "EnergySystem::EnergySystem()");
 
-        m_buttonEnergy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Energy.jpg", "", 0.4f, 0.0f, 0.2f, 0.05f);
-        m_textAmount = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::roboto, 0.025f, 0.46f, 0.008, 0.14f, 0.03f, false, true);
-        m_textRestoreTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::roboto, 0.015f, 0.48f, 0.033, 0.12f, 0.02f, false, true);
+        m_energyTexture = Beryll::Renderer::createTexture("GUI/menus/start/Energy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonEnergyTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
+        m_fontAmount = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.025f);
+        m_fontRestoreTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.015f);
     }
 
     EnergySystem::~EnergySystem()
@@ -58,44 +66,91 @@ namespace MagneticBall3D
                 DataBaseHelper::storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
         }
+
+        if(m_buttonEnergyClicked)
+        {
+            BR_INFO("%s", "m_buttonEnergyClicked");
+        }
     }
 
     void EnergySystem::draw()
     {
-        m_buttonEnergy->draw();
+        // Text amount.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::SetNextWindowPos(ImVec2(0.45f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.008f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
-        m_textAmount->text = std::to_string(EnAndVars::EnergySystem::currentAmount);
-        m_textAmount->text += "/";
-        m_textAmount->text += std::to_string(EnAndVars::EnergySystem::maxLimitToRestore);
-        m_textAmount->draw();
+        ImGui::Begin(m_textAmountID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-        if(EnAndVars::EnergySystem::currentAmount < EnAndVars::EnergySystem::maxLimitToRestore)
+        ImGui::PushFont(m_fontAmount);
+        ImGui::Text("%d/%d", EnAndVars::EnergySystem::currentAmount, EnAndVars::EnergySystem::maxLimitToRestore);
+        ImGui::PopFont();
+
+        ImGui::End();
+        ImGui::PopStyleColor(1);
+
+        // Text restore timer.
+        m_textRestoreTimer = "";
+        if(EnAndVars::EnergySystem::currentAmount < EnAndVars::EnergySystem::maxLimitToRestore &&
+           EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy >= m_currentSec)
         {
-            // Draw timer about restore one energy.
-            const uint64_t secLeft = (EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy) - m_currentSec;
+            // Set timer about restore one energy.
+            uint64_t secLeft = (EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy) - m_currentSec;
             if(secLeft > EnAndVars::EnergySystem::secToRestoreOneEnergy)
-            {
-                BR_ASSERT(false, "secLeft > EnAndVars::EnergySystem::secToRestoreOneEnergy %d %d", secLeft, EnAndVars::EnergySystem::secToRestoreOneEnergy);
-                return;
-            }
+                secLeft = EnAndVars::EnergySystem::secToRestoreOneEnergy;
 
-            int min = int(secLeft) / 60;
-            int sec = int(secLeft) % 60;
+            int min = secLeft / 60;
+            int sec = secLeft % 60;
 
-            std::stringstream stream;
             if(min < 10)
-                stream << "0";
+                m_textRestoreTimer += "0";
 
-            stream << min << ":";
+            m_textRestoreTimer += std::to_string(min);
+            m_textRestoreTimer += ":";
 
             if(sec < 10)
-                stream << "0";
+                m_textRestoreTimer += "0";
 
-            stream << sec;
-
-            m_textRestoreTimer->text = stream.str();
-            m_textRestoreTimer->draw();
+            m_textRestoreTimer += std::to_string(sec);
         }
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.033f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_textRestoreTimerID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+        ImGui::PushFont(m_fontRestoreTimer);
+        ImGui::Text("%s", m_textRestoreTimer.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
+        ImGui::PopFont();
+
+        ImGui::End();
+        ImGui::PopStyleColor(1);
+
+        // Texture energy.
+        ImGui::SetNextWindowPos(ImVec2(0.39f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_energyTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_energyTexture->getID()),
+                     ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // Button energy. Transparent. On top of texture + texts.
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGui::SetNextWindowPos(ImVec2(0.39f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_buttonEnergyID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        m_buttonEnergyClicked = ImGui::ImageButton(m_buttonEnergyID.c_str(), reinterpret_cast<ImTextureID>(m_buttonEnergyTexture->getID()),
+                                                   ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+        ImGui::PopStyleColor(3);
     }
 
     bool EnergySystem::isEnoughForPlay()
