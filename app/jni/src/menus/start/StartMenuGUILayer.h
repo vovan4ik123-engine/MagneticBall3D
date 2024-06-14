@@ -41,13 +41,12 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_buttonMapSwipeRightTexture;
         bool m_buttonMapSwipeRightClicked = false;
 
-        // Map texture(preview).
+        // Texture map(preview).
         static const std::string m_mapTextureID;
         std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsTextures;
 
         // Text crystals.
         static const std::string m_textCrystalsID;
         ImFont* m_fontCrystals;
-
     };
 }

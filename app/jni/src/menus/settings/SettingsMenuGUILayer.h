@@ -14,25 +14,44 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-
-
     private:
-        std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonBack;
+        // GUI based on raw ImGUI.
+        // ImGUI flags.
+        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+                                    ImGuiWindowFlags_NoScrollbar;
 
-        std::shared_ptr<Beryll::Text> m_settingsText;
+        // Button back.
+        static const std::string m_buttonBackID;
+        std::unique_ptr<Beryll::Texture> m_buttonBackTexture;
+        bool m_buttonBackClicked = false;
+
+        ImFont* m_fontForAllCheckBoxes;
+
+        // Texture settings.
+        static const std::string m_settingsTextureID;
+        std::unique_ptr<Beryll::Texture> m_settingsTexture;
 
         // FPS limit.
-        void recheckFPSCheckBoxes(int checkedID);
-        std::shared_ptr<Beryll::Text> m_FPSLimitText;
-        std::shared_ptr<Beryll::CheckBox> m_30FPS;
-        std::shared_ptr<Beryll::CheckBox> m_60FPS;
-        std::shared_ptr<Beryll::CheckBox> m_120FPS;
-        std::shared_ptr<Beryll::CheckBox> m_250FPS;
-        std::vector<std::shared_ptr<Beryll::CheckBox>> m_FPSCheckBoxes;
+        static const std::string m_FPSLimitTextureID;
+        std::unique_ptr<Beryll::Texture> m_FPSLimitTexture;
+
+        static const std::string m_30FPSCheckBoxID;
+        bool m_30FPSChecked = false;
+        static const std::string m_60FPSCheckBoxID;
+        bool m_60FPSChecked = false;
+        static const std::string m_120FPSCheckBoxID;
+        bool m_120FPSChecked = false;
+        static const std::string m_250FPSCheckBoxID;
+        bool m_250FPSChecked = false;
+
+        void resetFPS(int fps);
 
         // Background music.
-        std::shared_ptr<Beryll::Text> m_musicText;
-        std::shared_ptr<Beryll::CheckBox> m_musicCheckBox;
+        static const std::string m_musicTextureID;
+        std::unique_ptr<Beryll::Texture> m_musicTexture;
+
+        static const std::string m_musicCheckBoxID;
+        bool m_musicCheckBoxChecked;
     };
 }

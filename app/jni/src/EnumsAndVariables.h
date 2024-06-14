@@ -68,7 +68,7 @@ namespace EnAndVars
     constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 25.0f;
+    constexpr inline float playerMagneticRadiusDefault = 28.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
     constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;

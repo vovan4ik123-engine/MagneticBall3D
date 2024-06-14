@@ -5,47 +5,37 @@
 
 namespace MagneticBall3D
 {
+    // All there IDs as strings required by ImGUI.
+    const std::string SettingsMenuGUILayer::m_buttonBackID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_settingsTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_FPSLimitTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_30FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_60FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_120FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_250FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_musicTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_musicCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
+
     SettingsMenuGUILayer::SettingsMenuGUILayer()
     {
-        m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.jpg", "", 0, 0.9f, 0.3f, 0.1f);
-        m_guiObjects.push_back(m_buttonBack);
+        m_buttonBackTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_settingsText = std::make_shared<Beryll::Text>("Settings", EnAndVars::FontsPath::roboto, 0.05f, 0.323f, 0, 0.38f, 0.055f);
-        m_guiObjects.push_back(m_settingsText);
+        m_settingsTexture = Beryll::Renderer::createTexture("GUI/menus/settings/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_FPSLimitText = std::make_shared<Beryll::Text>("FPS limit:", EnAndVars::FontsPath::roboto, 0.03f, 0.01f, 0.08f, 0.245f, 0.035f);
-        m_guiObjects.push_back(m_FPSLimitText);
+        m_fontForAllCheckBoxes = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
 
-        m_30FPS = std::make_shared<Beryll::CheckBox>("30 ", EnAndVars::FontsPath::roboto, 0.03f, 0.26f, 0.08f);
-        m_guiObjects.push_back(m_30FPS);
-        m_FPSCheckBoxes.push_back(m_30FPS);
         if(EnAndVars::SettingsMenu::FPSLimit == 30)
-            recheckFPSCheckBoxes(m_30FPS->getID());
+            m_30FPSChecked = true;
+        else if(EnAndVars::SettingsMenu::FPSLimit == 60)
+            m_60FPSChecked = true;
+        else if(EnAndVars::SettingsMenu::FPSLimit == 120)
+            m_120FPSChecked = true;
+        else if(EnAndVars::SettingsMenu::FPSLimit == 250)
+            m_250FPSChecked = true;
 
-        m_60FPS = std::make_shared<Beryll::CheckBox>("60 ", EnAndVars::FontsPath::roboto, 0.03f, 0.41f, 0.08f);
-        m_guiObjects.push_back(m_60FPS);
-        m_FPSCheckBoxes.push_back(m_60FPS);
-        if(EnAndVars::SettingsMenu::FPSLimit == 60)
-            recheckFPSCheckBoxes(m_60FPS->getID());
-
-        m_120FPS = std::make_shared<Beryll::CheckBox>("120 ", EnAndVars::FontsPath::roboto, 0.03f, 0.56f, 0.08f);
-        m_guiObjects.push_back(m_120FPS);
-        m_FPSCheckBoxes.push_back(m_120FPS);
-        if(EnAndVars::SettingsMenu::FPSLimit == 120)
-            recheckFPSCheckBoxes(m_120FPS->getID());
-
-        m_250FPS = std::make_shared<Beryll::CheckBox>("250 ", EnAndVars::FontsPath::roboto, 0.03f, 0.74f, 0.08f);
-        m_guiObjects.push_back(m_250FPS);
-        m_FPSCheckBoxes.push_back(m_250FPS);
-        if(EnAndVars::SettingsMenu::FPSLimit == 250)
-            recheckFPSCheckBoxes(m_250FPS->getID());
-
-        m_musicText = std::make_shared<Beryll::Text>("Background music:", EnAndVars::FontsPath::roboto, 0.03f, 0.01f, 0.14f, 0.49f, 0.035f);
-        m_guiObjects.push_back(m_musicText);
-
-        m_musicCheckBox = std::make_shared<Beryll::CheckBox>("", EnAndVars::FontsPath::roboto, 0.03f, 0.5f, 0.14f);
-        m_guiObjects.push_back(m_musicCheckBox);
-        m_musicCheckBox->checked = EnAndVars::SettingsMenu::backgroundMusic;
+        m_musicCheckBoxChecked = EnAndVars::SettingsMenu::backgroundMusic;
     }
 
     SettingsMenuGUILayer::~SettingsMenuGUILayer()
@@ -55,48 +45,16 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::updateBeforePhysics()
     {
-        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
-        {
-            if(go->getIsEnabled())
-            {
-                go->updateBeforePhysics();
-            }
-        }
-
-        if(m_buttonBack->getIsPressed())
+        if(m_buttonBackClicked)
         {
             GameStateHelper::popState();
             return;
         }
 
-        for(auto& checkBox : m_FPSCheckBoxes)
-        {
-            if(checkBox->getIsValueChangingToMarked())
-            {
-                EnAndVars::SettingsMenu::FPSLimit = std::stoi(checkBox->text);
-                BR_INFO("Set FPSLimit: %d", EnAndVars::SettingsMenu::FPSLimit);
-                Beryll::GameLoop::setFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
-
-                // Also store to data base.
-                DataBaseHelper::storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
-                break;
-            }
-        }
-
-        // Dont allow all check boxes be unchecked. Always keep one checked.
-        if(EnAndVars::SettingsMenu::FPSLimit == 30)
-            recheckFPSCheckBoxes(m_30FPS->getID());
-        else if(EnAndVars::SettingsMenu::FPSLimit == 60)
-            recheckFPSCheckBoxes(m_60FPS->getID());
-        else if(EnAndVars::SettingsMenu::FPSLimit == 120)
-            recheckFPSCheckBoxes(m_120FPS->getID());
-        else if(EnAndVars::SettingsMenu::FPSLimit == 250)
-            recheckFPSCheckBoxes(m_250FPS->getID());
-
-        if(m_musicCheckBox->checked != EnAndVars::SettingsMenu::backgroundMusic)
+        if(m_musicCheckBoxChecked != EnAndVars::SettingsMenu::backgroundMusic)
         {
             BR_INFO("%s", "Enable/disable background music.");
-            EnAndVars::SettingsMenu::backgroundMusic = m_musicCheckBox->checked;
+            EnAndVars::SettingsMenu::backgroundMusic = m_musicCheckBoxChecked;
             DataBaseHelper::storeSettingsBackgroundMusic(EnAndVars::SettingsMenu::backgroundMusic);
         }
     }
@@ -108,23 +66,159 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::draw()
     {
-        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
+        // Button back.
+        ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_buttonBackID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        m_buttonBackClicked = ImGui::ImageButton(m_buttonBackID.c_str(),reinterpret_cast<ImTextureID>(m_buttonBackTexture->getID()),
+                                                 ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // Settings texture.
+        ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_settingsTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_settingsTexture->getID()),
+                     ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // FPS limit.
+        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_FPSLimitTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSLimitTexture->getID()),
+                     ImVec2(0.24f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // FPS check boxes.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
+
+        ImGui::SetNextWindowPos(ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_30FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::PushFont(m_fontForAllCheckBoxes);
+        if(ImGui::Checkbox("30", &m_30FPSChecked, false))
         {
-            if(go->getIsEnabled())
-            {
-                go->draw();
-            }
+            resetFPS(30);
         }
+        ImGui::PopFont();
+
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(0.41f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_60FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::PushFont(m_fontForAllCheckBoxes);
+        if(ImGui::Checkbox("60", &m_60FPSChecked, false))
+        {
+            resetFPS(60);
+        }
+        ImGui::PopFont();
+
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(0.56f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_120FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::PushFont(m_fontForAllCheckBoxes);
+        if(ImGui::Checkbox("120", &m_120FPSChecked, false))
+        {
+            resetFPS(120);
+        }
+        ImGui::PopFont();
+
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(0.74f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_250FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::PushFont(m_fontForAllCheckBoxes);
+        if(ImGui::Checkbox("250", &m_250FPSChecked, false))
+        {
+            resetFPS(250);
+        }
+        ImGui::PopFont();
+
+        ImGui::End();
+
+        // Background music.
+        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.14f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_musicTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_musicTexture->getID()),
+                     ImVec2(0.49f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // Background music check box.
+        ImGui::SetNextWindowPos(ImVec2(0.51f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.14f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin(m_musicCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        ImGui::PushFont(m_fontForAllCheckBoxes);
+        ImGui::Checkbox((std::string("##ImGUILibrarySpecificID") + m_musicCheckBoxID).c_str(), &m_musicCheckBoxChecked, false);
+        ImGui::PopFont();
+
+        ImGui::End();
+
+        ImGui::PopStyleColor(5);
     }
 
-    void SettingsMenuGUILayer::recheckFPSCheckBoxes(int checkedID)
+    void SettingsMenuGUILayer::resetFPS(int fps)
     {
-        for(auto& checkBox : m_FPSCheckBoxes)
+        m_30FPSChecked = false;
+        m_60FPSChecked = false;
+        m_120FPSChecked = false;
+        m_250FPSChecked = false;
+
+        if(fps == 30)
         {
-            if(checkBox->getID() == checkedID)
-                checkBox->checked = true;
-            else
-                checkBox->checked = false;
+            m_30FPSChecked = true;
+            EnAndVars::SettingsMenu::FPSLimit = 30;
         }
+        else if (fps == 60)
+        {
+            m_60FPSChecked = true;
+            EnAndVars::SettingsMenu::FPSLimit = 60;
+        }
+        else if (fps == 120)
+        {
+            m_120FPSChecked = true;
+            EnAndVars::SettingsMenu::FPSLimit = 120;
+        }
+        else if (fps == 250)
+        {
+            m_250FPSChecked = true;
+            EnAndVars::SettingsMenu::FPSLimit = 250;
+        }
+
+        BR_INFO("Set FPSLimit: %d", EnAndVars::SettingsMenu::FPSLimit);
+        Beryll::GameLoop::setFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
+
+        DataBaseHelper::storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
     }
 }
