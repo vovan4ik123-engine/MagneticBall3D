@@ -53,7 +53,7 @@ namespace MagneticBall3D
             for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
             {
                 float buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp);
-                if(buildingNormalAngle > 0.35f && buildingNormalAngle < 2.79f) // > 20 && < 160 degrees.
+                if(buildingNormalAngle > 0.87f && buildingNormalAngle < 2.27f) // > 50 && < 130 degrees.
                 {
                     collisionWithWall = true;
                     break;
@@ -78,7 +78,7 @@ namespace MagneticBall3D
 
             if(m_isOnBuildingWall &&
                m_lastTimeOnGround + 1.1f < EnAndVars::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 1.1f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 0.85 sec.
+               m_lastTimeOnBuilding + 1.1f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 1.1 sec.
             {
                 m_obj->resetVelocities();
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
@@ -181,6 +181,8 @@ namespace MagneticBall3D
             m_playerMoveDirXZ = glm::normalize(m_playerLinearVelocityXZ);
         }
 
+        BR_INFO("m_playerMoveSpeed %f", m_playerMoveSpeed);
+
         // Handle meteor.
         if(m_playerMoveSpeed > EnAndVars::playerSpeedForMeteor)
             m_isMeteor = true;
@@ -194,7 +196,7 @@ namespace MagneticBall3D
         // Swipe should control only XZ speed.
         // Y speed controlled by gravity.
         // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
-        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * (1.0f / m_obj->getCollisionMass()));
+        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * m_obj->getLinearFactor() * (1.0f / m_obj->getCollisionMass()));
         newVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 

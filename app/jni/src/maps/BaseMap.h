@@ -94,6 +94,9 @@ namespace MagneticBall3D
         glm::vec3 m_dirToSun{0.0f};
         glm::vec3 m_sunLightDir{0.0f};
         float m_ambientLight = 0.7f;
+        const float m_shadowsCubeWidth = 550.0f;
+        const float m_shadowsCubeHeight = 550.0f;
+        const float m_shadowsCubeDepth = 1200.0f;
 
         std::unique_ptr<Beryll::SkyBox> m_skyBox;
 

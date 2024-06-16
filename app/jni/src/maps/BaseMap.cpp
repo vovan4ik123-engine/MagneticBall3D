@@ -242,7 +242,7 @@ namespace MagneticBall3D
             }
 
             // 2 m = radius for default ball.
-            float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.7f);
+            const float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.7f);
 
             if(m_player->getIsOnGround())
             {
@@ -250,6 +250,14 @@ namespace MagneticBall3D
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
                 powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnGround * radiusForTorqueMultiplier;
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
+
+                if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
+                {
+                    // Help to player move faster when speed is low.
+                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.004f;
+                    powerForImpulse += powerForImpulse * powerToHelpPlayer;
+                    powerForTorque += powerForTorque * powerToHelpPlayer;
+                }
             }
             else if(m_player->getIsOnBuildingRoof())
             {
@@ -271,9 +279,19 @@ namespace MagneticBall3D
 
             m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
-            if(m_player->getLastTimeOnBuildingWall() + 1.0f > EnAndVars::mapPlayTimeSec)
+            if(m_player->getIsOnGround())
             {
-                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 40.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
+                const glm::vec3 garbageImpulse = powerForImpulse * 0.0001f;
+
+                for(const auto& wrapper : m_allGarbage)
+                {
+                    if(wrapper.isMagnetized)
+                        wrapper.obj->applyCentralImpulse(garbageImpulse);
+                }
+            }
+            else if(m_player->getLastTimeOnBuildingWall() + 1.0f > EnAndVars::mapPlayTimeSec)
+            {
+                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 50.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
                 const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.5f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
@@ -706,7 +724,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
         m_cameraFront.y += 12.0f + m_player->getObj()->getXZRadius();
 
-        float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.1f);
+        float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.0f);
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.

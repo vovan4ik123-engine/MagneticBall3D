@@ -50,7 +50,7 @@ namespace EnAndVars
         static inline uint64_t lastSecUpdated = 0; // Time in sec since epoch (1.1.1970).
         static inline uint64_t lastSecOneEnergyRestored = 0; // Time in sec since epoch (1.1.1970).
         // Not stored in DB.
-        static constexpr inline int secToRestoreOneEnergy = 60;
+        static constexpr inline int secToRestoreOneEnergy = 10;
         static constexpr inline int maxLimitToRestore = 25; // In update method when restore energy by time passes.
                                                             // If player buy energy for real money dont apply any limit.
         static constexpr inline int playCost = 5;
@@ -90,7 +90,7 @@ namespace EnAndVars
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
-    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -10.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -7.0f, 0.0f};
     constexpr inline float playerMaxSpeedXZDefault = 90.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     constexpr inline float playerSpeedForMeteor = 100.0f;

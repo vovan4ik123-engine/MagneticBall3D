@@ -102,28 +102,28 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                              {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.012f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.012f;
+                                                                                                                        {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
@@ -231,7 +231,7 @@ namespace MagneticBall3D
         glm::vec3 sunPos = m_player->getObj()->getOrigin() +
                            (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) +
                            (m_dirToSun * (600.0f - m_player->getObj()->getOrigin().y)); // sunPos.y is 600 max.
-        updateSunPosition(sunPos, 500, 500, 800.0f);
+        updateSunPosition(sunPos, m_shadowsCubeWidth, m_shadowsCubeHeight, m_shadowsCubeDepth);
 
         Beryll::Renderer::disableFaceCulling();
         if(BaseEnemy::getActiveCount() < 150)
@@ -549,7 +549,7 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
-        for(int i = 0; i < 130; ++i)
+        for(int i = 0; i < 110; ++i)
         {
             auto copPistol = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistol.fbx",
                                                             0.0f,
@@ -578,7 +578,7 @@ namespace MagneticBall3D
             m_animatedObjForShadowMap.push_back(copPistol);
         }
 
-        for(int i = 0; i < 120; ++i)
+        for(int i = 0; i < 100; ++i)
         {
             auto copShield = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistolShield.fbx",
                                                             0.0f,
@@ -1082,13 +1082,13 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 120 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -1132,13 +1132,13 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
                 enemy->damage += 0.5f;
 
-                if(copWithPistolCount < 130 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 120 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
