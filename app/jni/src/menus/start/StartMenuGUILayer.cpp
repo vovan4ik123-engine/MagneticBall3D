@@ -37,21 +37,21 @@ namespace MagneticBall3D
 
     void StartMenuGUILayer::updateBeforePhysics()
     {
-        EnergySystem::getInstance().update();
+        //EnergySystem::getInstance().update();
 
         if(m_buttonPlayClicked)
         {
-            if(EnergySystem::getInstance().isEnoughForPlay())
+            //if(EnergySystem::getInstance().isEnoughForPlay())
             {
-                EnergySystem::getInstance().handlePlay();
+                //EnergySystem::getInstance().handlePlay();
 
                 GameStateHelper::popState();
                 GameStateHelper::pushPlayState();
             }
-            else
-            {
+            //else
+            //{
                 // Show menu for buy energy.
-            }
+            //}
         }
 //        else if(m_buttonShop)
 //        {
@@ -88,7 +88,7 @@ namespace MagneticBall3D
 
     void StartMenuGUILayer::draw()
     {
-        EnergySystem::getInstance().draw();
+        //EnergySystem::getInstance().draw();
 
         // Button play.
         ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.7f * Beryll::MainImGUI::getInstance()->getGUIHeight()));

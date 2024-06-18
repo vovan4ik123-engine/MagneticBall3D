@@ -41,7 +41,7 @@ namespace MagneticBall3D
         EnAndVars::playerMagneticRadius = 50.0f;
         EnAndVars::garbageMaxCountMagnetized = 85.0f;
 
-        m_gui->disableTimer();
+        m_gui->disableMapPlayTimer();
 
         SendStatisticsHelper::sendMapStart();
 

@@ -181,7 +181,7 @@ namespace MagneticBall3D
             m_playerMoveDirXZ = glm::normalize(m_playerLinearVelocityXZ);
         }
 
-        BR_INFO("m_playerMoveSpeed %f", m_playerMoveSpeed);
+        //BR_INFO("m_playerMoveSpeed %f", m_playerMoveSpeed);
 
         // Handle meteor.
         if(m_playerMoveSpeed > EnAndVars::playerSpeedForMeteor)

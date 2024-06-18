@@ -253,8 +253,8 @@ namespace MagneticBall3D
 
                 if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
                 {
-                    // Help to player move faster when speed is low.
-                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.004f;
+                    // Help to player move faster on ground when speed is low.
+                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.008f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
@@ -775,8 +775,8 @@ namespace MagneticBall3D
 
     void BaseMap::updateGUI()
     {
-        m_gui->progressBarHP->setProgress(float(m_player->getCurrentHP()) / float(m_player->getMaxHP()));
-        m_gui->progressBarXP->setProgress(float(m_player->getCurrentLevelExp()) / float(m_player->getCurrentLevelMaxExp()));
+        m_gui->progressBarHP = float(m_player->getCurrentHP()) / float(m_player->getMaxHP());
+        m_gui->progressBarXP = float(m_player->getCurrentLevelExp()) / float(m_player->getCurrentLevelMaxExp());
     }
 
     void BaseMap::handleJumpPads()

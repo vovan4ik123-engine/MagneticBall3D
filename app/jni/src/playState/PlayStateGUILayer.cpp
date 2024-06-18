@@ -5,6 +5,14 @@
 
 namespace MagneticBall3D
 {
+    // All there IDs as strings required by ImGUI.
+    const std::string PlayStateGUILayer::m_progressBarHPID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_progressBarXPID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_mapPlayTimerID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_buttonPauseID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_buttonResumeID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_buttonExitID = std::to_string(BeryllUtils::Common::generateID());
+
     PlayStateGUILayer::PlayStateGUILayer()
     {
         m_ID = Beryll::LayerID::PLAY_GUI;
@@ -18,17 +26,6 @@ namespace MagneticBall3D
 //        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
 //        m_guiObjects.push_back(m_swipeCount);
 
-        m_releaseTimer = std::make_shared<Beryll::Text>("00:00", EnAndVars::FontsPath::roboto, 0.03f, 0.424f, 0.0f, 0.25f, 0.035f);
-        m_guiObjects.push_back(m_releaseTimer);
-
-//        sliderImpulse = std::make_shared<Beryll::SliderHorizontal>("impulse", EnumsAndVariables::FontsPath::roboto, );
-//        m_guiObjects.push_back(sliderImpulse);
-//        sliderImpulse->setValue(0.15f);
-//
-//        sliderTorque = std::make_shared<Beryll::SliderHorizontal>("torque", EnumsAndVariables::FontsPath::roboto, );
-//        m_guiObjects.push_back(sliderTorque);
-//        sliderTorque->setValue(0.1f);
-
 //        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderAmbient);
 //        sliderAmbient->setValue(0.7f);
@@ -41,23 +38,25 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(0.5f);
 
-        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.02f, 0.956f, 1.04f, 0.025f);
-        m_guiObjects.push_back(progressBarHP);
-        progressBarHP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
-        progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
-        progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
-        progressBarHP->setProgress(1.0f);
+//        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.02f, 0.956f, 1.04f, 0.025f);
+//        m_guiObjects.push_back(progressBarHP);
+//        ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+//        progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
+//        progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
+//        progressBarHP->setProgress(1.0f);
+//
+//        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.02f, 0.976f, 1.04f, 0.03f);
+//        m_guiObjects.push_back(progressBarXP);
+//        progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
+//        progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);
+//        progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
+//        progressBarXP->setProgress(0.0f);
 
-        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.02f, 0.976f, 1.04f, 0.03f);
-        m_guiObjects.push_back(progressBarXP);
-        progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
-        progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);
-        progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
-        progressBarXP->setProgress(0.0f);
+        m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
 
-        buttonExit = std::make_shared<Beryll::ButtonWithText>("Exit", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
-        m_guiObjects.push_back(buttonExit);
-        buttonExit->disable();
+        m_buttonPauseTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonResumeTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonExitTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         // Map0Tutorial.
         textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeToMove.png", 0.093f, 0.525f, 0.8f, 0.39f);
@@ -71,11 +70,9 @@ namespace MagneticBall3D
         textureTutorialSwipeOnBuilding->disable();
 
         // Pause.
-        buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/PauseButton.jpg", "", 0.0f, 0.0f, 0.1f, 0.045f);
-        m_guiObjects.push_back(buttonPause);
-        buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::roboto, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
-        m_guiObjects.push_back(buttonPauseResume);
-        buttonPauseResume->disable();
+        //buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Pause.jpg", "", 0.0f, 0.0f, 0.1f, 0.045f);
+        //buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::roboto, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
+
 
         // Resurrect.
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
@@ -161,43 +158,38 @@ namespace MagneticBall3D
 
             //BR_INFO("FPS: %f", Beryll::GameLoop::getFPS());
 
-            int min = int(EnAndVars::mapPlayTimeSec / 60.0f);
-            int sec = int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
-            if(min < 10)
-                stream << "0";
-
-            stream << min << ":";
-
-            if(sec < 10)
-                stream << "0";
-
-            stream << sec;
-
-            m_releaseTimer->text = stream.str();
-
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
 
-        // Only for buttons.
+        // Only for buttons. Make delay to prevent accidental click when user swipe during gameplay.
         if(m_timeAppearsOnScreen + m_delayBeforeCanBeClicked > Beryll::TimeStep::getSecFromStart())
             return;
 
-        if(buttonPause->getIsPressed() && !EnAndVars::gameOnPause)
+        if(m_buttonPauseClicked)
         {
-            GameStateHelper::pauseGame();
-            buttonPauseResume->enable();
-            buttonExit->leftPos = 0.35f;
-            buttonExit->enable();
+            m_buttonPauseClicked = false;
+
+            if(!EnAndVars::gameOnPause)
+            {
+                GameStateHelper::pauseGame();
+                m_buttonResumeEnabled = true;
+                m_buttonExitLeft = 0.35f;
+                m_buttonExitEnabled = true;
+            }
         }
-        else if(buttonPauseResume->getIsPressed())
+        else if(m_buttonResumeClicked)
         {
+            m_buttonResumeClicked = false;
+
             GameStateHelper::resumeGame();
-            buttonPauseResume->disable();
-            buttonExit->disable();
+            m_buttonResumeEnabled = false;
+            m_buttonExitEnabled = false;
         }
-        else if(buttonExit->getIsPressed())
+        else if(m_buttonExitClicked)
         {
+            m_buttonExitClicked = false;
+
             // Pause game before exit to avoid update scene layer.
             GameStateHelper::pauseGame();
 
@@ -233,7 +225,7 @@ namespace MagneticBall3D
             GameStateHelper::resumeGame();
             textureResurrect->disable();
             buttonResurrectOk->disable();
-            buttonExit->disable();
+            m_buttonExitEnabled = false;
         }
     }
 
@@ -251,6 +243,95 @@ namespace MagneticBall3D
                 go->draw();
             }
         }
+
+        // Text map timer.
+        if(m_showMapPlayTimer)
+        {
+            m_textMapPlayTimer = "";
+            int min = int(EnAndVars::mapPlayTimeSec / 60.0f);
+            int sec = int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+            if(min < 10)
+                m_textMapPlayTimer += "0";
+
+            m_textMapPlayTimer += std::to_string(min);
+            m_textMapPlayTimer += ":";
+
+            if(sec < 10)
+                m_textMapPlayTimer += "0";
+
+            m_textMapPlayTimer += std::to_string(sec);
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+            ImGui::SetNextWindowPos(ImVec2(0.42f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_mapPlayTimerID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::PushFont(m_fontMapPlayTimer);
+            ImGui::Text("%s", m_textMapPlayTimer.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
+            ImGui::PopFont();
+            ImGui::End();
+            ImGui::PopStyleColor(1);
+        }
+
+        // HP bar.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.956f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::Begin(m_progressBarHPID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::ProgressBar(progressBarHP);
+        ImGui::End();
+        ImGui::PopStyleColor(3);
+
+        // XP bar.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 0.0f, 1.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.976f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::Begin(m_progressBarXPID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::ProgressBar(progressBarXP);
+        ImGui::End();
+        ImGui::PopStyleColor(3);
+
+        // Button pause.
+        ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_buttonPauseID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        m_buttonPauseClicked = ImGui::ImageButton(m_buttonPauseID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPauseTexture->getID()),
+                                                 ImVec2(0.1f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.045f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // Button resume.
+        if(m_buttonResumeEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.25f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.35f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+            ImGui::Begin(m_buttonResumeID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+            m_buttonResumeClicked = ImGui::ImageButton(m_buttonResumeID.c_str(),reinterpret_cast<ImTextureID>(m_buttonResumeTexture->getID()),
+                                                     ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+            ImGui::End();
+        }
+
+        // Button exit.
+        if(m_buttonExitEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(m_buttonExitLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), m_buttonExitTop * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+            ImGui::Begin(m_buttonExitID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+            m_buttonExitClicked = ImGui::ImageButton(m_buttonExitID.c_str(),reinterpret_cast<ImTextureID>(m_buttonExitTexture->getID()),
+                                                     ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+            ImGui::End();
+        }
     }
 
     void PlayStateGUILayer::showMenuResurrect()
@@ -261,8 +342,8 @@ namespace MagneticBall3D
         GameStateHelper::pauseGame();
         textureResurrect->enable();
         buttonResurrectOk->enable();
-        buttonExit->leftPos = 0.2f;
-        buttonExit->enable();
+        m_buttonExitLeft = 0.2f;
+        m_buttonExitEnabled = true;
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
@@ -274,8 +355,8 @@ namespace MagneticBall3D
 
         GameStateHelper::pauseGame();
         textureResurrectNoCrystals->enable();
-        buttonExit->leftPos = 0.35f;
-        buttonExit->enable();
+        m_buttonExitLeft = 0.35f;
+        m_buttonExitEnabled = true;
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
@@ -299,8 +380,8 @@ namespace MagneticBall3D
 
         GameStateHelper::pauseGame();
         textureLose->enable();
-        buttonExit->leftPos = 0.35f;
-        buttonExit->enable();
+        m_buttonExitLeft = 0.35f;
+        m_buttonExitEnabled = true;
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
