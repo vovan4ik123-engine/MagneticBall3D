@@ -207,9 +207,6 @@ namespace MagneticBall3D
 
             ++EnAndVars::mapSwipeCount;
 
-            if(m_player->getMoveSpeed() > EnAndVars::playerSpeedToPlayEngineSound)
-                Sounds::playSoundEffect(SoundType::SWIPE_ENGINE);
-
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
             float screenSwipeLength = glm::length(m_screenSwipe3D);
@@ -277,11 +274,16 @@ namespace MagneticBall3D
                 powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnAir;
             }
 
-            m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
+            // If max allowed speed exceeded not all impulse power will applied.
+            // In this case applyImpulseFactor shows how much was applied in range 0...1.
+            float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
             if(m_player->getIsOnGround())
             {
-                const glm::vec3 garbageImpulse = powerForImpulse * 0.0001f;
+                // Same as inside m_player->handleScreenSwipe(impulse, torque).
+                glm::vec3 garbageImpulse = (powerForImpulse * 0.000063f) * applyImpulseFactor;
+                if(applyImpulseFactor == 1.0f)
+                    garbageImpulse += powerForTorque * 0.000021f;
 
                 for(const auto& wrapper : m_allGarbage)
                 {
@@ -642,6 +644,7 @@ namespace MagneticBall3D
                 enemy->disableEnemy();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
+                ++EnAndVars::enemiesKilledCount;
 
                 if(enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -696,7 +699,8 @@ namespace MagneticBall3D
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
         }
 
-        if(EnAndVars::cameraRotateTime + EnAndVars::cameraRotateDelay < EnAndVars::mapPlayTimeSec &&
+
+        if(EnAndVars::cameraRotateTime + (1.0f / EnAndVars::maxFPSForCameraRotation) < EnAndVars::mapPlayTimeSec &&
            !glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
         {
             EnAndVars::cameraRotateTime = EnAndVars::mapPlayTimeSec;
@@ -704,10 +708,22 @@ namespace MagneticBall3D
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);
-            if(angleDifference > 0.035f) // More than 2 degrees.
+            if(angleDifference > 0.036f) // More than 2 degrees.
             {
+                float rotateAngle = angleDifference * 0.05f + 0.028f; // Default and fastest camera rotation speed.
+                float currentFPS = Beryll::GameLoop::getFPS();
+                if(currentFPS > EnAndVars::maxFPSForCameraRotation)
+                    currentFPS = EnAndVars::maxFPSForCameraRotation;
+
+                if(currentFPS > EnAndVars::minFPSForCameraRotation)
+                {
+                    // Reduce camera rotation speed if FPS is high. Camera will more smooth.
+                    const float currentFPSToMinFPSRatio = currentFPS / EnAndVars::minFPSForCameraRotation;
+                    rotateAngle = rotateAngle / currentFPSToMinFPSRatio;
+                }
+
                 const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
-                                                               angleDifference * 0.025f + 0.015f,
+                                                               rotateAngle,
                                                                glm::normalize(glm::axis(rotation)));
                 m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
             }

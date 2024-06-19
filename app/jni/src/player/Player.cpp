@@ -105,7 +105,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnAndVars::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnAndVars::playerGravityOnAir);
-                m_obj->setDamping(0.25f, 0.35f);
+                m_obj->setDamping(0.2f, 0.3f);
             }
 
             m_isOnAir = true;
@@ -181,6 +181,8 @@ namespace MagneticBall3D
             m_playerMoveDirXZ = glm::normalize(m_playerLinearVelocityXZ);
         }
 
+        EnAndVars::playerCurrentSpeed = m_playerMoveSpeed;
+
         //BR_INFO("m_playerMoveSpeed %f", m_playerMoveSpeed);
 
         // Handle meteor.
@@ -200,7 +202,7 @@ namespace MagneticBall3D
         newVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
-        float impulseReduceFactor = 1.0f;
+        float applyImpulseFactor = 1.0f;
         if(newPlayerSpeedXZ > EnAndVars::playerMaxSpeedXZ)
         {
             // Apply less impulse because speed limit was exceeded.
@@ -208,7 +210,7 @@ namespace MagneticBall3D
 
             float newSpeedLimit = std::max(EnAndVars::playerMaxSpeedXZ - m_playerMoveSpeedXZ, 0.0f);
             float newSpeedAdded = newPlayerSpeedXZ - m_playerMoveSpeedXZ;
-            impulseReduceFactor = newSpeedLimit / newSpeedAdded;
+            applyImpulseFactor = newSpeedLimit / newSpeedAdded;
         }
 
         newVelocityXZ.y = m_playerLinearVelocity.y;
@@ -216,7 +218,7 @@ namespace MagneticBall3D
         updateSpeed();
         //BR_INFO("Speed after swipe %f", m_playerMoveSpeed);
 
-        if(impulseReduceFactor == 1.0f)
+        if(applyImpulseFactor == 1.0f)
         {
             // Impulse was not enough to reach max speed. We have limit to apply torque.
             // Torque applied along right/left vector from impulse.
@@ -225,7 +227,7 @@ namespace MagneticBall3D
             m_obj->applyTorqueImpulse(impulseLeft);
         }
 
-        return impulseReduceFactor;
+        return applyImpulseFactor;
     }
 
     void Player::reduceSpeed(float speedToReduce)

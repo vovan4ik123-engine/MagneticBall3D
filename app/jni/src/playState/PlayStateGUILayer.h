@@ -91,6 +91,14 @@ namespace MagneticBall3D
         ImFont* m_fontMapPlayTimer;
         bool m_showMapPlayTimer = true;
 
+        // Text smashed count.
+        static const std::string m_smashedCountID;
+        ImFont* m_fontSmashedCount;
+
+        // Text speed.
+        static const std::string m_speedID;
+        ImFont* m_fontSpeed;
+
         // Button pause.
         static const std::string m_buttonPauseID;
         std::unique_ptr<Beryll::Texture> m_buttonPauseTexture;

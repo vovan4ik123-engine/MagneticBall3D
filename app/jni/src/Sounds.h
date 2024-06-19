@@ -6,7 +6,6 @@ namespace MagneticBall3D
 {
     enum class SoundType
     {
-        SWIPE_ENGINE,
         PISTOL_SHOT,
         PISTOL_HIT,
         GRENADE_LAUNCHER_SHOT,
@@ -47,9 +46,6 @@ namespace MagneticBall3D
         static int m_numberOfCurrentlyPlayingWAV;
 
         // Sounds.
-        static std::string m_swipeEngine1;
-        static std::string m_swipeEngine2;
-
         static std::string m_pistolShot1;
         static std::string m_pistolShot2;
         static std::string m_pistolShot3;

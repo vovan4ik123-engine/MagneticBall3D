@@ -20,7 +20,7 @@ namespace EnAndVars
     struct SettingsMenu
     {
         // Stored in DB.
-        static inline int FPSLimit = 60;
+        static inline int FPSLimit = 120;
         static inline bool backgroundMusic = true;
         // Not stored in DB.
         // ...
@@ -60,12 +60,12 @@ namespace EnAndVars
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
-    constexpr inline float cameraRotateDelay = 0.02f;
+    constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
+    constexpr inline float maxFPSForCameraRotation = 250.0f; // Camera rotation speed calculated based on this.
     inline float cameraRotateTime = 0.0f; // Sec.
 
     // Swipe.
     constexpr inline float swipePowerMultiplier = 2.1f;
-    constexpr inline float playerSpeedToPlayEngineSound = 110.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 28.0f;
@@ -78,8 +78,8 @@ namespace EnAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.18f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.18f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.2f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.07f;
     constexpr inline float playerTorqueFactorOnAir = 0.06f;
@@ -93,6 +93,7 @@ namespace EnAndVars
     constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -7.0f, 0.0f};
     constexpr inline float playerMaxSpeedXZDefault = 90.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
+    inline int playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 100.0f;
     constexpr inline float playerLeftRightTurnPower = 0.013f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
@@ -145,6 +146,7 @@ namespace EnAndVars
     inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
     constexpr inline float enemiesMaxDistanceToSpawn = 400.0f;
+    inline int enemiesKilledCount = 0;
 
     // Pause.
     inline bool gameOnPause = false;
@@ -175,6 +177,7 @@ namespace EnAndVars
         playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
         playerMaxSpeedXZ = playerMaxSpeedXZDefault;
+        playerCurrentSpeed = 0;
         playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
         playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
         playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
@@ -193,6 +196,7 @@ namespace EnAndVars
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
+        enemiesKilledCount = 0;
 
         // Pause.
         gameOnPause = false;

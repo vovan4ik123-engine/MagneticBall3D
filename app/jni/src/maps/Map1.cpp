@@ -569,7 +569,7 @@ namespace MagneticBall3D
             copPistol->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copPistol->garbageAmountToDie = 10;
-            copPistol->reducePlayerSpeedWhenDie = 6.0f;
+            copPistol->reducePlayerSpeedWhenDie = 8.0f;
             copPistol->experienceWhenDie = 25;
             copPistol->getController().moveSpeed = 25.0f;
 
@@ -598,7 +598,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copShield->garbageAmountToDie = 10;
-            copShield->reducePlayerSpeedWhenDie = 12.0f;
+            copShield->reducePlayerSpeedWhenDie = 14.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 20.0f;
 
@@ -627,7 +627,7 @@ namespace MagneticBall3D
             sniper->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             sniper->garbageAmountToDie = 10;
-            sniper->reducePlayerSpeedWhenDie = 10.0f;
+            sniper->reducePlayerSpeedWhenDie = 0.0f;
             sniper->experienceWhenDie = 30;
 
             m_animatedOrDynamicObjects.push_back(sniper);
@@ -656,7 +656,7 @@ namespace MagneticBall3D
             copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copGrenade->garbageAmountToDie = 10;
-            copGrenade->reducePlayerSpeedWhenDie = 8.0f;
+            copGrenade->reducePlayerSpeedWhenDie = 10.0f;
             copGrenade->experienceWhenDie = 50;
             copGrenade->getController().moveSpeed = 20.0f;
 
@@ -686,7 +686,7 @@ namespace MagneticBall3D
             tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             tank->garbageAmountToDie = 25;
-            tank->reducePlayerSpeedWhenDie = 30.0f;
+            tank->reducePlayerSpeedWhenDie = 40.0f;
             tank->experienceWhenDie = 200;
             tank->getController().moveSpeed = 15.0f;
 

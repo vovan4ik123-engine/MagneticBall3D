@@ -9,9 +9,12 @@ namespace MagneticBall3D
     const std::string PlayStateGUILayer::m_progressBarHPID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_progressBarXPID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_mapPlayTimerID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_smashedCountID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_speedID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_buttonPauseID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_buttonResumeID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_buttonExitID = std::to_string(BeryllUtils::Common::generateID());
+
 
     PlayStateGUILayer::PlayStateGUILayer()
     {
@@ -19,8 +22,8 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-//        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0, 0.5f, 0.03f);
-//        m_guiObjects.push_back(m_statistics1);
+        m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0, 0.5f, 0.03f);
+        m_guiObjects.push_back(m_statistics1);
 //        m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0, 0.025f, 0.7f, 0.03f);
 //        m_guiObjects.push_back(m_statistics2);
 //        m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0, 0.0475f, 0.45f, 0.025f);
@@ -53,6 +56,8 @@ namespace MagneticBall3D
 //        progressBarXP->setProgress(0.0f);
 
         m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
+        m_fontSmashedCount = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.022f);
+        m_fontSpeed = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.022f);
 
         m_buttonPauseTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonResumeTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -68,11 +73,6 @@ namespace MagneticBall3D
         textureTutorialSwipeOnBuilding = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeOnBuilding.png", 0.1f, 0.0f, 0.8f, 0.15f);
         m_guiObjects.push_back(textureTutorialSwipeOnBuilding);
         textureTutorialSwipeOnBuilding->disable();
-
-        // Pause.
-        //buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Pause.jpg", "", 0.0f, 0.0f, 0.1f, 0.045f);
-        //buttonPauseResume = std::make_shared<Beryll::ButtonWithText>("Resume", EnAndVars::FontsPath::roboto, 0.05f, 0.25f, 0.35f, 0.5f, 0.1f);
-
 
         // Resurrect.
         textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
@@ -139,9 +139,9 @@ namespace MagneticBall3D
         if(Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
         {
             std::stringstream stream;
-//            stream << std::fixed << std::setprecision(1);
-//            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
-//            m_statistics1->text = stream.str();
+            stream << std::fixed << std::setprecision(1);
+            stream << "Frame: " << Beryll::GameLoop::getFrameTime() << "  FPS: " << Beryll::GameLoop::getFPS();
+            m_statistics1->text = stream.str();
 //
 //            stream.str(""); // Way to clear std::stringstream.
 //            stream << std::fixed << std::setprecision(1);
@@ -244,6 +244,28 @@ namespace MagneticBall3D
             }
         }
 
+        // HP bar.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.956f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::Begin(m_progressBarHPID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::ProgressBar(progressBarHP);
+        ImGui::End();
+        ImGui::PopStyleColor(3);
+
+        // XP bar.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 0.0f, 1.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.976f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::Begin(m_progressBarXPID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::ProgressBar(progressBarXP);
+        ImGui::End();
+        ImGui::PopStyleColor(3);
+
         // Text map timer.
         if(m_showMapPlayTimer)
         {
@@ -272,27 +294,28 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        // HP bar.
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.956f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::Begin(m_progressBarHPID.c_str(), nullptr, m_noBackgroundNoFrame);
-        ImGui::ProgressBar(progressBarHP);
+        // Text smashed count.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::SetNextWindowPos(ImVec2(0.78f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+        ImGui::Begin(m_smashedCountID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::PushFont(m_fontSmashedCount);
+        ImGui::Text("Smash:%d", EnAndVars::enemiesKilledCount);
+        ImGui::PopFont();
         ImGui::End();
-        ImGui::PopStyleColor(3);
+        ImGui::PopStyleColor(1);
 
-        // XP bar.
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 0.0f, 1.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.976f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::Begin(m_progressBarXPID.c_str(), nullptr, m_noBackgroundNoFrame);
-        ImGui::ProgressBar(progressBarXP);
+        // Text speed.
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::SetNextWindowPos(ImVec2(0.79f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.024f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+        ImGui::Begin(m_speedID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::PushFont(m_fontSpeed);
+        //ImGui::Text("Speed:%d", EnAndVars::playerCurrentSpeed / 2);
+        ImGui::Text("Speed:%d", EnAndVars::playerCurrentSpeed);
+        ImGui::PopFont();
         ImGui::End();
-        ImGui::PopStyleColor(3);
+        ImGui::PopStyleColor(1);
 
         // Button pause.
         ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
