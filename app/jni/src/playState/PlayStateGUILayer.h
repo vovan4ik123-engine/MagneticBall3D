@@ -32,35 +32,10 @@ namespace MagneticBall3D
         float progressBarHP = 1.0f;
         float progressBarXP = 0.0f;
 
-        // Map0Tutorial.
-        std::shared_ptr<Beryll::GUITexture> textureTutorialSwipe;
-        std::shared_ptr<Beryll::GUITexture> textureTutorialSwipeFaster;
-        std::shared_ptr<Beryll::GUITexture> textureTutorialSwipeOnBuilding;
-
-        // Resurrect.
-        std::shared_ptr<Beryll::GUITexture> textureResurrect;
-        std::shared_ptr<Beryll::ButtonWithText> buttonResurrectOk;
-
-        // Resurrect No Crystals.
-        std::shared_ptr<Beryll::GUITexture> textureResurrectNoCrystals;
-
-        // Lose.
-        std::shared_ptr<Beryll::GUITexture> textureLose;
-
-        // Kill all enemies before boss.
-        std::shared_ptr<Beryll::GUITexture> textureKillAll;
-        std::shared_ptr<Beryll::ButtonWithText> buttonKillAllOk;
-
-        // Win.
-        std::shared_ptr<Beryll::GUITexture> textureWin;
-        std::shared_ptr<Beryll::ButtonWithText> buttonWinOk;
-
-        // Menus before specific bosses.
-        // Tank with commander.
-        std::shared_ptr<Beryll::GUITexture> textureTankWithCommander;
-        std::shared_ptr<Beryll::ButtonWithText> buttonTankWithCommanderOk;
-
-        bool resurrectButtonPressed = false;
+        bool resurrectPlayer = false;
+        bool tutorialSwipeEnabled = false;
+        bool tutorialHowToSwipeEnabled = false;
+        bool tutorialSwipeOnBuildingEnabled = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
@@ -68,7 +43,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
-        uint32_t m_statisticsUpdateTime = 0;
+        uint64_t m_statisticsUpdateTime = 0;
 
         float m_timeAppearsOnScreen = 0.0f;
         // Because user can accidentally click when he actively swipe and buttons appears on screen.
@@ -119,5 +94,56 @@ namespace MagneticBall3D
         const float m_buttonExitTop = 0.5f;
 
         // Map0Tutorial.
+        static const std::string m_tutorialSwipeID;
+        std::unique_ptr<Beryll::Texture> m_tutorialSwipeTexture;
+
+        static const std::string m_tutorialHowToSwipeID;
+        std::unique_ptr<Beryll::Texture> m_tutorialHowToSwipeTexture;
+
+        static const std::string m_tutorialSwipeOnBuildingID;
+        std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnBuildingTexture;
+
+        // Resurrect.
+        static const std::string m_resurrectTextureID;
+        std::unique_ptr<Beryll::Texture> m_resurrectTexture;
+        static const std::string m_resurrectButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_resurrectButtonOkTexture;
+        bool m_menuResurrectEnabled = false;
+        bool m_resurrectButtonClicked = false;
+
+        // Resurrect No Crystals.
+        static const std::string m_resurrectNoCrystalsTextureID;
+        std::unique_ptr<Beryll::Texture> m_resurrectNoCrystalsTexture;
+        bool m_menuResurrectNoCrystalsEnabled = false;
+
+        // Lose.
+        static const std::string m_loseTextureID;
+        std::unique_ptr<Beryll::Texture> m_loseTexture;
+        bool m_menuLoseEnabled = false;
+
+        // Kill all enemies before boss.
+        static const std::string m_killAllTextureID;
+        std::unique_ptr<Beryll::Texture> m_killAllTexture;
+        static const std::string m_killAllButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_killAllButtonOkTexture;
+        bool m_menuKillAllEnabled = false;
+        bool m_killAllButtonClicked = false;
+
+        // Win.
+        static const std::string m_winTextureID;
+        std::unique_ptr<Beryll::Texture> m_winTexture;
+        static const std::string m_winButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_winButtonOkTexture;
+        bool m_menuWinEnabled = false;
+        bool m_winButtonClicked = false;
+
+        // Menus before specific bosses.
+        // Tank with commander.
+        static const std::string m_tankWithCommanderTextureID;
+        std::unique_ptr<Beryll::Texture> m_tankWithCommanderTexture;
+        static const std::string m_tankWithCommanderButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_tankWithCommanderButtonOkTexture;
+        bool m_menuTankWithCommanderEnabled = false;
+        bool m_tankWithCommanderButtonClicked = false;
     };
 }

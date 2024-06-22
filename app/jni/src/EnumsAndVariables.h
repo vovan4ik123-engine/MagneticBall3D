@@ -61,8 +61,6 @@ namespace EnAndVars
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
     constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
-    constexpr inline float maxFPSForCameraRotation = 250.0f; // Camera rotation speed calculated based on this.
-    inline float cameraRotateTime = 0.0f; // Sec.
 
     // Swipe.
     constexpr inline float swipePowerMultiplier = 2.1f;
@@ -74,15 +72,15 @@ namespace EnAndVars
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.08f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.09f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.2f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.22f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
-    constexpr inline float playerImpulseFactorOnAir = 0.07f;
-    constexpr inline float playerTorqueFactorOnAir = 0.06f;
+    constexpr inline float playerImpulseFactorOnAir = 0.09f;
+    constexpr inline float playerTorqueFactorOnAir = 0.02f;
     constexpr inline float playerLinearDamping = 0.1f;
     constexpr inline float playerAngularDamping = 0.1f;
     constexpr inline float playerFriction = 80.0f;
@@ -153,7 +151,7 @@ namespace EnAndVars
     inline bool improvementSystemOnScreen = false;
 
     // Jump pad.
-    constexpr inline float jumpPadPower = 130.0f * playerMass; // Power for player.
+    constexpr inline float jumpPadPower = 110.0f * playerMass; // Power for player.
 
     // Map.
     inline float mapPlayTimeSec = 0.0f;
@@ -166,9 +164,6 @@ namespace EnAndVars
 
     inline void reset()
     {
-        // Camera.
-        cameraRotateTime = 0.0f; // Sec.
-
         // Player.
         playerMagneticRadius = playerMagneticRadiusDefault;
         playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;

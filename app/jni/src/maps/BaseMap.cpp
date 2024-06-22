@@ -16,9 +16,9 @@ namespace MagneticBall3D
 
     void BaseMap::updateBeforePhysics()
     {
-        if(m_gui->resurrectButtonPressed)
+        if(m_gui->resurrectPlayer)
         {
-            m_gui->resurrectButtonPressed = false;
+            m_gui->resurrectPlayer = false;
 
             --EnAndVars::playerResurrectionAttempts;
             EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
@@ -700,32 +700,26 @@ namespace MagneticBall3D
         }
 
 
-        if(EnAndVars::cameraRotateTime + (1.0f / EnAndVars::maxFPSForCameraRotation) < EnAndVars::mapPlayTimeSec &&
-           !glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
+        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
         {
-            EnAndVars::cameraRotateTime = EnAndVars::mapPlayTimeSec;
-
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);
             if(angleDifference > 0.036f) // More than 2 degrees.
             {
-                float rotateAngle = angleDifference * 0.05f + 0.028f; // Default and fastest camera rotation speed.
+                float angleRotate = angleDifference * 0.05f + 0.025f; // Default and fastest camera rotation speed.
                 float currentFPS = Beryll::GameLoop::getFPS();
-                if(currentFPS > EnAndVars::maxFPSForCameraRotation)
-                    currentFPS = EnAndVars::maxFPSForCameraRotation;
 
                 if(currentFPS > EnAndVars::minFPSForCameraRotation)
                 {
                     // Reduce camera rotation speed if FPS is high. Camera will more smooth.
                     const float currentFPSToMinFPSRatio = currentFPS / EnAndVars::minFPSForCameraRotation;
-                    rotateAngle = rotateAngle / currentFPSToMinFPSRatio;
+                    angleRotate = angleRotate / currentFPSToMinFPSRatio;
                 }
 
-                const glm::mat4 cameraRotateMatr = glm::rotate(glm::mat4{1.0f},
-                                                               rotateAngle,
-                                                               glm::normalize(glm::axis(rotation)));
-                m_cameraOffset = cameraRotateMatr * glm::vec4(cameraBackXZ, 1.0f);
+                const glm::mat4 matr = glm::rotate(glm::mat4{1.0f}, angleRotate, glm::normalize(glm::axis(rotation)));
+
+                m_cameraOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
             }
         }
 
@@ -734,11 +728,11 @@ namespace MagneticBall3D
         m_cameraOffset.y = 0.09f +
                            (m_player->getObj()->getOrigin().y * 0.0055f) +
                            (EnAndVars::garbageCountMagnetized * 0.002f);
-        m_cameraOffset.y = std::min(2.0f, m_cameraOffset.y);
+        m_cameraOffset.y = std::min(1.8f, m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
-        m_cameraFront.y += 12.0f + m_player->getObj()->getXZRadius();
+        m_cameraFront.y += 13.0f + m_player->getObj()->getXZRadius();
 
         float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.0f);
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.

@@ -59,9 +59,9 @@ namespace MagneticBall3D
     {
         if(EnAndVars::gameOnPause)
         {
-            m_gui->textureTutorialSwipe->disable();
-            m_gui->textureTutorialSwipeFaster->disable();
-            m_gui->textureTutorialSwipeOnBuilding->disable();
+            m_gui->tutorialSwipeEnabled = false;
+            m_gui->tutorialHowToSwipeEnabled = false;
+            m_gui->tutorialSwipeOnBuildingEnabled = false;
             return;
         }
 
@@ -128,26 +128,29 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().x > 100.0f)
             SendStatisticsHelper::sendMap0_100mPassed();
 
+        m_gui->tutorialSwipeEnabled = false;
+        m_gui->tutorialHowToSwipeEnabled = false;
+        m_gui->tutorialSwipeOnBuildingEnabled = false;
         // Tutorial tips on screen.
         if(m_player->getMoveSpeed() < 7.0f)
-            m_gui->textureTutorialSwipe->enable();
+            m_gui->tutorialSwipeEnabled = true;
         else
-            m_gui->textureTutorialSwipe->disable();
+            m_gui->tutorialSwipeEnabled = false;
 
         if(m_player->getObj()->getOrigin().x > 900.0f && m_player->getObj()->getOrigin().x < 1030.0f)
         {
-            m_gui->textureTutorialSwipeFaster->disable();
-            m_gui->textureTutorialSwipeOnBuilding->enable();
+            m_gui->tutorialHowToSwipeEnabled = false;
+            m_gui->tutorialSwipeOnBuildingEnabled = true;
         }
         else if(m_player->getMoveSpeed() > 7.0f && m_player->getMoveSpeed() < 50.0f)
         {
-            m_gui->textureTutorialSwipeFaster->enable();
-            m_gui->textureTutorialSwipeOnBuilding->disable();
+            m_gui->tutorialHowToSwipeEnabled = true;
+            m_gui->tutorialSwipeOnBuildingEnabled = false;
         }
         else
         {
-            m_gui->textureTutorialSwipeFaster->disable();
-            m_gui->textureTutorialSwipeOnBuilding->disable();
+            m_gui->tutorialHowToSwipeEnabled = false;
+            m_gui->tutorialSwipeOnBuildingEnabled = false;
         }
     }
 

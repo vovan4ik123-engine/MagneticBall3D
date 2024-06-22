@@ -47,6 +47,7 @@ namespace MagneticBall3D
     {
         if(m_buttonBackClicked)
         {
+            m_buttonBackClicked = false;
             GameStateHelper::popState();
             return;
         }

@@ -14,6 +14,19 @@ namespace MagneticBall3D
     const std::string PlayStateGUILayer::m_buttonPauseID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_buttonResumeID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_buttonExitID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_tutorialSwipeID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_tutorialHowToSwipeID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_tutorialSwipeOnBuildingID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_resurrectTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_resurrectButtonOkID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_resurrectNoCrystalsTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_loseTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_killAllTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_killAllButtonOkID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_winTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_winButtonOkID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_tankWithCommanderTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_tankWithCommanderButtonOkID = std::to_string(BeryllUtils::Common::generateID());
 
 
     PlayStateGUILayer::PlayStateGUILayer()
@@ -41,20 +54,6 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(0.5f);
 
-//        progressBarHP = std::make_shared<Beryll::ProgressBar>(-0.02f, 0.956f, 1.04f, 0.025f);
-//        m_guiObjects.push_back(progressBarHP);
-//        ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
-//        progressBarHP->setProgressColor(0.0f, 1.0f, 0.0f, 1.0f);
-//        progressBarHP->setBackgroundColor(1.0f, 0.0f, 0.0f, 1.0f);
-//        progressBarHP->setProgress(1.0f);
-//
-//        progressBarXP = std::make_shared<Beryll::ProgressBar>( -0.02f, 0.976f, 1.04f, 0.03f);
-//        m_guiObjects.push_back(progressBarXP);
-//        progressBarXP->setFontColor(0.0f, 0.0f, 0.0f, 0.0f);
-//        progressBarXP->setProgressColor(0.0f, 0.0f, 1.0f, 1.0f);
-//        progressBarXP->setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
-//        progressBarXP->setProgress(0.0f);
-
         m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
         m_fontSmashedCount = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.022f);
         m_fontSpeed = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.022f);
@@ -62,60 +61,19 @@ namespace MagneticBall3D
         m_buttonPauseTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonResumeTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonExitTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-
-        // Map0Tutorial.
-        textureTutorialSwipe = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeToMove.png", 0.093f, 0.525f, 0.8f, 0.39f);
-        m_guiObjects.push_back(textureTutorialSwipe);
-        textureTutorialSwipe->disable();
-        textureTutorialSwipeFaster = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeFaster.png", 0.1f, 0.0f, 0.8f, 0.1f);
-        m_guiObjects.push_back(textureTutorialSwipeFaster);
-        textureTutorialSwipeFaster->disable();
-        textureTutorialSwipeOnBuilding = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialSwipeOnBuilding.png", 0.1f, 0.0f, 0.8f, 0.15f);
-        m_guiObjects.push_back(textureTutorialSwipeOnBuilding);
-        textureTutorialSwipeOnBuilding->disable();
-
-        // Resurrect.
-        textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureResurrect);
-        textureResurrect->disable();
-        buttonResurrectOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.5f, 0.5f, 0.3f, 0.07f);
-        m_guiObjects.push_back(buttonResurrectOk);
-        buttonResurrectOk->disable();
-
-        // Resurrect no crystals.
-        textureResurrectNoCrystals = std::make_shared<Beryll::GUITexture>("GUI/playState/ResurrectNoCrystals.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureResurrectNoCrystals);
-        textureResurrectNoCrystals->disable();
-
-        // Lose.
-        textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureLose);
-        textureLose->disable();
-
-        // Kill all enemies before boss.
-        textureKillAll = std::make_shared<Beryll::GUITexture>("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureKillAll);
-        textureKillAll->disable();
-        buttonKillAllOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
-        m_guiObjects.push_back(buttonKillAllOk);
-        buttonKillAllOk->disable();
-
-        // Win.
-        textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureWin);
-        textureWin->disable();
-        buttonWinOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
-        m_guiObjects.push_back(buttonWinOk);
-        buttonWinOk->disable();
-
-        // Menus before specific bosses.
-        // Tank with commander.
-        textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg", 0.2f, 0.25f, 0.6f, 0.25f);
-        m_guiObjects.push_back(textureTankWithCommander);
-        textureTankWithCommander->disable();
-        buttonTankWithCommanderOk = std::make_shared<Beryll::ButtonWithText>("Ok", EnAndVars::FontsPath::roboto, 0.05f, 0.35f, 0.5f, 0.3f, 0.07f);
-        m_guiObjects.push_back(buttonTankWithCommanderOk);
-        buttonTankWithCommanderOk->disable();
+        m_tutorialSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeToMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialHowToSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeFaster.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialSwipeOnBuildingTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeOnBuilding.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_resurrectButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_resurrectNoCrystalsTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectNoCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_loseTexture = Beryll::Renderer::createTexture("GUI/playState/Lose.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_killAllTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_killAllButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_winTexture = Beryll::Renderer::createTexture("GUI/playState/Win.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_winButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tankWithCommanderTexture = Beryll::Renderer::createTexture("GUI/playState/BossTankWithCommander.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tankWithCommanderButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -174,58 +132,64 @@ namespace MagneticBall3D
             {
                 GameStateHelper::pauseGame();
                 m_buttonResumeEnabled = true;
-                m_buttonExitLeft = 0.35f;
                 m_buttonExitEnabled = true;
+                m_buttonExitLeft = 0.35f;
             }
         }
         else if(m_buttonResumeClicked)
         {
             m_buttonResumeClicked = false;
-
-            GameStateHelper::resumeGame();
             m_buttonResumeEnabled = false;
             m_buttonExitEnabled = false;
+
+            GameStateHelper::resumeGame();
         }
         else if(m_buttonExitClicked)
         {
             m_buttonExitClicked = false;
-
-            // Pause game before exit to avoid update scene layer.
-            GameStateHelper::pauseGame();
-
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
-        }
-        else if(buttonKillAllOk->getIsPressed())
-        {
-            GameStateHelper::resumeGame();
-            textureKillAll->disable();
-            buttonKillAllOk->disable();
-        }
-        else if(buttonWinOk->getIsPressed())
-        {
-            // Pause game before exit to avoid update scene layer.
-            GameStateHelper::pauseGame();
-
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
-        }
-        else if(buttonTankWithCommanderOk->getIsPressed())
-        {
-            GameStateHelper::resumeGame();
-            textureTankWithCommander->disable();
-            buttonTankWithCommanderOk->disable();
-        }
-        else if(buttonResurrectOk->getIsPressed())
-        {
-            resurrectButtonPressed = true;
-
-            GameStateHelper::resumeGame();
-            textureResurrect->disable();
-            buttonResurrectOk->disable();
             m_buttonExitEnabled = false;
+
+            // Pause game before exit to avoid update scene layer.
+            GameStateHelper::pauseGame();
+
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
+        }
+        else if(m_killAllButtonClicked)
+        {
+            m_killAllButtonClicked = false;
+            m_menuKillAllEnabled = false;
+
+            GameStateHelper::resumeGame();
+        }
+        else if(m_winButtonClicked)
+        {
+            m_winButtonClicked = false;
+            m_menuWinEnabled = false;
+
+            // Pause game before exit to avoid update scene layer.
+            GameStateHelper::pauseGame();
+
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
+        }
+        else if(m_tankWithCommanderButtonClicked)
+        {
+            m_tankWithCommanderButtonClicked = false;
+            m_menuTankWithCommanderEnabled = false;
+
+            GameStateHelper::resumeGame();
+        }
+        else if(m_resurrectButtonClicked)
+        {
+            m_resurrectButtonClicked = false;
+            m_menuResurrectEnabled = false;
+            m_buttonExitEnabled = false;
+
+            resurrectPlayer = true; // Will handled in BaseMap.cpp
+            GameStateHelper::resumeGame();
         }
     }
 
@@ -248,7 +212,7 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
         ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.956f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9565f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::Begin(m_progressBarHPID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::ProgressBar(progressBarHP);
@@ -320,12 +284,9 @@ namespace MagneticBall3D
         // Button pause.
         ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
         ImGui::Begin(m_buttonPauseID.c_str(), nullptr, m_noBackgroundNoFrame);
-
         m_buttonPauseClicked = ImGui::ImageButton(m_buttonPauseID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPauseTexture->getID()),
                                                  ImVec2(0.1f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.045f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-
         ImGui::End();
 
         // Button resume.
@@ -333,12 +294,9 @@ namespace MagneticBall3D
         {
             ImGui::SetNextWindowPos(ImVec2(0.25f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.35f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
             ImGui::Begin(m_buttonResumeID.c_str(), nullptr, m_noBackgroundNoFrame);
-
             m_buttonResumeClicked = ImGui::ImageButton(m_buttonResumeID.c_str(),reinterpret_cast<ImTextureID>(m_buttonResumeTexture->getID()),
                                                      ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-
             ImGui::End();
         }
 
@@ -347,88 +305,206 @@ namespace MagneticBall3D
         {
             ImGui::SetNextWindowPos(ImVec2(m_buttonExitLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), m_buttonExitTop * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
             ImGui::Begin(m_buttonExitID.c_str(), nullptr, m_noBackgroundNoFrame);
-
             m_buttonExitClicked = ImGui::ImageButton(m_buttonExitID.c_str(),reinterpret_cast<ImTextureID>(m_buttonExitTexture->getID()),
                                                      ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
 
+        // Map0Tutorial.
+        if(tutorialSwipeEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.093f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.525f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+            ImGui::Begin(m_tutorialSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeTexture->getID()),
+                         ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.39f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(tutorialHowToSwipeEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.1f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+            ImGui::Begin(m_tutorialHowToSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialHowToSwipeTexture->getID()),
+                         ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(tutorialSwipeOnBuildingEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.1f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+            ImGui::Begin(m_tutorialSwipeOnBuildingID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeOnBuildingTexture->getID()),
+                         ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.15f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuResurrectEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_resurrectTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+
+            ImGui::SetNextWindowPos(ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_resurrectButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_resurrectButtonClicked = ImGui::ImageButton(m_resurrectButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_resurrectButtonOkTexture->getID()),
+                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuResurrectNoCrystalsEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_resurrectNoCrystalsTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectNoCrystalsTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuLoseEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_loseTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_loseTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuKillAllEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_killAllTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_killAllButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_killAllButtonClicked = ImGui::ImageButton(m_killAllButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_killAllButtonOkTexture->getID()),
+                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuWinEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_winTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_winButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_winButtonClicked = ImGui::ImageButton(m_winButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_winButtonOkTexture->getID()),
+                                                    ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+        }
+
+        if(m_menuTankWithCommanderEnabled)
+        {
+            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_tankWithCommanderTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::Begin(m_tankWithCommanderButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_tankWithCommanderButtonClicked = ImGui::ImageButton(m_tankWithCommanderButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_tankWithCommanderButtonOkTexture->getID()),
+                                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
         }
     }
 
     void PlayStateGUILayer::showMenuResurrect()
     {
-        if(textureResurrect->getIsEnabled())
+        if(m_menuResurrectEnabled)
             return;
 
-        GameStateHelper::pauseGame();
-        textureResurrect->enable();
-        buttonResurrectOk->enable();
-        m_buttonExitLeft = 0.2f;
+        m_menuResurrectEnabled = true;
         m_buttonExitEnabled = true;
+        m_buttonExitLeft = 0.2f;
+
+        GameStateHelper::pauseGame();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuResurrectNoCrystals()
     {
-        if(textureResurrectNoCrystals->getIsEnabled())
+        if(m_menuResurrectNoCrystalsEnabled)
             return;
 
-        GameStateHelper::pauseGame();
-        textureResurrectNoCrystals->enable();
-        m_buttonExitLeft = 0.35f;
+        m_menuResurrectNoCrystalsEnabled = true;
         m_buttonExitEnabled = true;
+        m_buttonExitLeft = 0.35f;
+
+        GameStateHelper::pauseGame();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuKillAllBeforeBoss()
     {
-        if(textureKillAll->getIsEnabled())
+        if(m_menuKillAllEnabled)
             return;
 
+        m_menuKillAllEnabled = true;
+
         GameStateHelper::pauseGame();
-        textureKillAll->enable();
-        buttonKillAllOk->enable();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuLose()
     {
-        if(textureLose->getIsEnabled())
+        if(m_menuLoseEnabled)
             return;
 
-        GameStateHelper::pauseGame();
-        textureLose->enable();
-        m_buttonExitLeft = 0.35f;
+        m_menuLoseEnabled = true;
         m_buttonExitEnabled = true;
+        m_buttonExitLeft = 0.35f;
+
+        GameStateHelper::pauseGame();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuWin()
     {
-        if(textureWin->getIsEnabled())
+        if(m_menuWinEnabled)
             return;
 
+        m_menuWinEnabled = true;
+
         GameStateHelper::pauseGame();
-        textureWin->enable();
-        buttonWinOk->enable();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
     void PlayStateGUILayer::showMenuBossTankWithCommander()
     {
-        if(textureTankWithCommander->getIsEnabled())
+        if(m_menuTankWithCommanderEnabled)
             return;
 
+        m_menuTankWithCommanderEnabled = true;
+
         GameStateHelper::pauseGame();
-        textureTankWithCommander->enable();
-        buttonTankWithCommanderOk->enable();
 
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }

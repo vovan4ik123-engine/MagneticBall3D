@@ -27,7 +27,7 @@ namespace MagneticBall3D
         m_buttonMapSwipeRightTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonPlayTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonSettingsTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::creamy, 0.023f);
+        m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.025f);
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -41,6 +41,8 @@ namespace MagneticBall3D
 
         if(m_buttonPlayClicked)
         {
+            m_buttonPlayClicked = false;
+
             //if(EnergySystem::getInstance().isEnoughForPlay())
             {
                 //EnergySystem::getInstance().handlePlay();
@@ -63,10 +65,12 @@ namespace MagneticBall3D
 //        }
         else if(m_buttonSettingsClicked)
         {
+            m_buttonSettingsClicked = false;
             GameStateHelper::pushSettingsState();
         }
         else if(m_buttonMapSwipeLeftClicked && EnAndVars::MapsProgress::currentMapIndex > 0)
         {
+            m_buttonMapSwipeLeftClicked = false;
             --EnAndVars::MapsProgress::currentMapIndex;
             BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
@@ -75,6 +79,7 @@ namespace MagneticBall3D
                 EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::lastOpenedMapIndex &&
                 EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
         {
+            m_buttonMapSwipeRightClicked = false;
             ++EnAndVars::MapsProgress::currentMapIndex;
             BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
@@ -157,7 +162,7 @@ namespace MagneticBall3D
 
         // Text crystals.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.7f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_textCrystalsID.c_str(), nullptr, m_noBackgroundNoFrame);

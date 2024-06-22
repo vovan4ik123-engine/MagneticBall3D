@@ -105,7 +105,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnAndVars::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnAndVars::playerGravityOnAir);
-                m_obj->setDamping(0.2f, 0.3f);
+                m_obj->setDamping(0.0f, 0.5f);
             }
 
             m_isOnAir = true;

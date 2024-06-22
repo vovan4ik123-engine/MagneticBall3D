@@ -35,6 +35,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "BaseBoss is attacking");
             // Do nothing. Attack animation should be playing now.
+            rotateToPoint(playerOrigin, true);
         }
         else if(getIsDelayBeforeFirstAttack())
         {
@@ -52,6 +53,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "BaseBoss IN_ATTACK_RADIUS");
             bossState = BossState::IN_ATTACK_RADIUS;
+            rotateToPoint(playerOrigin, true);
 
             if(getIsTimeToAttack())
             {
