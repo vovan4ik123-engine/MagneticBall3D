@@ -10,8 +10,8 @@ namespace MagneticBall3D
     public:
         static EnergySystem& getInstance()
         {
-            static EnergySystem energySystem;
-            return energySystem;
+            static EnergySystem inst;
+            return inst;
         }
 
         EnergySystem(const EnergySystem& es) = delete;

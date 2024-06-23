@@ -29,7 +29,7 @@ namespace MagneticBall3D
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
-        loadEnemies();
+        //loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
@@ -279,9 +279,6 @@ namespace MagneticBall3D
             m_bossHpBar.draw();
         }
 
-        // If player is on building roof this building should be semitransparent.
-        std::shared_ptr<Beryll::BaseSimpleObject> semiTransparentBuilding = nullptr;
-
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
@@ -306,6 +303,9 @@ namespace MagneticBall3D
                 Beryll::Renderer::drawObject(wrapper.obj, modelMatrix, m_simpleObjSunLightShadows);
             }
         }
+
+        // If player is on building roof this building should be semitransparent.
+        std::shared_ptr<Beryll::BaseSimpleObject> semiTransparentBuilding = nullptr;
 
         m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
 

@@ -31,6 +31,7 @@ add_library(main SHARED main.cpp
                         playState/PlayStateSceneLayer.cpp
 
                         player/Player.cpp
+                        player/PlayerAirTrajectory.cpp
                         garbage/Garbage.cpp
                         pathfinding/AStar.cpp
                         improvements/Improvements.cpp

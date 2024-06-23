@@ -41,7 +41,7 @@ namespace MagneticBall3D
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
-        void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
+        //void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
 
         void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnAndVars::playerXPMultiplier); } }
 
