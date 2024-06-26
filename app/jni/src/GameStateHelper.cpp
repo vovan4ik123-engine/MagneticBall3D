@@ -90,6 +90,7 @@ namespace MagneticBall3D
     void GameStateHelper::prepareVariablesForPlay()
     {
         Beryll::Physics::enableSimulation();
+        Beryll::TimeStep::fixateTime();
     }
 
     void GameStateHelper::pauseGame()

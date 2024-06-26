@@ -253,7 +253,7 @@ namespace MagneticBall3D
             m_textMapPlayTimer += std::to_string(sec);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-            ImGui::SetNextWindowPos(ImVec2(0.42f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.42f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_mapPlayTimerID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::PushFont(m_fontMapPlayTimer);
@@ -264,7 +264,7 @@ namespace MagneticBall3D
         }
 
         // Smashed count.
-        ImGui::SetNextWindowPos(ImVec2(0.845f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.83f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_smashedCountTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_smashedCountTexture->getID()),
@@ -272,18 +272,17 @@ namespace MagneticBall3D
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.007f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.002f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_smashedCountTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSmashedCount);
-        //ImGui::Text("%d", EnAndVars::enemiesKilledCount);
-        ImGui::Text("%d", 5555);
+        ImGui::Text("%d", EnAndVars::enemiesKilledCount);
         ImGui::PopFont();
         ImGui::End();
         ImGui::PopStyleColor(1);
 
         // Speed.
-        ImGui::SetNextWindowPos(ImVec2(0.845f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.83f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_speedTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_speedTexture->getID()),
@@ -291,7 +290,7 @@ namespace MagneticBall3D
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.037f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.032f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSpeed);
@@ -301,11 +300,11 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Button pause.
-        ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.011f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_buttonPauseID.c_str(), nullptr, m_noBackgroundNoFrame);
         m_buttonPauseClicked = ImGui::ImageButton(m_buttonPauseID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPauseTexture->getID()),
-                                                 ImVec2(0.1f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.045f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.13f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 
         // Button resume.
@@ -343,7 +342,7 @@ namespace MagneticBall3D
 
         if(tutorialHowToSwipeEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialHowToSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialHowToSwipeTexture->getID()),
@@ -353,7 +352,7 @@ namespace MagneticBall3D
 
         if(tutorialSwipeOnWallEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialSwipeOnWallID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeOnWallTexture->getID()),

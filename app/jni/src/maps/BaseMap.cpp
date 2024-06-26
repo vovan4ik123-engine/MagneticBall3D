@@ -242,8 +242,10 @@ namespace MagneticBall3D
             {
                 powerForImpulse = m_screenSwipe3D * EnAndVars::playerImpulseFactorOnGround;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnGround * radiusForTorqueMultiplier;
+                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnGround;
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
+
+                powerForTorque *= radiusForTorqueMultiplier;
 
                 if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
                 {
