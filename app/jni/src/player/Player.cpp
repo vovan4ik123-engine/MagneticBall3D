@@ -26,8 +26,7 @@ namespace MagneticBall3D
 
         // Update collisions.
         m_isOnGround = false;
-        m_isOnBuildingRoof = false;
-        m_isOnBuildingWall = false;
+        m_isOnBuilding = false;
         m_isOnAir = false;
         m_isOnJumpPad = false;
         m_touchGroundAfterFall = false;
@@ -45,38 +44,25 @@ namespace MagneticBall3D
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
-            bool collisionWithWall = false;
             std::vector<const int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING);
-            m_collidingBuildingID = buildingsID.back();
+            m_buildingCollisionID = buildingsID.back();
 
-            std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), buildingsID);
-            for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
-            {
-                float buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(point.second, BeryllConstants::worldUp);
-                if(buildingNormalAngle > 0.87f && buildingNormalAngle < 2.27f) // > 50 && < 130 degrees.
-                {
-                    collisionWithWall = true;
-                    break;
-                }
-            }
+            std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), m_buildingCollisionID);
+            m_buildingCollisionNormal = allCollisionPoints[0].second;
 
-            if(collisionWithWall)
-            {
-                m_isOnBuildingWall = true;
-                m_lastTimeOnBuildingWall = EnAndVars::mapPlayTimeSec;
+            m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, BeryllConstants::worldUp);
+            if(m_buildingNormalAngle > glm::half_pi<float>())
+                m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
 
-                m_obj->setGravity(EnAndVars::playerGravityOnBuildingWall);
-                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
-            }
-            else
-            {
-                m_isOnBuildingRoof = true;
+            // buildingNormalAngle = glm::half_pi<float>() if player on vertical wall. angleFactor will = 1.
+            // buildingNormalAngle = 0 if player on horizontal roof. angleFactor will = 0.
+            const float angleFactor = m_buildingNormalAngle / glm::half_pi<float>();
 
-                m_obj->setGravity(EnAndVars::playerGravityOnBuildingRoof);
-                m_obj->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
-            }
+            const glm::vec3 gravityDiff = EnAndVars::playerGravityOnBuildingRoof - EnAndVars::playerGravityOnBuildingWall;
+            const glm::vec3 newGravity = EnAndVars::playerGravityOnBuildingRoof - (gravityDiff * angleFactor);
+            m_obj->setGravity(newGravity);
 
-            if(m_isOnBuildingWall &&
+            if(m_buildingNormalAngle > 1.48f && m_buildingNormalAngle < 1.658f && // > 85 && < 95 degrees.
                m_lastTimeOnGround + 1.1f < EnAndVars::mapPlayTimeSec &&
                m_lastTimeOnBuilding + 1.1f < EnAndVars::mapPlayTimeSec) // Collision with wall after being in air for 1.1 sec.
             {
@@ -84,6 +70,7 @@ namespace MagneticBall3D
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
             }
 
+            m_isOnBuilding = true;
             m_lastTimeOnBuilding = EnAndVars::mapPlayTimeSec;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))

@@ -72,12 +72,12 @@ namespace EnAndVars
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.09f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.1f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.22f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.24f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.09f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
@@ -93,7 +93,7 @@ namespace EnAndVars
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline int playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 100.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.013f;
+    constexpr inline float playerLeftRightTurnPower = 0.016f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;

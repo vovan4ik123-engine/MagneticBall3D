@@ -230,16 +230,13 @@ namespace MagneticBall3D
                     float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
                     swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeed() * EnAndVars::playerLeftRightTurnPower;
 
-                    //if(moveToSwipeAngle > 0.78f && moveToSwipeAngle < 2.6f) // > 45 && < 150 degrees.
-                    //    swipeFactorBasedOnAngleAndSpeed *= 1.1f;
-
                     if(moveToSwipeAngle > 2.6f) // > 150 degrees.
                         swipeFactorBasedOnAngleAndSpeed *= 1.6f;
                 }
             }
 
             // 2 m = radius for default ball.
-            const float radiusForTorqueMultiplier = std::max(2.0f, m_player->getObj()->getXZRadius() * 0.7f);
+            const float radiusForTorqueMultiplier = std::max(1.0f, m_player->getObj()->getXZRadius() * 0.5f);
 
             if(m_player->getIsOnGround())
             {
@@ -256,17 +253,29 @@ namespace MagneticBall3D
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
             }
-            else if(m_player->getIsOnBuildingRoof())
+            else if(m_player->getIsOnBuilding())
             {
-                powerForImpulse = m_screenSwipe3D * EnAndVars::playerImpulseFactorOnBuildingRoof;
-                powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnBuildingRoof * radiusForTorqueMultiplier;
-                powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
-            }
-            else if(m_player->getIsOnBuildingWall())
-            {
-                powerForImpulse = m_screenSwipe3D * EnAndVars::playerImpulseFactorOnBuildingWall;
-                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnBuildingWall * radiusForTorqueMultiplier;
+                // buildingNormalAngle = glm::half_pi<float>() if player on vertical wall. angleFactor will = 1.
+                // buildingNormalAngle = 0 if player on horizontal roof. angleFactor will = 0.
+                const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
+
+                const float impulseDiff = EnAndVars::playerImpulseFactorOnBuildingWall - EnAndVars::playerImpulseFactorOnBuildingRoof;
+                const float torqueDiff = EnAndVars::playerTorqueFactorOnBuildingWall - EnAndVars::playerTorqueFactorOnBuildingRoof;
+
+                powerForImpulse = m_screenSwipe3D * (EnAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
+                powerForTorque = m_screenSwipe3D * (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
+
+                //BR_INFO("impulse power %f", (EnAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor));
+                //BR_INFO("torque power %f", (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
+                //BR_INFO("gravity %f", m_player->getObj()->getGravity().y);
+
+                powerForTorque *= radiusForTorqueMultiplier;
+
+                if(m_player->getBuildingNormalAngle() < 0.0872f) // Less than 5 degrees. Assume we are on flat roof.
+                {
+                    powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
+                    powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
+                }
             }
             else // if(m_player->getIsOnAir())
             {
@@ -291,10 +300,12 @@ namespace MagneticBall3D
                         wrapper.obj->applyCentralImpulse(garbageImpulse);
                 }
             }
-            else if(m_player->getLastTimeOnBuildingWall() + 1.0f > EnAndVars::mapPlayTimeSec)
+            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec)
             {
-                const glm::vec3 playerImpulse = (BeryllConstants::worldUp * 50.0f) + (m_player->getObj()->getXZRadius() * 7.0f);
-                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 1.5f;
+                const float helpOnBuilding = 50.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
+                //BR_INFO("helpOnBuilding %f", helpOnBuilding);
+                const glm::vec3 playerImpulse = BeryllConstants::worldUp * helpOnBuilding;
+                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 2.5f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
 

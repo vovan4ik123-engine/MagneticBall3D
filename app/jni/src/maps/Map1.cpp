@@ -26,7 +26,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        loadGarbage();
+        //loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         //loadEnemies();
@@ -283,7 +283,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.4f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -313,7 +313,8 @@ namespace MagneticBall3D
         {
             if(staticObj->getIsEnabledDraw())
             {
-                if(m_player->getIsOnBuildingRoof() && staticObj->getID() == m_player->getCollidingBuildingID())
+                if(m_player->getIsOnBuilding() && m_player->getBuildingNormalAngle() < 0.17f && // Building normal < 10 degrees with BeryllConstants::worldUp.
+                   staticObj->getID() == m_player->getBuildingCollisionID())
                 {
                     // Store this building and draw it last.
                     semiTransparentBuilding = staticObj;

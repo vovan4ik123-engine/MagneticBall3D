@@ -35,11 +35,12 @@ namespace MagneticBall3D
         bool resurrectPlayer = false;
         bool tutorialSwipeEnabled = false;
         bool tutorialHowToSwipeEnabled = false;
-        bool tutorialSwipeOnBuildingEnabled = false;
+        bool tutorialSwipeOnWallEnabled = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
+        bool m_showStatistics = false;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
@@ -66,12 +67,16 @@ namespace MagneticBall3D
         ImFont* m_fontMapPlayTimer;
         bool m_showMapPlayTimer = true;
 
-        // Text smashed count.
-        static const std::string m_smashedCountID;
+        // Smashed count.
+        static const std::string m_smashedCountTextureID;
+        std::unique_ptr<Beryll::Texture> m_smashedCountTexture;
+        static const std::string m_smashedCountTextID;
         ImFont* m_fontSmashedCount;
 
-        // Text speed.
-        static const std::string m_speedID;
+        // Speed.
+        static const std::string m_speedTextureID;
+        std::unique_ptr<Beryll::Texture> m_speedTexture;
+        static const std::string m_speedTextID;
         ImFont* m_fontSpeed;
 
         // Button pause.
@@ -100,8 +105,8 @@ namespace MagneticBall3D
         static const std::string m_tutorialHowToSwipeID;
         std::unique_ptr<Beryll::Texture> m_tutorialHowToSwipeTexture;
 
-        static const std::string m_tutorialSwipeOnBuildingID;
-        std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnBuildingTexture;
+        static const std::string m_tutorialSwipeOnWallID;
+        std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnWallTexture;
 
         // Resurrect.
         static const std::string m_resurrectTextureID;

@@ -28,16 +28,17 @@ namespace MagneticBall3D
         }
         const glm::vec3& getMoveDirXZ() { return m_playerMoveDirXZ; }
         bool getIsOnGround() { return m_isOnGround; }
-        bool getIsOnBuildingRoof() { return m_isOnBuildingRoof; }
-        bool getIsOnBuildingWall() { return m_isOnBuildingWall; }
-        int getCollidingBuildingID() { return m_collidingBuildingID; }
+        bool getIsOnBuilding() { return m_isOnBuilding; }
+        float getLastTimeOnBuilding() { return m_lastTimeOnBuilding; }
+        int getBuildingCollisionID() { return m_buildingCollisionID; }
+        const glm::vec3& getBuildingCollisionNormal() { return m_buildingCollisionNormal; }
+        float getBuildingNormalAngle() { return m_buildingNormalAngle; }
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
         bool getIsFalling() { return m_falling; }
         bool getIsTouchGroundAfterFall() { return m_touchGroundAfterFall; }
         float getFallDistance() { return m_fallDistance; }
-        float getLastTimeOnBuildingWall() { return m_lastTimeOnBuildingWall; }
         void spamMeteorParticles();
 
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
@@ -76,22 +77,22 @@ namespace MagneticBall3D
 
         // Gravity.
         float m_lastTimeOnBuilding = 0.0f; // Sec.
-        float m_lastTimeOnBuildingWall = 0.0f; // Sec.
         float m_lastTimeOnGround = 0.0f; // Sec.
         float m_lastTimeOnJumpPad = 0.0f; // Sec.
         const float m_applyAirGravityDelay = 0.8f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
-        bool m_isOnBuildingRoof = false;
-        bool m_isOnBuildingWall = false;
+        bool m_isOnBuilding = false;
         bool m_isOnAir = false;
         bool m_isOnJumpPad = false;
-        int m_collidingBuildingID = 0;
         float m_previousYPos = 0.0f;
         bool m_startFalling = false;
         float m_startFallingHeight = 0.0f;
         bool m_falling = false;
         float m_fallDistance = 0.0f;
         bool m_touchGroundAfterFall = false;
+        int m_buildingCollisionID = 0;
+        glm::vec3 m_buildingCollisionNormal{0.0f};
+        float m_buildingNormalAngle{0.0f}; // With BeryllConstants::worldUp.
 
         // Meteor.
         bool m_isMeteor = false;

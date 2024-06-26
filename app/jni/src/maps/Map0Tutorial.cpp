@@ -11,11 +11,11 @@ namespace MagneticBall3D
         // Allocate enough spase for all vectors to avoid vector reallocation.
         const int maxGarbageCount = 200;
         m_allGarbage.reserve(maxGarbageCount);
-        m_allAnimatedEnemies.reserve(200);
-        m_animatedOrDynamicObjects.reserve(200 + maxGarbageCount);
-        m_staticEnv.reserve(200);
-        m_simpleObjForShadowMap.reserve(200 + maxGarbageCount);
-        m_animatedObjForShadowMap.reserve(200);
+        m_allAnimatedEnemies.reserve(100);
+        m_animatedOrDynamicObjects.reserve(100 + maxGarbageCount);
+        m_staticEnv.reserve(100);
+        m_simpleObjForShadowMap.reserve(100 + maxGarbageCount);
+        m_animatedObjForShadowMap.reserve(100);
 
         // Specific for this map only.
         loadPlayer();
@@ -32,7 +32,7 @@ namespace MagneticBall3D
         loadShaders();
         handleCamera();
 
-        m_dirToSun = glm::normalize(glm::vec3(-0.25f, 3.5f, -1.0f));
+        m_dirToSun = glm::normalize(glm::vec3(-0.5f, 3.5f, -1.0f));
         m_sunLightDir = -m_dirToSun;
 
         m_improvements = Improvements(m_player, {});
@@ -61,7 +61,7 @@ namespace MagneticBall3D
         {
             m_gui->tutorialSwipeEnabled = false;
             m_gui->tutorialHowToSwipeEnabled = false;
-            m_gui->tutorialSwipeOnBuildingEnabled = false;
+            m_gui->tutorialSwipeOnWallEnabled = false;
             return;
         }
 
@@ -81,12 +81,12 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().z > 58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, -1.0f) * 100.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.55f, 1.0f, -1.0f) * 70.0f);
         }
         else if(m_player->getObj()->getOrigin().z < -58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, 1.0f) * 100.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.55f, 1.0f, 1.0f) * 70.0f);
         }
     }
 
@@ -115,7 +115,7 @@ namespace MagneticBall3D
             EnAndVars::mapPlayerWin = true;
         else if(m_player->getObj()->getOrigin().x > 1200.0f)
             SendStatisticsHelper::sendMap0_1200mPassed();
-        else if(m_player->getObj()->getOrigin().x > 1020.0f)
+        else if(m_player->getObj()->getOrigin().x > 1050.0f)
             SendStatisticsHelper::sendMap0_onBuilding();
         else if(m_player->getObj()->getOrigin().x > 800.0f)
             SendStatisticsHelper::sendMap0_800mPassed();
@@ -130,27 +130,27 @@ namespace MagneticBall3D
 
         m_gui->tutorialSwipeEnabled = false;
         m_gui->tutorialHowToSwipeEnabled = false;
-        m_gui->tutorialSwipeOnBuildingEnabled = false;
+        m_gui->tutorialSwipeOnWallEnabled = false;
         // Tutorial tips on screen.
         if(m_player->getMoveSpeed() < 7.0f)
             m_gui->tutorialSwipeEnabled = true;
         else
             m_gui->tutorialSwipeEnabled = false;
 
-        if(m_player->getObj()->getOrigin().x > 900.0f && m_player->getObj()->getOrigin().x < 1030.0f)
+        if(m_player->getObj()->getOrigin().x > 800.0f && m_player->getObj()->getOrigin().x < 1030.0f)
         {
             m_gui->tutorialHowToSwipeEnabled = false;
-            m_gui->tutorialSwipeOnBuildingEnabled = true;
+            m_gui->tutorialSwipeOnWallEnabled = true;
         }
-        else if(m_player->getMoveSpeed() > 7.0f && m_player->getMoveSpeed() < 50.0f)
+        else if(m_player->getMoveSpeed() > 7.0f && m_player->getMoveSpeed() < 60.0f)
         {
             m_gui->tutorialHowToSwipeEnabled = true;
-            m_gui->tutorialSwipeOnBuildingEnabled = false;
+            m_gui->tutorialSwipeOnWallEnabled = false;
         }
         else
         {
             m_gui->tutorialHowToSwipeEnabled = false;
-            m_gui->tutorialSwipeOnBuildingEnabled = false;
+            m_gui->tutorialSwipeOnWallEnabled = false;
         }
     }
 
@@ -178,7 +178,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.5f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.4f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -199,7 +199,7 @@ namespace MagneticBall3D
             }
         }
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.8f);
 
         for(const auto& staticObj : m_staticEnv)
         {
@@ -217,19 +217,22 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadowsNormals->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadowsNormals->set1Float("ambientLight", m_ambientLight);
-        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 0.7f);
 
-        modelMatrix = m_ground->getModelMatrix();
-        m_simpleObjSunLightShadowsNormals->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
-        m_simpleObjSunLightShadowsNormals->setMatrix4x4Float("modelMatrix", modelMatrix);
-        m_simpleObjSunLightShadowsNormals->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
-        Beryll::Renderer::drawObject(m_ground, modelMatrix, m_simpleObjSunLightShadowsNormals);
+        for(const auto& normalMapObj : m_objWithNormalMap)
+        {
+            modelMatrix = normalMapObj->getModelMatrix();
+            m_simpleObjSunLightShadowsNormals->setMatrix4x4Float("MVPLightMatrix", m_sunLightVPMatrix * modelMatrix);
+            m_simpleObjSunLightShadowsNormals->setMatrix4x4Float("modelMatrix", modelMatrix);
+            m_simpleObjSunLightShadowsNormals->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
+            Beryll::Renderer::drawObject(normalMapObj, modelMatrix, m_simpleObjSunLightShadowsNormals);
+        }
 
         m_animatedObjSunLightShadows->bind();
         m_animatedObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_animatedObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_animatedObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
-        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_animatedObjSunLightShadows->set1Float("specularLightStrength", 0.8f);
 
         for(const auto& animObj : m_allAnimatedEnemies)
         {
@@ -249,7 +252,7 @@ namespace MagneticBall3D
 
     void Map0Tutorial::loadEnv()
     {
-        m_ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/map0Tutorial/Ground.fbx",
+        const auto ground = std::make_shared<Beryll::SimpleCollidingObject>("models3D/map0Tutorial/Ground.fbx",
                                                                             0.0f,
                                                                             false,
                                                                             Beryll::CollisionFlags::STATIC,
@@ -257,20 +260,21 @@ namespace MagneticBall3D
                                                                             Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
                                                                             Beryll::SceneObjectGroups::GROUND);
 
-        m_ground->setFriction(EnAndVars::staticEnvFriction);
+        m_objWithNormalMap.push_back(ground);
+        ground->setFriction(EnAndVars::staticEnvFriction);
 
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Buildings.fbx",
+        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Walls.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK | Beryll::CollisionGroups::CAMERA,
+                                                                                       Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : objects1)
         {
-            m_staticEnv.push_back(obj);
+            m_objWithNormalMap.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
             obj->setFriction(EnAndVars::staticEnvFriction);
         }
