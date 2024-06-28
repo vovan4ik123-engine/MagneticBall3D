@@ -30,6 +30,7 @@ namespace MagneticBall3D
         void disableGarbage();
         bool getIsEnabled() { return m_isEnabled; }
         GarbageType getType() { return m_type; }
+        static int getCommonActiveCount() { return m_commonActiveCount; }
 
         const std::shared_ptr<Beryll::SimpleCollidingObject> obj;
         bool isMagnetized = false;
@@ -40,8 +41,9 @@ namespace MagneticBall3D
         bool getIsDie() { return m_currentHP <= 0.0f; }
 
     private:
-        bool m_isEnabled = true;
+        bool m_isEnabled = false;
         GarbageType m_type = GarbageType::NONE;
+        static int m_commonActiveCount;
 
         // Hp.
         const float m_maxHP = 0.0f;

@@ -40,11 +40,11 @@ namespace MagneticBall3D
                 selectedTexturePath = "GUI/improvements/PLAYER_BETTER_CLUTCH_WITH_WALLS_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_BETTER_CLUTCH_WITH_WALLS.");
             }
-            else if(info.type == ImprovementType::PLAYER_INCREASE_SIZE)
+            else if(info.type == ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE)
             {
-                mainTexturePath = "GUI/improvements/PLAYER_INCREASE_SIZE.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_INCREASE_SIZE_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_INCREASE_SIZE.");
+                mainTexturePath = "GUI/improvements/PLAYER_MAGNETIZE_MORE_GARBAGE.jpg";
+                selectedTexturePath = "GUI/improvements/PLAYER_MAGNETIZE_MORE_GARBAGE_SELECTED.jpg";
+                BR_INFO("%s", "Created GUI block for PLAYER_MAGNETIZE_MORE_GARBAGE.");
             }
             else if(info.type == ImprovementType::PLAYER_INCREASE_MAX_HP)
             {

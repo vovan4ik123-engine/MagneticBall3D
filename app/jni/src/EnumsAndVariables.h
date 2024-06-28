@@ -37,10 +37,10 @@ namespace EnAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
+        static inline int currentMapIndex = 2; // Index of selected map on start screen.
+        static inline int lastOpenedMapIndex = 2; // Last index of map available for select and play.
         // Not stored in DB.
-        static constexpr inline int maxMapIndex = 1; // Last possible map index (opened or not). Must be hardcoded before release.
+        static constexpr inline int maxMapIndex = 2; // Last possible map index (opened or not). Must be hardcoded before release.
     };
 
     struct EnergySystem
@@ -59,7 +59,7 @@ namespace EnAndVars
 
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 5.0f;
+    constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
     constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
 
     // Swipe.
@@ -110,8 +110,8 @@ namespace EnAndVars
     inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
     // Garbage.
-    constexpr inline float garbageLinearDamping = 0.15f;
-    constexpr inline float garbageAngularDamping = 0.25f;
+    constexpr inline float garbageLinearDamping = 0.1f;
+    constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 900.0f;
@@ -128,10 +128,11 @@ namespace EnAndVars
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     constexpr inline float garbageCommonSpawnTimeDefault = 0.0f; // Sec.
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
-    constexpr inline float garbageCommonSpawnDelayDefault = 1.0f; // Sec.
-    inline float garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault; // Sec.
+    constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
+    constexpr inline int garbageCommonMaxCountDefault = 150.0f;
+    inline int garbageCommonMaxCount = garbageCommonMaxCountDefault;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -185,8 +186,8 @@ namespace EnAndVars
         garbageCountMagnetized = garbageCountMagnetizedDefault;
         garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
         garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
-        garbageCommonSpawnDelay = garbageCommonSpawnDelayDefault;
         garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
+        garbageCommonMaxCount = garbageCommonMaxCountDefault;
 
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;

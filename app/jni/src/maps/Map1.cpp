@@ -103,30 +103,30 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
                                               {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 0."); }},
+                                                                                                                                           EnAndVars::playerTorqueFactorOnGround += 0.01f;
+                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 1."); }},
+                                                                                                                                           EnAndVars::playerTorqueFactorOnGround += 0.01f;
+                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 2."); }},
+                                                                                                                                           EnAndVars::playerTorqueFactorOnGround += 0.01f;
+                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 3."); }},
+                                                                                                                                           EnAndVars::playerTorqueFactorOnGround += 0.01f;
+                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnGround += 0.01f;
-                                                                                                                                          EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
+                                                                                                                                           EnAndVars::playerTorqueFactorOnGround += 0.01f;
+                                                                                                                                           EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           EnAndVars::playerTorqueFactorOnBuildingRoof += 0.01f;
+                                                                                                                                           BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
                                                                                                                         }},
                                               {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,         5, {{[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
@@ -138,32 +138,32 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_INCREASE_SIZE,               5, {{[&]() { EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
-                                                                                                                                          m_player->selectNextModel();
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 0."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
-                                                                                                                                          m_player->selectNextModel();
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 1."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
-                                                                                                                                          m_player->selectNextModel();
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 2."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
-                                                                                                                                          m_player->selectNextModel();
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 3."); }},
-                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
-                                                                                                                                          m_player->selectNextModel();
-                                                                                                                                          BR_INFO("%s", "Block PLAYER_INCREASE_SIZE pressed 4."); }},
-                                                                                                                         }},
+                                              {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE, 5, {{[&]() { EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                      EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                      EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                      m_player->selectNextModel();
+                                                                                                                                      BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 0."); }},
+                                                                                                                 {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                   EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                   EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                   m_player->selectNextModel();
+                                                                                                                                   BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 1."); }},
+                                                                                                                 {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                   EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                   EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                   m_player->selectNextModel();
+                                                                                                                                   BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 2."); }},
+                                                                                                                 {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                   EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                   EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                   m_player->selectNextModel();
+                                                                                                                                   BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 3."); }},
+                                                                                                                 {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
+                                                                                                                                   EnAndVars::garbageMaxCountMagnetized += 26;
+                                                                                                                                   EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                   m_player->selectNextModel();
+                                                                                                                                   BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 4."); }},
+                                                                                                                 }},
                                               {ImprovementType::PLAYER_INCREASE_MAX_HP,             5, {{[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
                                                                                                                         {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
                                                                                                                         {[&]() { m_player->addToMaxHP(100); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
@@ -189,11 +189,11 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
-                                              {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::garbageCommonSpawnDelay -= 0.1f; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
+                                              {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonMaxCount += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonMaxCount += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonMaxCount += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonMaxCount += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::garbageCommonMaxCount += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
                                               {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,           5, {{[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
                                                                                                                         {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
                                                                                                                         {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 2."); }},
@@ -358,7 +358,7 @@ namespace MagneticBall3D
         m_staticEnv.push_back(ground);
         ground->setFriction(EnAndVars::staticEnvFriction);
 
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
+        const auto buildings = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/Buildings.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
@@ -367,7 +367,7 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK | Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
-        for(const auto& obj : objects1)
+        for(const auto& obj : buildings)
         {
             m_staticEnv.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
@@ -397,7 +397,7 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
-        for(int i = 0; i < 5; ++i) // 6 * 34 = 204
+        for(int i = 0; i < 6; ++i) // 6 * 34 = 204
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
                                                                                                 EnAndVars::garbageMass,
@@ -412,7 +412,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCommon)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -437,7 +436,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCopPistol)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -462,7 +460,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCopShield)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_SHIELD, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -487,7 +484,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCopGrenade)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_GRENADE_LAUNCHER, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -512,7 +508,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCopSniper)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::SNIPER, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -537,7 +532,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageTank)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::TANK, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -546,6 +540,8 @@ namespace MagneticBall3D
                 obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
             }
         }
+
+        BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
     }
 
     void Map1::loadEnemies()

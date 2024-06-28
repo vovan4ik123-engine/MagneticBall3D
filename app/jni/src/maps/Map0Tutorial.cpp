@@ -263,7 +263,7 @@ namespace MagneticBall3D
         m_objWithNormalMap.push_back(ground);
         ground->setFriction(EnAndVars::staticEnvFriction);
 
-        const auto objects1 = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Walls.fbx",
+        const auto walls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Walls.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
@@ -272,15 +272,14 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
-        for(const auto& obj : objects1)
+        for(const auto& obj : walls)
         {
             m_objWithNormalMap.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
             obj->setFriction(EnAndVars::staticEnvFriction);
         }
 
-        const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map0Tutorial/EnvNoColliders.fbx",
-                                                                                                   Beryll::SceneObjectGroups::BUILDING);
+        const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map0Tutorial/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : envNoColliders1)
         {
@@ -306,6 +305,7 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCommon)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
+                m_allGarbage.back().enableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -333,7 +333,6 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCopPistol)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 40);
-                m_allGarbage.back().disableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -342,6 +341,8 @@ namespace MagneticBall3D
                 obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
             }
         }
+
+        BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
     }
 
     void Map0Tutorial::loadEnemies()

@@ -25,8 +25,8 @@ namespace MagneticBall3D
         // Menus before specific bosses.
         void showMenuBossTankWithCommander();
 
-//        std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
-//        std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
+        std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;
 //        std::shared_ptr<Beryll::SliderHorizontal> sliderSunPower;
 
         float progressBarHP = 1.0f;
@@ -40,7 +40,7 @@ namespace MagneticBall3D
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        bool m_showStatistics = false;
+        bool m_showStatistics = true;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
@@ -65,7 +65,7 @@ namespace MagneticBall3D
         static const std::string m_mapPlayTimerID;
         std::string m_textMapPlayTimer;
         ImFont* m_fontMapPlayTimer;
-        bool m_showMapPlayTimer = true;
+        bool m_showMapPlayTimer = false;
 
         // Smashed count.
         static const std::string m_smashedCountTextureID;

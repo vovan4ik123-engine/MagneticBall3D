@@ -47,12 +47,20 @@ namespace MagneticBall3D
             std::vector<const int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING);
             m_buildingCollisionID = buildingsID.back();
 
-            std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), m_buildingCollisionID);
-            m_buildingCollisionNormal = allCollisionPoints[0].second;
+            std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), buildingsID);
+            for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
+            {
+                // First store any normal.
+                m_buildingCollisionNormal = point.second;
+                // Next check if that normal of vertical surface.
+                m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, BeryllConstants::worldUp);
+                if(m_buildingNormalAngle > glm::half_pi<float>())
+                    m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
 
-            m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, BeryllConstants::worldUp);
-            if(m_buildingNormalAngle > glm::half_pi<float>())
-                m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
+                if(m_buildingNormalAngle > 1.396f) // > 80 degrees.
+                    // Keep normal of vertical surface if we have. They have more priority among all surfaces.
+                    break;
+            }
 
             // buildingNormalAngle = glm::half_pi<float>() if player on vertical wall. angleFactor will = 1.
             // buildingNormalAngle = 0 if player on horizontal roof. angleFactor will = 0.
@@ -158,13 +166,20 @@ namespace MagneticBall3D
         if(glm::isnan(m_playerMoveSpeed) || m_playerMoveSpeed == 0.0f)
         {
             m_playerMoveSpeed = 0.0f;
-            m_playerMoveSpeedXZ = 0.0f;
             m_playerMoveDir = glm::vec3{0.0f};
-            m_playerMoveDirXZ = glm::vec3{0.0f};
         }
         else
         {
             m_playerMoveDir = glm::normalize(m_playerLinearVelocity);
+        }
+
+        if(glm::isnan(m_playerMoveSpeedXZ) || m_playerMoveSpeedXZ == 0.0f)
+        {
+            m_playerMoveSpeedXZ = 0.0f;
+            m_playerMoveDirXZ = glm::vec3{0.0f};
+        }
+        else
+        {
             m_playerMoveDirXZ = glm::normalize(m_playerLinearVelocityXZ);
         }
 

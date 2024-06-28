@@ -1,6 +1,7 @@
 #include "PlayStateSceneLayer.h"
 #include "maps/Map0Tutorial.h"
 #include "maps/Map1.h"
+#include "maps/Map2.h"
 #include "GameStateHelper.h"
 
 namespace MagneticBall3D
@@ -17,6 +18,8 @@ namespace MagneticBall3D
             m_map = std::make_shared<Map0Tutorial>(gui);
         else if(EnAndVars::MapsProgress::currentMapIndex == 1)
             m_map = std::make_shared<Map1>(gui);
+        else if(EnAndVars::MapsProgress::currentMapIndex == 2)
+            m_map = std::make_shared<Map2>(gui);
         else
         {
             BR_ASSERT(false, "Map index does not handled: %d", EnAndVars::MapsProgress::currentMapIndex);

@@ -129,7 +129,7 @@ namespace MagneticBall3D
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->activateDiffuseTextureMat1();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(3000, 3000);
+        m_shadowMap = Beryll::Renderer::createShadowMap(3200, 3200);
     }
 
     void BaseMap::loadPlayer()
@@ -153,6 +153,7 @@ namespace MagneticBall3D
             item->disableCollisionMesh();
             item->disableUpdate();
             item->disableDraw();
+            item->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
 
             m_animatedOrDynamicObjects.push_back(item);
             m_simpleObjForShadowMap.push_back(item);
@@ -163,7 +164,6 @@ namespace MagneticBall3D
 
         m_player->getObj()->setGravity(EnAndVars::playerGravityOnGround);
         m_player->getObj()->setFriction(EnAndVars::playerFriction);
-        m_player->getObj()->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
     }
 
     void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
@@ -699,17 +699,15 @@ namespace MagneticBall3D
         const glm::vec3 cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
 
-        if(m_player->getIsOnGround())
-        {
-            if(m_player->getMoveSpeed() > EnAndVars::minPlayerSpeedToCameraFollow)
-                desiredCameraBackXZ = -glm::normalize(glm::vec3(m_player->getMoveDir().x, 0.0f, m_player->getMoveDir().z));
-
-            m_screenSwipe3D = glm::vec3{0.0f};
-        }
-        else
+        if(m_player->getIsOnBuilding() &&
+           m_player->getBuildingNormalAngle() > 1.22f) // > 70 degrees. Assume player on vertical surface.
         {
             if(glm::length(m_screenSwipe3D) > 180.0f * EnAndVars::swipePowerMultiplier)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
+        }
+        else if(m_player->getMoveSpeedXZ() > EnAndVars::minPlayerSpeedToCameraFollow)
+        {
+            desiredCameraBackXZ = -m_player->getMoveDirXZ();
         }
 
 
@@ -751,14 +749,15 @@ namespace MagneticBall3D
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
 
         // Check camera ray collisions.
-        Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
+        Beryll::RayClosestHit rayCameraHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
                                                                                  cameraPosForRay,
                                                                                  Beryll::CollisionGroups::CAMERA,
-                                                                                 Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::BOSS);
+                                                                                 Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND |
+                                                                                 Beryll::CollisionGroups::BOSS);
 
-        if(rayBuildingHit)
+        if(rayCameraHit)
         {
-            float hitDistance = glm::max(glm::length(m_cameraFront - rayBuildingHit.hitPoint), 3.0f);
+            float hitDistance = glm::max(glm::length(m_cameraFront - rayCameraHit.hitPoint), 3.0f);
             if(hitDistance < maxCameraDistance)
             {
                 m_cameraDistance = hitDistance;
@@ -781,7 +780,8 @@ namespace MagneticBall3D
         int spawnedCount = 0;
         for(auto& wrapper : m_allGarbage)
         {
-            if(spawnedCount >= count)
+            if(spawnedCount >= count ||
+               (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnAndVars::garbageCommonMaxCount))
                 break;
 
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
@@ -920,7 +920,7 @@ namespace MagneticBall3D
     void BaseMap::spawnCommonGarbage()
     {
         if(!m_pointsToSpawnCommonGarbage.empty() &&
-           EnAndVars::garbageCommonSpawnTime + std::max(0.0f, EnAndVars::garbageCommonSpawnDelay) < EnAndVars::mapPlayTimeSec)
+           EnAndVars::garbageCommonSpawnTime + EnAndVars::garbageCommonSpawnDelay < EnAndVars::mapPlayTimeSec)
         {
             EnAndVars::garbageCommonSpawnTime = EnAndVars::mapPlayTimeSec;
 
