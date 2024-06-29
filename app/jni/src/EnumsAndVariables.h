@@ -58,7 +58,8 @@ namespace EnAndVars
     // Database tables end.
 
     // Camera.
-    constexpr inline float cameraZoomMaxSpeed = 20.0f; // Meters in sec.
+    constexpr inline float cameraZoomMaxSpeed = 16.6f; // Meters in sec.
+    constexpr inline float cameraUpOffsetMaxSpeed = 2.65f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
     constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
 
@@ -77,7 +78,7 @@ namespace EnAndVars
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.26f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.3f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.09f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;

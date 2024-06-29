@@ -102,8 +102,11 @@ namespace MagneticBall3D
 
         glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 60.0f; // For player without garbage.
+        const float m_startCameraDistance = 60.0f;
         float m_cameraDistance = m_startCameraDistance;
+        const float m_startCameraYOffset = 9.0f;
+        float m_cameraYOffset = m_startCameraYOffset;
+        bool m_cameraHit = false;
 
         // Screen swipe.
         int m_fingerDownID = -1;

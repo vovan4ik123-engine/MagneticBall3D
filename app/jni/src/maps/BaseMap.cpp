@@ -737,16 +737,42 @@ namespace MagneticBall3D
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
         m_cameraOffset.y = 0.09f +
-                           (m_player->getObj()->getOrigin().y * 0.0055f) +
-                           (EnAndVars::garbageCountMagnetized * 0.002f);
-        m_cameraOffset.y = std::min(1.8f, m_cameraOffset.y);
+                           (EnAndVars::garbageCountMagnetized * 0.0015f) +
+                           (m_player->getObj()->getOrigin().y * 0.005f);
+        m_cameraOffset.y = std::min(1.0f, m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
-        m_cameraFront.y += 13.0f + m_player->getObj()->getXZRadius();
 
-        float maxCameraDistance = m_startCameraDistance + (EnAndVars::garbageCountMagnetized * 0.4f) + (m_player->getMoveSpeedXZ() * 1.0f);
-        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * (maxCameraDistance + 2.0f); // + 2m behind camera.
+        float maxCameraYOffset = m_startCameraYOffset +
+                                 (EnAndVars::garbageCountMagnetized * 0.1f) +
+                                 std::min(22.0f, m_player->getObj()->getOrigin().y * 0.05f + m_player->getMoveSpeedXZ() * 0.15f);
+
+        if(!m_cameraHit)
+        {
+            if(glm::distance(m_cameraYOffset, maxCameraYOffset) < 0.11f)
+            {
+                m_cameraYOffset = maxCameraYOffset;
+            }
+            else
+            {
+                if(m_cameraYOffset < maxCameraYOffset)
+                    m_cameraYOffset += EnAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+                else
+                    m_cameraYOffset -= EnAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+            }
+        }
+
+        m_cameraFront.y += m_cameraYOffset;
+
+        float maxCameraDistance = m_startCameraDistance +
+                                  (EnAndVars::garbageCountMagnetized * 0.4f) +
+                                  std::min(120.0f, m_player->getMoveSpeedXZ()) +
+                                  std::min(150.0f, m_player->getObj()->getOrigin().y * 0.5f);
+
+        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * maxCameraDistance;
+
+        m_cameraHit = false;
 
         // Check camera ray collisions.
         Beryll::RayClosestHit rayCameraHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
@@ -757,19 +783,28 @@ namespace MagneticBall3D
 
         if(rayCameraHit)
         {
-            float hitDistance = glm::max(glm::length(m_cameraFront - rayCameraHit.hitPoint), 3.0f);
-            if(hitDistance < maxCameraDistance)
-            {
-                m_cameraDistance = hitDistance;
-            }
+            m_cameraHit = true;
+
+            float hitDistance = glm::length(m_cameraFront - rayCameraHit.hitPoint);
+            float hitDistanceFactor = hitDistance / maxCameraDistance;
+
+            m_cameraDistance = maxCameraDistance * hitDistanceFactor;
+
+            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.15f);
+            m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
-        else if(glm::distance(m_cameraDistance, maxCameraDistance) > 1.1f)
+        else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.73f)
+        {
+            m_cameraDistance = maxCameraDistance;
+        }
+        else
         {
             if(m_cameraDistance < maxCameraDistance)
-                m_cameraDistance += EnAndVars::cameraZoomMaxSpeed * std::min(0.05f, Beryll::TimeStep::getTimeStepSec());
+                m_cameraDistance += EnAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
             else
-                m_cameraDistance -= EnAndVars::cameraZoomMaxSpeed * std::min(0.05f, Beryll::TimeStep::getTimeStepSec());
+                m_cameraDistance -= EnAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
         }
+
 
         Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
@@ -928,6 +963,7 @@ namespace MagneticBall3D
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
             spawnGarbage(EnAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
+            //BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
         }
     }
 
