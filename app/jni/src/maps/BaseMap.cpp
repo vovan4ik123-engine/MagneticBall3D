@@ -739,18 +739,18 @@ namespace MagneticBall3D
         m_cameraOffset.y = 0.09f +
                            (EnAndVars::garbageCountMagnetized * 0.0015f) +
                            (m_player->getObj()->getOrigin().y * 0.005f);
-        m_cameraOffset.y = std::min(1.0f, m_cameraOffset.y);
+        m_cameraOffset.y = std::min(1.1f, m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
         float maxCameraYOffset = m_startCameraYOffset +
                                  (EnAndVars::garbageCountMagnetized * 0.1f) +
-                                 std::min(22.0f, m_player->getObj()->getOrigin().y * 0.05f + m_player->getMoveSpeedXZ() * 0.15f);
+                                 std::min(25.0f, m_player->getObj()->getOrigin().y * 0.06f + m_player->getMoveSpeedXZ() * 0.15f);
 
         if(!m_cameraHit)
         {
-            if(glm::distance(m_cameraYOffset, maxCameraYOffset) < 0.11f)
+            if(glm::distance(m_cameraYOffset, maxCameraYOffset) < 0.105f)
             {
                 m_cameraYOffset = maxCameraYOffset;
             }
@@ -766,14 +766,13 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (EnAndVars::garbageCountMagnetized * 0.4f) +
-                                  std::min(120.0f, m_player->getMoveSpeedXZ()) +
-                                  std::min(150.0f, m_player->getObj()->getOrigin().y * 0.5f);
+                                  (EnAndVars::garbageCountMagnetized * 0.25f) +
+                                  std::min(100.0f, m_player->getMoveSpeedXZ() * 0.8f) +
+                                  std::min(100.0f, m_player->getObj()->getOrigin().y * 0.28f);
 
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * maxCameraDistance;
 
         m_cameraHit = false;
-
         // Check camera ray collisions.
         Beryll::RayClosestHit rayCameraHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
                                                                                  cameraPosForRay,
@@ -790,10 +789,10 @@ namespace MagneticBall3D
 
             m_cameraDistance = maxCameraDistance * hitDistanceFactor;
 
-            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.15f);
+            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.18f);
             m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
-        else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.73f)
+        else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
         {
             m_cameraDistance = maxCameraDistance;
         }

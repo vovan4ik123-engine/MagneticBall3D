@@ -104,7 +104,7 @@ namespace MagneticBall3D
         glm::vec3 m_cameraFront{0.0f};
         const float m_startCameraDistance = 60.0f;
         float m_cameraDistance = m_startCameraDistance;
-        const float m_startCameraYOffset = 9.0f;
+        const float m_startCameraYOffset = 10.0f;
         float m_cameraYOffset = m_startCameraYOffset;
         bool m_cameraHit = false;
 

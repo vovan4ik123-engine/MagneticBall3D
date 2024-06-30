@@ -53,7 +53,6 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "BaseBoss IN_ATTACK_RADIUS");
             bossState = BossState::IN_ATTACK_RADIUS;
-            rotateToPoint(playerOrigin, true);
 
             if(getIsTimeToAttack())
             {

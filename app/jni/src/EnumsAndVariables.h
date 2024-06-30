@@ -58,8 +58,8 @@ namespace EnAndVars
     // Database tables end.
 
     // Camera.
-    constexpr inline float cameraZoomMaxSpeed = 16.6f; // Meters in sec.
-    constexpr inline float cameraUpOffsetMaxSpeed = 2.65f; // Meters in sec.
+    constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
+    constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
     constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
 
