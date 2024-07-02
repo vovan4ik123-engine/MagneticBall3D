@@ -53,12 +53,12 @@ namespace MagneticBall3D
             {
                 //BR_INFO("%s", "StaticEnemy if(getIsTimeToAttack())");
                 // Check if enemy see player.
-                Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_origin,
-                                                                                          playerOrigin,
-                                                                                          Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
-                                                                                          Beryll::CollisionGroups::BUILDING);
+                Beryll::RayClosestHit rayEnv = Beryll::Physics::castRayClosestHit(m_origin,
+                                                                                  playerOrigin,
+                                                                                  Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
+                                                                                  Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND);
 
-                if(rayBuildingHit)
+                if(rayEnv)
                 {
                     unitState = UnitState::STAND_AIMING;
                     m_prepareToFirstAttack = true;

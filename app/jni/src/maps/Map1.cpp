@@ -83,7 +83,7 @@ namespace MagneticBall3D
             m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
-        BR_INFO("Map1 pathfinder boss walls: %d", walls.size());
+        BR_INFO("Map1 pathfinder wallsBoss: %d", wallsBoss.size());
 
         std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
         m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
@@ -133,14 +133,14 @@ namespace MagneticBall3D
                                                                                                                         {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
                                                                                                                         {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
                                                                                                                         {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
-                                              {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
-                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
+                                              {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
+                                                                                                                        {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += 0.04f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
                                               {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE, 5, {{[&]() { EnAndVars::playerMagneticRadius += 5.0f;
                                                                                                                                       EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                      EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                      EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;
                                                                                                                                       m_player->selectNextModel();
                                                                                                                                       BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 0."); }},
                                                                                                                  {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
@@ -363,8 +363,8 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK | Beryll::CollisionGroups::CAMERA,
+                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                        Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT | Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : buildings)
@@ -566,7 +566,7 @@ namespace MagneticBall3D
             copPistol->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copPistol->garbageAmountToDie = 10;
-            copPistol->reducePlayerSpeedWhenDie = 8.0f;
+            copPistol->reducePlayerSpeedWhenDie = 6.0f;
             copPistol->experienceWhenDie = 25;
             copPistol->getController().moveSpeed = 25.0f;
 
@@ -595,7 +595,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copShield->garbageAmountToDie = 10;
-            copShield->reducePlayerSpeedWhenDie = 14.0f;
+            copShield->reducePlayerSpeedWhenDie = 10.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 20.0f;
 
@@ -653,7 +653,7 @@ namespace MagneticBall3D
             copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             copGrenade->garbageAmountToDie = 10;
-            copGrenade->reducePlayerSpeedWhenDie = 10.0f;
+            copGrenade->reducePlayerSpeedWhenDie = 8.0f;
             copGrenade->experienceWhenDie = 50;
             copGrenade->getController().moveSpeed = 20.0f;
 
@@ -683,7 +683,7 @@ namespace MagneticBall3D
             tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             tank->garbageAmountToDie = 25;
-            tank->reducePlayerSpeedWhenDie = 40.0f;
+            tank->reducePlayerSpeedWhenDie = 20.0f;
             tank->experienceWhenDie = 200;
             tank->getController().moveSpeed = 15.0f;
 
@@ -757,7 +757,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -780,7 +779,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -809,7 +807,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 60 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -839,7 +836,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 70 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -877,7 +873,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 80 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -927,7 +922,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 90 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -977,7 +971,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -1027,7 +1020,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -1077,7 +1069,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -1127,7 +1118,6 @@ namespace MagneticBall3D
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
-                enemy->damage += 0.5f;
 
                 if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
@@ -1197,22 +1187,11 @@ namespace MagneticBall3D
                     enemy->enableEnemy();
                     enemy->disableDraw();
 
-                    const glm::ivec2& spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
-                    glm::vec3 spawnPoint3D{spawnPoint2D.x,
-                                           enemy->getFromOriginToBottom(),
-                                           spawnPoint2D.y};
-                    enemy->setOrigin(spawnPoint3D);
+                    const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
 
-                    enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6);
-                    if(enemy->pathArray.size() > 1)
-                        enemy->indexInPathArray = 1;
-                    else
-                        enemy->indexInPathArray = 0;
+                    enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
 
-                    enemy->currentPointToMove2DIntegers = enemy->pathArray[enemy->indexInPathArray];
-                    enemy->currentPointToMove3DFloats = glm::vec3(enemy->currentPointToMove2DIntegers.x,
-                                                                  enemy->getFromOriginToBottom(),
-                                                                  enemy->currentPointToMove2DIntegers.y);
+                    enemy->setOrigin(enemy->getStartPointMoveFrom());
                 }
                 // Spawn sniper.
                 else if(StaticEnemy::spawnTime + StaticEnemy::spawnDelay < EnAndVars::mapPlayTimeSec)
@@ -1231,7 +1210,7 @@ namespace MagneticBall3D
                     {
                         Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_player->getObj()->getOrigin(),
                                                                                                   posAndDist.position,
-                                                                                                  Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
+                                                                                                  Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
                                                                                                   Beryll::CollisionGroups::BUILDING);
 
                         // Check position in free + not closest than 150m + sniper see player(rayBuildingHit does not hit).
@@ -1293,7 +1272,7 @@ namespace MagneticBall3D
         BR_INFO("pointsToSpawnBoss.size() %d", pointsToSpawnBoss.size());
         BR_ASSERT((pointsToSpawnBoss.empty() == false), "%s", "pointsToSpawnBoss.empty()");
 
-        const glm::ivec2& spawnPoint2D = pointsToSpawnBoss[Beryll::RandomGenerator::getInt(pointsToSpawnBoss.size() - 1)];
+        const glm::ivec2 spawnPoint2D = pointsToSpawnBoss[Beryll::RandomGenerator::getInt(pointsToSpawnBoss.size() - 1)];
         glm::vec3 spawnPoint3D{spawnPoint2D.x,
                                m_boss->getFromOriginToBottom(),
                                spawnPoint2D.y};

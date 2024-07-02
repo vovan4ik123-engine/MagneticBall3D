@@ -17,14 +17,16 @@ namespace MagneticBall3D
         COP_WITH_PISTOL_SHIELD,
         COP_WITH_GRENADE_LAUNCHER,
         SNIPER,
-        TANK
+        TANK,
+        RAT_WITH_MAGNET
     };
 
     enum class AttackType
     {
         NONE,
         RANGE_DAMAGE_ONE,
-        RANGE_DAMAGE_RADIUS
+        RANGE_DAMAGE_RADIUS,
+        STEAL_GARBAGE
     };
 
     class BaseEnemy : public Beryll::AnimatedCollidingCharacter
@@ -43,6 +45,7 @@ namespace MagneticBall3D
         virtual void update(const glm::vec3& playerOrigin) = 0;
         virtual void attack(const glm::vec3& playerOrigin) = 0;
         virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
+        virtual void setPathArray(std::vector<glm::ivec2> pathArray, const int indexInPathArray) = 0; // Implement for MovableEnemy.
 
         void enableEnemy();
         void disableEnemy();
@@ -53,11 +56,9 @@ namespace MagneticBall3D
         bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
         bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
 
-        // Pathfinding.
-        int indexInPathArray = 0;
-        glm::vec3 currentPointToMove3DFloats{0.0f};
-        glm::ivec2 currentPointToMove2DIntegers{0};
-        std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
+        bool castRayToFindYPos = false;
+        glm::ivec2 getCurrentPointToMove2DInt() { return m_currentPointToMove2DIntegers; };
+        const glm::vec3& getStartPointMoveFrom() { return m_startPointMoveFrom; }
 
         UnitState unitState = UnitState::MOVE;
         UnitType unitType = UnitType::NONE;
@@ -85,5 +86,12 @@ namespace MagneticBall3D
         float m_lastAttackTime = 0.0f; // Sec.
         float m_prepareToFirstAttackStartTime = 0.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
+
+        // Pathfinding.
+        std::vector<glm::ivec2> m_pathArray; // On XZ plane. INTEGER values.
+        int m_indexInPathArray = 0;
+        glm::ivec2 m_currentPointToMove2DIntegers{0};
+        glm::vec3 m_currentPointToMove3DFloats{0.0f};
+        glm::vec3 m_startPointMoveFrom{0.0f};
     };
 }

@@ -304,7 +304,7 @@ namespace MagneticBall3D
             }
             else if(m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec)
             {
-                const float helpOnBuilding = 50.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
+                const float helpOnBuilding = 70.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
                 //BR_INFO("helpOnBuilding %f", helpOnBuilding);
                 const glm::vec3 playerImpulse = BeryllConstants::worldUp * helpOnBuilding;
                 const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 2.5f;
@@ -456,14 +456,9 @@ namespace MagneticBall3D
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate() && m_allAnimatedEnemies[i]->getIsCanMove())
                 {
-                    m_allAnimatedEnemies[i]->pathArray = m_pathFinder.findPath(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers, m_playerClosestAllowedPos, 7);
-                    m_allAnimatedEnemies[i]->indexInPathArray = 0;
-                    m_allAnimatedEnemies[i]->currentPointToMove2DIntegers = m_allAnimatedEnemies[i]->pathArray[m_allAnimatedEnemies[i]->indexInPathArray];
-                    m_allAnimatedEnemies[i]->currentPointToMove3DFloats = glm::vec3(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.x,
-                                                                                    m_allAnimatedEnemies[i]->getFromOriginToBottom(),
-                                                                                    m_allAnimatedEnemies[i]->currentPointToMove2DIntegers.y);
+                    m_allAnimatedEnemies[i]->setPathArray(m_pathFinder.findPath(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt(), m_playerClosestAllowedPos, 7), 0);
 
-                    m_pathFinder.addBlockedPosition(m_allAnimatedEnemies[i]->currentPointToMove2DIntegers);
+                    m_pathFinder.addBlockedPosition(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt());
 
                     ++enemiesUpdated;
                 }
@@ -745,7 +740,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
 
         float maxCameraYOffset = m_startCameraYOffset +
-                                 (EnAndVars::garbageCountMagnetized * 0.1f) +
+                                 (EnAndVars::garbageCountMagnetized * 0.09f) +
                                  std::min(25.0f, m_player->getObj()->getOrigin().y * 0.06f + m_player->getMoveSpeedXZ() * 0.15f);
 
         if(!m_cameraHit)
@@ -784,12 +779,13 @@ namespace MagneticBall3D
         {
             m_cameraHit = true;
 
-            float hitDistance = glm::length(m_cameraFront - rayCameraHit.hitPoint);
+            float hitDistance = glm::length(m_cameraFront - rayCameraHit.hitPoint) * 0.9f;
             float hitDistanceFactor = hitDistance / maxCameraDistance;
 
             m_cameraDistance = maxCameraDistance * hitDistanceFactor;
 
-            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.18f);
+            // m_cameraYOffset also should be changed if camera collision.
+            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.16f);
             m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
         else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
@@ -931,22 +927,11 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledUpdate() && enemy->getIsCanMove())
             {
-                const glm::ivec2& spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
-                glm::vec3 spawnPoint3D{spawnPoint2D.x,
-                                       enemy->getFromOriginToBottom(),
-                                       spawnPoint2D.y};
-                enemy->setOrigin(spawnPoint3D);
+                const glm::ivec2 spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
 
-                enemy->pathArray = m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 4);
-                if(enemy->pathArray.size() > 1)
-                    enemy->indexInPathArray = 1;
-                else
-                    enemy->indexInPathArray = 0;
+                enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 4), 1);
 
-                enemy->currentPointToMove2DIntegers = enemy->pathArray[enemy->indexInPathArray];
-                enemy->currentPointToMove3DFloats = glm::vec3(enemy->currentPointToMove2DIntegers.x,
-                                                              enemy->getFromOriginToBottom(),
-                                                              enemy->currentPointToMove2DIntegers.y);
+                enemy->setOrigin(enemy->getStartPointMoveFrom());
             }
         }
     }
@@ -958,7 +943,7 @@ namespace MagneticBall3D
         {
             EnAndVars::garbageCommonSpawnTime = EnAndVars::mapPlayTimeSec;
 
-            const glm::ivec2& spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
+            const glm::ivec2 spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
             spawnGarbage(EnAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);

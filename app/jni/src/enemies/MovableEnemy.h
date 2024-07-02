@@ -19,7 +19,11 @@ namespace MagneticBall3D
 
         void update(const glm::vec3& playerOrigin) override;
         void attack(const glm::vec3& playerOrigin) override;
-        void freeStaticPosition() override {};
+        void freeStaticPosition() override
+        {
+            BR_ASSERT(false, "%s", "Dont call freeStaticPosition() for MovableEnemy. It has not StaticPosition.")
+        };
+        void setPathArray(std::vector<glm::ivec2> pathArray, const int indexInPathArray) override;
 
     protected:
         void move() override;

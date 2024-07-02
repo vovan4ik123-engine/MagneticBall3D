@@ -32,7 +32,7 @@ namespace MagneticBall3D
         void handleScreenSwipe();
         void updatePathfindingAndSpawnEnemies();
         virtual void spawnEnemies() = 0; // In subclass.
-        void spawnCommonGarbage();
+        virtual void spawnCommonGarbage();
         void handleJumpPads();
         void checkPlayerOutOfMap();
 

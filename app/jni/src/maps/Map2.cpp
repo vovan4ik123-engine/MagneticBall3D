@@ -1,4 +1,8 @@
 #include "Map2.h"
+#include "EnumsAndVariables.h"
+#include "enemies/MovableEnemy.h"
+#include "enemies/StaticEnemy.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -17,11 +21,11 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,-422.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,-450.0f));
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        loadGarbage();
+        //loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
@@ -37,7 +41,7 @@ namespace MagneticBall3D
         m_minZ = -800.0f;
         m_maxZ = 800.0f;
         m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
-        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesWalls.fbx");
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesWalls.fbx");
         for(const auto& wall : walls)
         {
             m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
@@ -45,7 +49,7 @@ namespace MagneticBall3D
 
         BR_INFO("Map2 pathfinder walls: %d", walls.size());
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesAllowedPositions.fbx");
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
@@ -63,15 +67,33 @@ namespace MagneticBall3D
             m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
+        BR_INFO("Map2 pathfinder wallsBoss: %d", wallsBoss.size());
+
+        std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
+        m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
+        for(const auto& point : allowedPointsBoss)
+        {
+            m_pathAllowedPositionsXZBoss.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+        }
+
+        BR_INFO("Map2 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
+
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.0f, 1.0f));
         m_sunLightDir = -m_dirToSun;
 
         m_improvements = Improvements(m_player, {});
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnAndVars::garbageCommonSpawnCount = 5;
+        EnAndVars::garbageCommonSpawnCount = 4;
+
+        //SendStatisticsHelper::sendMapStart();
 
         Beryll::LoadingScreen::showProgress(100.0f);
+
+        //Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+
+        //BR_INFO(" %f", );
+        //BR_INFO("%s", "");
 
     }
 
@@ -224,7 +246,8 @@ namespace MagneticBall3D
                                                                                 false,
                                                                                 Beryll::CollisionFlags::STATIC,
                                                                                 Beryll::CollisionGroups::GROUND,
-                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY,
                                                                                 Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(mainGround);
@@ -236,7 +259,8 @@ namespace MagneticBall3D
                                                                                            Beryll::CollisionFlags::STATIC,
                                                                                            Beryll::CollisionGroups::GROUND,
                                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                           Beryll::CollisionGroups::CAMERA,
+                                                                                           Beryll::CollisionGroups::CAMERA | Beryll::CollisionGroups::MOVABLE_ENEMY |
+                                                                                           Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
                                                                                            Beryll::SceneObjectGroups::GROUND);
 
         for(const auto& obj : otherGrounds)
@@ -250,8 +274,8 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK | Beryll::CollisionGroups::CAMERA,
+                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                        Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT | Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : buildings)
@@ -271,14 +295,65 @@ namespace MagneticBall3D
 
     void Map2::loadGarbage()
     {
+        for(int i = 0; i < 6; ++i) // 6 * 34 = 204
+        {
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
+                                                                                                EnAndVars::garbageMass,
+                                                                                                false,
+                                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                                Beryll::CollisionGroups::GARBAGE,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::SceneObjectGroups::GARBAGE);
 
+            for(const auto& obj : garbageCommon)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
+                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+            }
+        }
 
         BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
     }
 
     void Map2::loadEnemies()
     {
+        for(int i = 0; i < 100; ++i)
+        {
+            auto rat = std::make_shared<MovableEnemy>("models3D/enemies/RatWithMagnet.fbx",
+                                                            0.0f,
+                                                            false,
+                                                            Beryll::CollisionFlags::STATIC,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::SceneObjectGroups::ENEMY);
 
+            rat->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
+            rat->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
+            rat->unitType = UnitType::RAT_WITH_MAGNET;
+            rat->attackType = AttackType::STEAL_GARBAGE;
+            rat->castRayToFindYPos = true;
+            rat->isCanBeSpawned = true;
+
+            rat->damage = 0.0f;
+            rat->attackDistance = 1100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            rat->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+
+            rat->garbageAmountToDie = 10;
+            rat->reducePlayerSpeedWhenDie = 5.0f;
+            rat->experienceWhenDie = 25;
+            rat->getController().moveSpeed = 40.0f;
+
+            m_animatedOrDynamicObjects.push_back(rat);
+            m_allAnimatedEnemies.push_back(rat);
+            m_animatedObjForShadowMap.push_back(rat);
+        }
     }
 
     void Map2::loadBoss()
@@ -288,7 +363,30 @@ namespace MagneticBall3D
 
     void Map2::spawnEnemies()
     {
+        EnAndVars::enemiesMaxActiveCountOnGround = 100;
 
+        if(!m_pointsToSpawnEnemies.empty())
+        {
+            for (const auto &enemy: m_allAnimatedEnemies)
+            {
+                if (BaseEnemy::getActiveCount() >= EnAndVars::enemiesMaxActiveCountOnGround)
+                    break;
+
+                if (enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
+                    continue;
+
+                enemy->enableEnemy();
+                enemy->disableDraw();
+
+                BR_INFO("%s", "spawn rat");
+
+                const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
+
+                enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
+
+                enemy->setOrigin(enemy->getStartPointMoveFrom());
+            }
+        }
     }
 
     void Map2::startBossPhase()
@@ -299,5 +397,30 @@ namespace MagneticBall3D
     void Map2::handlePossPhase()
     {
 
+    }
+
+    void Map2::spawnCommonGarbage()
+    {
+        if(!m_pointsToSpawnCommonGarbage.empty() &&
+           EnAndVars::garbageCommonSpawnTime + EnAndVars::garbageCommonSpawnDelay < EnAndVars::mapPlayTimeSec)
+        {
+            EnAndVars::garbageCommonSpawnTime = EnAndVars::mapPlayTimeSec;
+
+            const glm::ivec2 spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
+            glm::vec3 spawnPoint3D{spawnPoint2D.x, 10.0f, spawnPoint2D.y};
+
+            Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(glm::vec3{spawnPoint2D.x, 70.0f, spawnPoint2D.y},
+                                                                              glm::vec3{spawnPoint2D.x, -10.0f, spawnPoint2D.y},
+                                                                              Beryll::CollisionGroups::GARBAGE,
+                                                                              Beryll::CollisionGroups::GROUND);
+
+            if(rayHit)
+            {
+                spawnPoint3D.y = rayHit.hitPoint.y + 10.0f;
+            }
+
+            spawnGarbage(EnAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
+            BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
+        }
     }
 }

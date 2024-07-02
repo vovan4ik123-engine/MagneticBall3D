@@ -28,7 +28,7 @@ namespace MagneticBall3D
     void Garbage::enableGarbage()
     {
         // Count DEFAULT garbage because it has limit on map. Can be increased by improvements.
-        if(m_type == GarbageType::COMMON)
+        if(!m_isEnabled && m_type == GarbageType::COMMON)
             ++Garbage::m_commonActiveCount;
 
         obj->enableDraw();

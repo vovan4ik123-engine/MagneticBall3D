@@ -53,12 +53,12 @@ namespace MagneticBall3D
             {
                 //BR_INFO("%s", "MovableEnemy if(getIsTimeToAttack())");
                 // Check if enemy see player.
-                Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_origin,
-                                                                                          playerOrigin,
-                                                                                          Beryll::CollisionGroups::RAY_FOR_BUILDING_CHECK,
-                                                                                          Beryll::CollisionGroups::BUILDING);
+                Beryll::RayClosestHit rayEnv = Beryll::Physics::castRayClosestHit(m_origin,
+                                                                                  playerOrigin,
+                                                                                  Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
+                                                                                  Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND);
 
-                if(rayBuildingHit)
+                if(rayEnv)
                 {
                     //BR_INFO("%s", "MovableEnemy move because dont see");
                     move();
@@ -89,21 +89,39 @@ namespace MagneticBall3D
 
         setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
 
-        getController().moveToPosition(currentPointToMove3DFloats, true, true, true);
+        getController().moveToPosition(m_currentPointToMove3DFloats, true, true, true);
 
         if(!getController().getIsMoving())
         {
             //BR_INFO("%s", "MovableEnemy NOT   moving");
 
             // Go to next point if exists.
-            if(indexInPathArray + 1 < pathArray.size())
+            if(m_indexInPathArray + 1 < m_pathArray.size())
             {
-                ++indexInPathArray;
+                ++m_indexInPathArray;
 
-                currentPointToMove2DIntegers = pathArray[indexInPathArray];
-                currentPointToMove3DFloats = glm::vec3(currentPointToMove2DIntegers.x,
-                                                       getFromOriginToBottom(),
-                                                       currentPointToMove2DIntegers.y);
+                m_currentPointToMove2DIntegers = m_pathArray[m_indexInPathArray];
+                float currentY = m_currentPointToMove3DFloats.y;
+                m_currentPointToMove3DFloats = glm::vec3(m_currentPointToMove2DIntegers.x,
+                                                         getFromOriginToBottom(),
+                                                         m_currentPointToMove2DIntegers.y);
+
+                if(castRayToFindYPos)
+                {
+                    glm::vec3 rayFrom = m_currentPointToMove3DFloats;
+                    rayFrom.y = currentY + 100.0f;
+                    glm::vec3 rayTo = m_currentPointToMove3DFloats;
+                    rayTo.y = currentY - 100.0f;
+                    Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(rayFrom,
+                                                                                      rayTo,
+                                                                                      Beryll::CollisionGroups::MOVABLE_ENEMY,
+                                                                                      Beryll::CollisionGroups::GROUND);
+
+                    if(rayHit)
+                    {
+                        m_currentPointToMove3DFloats.y = rayHit.hitPoint.y + getFromOriginToBottom();
+                    }
+                }
             }
         }
     }
@@ -115,5 +133,68 @@ namespace MagneticBall3D
         setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::attack, true, true);
         m_lastAttackTime = EnAndVars::mapPlayTimeSec;
         unitState = UnitState::ATTACKING;
+    }
+
+    void MovableEnemy::setPathArray(std::vector<glm::ivec2> pathArray, const int indexInPathArray)
+    {
+        if(pathArray.empty() || indexInPathArray < 0)
+        {
+            BR_ASSERT(false, "%s", "pathArray.empty() or indexInPathArray < 0");
+        }
+
+        m_pathArray = std::move(pathArray);
+
+        if(indexInPathArray >= m_pathArray.size())
+        {
+            m_indexInPathArray = m_pathArray.size() - 1;
+        }
+        else
+        {
+            m_indexInPathArray = indexInPathArray;
+        }
+
+        m_currentPointToMove2DIntegers = m_pathArray[m_indexInPathArray];
+        m_currentPointToMove3DFloats = glm::vec3(m_currentPointToMove2DIntegers.x,
+                                                 getFromOriginToBottom(),
+                                                 m_currentPointToMove2DIntegers.y);
+        m_startPointMoveFrom = glm::vec3(m_pathArray[0].x,
+                                         getFromOriginToBottom(),
+                                         m_pathArray[0].y);
+
+        if(castRayToFindYPos)
+        {
+            glm::vec3 rayFrom = m_currentPointToMove3DFloats;
+            rayFrom.y = 200.0f;
+            glm::vec3 rayTo = m_currentPointToMove3DFloats;
+            rayTo.y = -20.0f;
+            Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(rayFrom,
+                                                                              rayTo,
+                                                                              Beryll::CollisionGroups::MOVABLE_ENEMY,
+                                                                              Beryll::CollisionGroups::GROUND);
+
+            if(rayHit)
+            {
+                m_currentPointToMove3DFloats.y = rayHit.hitPoint.y + getFromOriginToBottom();
+                m_startPointMoveFrom.y = rayHit.hitPoint.y + getFromOriginToBottom();
+            }
+
+            if(m_indexInPathArray > 0)
+            {
+                // m_startPointMoveFrom != m_currentPointToMove3DFloats. Recalculate Y.
+                glm::vec3 rayFrom2 = m_startPointMoveFrom;
+                rayFrom2.y = 200.0f;
+                glm::vec3 rayTo2 = m_startPointMoveFrom;
+                rayTo2.y = -20.0f;
+                Beryll::RayClosestHit rayHit2 = Beryll::Physics::castRayClosestHit(rayFrom2,
+                                                                                   rayTo2,
+                                                                                   Beryll::CollisionGroups::MOVABLE_ENEMY,
+                                                                                   Beryll::CollisionGroups::GROUND);
+
+                if(rayHit2)
+                {
+                    m_startPointMoveFrom.y = rayHit2.hitPoint.y + getFromOriginToBottom();
+                }
+            }
+        }
     }
 }
