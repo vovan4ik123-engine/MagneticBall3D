@@ -11,7 +11,7 @@ namespace MagneticBall3D
         GRENADE_LAUNCHER_SHOT,
         TANK_SHOT,
         RIFLE_SHOT,
-        SMASH_COP,
+        POP,
 
 
         BACKGROUND_MUSIC_1,

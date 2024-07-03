@@ -23,6 +23,11 @@ namespace MagneticBall3D
         {
             disableGarbage();
         }
+
+        if(!m_canBeMagnetized && m_pauseMagnetizationTime + m_pauseMagnetizationDelay < EnAndVars::mapPlayTimeSec)
+        {
+            m_canBeMagnetized = true;
+        }
     }
 
     void Garbage::enableGarbage()
@@ -36,6 +41,7 @@ namespace MagneticBall3D
         obj->enableCollisionMesh();
 
         m_isEnabled = true;
+        m_canBeMagnetized = true;
 
         m_currentHP = m_maxHP;
     }
@@ -54,6 +60,7 @@ namespace MagneticBall3D
         obj->disableCollisionMesh();
 
         m_isEnabled = false;
+        m_canBeMagnetized = false;
         isMagnetized = false;
     }
 }

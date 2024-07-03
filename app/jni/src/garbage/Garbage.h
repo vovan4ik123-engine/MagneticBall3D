@@ -40,8 +40,20 @@ namespace MagneticBall3D
         void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnAndVars::garbageDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
 
+        bool getCanBeMagnetized() { return m_canBeMagnetized; }
+        void pauseMagnetization(float timeSec)
+        {
+            isMagnetized = false;
+            m_canBeMagnetized = false;
+            m_pauseMagnetizationDelay = timeSec;
+            m_pauseMagnetizationTime = EnAndVars::mapPlayTimeSec;
+        }
+
     private:
         bool m_isEnabled = false;
+        bool m_canBeMagnetized = true;
+        float m_pauseMagnetizationTime = 0;
+        float m_pauseMagnetizationDelay = 0;
         GarbageType m_type = GarbageType::NONE;
         static int m_commonActiveCount;
 

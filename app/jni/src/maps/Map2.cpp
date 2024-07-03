@@ -25,7 +25,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        //loadGarbage();
+        loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
@@ -341,9 +341,8 @@ namespace MagneticBall3D
             rat->castRayToFindYPos = true;
             rat->isCanBeSpawned = true;
 
-            rat->damage = 0.0f;
-            rat->attackDistance = 1100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
-            rat->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            rat->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 20.0f;
+            rat->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             rat->garbageAmountToDie = 10;
             rat->reducePlayerSpeedWhenDie = 5.0f;
@@ -363,7 +362,7 @@ namespace MagneticBall3D
 
     void Map2::spawnEnemies()
     {
-        EnAndVars::enemiesMaxActiveCountOnGround = 100;
+        EnAndVars::enemiesMaxActiveCountOnGround = 30;
 
         if(!m_pointsToSpawnEnemies.empty())
         {
@@ -420,7 +419,7 @@ namespace MagneticBall3D
             }
 
             spawnGarbage(EnAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
-            BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
+            //BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
         }
     }
 }

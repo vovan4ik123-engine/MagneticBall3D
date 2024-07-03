@@ -330,7 +330,7 @@ namespace MagneticBall3D
             if(wrapper.getIsEnabled())
                 wrapper.update();
 
-            if(wrapper.getIsEnabled() && wrapper.isMagnetized &&
+            if(wrapper.getIsEnabled() && wrapper.isMagnetized && wrapper.getCanBeMagnetized() &&
                glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnAndVars::playerMagneticRadius)
             {
                 ++EnAndVars::garbageCountMagnetized;
@@ -341,7 +341,7 @@ namespace MagneticBall3D
             }
         }
 
-        // Check for more garbage if we have limit to that. And update gravity.
+        // Update gravity. And check for more garbage if we have limit for that.
         float gravPower = EnAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnAndVars::garbageGravityIncreasedByPlayerSpeed);
         if(gravPower > EnAndVars::garbageMaxGravityPower)
             gravPower = EnAndVars::garbageMaxGravityPower;
@@ -372,9 +372,9 @@ namespace MagneticBall3D
                 wrapper.obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
             }
 
-            // 2. Check for more garbage if we have limit to that.
+            // 2. Check for more garbage if we have limit for that.
             if(EnAndVars::garbageCountMagnetized < EnAndVars::garbageMaxCountMagnetized &&
-               wrapper.getIsEnabled() && !wrapper.isMagnetized &&
+               wrapper.getIsEnabled() && !wrapper.isMagnetized && wrapper.getCanBeMagnetized() &&
                glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnAndVars::playerMagneticRadius)
             {
                 ++EnAndVars::garbageCountMagnetized;
@@ -593,6 +593,20 @@ namespace MagneticBall3D
                                 }
                             }
                         }
+                        else if(enemy->attackType == AttackType::STEAL_GARBAGE)
+                        {
+                            //BR_INFO("%s", "Garbage under attack =) by AttackType::STEAL_GARBAGE");
+                            for(auto& wrapper : m_allGarbage)
+                            {
+                                if(rayAttack.hittedObjectID == wrapper.obj->getID())
+                                {
+                                    wrapper.pauseMagnetization(1.0f);
+                                    wrapper.obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+                                    wrapper.obj->applyCentralImpulse(glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin()) * 0.1f);
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     // Play hit sounds.
@@ -653,32 +667,28 @@ namespace MagneticBall3D
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
                 ++EnAndVars::enemiesKilledCount;
+                Sounds::playSoundEffect(SoundType::POP);
 
                 if(enemy->unitType == UnitType::COP_WITH_PISTOL)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
-                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
-                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
-                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->unitType == UnitType::SNIPER)
                 {
                     spawnGarbage(1, GarbageType::SNIPER, enemy->getOrigin());
                     enemy->freeStaticPosition();
-                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
                 else if(enemy->unitType == UnitType::TANK)
                 {
                     spawnGarbage(1, GarbageType::TANK, enemy->getOrigin());
-                    Sounds::playSoundEffect(SoundType::SMASH_COP);
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
@@ -761,7 +771,7 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (EnAndVars::garbageCountMagnetized * 0.25f) +
+                                  (EnAndVars::garbageCountMagnetized * 0.5f) +
                                   std::min(100.0f, m_player->getMoveSpeedXZ() * 0.8f) +
                                   std::min(100.0f, m_player->getObj()->getOrigin().y * 0.28f);
 

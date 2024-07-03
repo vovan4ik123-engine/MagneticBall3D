@@ -96,7 +96,7 @@ namespace MagneticBall3D
         if(m_numberOfCurrentlyPlayingWAV >= 8)
             return;
 
-        if(type == SoundType::SMASH_COP)
+        if(type == SoundType::POP)
         {
             float randomValue = Beryll::RandomGenerator::getFloat();
 
