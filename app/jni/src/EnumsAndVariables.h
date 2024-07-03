@@ -78,7 +78,7 @@ namespace EnAndVars
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.3f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.32f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.09f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;

@@ -115,7 +115,7 @@ namespace MagneticBall3D
             EnAndVars::mapPlayerWin = true;
         else if(m_player->getObj()->getOrigin().x > 1200.0f)
             SendStatisticsHelper::sendMap0_1200mPassed();
-        else if(m_player->getObj()->getOrigin().x > 1050.0f)
+        else if(m_player->getObj()->getOrigin().x > 1030.0f)
             SendStatisticsHelper::sendMap0_onBuilding();
         else if(m_player->getObj()->getOrigin().x > 800.0f)
             SendStatisticsHelper::sendMap0_800mPassed();
