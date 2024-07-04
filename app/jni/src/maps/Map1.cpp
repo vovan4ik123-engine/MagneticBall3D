@@ -558,7 +558,7 @@ namespace MagneticBall3D
 
             copPistol->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copPistol->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copPistol->unitType = UnitType::COP_WITH_PISTOL;
+            copPistol->unitType = UnitType::STAND_GUN;
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             copPistol->damage = 5.0f;
@@ -587,7 +587,7 @@ namespace MagneticBall3D
 
             copShield->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copShield->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copShield->unitType = UnitType::COP_WITH_PISTOL_SHIELD;
+            copShield->unitType = UnitType::STAND_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             copShield->damage = 5.0f;
@@ -644,7 +644,7 @@ namespace MagneticBall3D
 
             copGrenade->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copGrenade->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copGrenade->unitType = UnitType::COP_WITH_GRENADE_LAUNCHER;
+            copGrenade->unitType = UnitType::SIT_DOWN_GRENADE_LAUNCHER;
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
             copGrenade->damage = 1.0f;
@@ -737,7 +737,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 15 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 15 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -758,7 +758,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 50 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
@@ -780,13 +780,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 50 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 25 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 25 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -808,13 +808,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 60 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 60 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 50 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 50 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -837,13 +837,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 70 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 70 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 66 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 66 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -874,13 +874,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 80 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 80 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 70 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 70 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -892,7 +892,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 20 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 20 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -923,13 +923,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 90 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 90 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 80 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 80 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -941,7 +941,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 30 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 30 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -972,13 +972,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 100 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 90 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 90 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -990,7 +990,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 40 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 40 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -1021,13 +1021,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -1039,7 +1039,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 50 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 50 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -1070,13 +1070,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -1088,7 +1088,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 60 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 60 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;
@@ -1119,13 +1119,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithPistolShieldCount;
@@ -1137,7 +1137,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 70 && enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(copWithGrenadeLauncherCount < 70 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++copWithGrenadeLauncherCount;

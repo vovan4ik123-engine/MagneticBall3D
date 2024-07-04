@@ -324,7 +324,7 @@ namespace MagneticBall3D
 
     void Map2::loadEnemies()
     {
-        for(int i = 0; i < 100; ++i)
+        for(int i = 0; i < 20; ++i)
         {
             auto rat = std::make_shared<MovableEnemy>("models3D/enemies/RatWithMagnet.fbx",
                                                             0.0f,
@@ -341,7 +341,7 @@ namespace MagneticBall3D
             rat->castRayToFindYPos = true;
             rat->isCanBeSpawned = true;
 
-            rat->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 20.0f;
+            rat->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 20.0f;
             rat->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             rat->garbageAmountToDie = 10;
@@ -352,6 +352,37 @@ namespace MagneticBall3D
             m_animatedOrDynamicObjects.push_back(rat);
             m_allAnimatedEnemies.push_back(rat);
             m_animatedObjForShadowMap.push_back(rat);
+        }
+
+        for(int i = 0; i < 10; ++i)
+        {
+            auto guard = std::make_shared<MovableEnemy>("models3D/enemies/JunkyardGuard.fbx",
+                                                        0.0f,
+                                                        false,
+                                                        Beryll::CollisionFlags::STATIC,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::SceneObjectGroups::ENEMY);
+
+            guard->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
+            guard->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
+            guard->unitType = UnitType::STAND_GUN;
+            guard->attackType = AttackType::RANGE_DAMAGE_ONE;
+            guard->castRayToFindYPos = true;
+            guard->isCanBeSpawned = true;
+
+            guard->damage = 1.0f;
+            guard->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+
+            guard->garbageAmountToDie = 10;
+            guard->reducePlayerSpeedWhenDie = 8.0f;
+            guard->experienceWhenDie = 25;
+            guard->getController().moveSpeed = 25.0f;
+
+            m_animatedOrDynamicObjects.push_back(guard);
+            m_allAnimatedEnemies.push_back(guard);
+            m_animatedObjForShadowMap.push_back(guard);
         }
     }
 

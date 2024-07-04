@@ -359,7 +359,7 @@ namespace MagneticBall3D
 
             cop->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
             cop->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            cop->unitType = UnitType::COP_WITH_PISTOL;
+            cop->unitType = UnitType::STAND_GUN;
             cop->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             cop->damage = 0.0f;

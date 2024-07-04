@@ -499,11 +499,11 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Play shot sounds.
-                    if(enemy->unitType == UnitType::COP_WITH_PISTOL || enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                    if(enemy->unitType == UnitType::STAND_GUN || enemy->unitType == UnitType::STAND_GUN_SHIELD)
                         Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
                     else if(enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
-                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                         Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
                     else if(enemy->unitType == UnitType::TANK)
                         Sounds::playSoundEffect(SoundType::TANK_SHOT);
@@ -511,14 +511,14 @@ namespace MagneticBall3D
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
-                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
-                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD ||
+                    if(enemy->unitType == UnitType::STAND_GUN ||
+                       enemy->unitType == UnitType::STAND_GUN_SHIELD ||
                        enemy->unitType == UnitType::SNIPER)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
                         from += enemy->getFaceDirXZ() * 10.0f;
                     }
-                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                     {
                         from.y += 0.0f;
                         from += enemy->getFaceDirXZ() * 10.0f;
@@ -529,13 +529,13 @@ namespace MagneticBall3D
                         from += enemy->getFaceDirXZ() * 30.0f;
                     }
 
-                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
-                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                    if(enemy->unitType == UnitType::STAND_GUN ||
+                       enemy->unitType == UnitType::STAND_GUN_SHIELD)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.9f, 0.9f, 0.0f, 1.0f), glm::vec4(0.9f, 0.9f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.5f, 0.5f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.4f);
@@ -610,8 +610,8 @@ namespace MagneticBall3D
                     }
 
                     // Play hit sounds.
-                    if(enemy->unitType == UnitType::COP_WITH_PISTOL ||
-                       enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD ||
+                    if(enemy->unitType == UnitType::STAND_GUN ||
+                       enemy->unitType == UnitType::STAND_GUN_SHIELD ||
                        enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
@@ -669,15 +669,15 @@ namespace MagneticBall3D
                 ++EnAndVars::enemiesKilledCount;
                 Sounds::playSoundEffect(SoundType::POP);
 
-                if(enemy->unitType == UnitType::COP_WITH_PISTOL)
+                if(enemy->unitType == UnitType::STAND_GUN)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::COP_WITH_PISTOL_SHIELD)
+                else if(enemy->unitType == UnitType::STAND_GUN_SHIELD)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::COP_WITH_GRENADE_LAUNCHER)
+                else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
                 }
