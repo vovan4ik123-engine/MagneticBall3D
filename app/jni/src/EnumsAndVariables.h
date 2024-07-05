@@ -73,17 +73,17 @@ namespace EnAndVars
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.1f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.11f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.09f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
     constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.32f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
-    constexpr inline float playerImpulseFactorOnAir = 0.09f;
+    constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
-    constexpr inline float playerLinearDamping = 0.1f;
-    constexpr inline float playerAngularDamping = 0.1f;
+    constexpr inline float playerLinearDamping = 0.08f;
+    constexpr inline float playerAngularDamping = 0.08f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
@@ -134,6 +134,7 @@ namespace EnAndVars
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
     constexpr inline int garbageCommonMaxCountDefault = 150.0f;
     inline int garbageCommonMaxCount = garbageCommonMaxCountDefault;
+    constexpr inline float garbageStartHP = 40.0f;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);

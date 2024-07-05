@@ -101,11 +101,11 @@ namespace MagneticBall3D
             //BR_INFO("%s", "NOT   moving");
 
             // Go to next point if exists.
-            if(indexInPathArray + 1 < pathArray.size())
+            if(pathArrayIndexToMove + 1 < pathArray.size())
             {
-                ++indexInPathArray;
+                ++pathArrayIndexToMove;
 
-                currentPointToMove2DIntegers = pathArray[indexInPathArray];
+                currentPointToMove2DIntegers = pathArray[pathArrayIndexToMove];
                 currentPointToMove3DFloats = glm::vec3(currentPointToMove2DIntegers.x,
                                                        getFromOriginToBottom(),
                                                        currentPointToMove2DIntegers.y);
@@ -136,8 +136,8 @@ namespace MagneticBall3D
         disableCollisionMesh();
 
         m_isEnabled = false;
-        m_lastAttackTime = 0.0f;
-        m_prepareToFirstAttackStartTime = 0.0f;
+        m_lastAttackTime = -9999.0f;
+        m_prepareToFirstAttackStartTime = -9999.0f;
         m_prepareToFirstAttack = true;
     }
 }

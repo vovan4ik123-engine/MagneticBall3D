@@ -96,11 +96,11 @@ namespace MagneticBall3D
             //BR_INFO("%s", "MovableEnemy NOT   moving");
 
             // Go to next point if exists.
-            if(m_indexInPathArray + 1 < m_pathArray.size())
+            if(m_pathArrayIndexToMove + 1 < m_pathArray.size())
             {
-                ++m_indexInPathArray;
+                ++m_pathArrayIndexToMove;
 
-                m_currentPointToMove2DIntegers = m_pathArray[m_indexInPathArray];
+                m_currentPointToMove2DIntegers = m_pathArray[m_pathArrayIndexToMove];
                 float currentY = m_currentPointToMove3DFloats.y;
                 m_currentPointToMove3DFloats = glm::vec3(m_currentPointToMove2DIntegers.x,
                                                          getFromOriginToBottom(),
@@ -135,25 +135,25 @@ namespace MagneticBall3D
         unitState = UnitState::ATTACKING;
     }
 
-    void MovableEnemy::setPathArray(std::vector<glm::ivec2> pathArray, const int indexInPathArray)
+    void MovableEnemy::setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove)
     {
-        if(pathArray.empty() || indexInPathArray < 0)
+        if(pathArray.empty() || indexToMove < 0)
         {
-            BR_ASSERT(false, "%s", "pathArray.empty() or indexInPathArray < 0");
+            BR_ASSERT(false, "%s", "pathArray.empty() or pathArrayIndexToMove < 0");
         }
 
         m_pathArray = std::move(pathArray);
 
-        if(indexInPathArray >= m_pathArray.size())
+        if(indexToMove >= m_pathArray.size())
         {
-            m_indexInPathArray = m_pathArray.size() - 1;
+            m_pathArrayIndexToMove = m_pathArray.size() - 1;
         }
         else
         {
-            m_indexInPathArray = indexInPathArray;
+            m_pathArrayIndexToMove = indexToMove;
         }
 
-        m_currentPointToMove2DIntegers = m_pathArray[m_indexInPathArray];
+        m_currentPointToMove2DIntegers = m_pathArray[m_pathArrayIndexToMove];
         m_currentPointToMove3DFloats = glm::vec3(m_currentPointToMove2DIntegers.x,
                                                  getFromOriginToBottom(),
                                                  m_currentPointToMove2DIntegers.y);
@@ -178,7 +178,7 @@ namespace MagneticBall3D
                 m_startPointMoveFrom.y = rayHit.hitPoint.y + getFromOriginToBottom();
             }
 
-            if(m_indexInPathArray > 0)
+            if(m_pathArrayIndexToMove > 0)
             {
                 // m_startPointMoveFrom != m_currentPointToMove3DFloats. Recalculate Y.
                 glm::vec3 rayFrom2 = m_startPointMoveFrom;

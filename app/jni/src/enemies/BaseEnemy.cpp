@@ -48,8 +48,8 @@ namespace MagneticBall3D
             --BaseEnemy::m_activeEnemiesCount;
 
         m_isEnabled = false;
-        m_lastAttackTime = 0.0f;
-        m_prepareToFirstAttackStartTime = 0.0f;
+        m_lastAttackTime = -9999.0f;
+        m_prepareToFirstAttackStartTime = -9999.0f;
         m_prepareToFirstAttack = true;
     }
 }

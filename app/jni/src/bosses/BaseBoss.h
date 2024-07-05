@@ -56,10 +56,10 @@ namespace MagneticBall3D
         bool getIsDie() { return m_currentHP <= 0.0f; }
 
         // Pathfinding.
-        int indexInPathArray = 0;
+        std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
+        int pathArrayIndexToMove = 0;
         glm::vec3 currentPointToMove3DFloats{0.0f};
         glm::ivec2 currentPointToMove2DIntegers{0};
-        std::vector<glm::ivec2> pathArray; // On XZ plane. INTEGER values.
 
         BossState bossState = BossState::MOVE;
 
@@ -75,8 +75,8 @@ namespace MagneticBall3D
         bool m_isCanMove = true;
 
         // Attack data.
-        float m_lastAttackTime = 0.0f; // Sec.
-        float m_prepareToFirstAttackStartTime = 0.0f;
+        float m_lastAttackTime = -9999.0f; // Sec.
+        float m_prepareToFirstAttackStartTime = -9999.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
         // HP.

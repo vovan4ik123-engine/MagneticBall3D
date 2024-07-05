@@ -102,7 +102,7 @@ namespace MagneticBall3D
 
         glm::vec3 m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 60.0f;
+        const float m_startCameraDistance = 70.0f;
         float m_cameraDistance = m_startCameraDistance;
         const float m_startCameraYOffset = 10.0f;
         float m_cameraYOffset = m_startCameraYOffset;
@@ -127,7 +127,7 @@ namespace MagneticBall3D
         AStar m_pathFinderBoss;
         std::vector<glm::ivec2> m_pathAllowedPositionsXZBoss;
 
-        // Improvements
-        Improvements m_improvements; // Assign new object with improvements in constructor of specific map.
+        // Improvements.
+        Improvements m_improvements; // m_improvements.setPlayer(m_player); in subclass constructor after player created.
     };
 }

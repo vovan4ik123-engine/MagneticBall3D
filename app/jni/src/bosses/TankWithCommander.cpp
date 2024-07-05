@@ -29,8 +29,6 @@ namespace MagneticBall3D
         m_takeDamageDelay = 3.0f;
 
         getController().moveSpeed = 50.0f;
-
-        m_lastAttackTime = 0.0f;
     }
 
     TankWithCommander::~TankWithCommander()

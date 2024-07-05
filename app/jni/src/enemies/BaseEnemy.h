@@ -45,7 +45,7 @@ namespace MagneticBall3D
         virtual void update(const glm::vec3& playerOrigin) = 0;
         virtual void attack(const glm::vec3& playerOrigin) = 0;
         virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
-        virtual void setPathArray(std::vector<glm::ivec2> pathArray, const int indexInPathArray) = 0; // Implement for MovableEnemy.
+        virtual void setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove) = 0; // Implement for MovableEnemy.
 
         void enableEnemy();
         void disableEnemy();
@@ -83,13 +83,13 @@ namespace MagneticBall3D
         bool m_isCanMove = true; // False for StaticUnit.
 
         // Attack data.
-        float m_lastAttackTime = 0.0f; // Sec.
-        float m_prepareToFirstAttackStartTime = 0.0f;
+        float m_lastAttackTime = -9999.0f; // Sec.
+        float m_prepareToFirstAttackStartTime = -9999.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
         // Pathfinding.
         std::vector<glm::ivec2> m_pathArray; // On XZ plane. INTEGER values.
-        int m_indexInPathArray = 0;
+        int m_pathArrayIndexToMove = 0;
         glm::ivec2 m_currentPointToMove2DIntegers{0};
         glm::vec3 m_currentPointToMove3DFloats{0.0f};
         glm::vec3 m_startPointMoveFrom{0.0f};

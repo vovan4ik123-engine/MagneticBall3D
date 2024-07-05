@@ -19,7 +19,8 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(0.0f, 2.0f,0.0f));
+        m_player->getObj()->setOrigin(glm::vec3(10.0f, 2.0f,0.0f));
+        m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
@@ -35,7 +36,6 @@ namespace MagneticBall3D
         m_dirToSun = glm::normalize(glm::vec3(-0.5f, 3.5f, -1.0f));
         m_sunLightDir = -m_dirToSun;
 
-        m_improvements = Improvements(m_player, {});
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         EnAndVars::playerMagneticRadius = 50.0f;
@@ -304,7 +304,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCommon)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnAndVars::garbageStartHP);
                 m_allGarbage.back().enableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
@@ -332,7 +332,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopPistol)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, 40);
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, EnAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);

@@ -85,9 +85,9 @@ namespace MagneticBall3D
     {
     public:
         Improvements();
-        Improvements(std::shared_ptr<Player> player, const std::vector<ImprovementInfo>& infoVector);
         ~Improvements();
 
+        void setPlayer(std::shared_ptr<Player> player) { m_player = std::move(player); }
         void update();
         void draw();
 

@@ -250,7 +250,7 @@ namespace MagneticBall3D
                 if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
                 {
                     // Help to player move faster on ground when speed is low.
-                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.008f;
+                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.01f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
@@ -939,7 +939,7 @@ namespace MagneticBall3D
             {
                 const glm::ivec2 spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
 
-                enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 4), 1);
+                enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 5), 1);
 
                 enemy->setOrigin(enemy->getStartPointMoveFrom());
             }

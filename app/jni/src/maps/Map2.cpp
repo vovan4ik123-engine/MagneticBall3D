@@ -21,11 +21,12 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,-450.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,-520.0f));
+        m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
-        loadGarbage();
+        //loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
@@ -34,6 +35,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(90.0f);
 
         loadShaders();
+        m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.5f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -81,7 +83,6 @@ namespace MagneticBall3D
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.0f, 1.0f));
         m_sunLightDir = -m_dirToSun;
 
-        m_improvements = Improvements(m_player, {});
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
         EnAndVars::garbageCommonSpawnCount = 4;
@@ -309,7 +310,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCommon)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COMMON, 40);
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -354,7 +355,7 @@ namespace MagneticBall3D
             m_animatedObjForShadowMap.push_back(rat);
         }
 
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < 0; ++i)
         {
             auto guard = std::make_shared<MovableEnemy>("models3D/enemies/JunkyardGuard.fbx",
                                                         0.0f,
