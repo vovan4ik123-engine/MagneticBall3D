@@ -57,8 +57,8 @@ namespace MagneticBall3D
                 if(m_buildingNormalAngle > glm::half_pi<float>())
                     m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
 
-                if(m_buildingNormalAngle > 1.396f) // > 80 degrees.
-                    // Keep normal of vertical surface if we have. They have more priority among all surfaces.
+                if(m_buildingNormalAngle > 1.396f) // > 80 degrees. Consider it like vertical surface (wall).
+                    // Keep normal of vertical surface (wall) if we have. They have more priority among all surfaces.
                     break;
             }
 
@@ -234,7 +234,7 @@ namespace MagneticBall3D
 
     void Player::reduceSpeed(float speedToReduce)
     {
-        if(speedToReduce <= 0.0f || EnAndVars::playerSpeedReductionMultiplier <= 0.0f)
+        if(m_playerMoveSpeed < 1.0f || speedToReduce <= 0.0f || EnAndVars::playerSpeedReductionMultiplier <= 0.0f)
             return;
 
         speedToReduce *= EnAndVars::playerSpeedReductionMultiplier;

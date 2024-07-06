@@ -5,11 +5,11 @@ namespace MagneticBall3D
 {
     Improvements::Improvements()
     {
-        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 15.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
+        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
+                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
+                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
+                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
+                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += 10.0f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
                                                     {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += 0.01f;
                                                                                                                                                  EnAndVars::playerTorqueFactorOnGround += 0.01f;
                                                                                                                                                  EnAndVars::playerImpulseFactorOnBuildingRoof += 0.01f;
@@ -53,22 +53,22 @@ namespace MagneticBall3D
                                                                                                                                             BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 0."); }},
                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
                                                                                                                                           EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 1."); }},
                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
                                                                                                                                           EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 2."); }},
                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
                                                                                                                                           EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 3."); }},
                                                                                                                         {[&](){ EnAndVars::playerMagneticRadius += 5.0f;
                                                                                                                                           EnAndVars::garbageMaxCountMagnetized += 26;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.01f;
+                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += 0.02f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 4."); }},
                                                                                                                         }},

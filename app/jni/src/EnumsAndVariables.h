@@ -73,12 +73,12 @@ namespace EnAndVars
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.11f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.13f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.09f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.11f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.32f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.4f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
@@ -90,11 +90,11 @@ namespace EnAndVars
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -7.0f, 0.0f};
-    constexpr inline float playerMaxSpeedXZDefault = 90.0f;
+    constexpr inline float playerMaxSpeedXZDefault = 80.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline int playerCurrentSpeed = 0;
-    constexpr inline float playerSpeedForMeteor = 100.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.016f;
+    constexpr inline float playerSpeedForMeteor = playerMaxSpeedXZDefault + 10.0f;
+    constexpr inline float playerLeftRightTurnPower = 0.02f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;
@@ -117,7 +117,7 @@ namespace EnAndVars
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
     constexpr inline float garbageMaxGravityPower = 900.0f;
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.5f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 70;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;

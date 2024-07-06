@@ -49,7 +49,7 @@ namespace MagneticBall3D
 
         sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
         m_guiObjects.push_back(sliderAmbient);
-        sliderAmbient->setValue(0.45f);
+        sliderAmbient->setValue(0.5f);
 
         sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2);
         m_guiObjects.push_back(sliderSpecularPower);

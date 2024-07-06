@@ -83,7 +83,7 @@ namespace MagneticBall3D
         float m_lastTimeOnBuilding = 0.0f; // Sec.
         float m_lastTimeOnGround = 0.0f; // Sec.
         float m_lastTimeOnJumpPad = 0.0f; // Sec.
-        const float m_applyAirGravityDelay = 0.8f; // Sec. For player after he stop collide with buildings.
+        const float m_applyAirGravityDelay = 0.65f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;

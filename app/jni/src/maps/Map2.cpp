@@ -29,7 +29,7 @@ namespace MagneticBall3D
         //loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
-        loadEnemies();
+        //loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
