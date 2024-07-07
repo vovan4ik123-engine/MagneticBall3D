@@ -51,9 +51,9 @@ namespace MagneticBall3D
         m_guiObjects.push_back(sliderAmbient);
         sliderAmbient->setValue(0.5f);
 
-        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2);
+        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 0.7f);
         m_guiObjects.push_back(sliderSpecularPower);
-        sliderSpecularPower->setValue(0.3f);
+        sliderSpecularPower->setValue(0.2f);
 //
 //        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderSunPower);
@@ -264,15 +264,15 @@ namespace MagneticBall3D
         }
 
         // Smashed count.
-        ImGui::SetNextWindowPos(ImVec2(0.83f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.77f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_smashedCountTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_smashedCountTexture->getID()),
-                     ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.002f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.002f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_smashedCountTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSmashedCount);
@@ -282,19 +282,19 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Speed.
-        ImGui::SetNextWindowPos(ImVec2(0.83f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.77f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_speedTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_speedTexture->getID()),
-                     ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.9f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.032f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.032f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSpeed);
-        ImGui::Text("%d", EnAndVars::playerCurrentSpeed);
+        ImGui::Text("%d/%d", EnAndVars::playerCurrentSpeed, int(EnAndVars::playerMaxSpeedXZ));
         ImGui::PopFont();
         ImGui::End();
         ImGui::PopStyleColor(1);

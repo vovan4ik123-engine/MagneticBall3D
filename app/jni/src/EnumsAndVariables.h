@@ -67,7 +67,7 @@ namespace EnAndVars
     constexpr inline float swipePowerMultiplier = 2.1f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 28.0f;
+    constexpr inline float playerMagneticRadiusDefault = 30.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
     constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
@@ -132,8 +132,8 @@ namespace EnAndVars
     constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
-    constexpr inline int garbageCommonMaxCountDefault = 150.0f;
-    inline int garbageCommonMaxCount = garbageCommonMaxCountDefault;
+    constexpr inline int garbageCommonMaxCountOnMapDefault = 150.0f;
+    inline int garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
     constexpr inline float garbageStartHP = 40.0f;
 
     constexpr inline float staticEnvFriction = 2.0f;
@@ -189,7 +189,7 @@ namespace EnAndVars
         garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
         garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
         garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
-        garbageCommonMaxCount = garbageCommonMaxCountDefault;
+        garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
 
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;

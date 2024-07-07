@@ -216,6 +216,10 @@ namespace MagneticBall3D
         }
 
         newVelocityXZ.y = m_playerLinearVelocity.y;
+
+        if(glm::any(glm::isnan(newVelocityXZ)))
+            return 0;
+
         m_obj->setLinearVelocity(newVelocityXZ);
         updateSpeed();
         //BR_INFO("Speed after swipe %f", m_playerMoveSpeed);

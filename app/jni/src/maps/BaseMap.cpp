@@ -255,7 +255,7 @@ namespace MagneticBall3D
                 if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
                 {
                     // Help to player move faster on ground when speed is low.
-                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.016f;
+                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.01f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
@@ -276,7 +276,7 @@ namespace MagneticBall3D
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
-                if(m_player->getBuildingNormalAngle() < 0.0872f) // Less than 5 degrees. Assume we are on flat roof.
+                if(m_player->getBuildingNormalAngle() < 0.1745f) // Less than 10 degrees. Assume we are on flat roof.
                 {
                     powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
                     powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
@@ -293,7 +293,7 @@ namespace MagneticBall3D
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
             if(m_player->getIsOnGround() ||
-               m_player->getIsOnBuilding() && m_player->getBuildingNormalAngle() < 0.0872f) // Less than 5 degrees. Assume we are on flat roof.
+               m_player->getIsOnBuilding() && m_player->getBuildingNormalAngle() < 0.1745f) // Less than 10 degrees. Assume we are on flat roof.
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
                 glm::vec3 garbageImpulse = (powerForImpulse * 0.000065f) * applyImpulseFactor;
@@ -754,9 +754,9 @@ namespace MagneticBall3D
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
-        float maxCameraYOffset = m_startCameraYOffset + m_player->getObj()->getXZRadius() +
-                                 (EnAndVars::garbageCountMagnetized * 0.12f) +
-                                 std::min(25.0f, m_player->getObj()->getOrigin().y * 0.06f + m_player->getMoveSpeedXZ() * 0.15f);
+        float maxCameraYOffset = m_startCameraYOffset +
+                                 (EnAndVars::garbageCountMagnetized * 0.15f) +
+                                 std::min(30.0f, m_player->getObj()->getOrigin().y * 0.08f + m_player->getMoveSpeedXZ() * 0.15f);
 
         if(!m_cameraHit)
         {
@@ -776,7 +776,7 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (EnAndVars::garbageCountMagnetized * 0.5f) +
+                                  (EnAndVars::garbageCountMagnetized * 0.7f) +
                                   std::min(100.0f, m_player->getMoveSpeedXZ() * 0.8f) +
                                   std::min(100.0f, m_player->getObj()->getOrigin().y * 0.28f);
 
@@ -800,7 +800,7 @@ namespace MagneticBall3D
             m_cameraDistance = maxCameraDistance * hitDistanceFactor;
 
             // m_cameraYOffset also should be changed if camera collision.
-            float minCameraUpOffset = 5.0f + (EnAndVars::garbageCountMagnetized * 0.16f);
+            float minCameraUpOffset = m_startCameraYOffset + (EnAndVars::garbageCountMagnetized * 0.2f);
             m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
         else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
@@ -826,7 +826,7 @@ namespace MagneticBall3D
         for(auto& wrapper : m_allGarbage)
         {
             if(spawnedCount >= count ||
-               (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnAndVars::garbageCommonMaxCount))
+               (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnAndVars::garbageCommonMaxCountOnMap))
                 break;
 
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
