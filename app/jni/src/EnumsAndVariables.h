@@ -127,12 +127,12 @@ namespace EnAndVars
     inline float garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
     constexpr inline float garbageCommonSpawnMinDistance = 80.0f;
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
-    constexpr inline float garbageCommonSpawnTimeDefault = 0.0f; // Sec.
+    constexpr inline float garbageCommonSpawnTimeDefault = -9999.0f; // Sec.
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
     constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
-    constexpr inline int garbageCommonMaxCountOnMapDefault = 150.0f;
+    constexpr inline int garbageCommonMaxCountOnMapDefault = 140.0f;
     inline int garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
     constexpr inline float garbageStartHP = 40.0f;
 

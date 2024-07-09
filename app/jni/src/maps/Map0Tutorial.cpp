@@ -156,7 +156,9 @@ namespace MagneticBall3D
 
     void Map0Tutorial::draw()
     {
-        //BR_INFO("%s", "scene draw call");
+        //BR_INFO("%s", "Scene draw call.");
+        m_improvements.draw();
+
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() +
                            (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) +
@@ -359,7 +361,7 @@ namespace MagneticBall3D
 
             cop->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
             cop->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            cop->unitType = UnitType::STAND_GUN;
+            cop->unitType = UnitType::GUN;
             cop->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             cop->damage = 0.0f;

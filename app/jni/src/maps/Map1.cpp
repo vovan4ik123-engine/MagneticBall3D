@@ -46,8 +46,7 @@ namespace MagneticBall3D
                                                                    {glm::vec3(639.0f, 255.0f, -58.0f)},
                                                                    {glm::vec3(56.0f, 305.5f, 435.0f)},
                                                                    {glm::vec3(56.0f, 305.5f, 484.0f)},
-                                                                   {glm::vec3(145.0f, 305.5f, 396.5f)},
-
+                                                                   {glm::vec3(145.0f, 305.5f, 396.5f)}
         };
 
         loadShaders();
@@ -119,9 +118,9 @@ namespace MagneticBall3D
 
     void Map1::draw()
     {
+        //BR_INFO("%s", "Scene draw call.");
         m_improvements.draw();
 
-        //BR_INFO("%s", "scene draw call");
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() +
                            (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) +
@@ -453,7 +452,7 @@ namespace MagneticBall3D
 
             copPistol->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copPistol->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copPistol->unitType = UnitType::STAND_GUN;
+            copPistol->unitType = UnitType::GUN;
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             copPistol->damage = 5.0f;
@@ -482,7 +481,7 @@ namespace MagneticBall3D
 
             copShield->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copShield->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copShield->unitType = UnitType::STAND_GUN_SHIELD;
+            copShield->unitType = UnitType::GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             copShield->damage = 5.0f;
@@ -539,7 +538,7 @@ namespace MagneticBall3D
 
             copGrenade->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::run, false, false);
             copGrenade->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
-            copGrenade->unitType = UnitType::SIT_DOWN_GRENADE_LAUNCHER;
+            copGrenade->unitType = UnitType::GRENADE_LAUNCHER;
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
 
             copGrenade->damage = 1.0f;
@@ -619,7 +618,7 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
             }
 
-            BR_INFO("prepare wave 1. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 1. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave2 && EnAndVars::mapPlayTimeSec > m_enemiesWave2Time)
         {
@@ -627,20 +626,20 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
+            int gunCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 15 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 15 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("prepare wave 2. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 2. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave3 && EnAndVars::mapPlayTimeSec > m_enemiesWave3Time)
         {
@@ -648,20 +647,20 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
+            int gunCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 50 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 50 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("prepare wave 3. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 3. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave4 && EnAndVars::mapPlayTimeSec > m_enemiesWave4Time)
         {
@@ -669,27 +668,27 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 50 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 50 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 25 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 25 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("prepare wave 4. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 4. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave5 && EnAndVars::mapPlayTimeSec > m_enemiesWave5Time)
         {
@@ -697,27 +696,27 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 60 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 60 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 50 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 50 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("prepare wave 5. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 5. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave6 && EnAndVars::mapPlayTimeSec > m_enemiesWave6Time)
         {
@@ -725,23 +724,23 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 70 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 70 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 66 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 66 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 4 && enemy->unitType == UnitType::SNIPER)
@@ -752,7 +751,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 6. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 6. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave7 && EnAndVars::mapPlayTimeSec > m_enemiesWave7Time)
         {
@@ -760,25 +759,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 80 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 80 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 70 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 70 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 5 && enemy->unitType == UnitType::SNIPER)
@@ -787,10 +786,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 20 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 20 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 1 && enemy->unitType == UnitType::TANK)
@@ -801,7 +800,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 7. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 7. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave8 && EnAndVars::mapPlayTimeSec > m_enemiesWave8Time)
         {
@@ -809,25 +808,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 90 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 90 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 80 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 80 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 6 && enemy->unitType == UnitType::SNIPER)
@@ -836,10 +835,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 30 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 30 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 4 && enemy->unitType == UnitType::TANK)
@@ -850,7 +849,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 8. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 8. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave9 && EnAndVars::mapPlayTimeSec > m_enemiesWave9Time)
         {
@@ -858,25 +857,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 100 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 100 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 90 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 90 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 7 && enemy->unitType == UnitType::SNIPER)
@@ -885,10 +884,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 40 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 40 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 8 && enemy->unitType == UnitType::TANK)
@@ -899,7 +898,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 9. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 9. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave10 && EnAndVars::mapPlayTimeSec > m_enemiesWave10Time)
         {
@@ -907,25 +906,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 100 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 8 && enemy->unitType == UnitType::SNIPER)
@@ -934,10 +933,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 50 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 50 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 12 && enemy->unitType == UnitType::TANK)
@@ -948,7 +947,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 10. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 10. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave11 && EnAndVars::mapPlayTimeSec > m_enemiesWave11Time)
         {
@@ -956,25 +955,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 100 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 9 && enemy->unitType == UnitType::SNIPER)
@@ -983,10 +982,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 60 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 60 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 16 && enemy->unitType == UnitType::TANK)
@@ -997,7 +996,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 11. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 11. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareWave12 && EnAndVars::mapPlayTimeSec > m_enemiesWave12Time)
         {
@@ -1005,25 +1004,25 @@ namespace MagneticBall3D
 
             EnAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int copWithPistolCount = 0;
-            int copWithPistolShieldCount = 0;
+            int gunCount = 0;
+            int gunShieldCount = 0;
             int sniperCount = 0;
-            int copWithGrenadeLauncherCount = 0;
+            int grenadeLauncherCount = 0;
             int tankCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(copWithPistolCount < 110 && enemy->unitType == UnitType::STAND_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::GUN)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolCount;
+                    ++gunCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithPistolShieldCount < 100 && enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(gunShieldCount < 100 && enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithPistolShieldCount;
+                    ++gunShieldCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(sniperCount < 10 && enemy->unitType == UnitType::SNIPER)
@@ -1032,10 +1031,10 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(copWithGrenadeLauncherCount < 70 && enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 70 && enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++copWithGrenadeLauncherCount;
+                    ++grenadeLauncherCount;
                     ++EnAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(tankCount < 20 && enemy->unitType == UnitType::TANK)
@@ -1046,7 +1045,7 @@ namespace MagneticBall3D
                 }
             }
 
-            BR_INFO("prepare wave 12. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 12. Max enemies: %d", EnAndVars::enemiesMaxActiveCountOnGround);
         }
         else if(m_prepareToBoss && EnAndVars::mapPlayTimeSec > m_prepareToBossTime)
         {
@@ -1066,7 +1065,7 @@ namespace MagneticBall3D
 
         bool sortSnipersPositions = true;
 
-        // Spawn enemies on ground.
+        // Spawn enemies.
         if(!m_pointsToSpawnEnemies.empty())
         {
             for(const auto& enemy : m_allAnimatedEnemies)
@@ -1101,23 +1100,23 @@ namespace MagneticBall3D
                                   { return glm::distance(m_player->getObj()->getOrigin(), pos1.position) < glm::distance(m_player->getObj()->getOrigin(), pos2.position); });
                     }
 
-                    for(StaticPosition& posAndDist : StaticEnemy::staticPositions)
+                    for(StaticPosition& sniperPos : StaticEnemy::staticPositions)
                     {
                         Beryll::RayClosestHit rayBuildingHit = Beryll::Physics::castRayClosestHit(m_player->getObj()->getOrigin(),
-                                                                                                  posAndDist.position,
+                                                                                                  sniperPos.position,
                                                                                                   Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
                                                                                                   Beryll::CollisionGroups::BUILDING);
 
                         // Check position in free + not closest than 150m + sniper see player(rayBuildingHit does not hit).
-                        if(posAndDist.isFreePosition && !rayBuildingHit &&
-                           glm::distance(m_player->getObj()->getOrigin(), posAndDist.position) > 150.0f)
+                        if(sniperPos.isFreePosition && !rayBuildingHit &&
+                           glm::distance(m_player->getObj()->getOrigin(), sniperPos.position) > 150.0f)
                         {
-                            posAndDist.isFreePosition = false;
+                            sniperPos.isFreePosition = false;
 
                             enemy->enableEnemy();
                             enemy->disableDraw();
-                            enemy->setOrigin(posAndDist.position);
-                            //BR_INFO("Spawn sniper. Y = %f", posAndDist.position.y);
+                            enemy->setOrigin(sniperPos.position);
+                            //BR_INFO("Spawn sniper. Y = %f", sniperPos.position.y);
 
                             StaticEnemy::spawnTime = EnAndVars::mapPlayTimeSec;
                             break;

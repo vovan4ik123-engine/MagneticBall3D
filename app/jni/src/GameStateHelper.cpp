@@ -82,7 +82,8 @@ namespace MagneticBall3D
 
         EnAndVars::reset();
         StaticEnemy::staticPositions = {};
-        StaticEnemy::spawnTime = 0.0f;
+        StaticEnemy::spawnTime = -9999.0f;
+        StaticEnemy::spawnDelay = 20.0f;
         Sounds::reset();
         SendStatisticsHelper::reset();
     }

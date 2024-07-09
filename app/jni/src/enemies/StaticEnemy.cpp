@@ -3,7 +3,7 @@
 namespace MagneticBall3D
 {
     std::vector<StaticPosition> StaticEnemy::staticPositions{};
-    float StaticEnemy::spawnTime = 0.0f;
+    float StaticEnemy::spawnTime = -9999.0f;
     float StaticEnemy::spawnDelay = 20.0f;
 
     StaticEnemy::StaticEnemy(const char* filePath,

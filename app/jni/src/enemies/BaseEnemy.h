@@ -13,9 +13,9 @@ namespace MagneticBall3D
     enum class UnitType
     {
         NONE,
-        STAND_GUN,
-        STAND_GUN_SHIELD,
-        SIT_DOWN_GRENADE_LAUNCHER,
+        GUN,
+        GUN_SHIELD,
+        GRENADE_LAUNCHER,
         SNIPER,
         TANK,
         RAT_WITH_MAGNET

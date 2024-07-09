@@ -255,7 +255,7 @@ namespace MagneticBall3D
                 if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
                 {
                     // Help to player move faster on ground when speed is low.
-                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.01f;
+                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.011f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
@@ -272,7 +272,7 @@ namespace MagneticBall3D
                 powerForImpulse = m_screenSwipe3D * (EnAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
                 powerForTorque = m_screenSwipe3D * (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
 
-                BR_INFO("torq %f", (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
+                //BR_INFO("torq %f", (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
@@ -293,7 +293,7 @@ namespace MagneticBall3D
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
             if(m_player->getIsOnGround() ||
-               m_player->getIsOnBuilding() && m_player->getBuildingNormalAngle() < 0.1745f) // Less than 10 degrees. Assume we are on flat roof.
+               (m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)) // Less than 10 degrees. Assume we are on flat roof.
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
                 glm::vec3 garbageImpulse = (powerForImpulse * 0.000065f) * applyImpulseFactor;
@@ -503,11 +503,11 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Play shot sounds.
-                    if(enemy->unitType == UnitType::STAND_GUN || enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                    if(enemy->unitType == UnitType::GUN || enemy->unitType == UnitType::GUN_SHIELD)
                         Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
                     else if(enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
-                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
                         Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
                     else if(enemy->unitType == UnitType::TANK)
                         Sounds::playSoundEffect(SoundType::TANK_SHOT);
@@ -515,17 +515,17 @@ namespace MagneticBall3D
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
-                    if(enemy->unitType == UnitType::STAND_GUN ||
-                       enemy->unitType == UnitType::STAND_GUN_SHIELD ||
+                    if(enemy->unitType == UnitType::GUN ||
+                       enemy->unitType == UnitType::GUN_SHIELD ||
                        enemy->unitType == UnitType::SNIPER)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
-                        from += enemy->getFaceDirXZ() * 10.0f;
+                        from += enemy->getFaceDirXZ() * 14.0f;
                     }
-                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
                     {
-                        from.y += 0.0f;
-                        from += enemy->getFaceDirXZ() * 10.0f;
+                        from.y += 1.0f;
+                        from += enemy->getFaceDirXZ() * 14.0f;
                     }
                     else if(enemy->unitType == UnitType::TANK)
                     {
@@ -533,13 +533,13 @@ namespace MagneticBall3D
                         from += enemy->getFaceDirXZ() * 30.0f;
                     }
 
-                    if(enemy->unitType == UnitType::STAND_GUN ||
-                       enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                    if(enemy->unitType == UnitType::GUN ||
+                       enemy->unitType == UnitType::GUN_SHIELD)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.9f, 0.9f, 0.0f, 1.0f), glm::vec4(0.9f, 0.9f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.5f, 0.5f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.4f);
@@ -614,8 +614,8 @@ namespace MagneticBall3D
                     }
 
                     // Play hit sounds.
-                    if(enemy->unitType == UnitType::STAND_GUN ||
-                       enemy->unitType == UnitType::STAND_GUN_SHIELD ||
+                    if(enemy->unitType == UnitType::GUN ||
+                       enemy->unitType == UnitType::GUN_SHIELD ||
                        enemy->unitType == UnitType::SNIPER)
                         Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
@@ -673,15 +673,15 @@ namespace MagneticBall3D
                 ++EnAndVars::enemiesKilledCount;
                 Sounds::playSoundEffect(SoundType::POP);
 
-                if(enemy->unitType == UnitType::STAND_GUN)
+                if(enemy->unitType == UnitType::GUN)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::STAND_GUN_SHIELD)
+                else if(enemy->unitType == UnitType::GUN_SHIELD)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::SIT_DOWN_GRENADE_LAUNCHER)
+                else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
                 {
                     spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
                 }
@@ -918,8 +918,7 @@ namespace MagneticBall3D
 
     void BaseMap::respawnEnemiesAtNewDistance(float minDistance, float maxDistance)
     {
-        if(minDistance <= 0.0f || maxDistance <= 0.0f || minDistance >= maxDistance)
-            return;
+        BR_ASSERT((minDistance > 10.0f && maxDistance > 20.0f && maxDistance > minDistance), "%s", "Wrong distance for respawn enemies.");
 
         std::vector<glm::ivec2> newPositions;
         glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};

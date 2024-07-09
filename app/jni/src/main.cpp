@@ -4,6 +4,8 @@
 #include "EnumsAndVariables.h"
 #include "Sounds.h"
 
+// For static model in blender 36.6k triangles = 1mb FBX file size.
+
 int main(int argc, char* argv[])
 {
     BR_INFO("%s", "main() started.");
@@ -17,8 +19,8 @@ int main(int argc, char* argv[])
 
     //Beryll::Camera::setCameraFov(45.0f);
     Beryll::Camera::setProjectionNearClipPlane(5.0f);
-    Beryll::Camera::setProjectionFarClipPlane(1600.0f);
-    Beryll::Camera::setObjectsViewDistance(1000.0f);
+    Beryll::Camera::setProjectionFarClipPlane(1800.0f);
+    Beryll::Camera::setObjectsViewDistance(1500.0f);
 
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
