@@ -92,11 +92,11 @@ namespace MagneticBall3D
 
         EnAndVars::garbageCommonSpawnCount = 4;
 
-        //SendStatisticsHelper::sendMapStart();
+        SendStatisticsHelper::sendMapStart();
 
         Beryll::LoadingScreen::showProgress(100.0f);
 
-        //Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");
@@ -105,7 +105,7 @@ namespace MagneticBall3D
 
     Map2::~Map2()
     {
-
+        Sounds::stopBackgroundMusic();
     }
 
     void Map2::draw()
@@ -274,6 +274,19 @@ namespace MagneticBall3D
             obj->setFriction(EnAndVars::staticEnvFriction);
         }
 
+        const auto jumpPads = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/JumpPads.fbx",
+                                                                                       0.0f,
+                                                                                       false,
+                                                                                       Beryll::CollisionFlags::STATIC,
+                                                                                       Beryll::CollisionGroups::JUMPPAD,
+                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::SceneObjectGroups::JUMPPAD);
+
+        for(const auto& obj : jumpPads)
+        {
+            m_staticEnv.push_back(obj);
+        }
+
         const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map2/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : envNoColliders1)
@@ -420,7 +433,7 @@ namespace MagneticBall3D
 
             sniper->damage = 20.0f;
             sniper->attackDistance = 2500.0f;
-            sniper->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             sniper->garbageAmountToDie = 10;
             sniper->reducePlayerSpeedWhenDie = 0.0f;

@@ -20,8 +20,6 @@ namespace MagneticBall3D
         void loadEnemies();
         void loadBoss();
 
-        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_objWithNormalMap;
-
         void spawnEnemies() override;
         void startBossPhase() override;
         void handlePossPhase() override;

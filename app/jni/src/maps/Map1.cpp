@@ -515,7 +515,7 @@ namespace MagneticBall3D
 
             sniper->damage = 15.0f;
             sniper->attackDistance = 2500.0f;
-            sniper->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
             sniper->garbageAmountToDie = 10;
             sniper->reducePlayerSpeedWhenDie = 0.0f;

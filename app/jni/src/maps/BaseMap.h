@@ -66,6 +66,7 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;
         std::vector<std::shared_ptr<Beryll::SceneObject>> m_animatedOrDynamicObjects;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_staticEnv;
+        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_objWithNormalMap;
         std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_simpleObjForShadowMap;
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 

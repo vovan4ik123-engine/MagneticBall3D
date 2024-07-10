@@ -39,11 +39,11 @@ namespace MagneticBall3D
 
         if(m_showStatistics)
         {
-            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.15f, 0, 0.55f, 0.03f);
+            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.1f, 0, 0.55f, 0.03f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.15f, 0.025f, 0.75f, 0.03f);
+            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.1f, 0.025f, 0.75f, 0.03f);
             m_guiObjects.push_back(m_statistics2);
-            m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0.15f, 0.0475f, 0.5f, 0.025f);
+            m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
             m_guiObjects.push_back(m_swipeCount);
         }
 

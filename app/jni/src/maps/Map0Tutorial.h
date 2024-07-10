@@ -22,7 +22,5 @@ namespace MagneticBall3D
         void loadEnv();
         void loadGarbage();
         void loadEnemies();
-
-        std::vector<std::shared_ptr<Beryll::BaseSimpleObject>> m_objWithNormalMap;
     };
 }
