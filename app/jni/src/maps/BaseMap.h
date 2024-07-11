@@ -51,7 +51,7 @@ namespace MagneticBall3D
         void spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint);
 
         void updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
-        void respawnEnemiesAtNewDistance(float minDistance, float maxDistance);
+        void respawnEnemiesAtNewDistance(float minDistance);
 
         // Boss phase.
         void prepareToBossPhase(); // At last enemies wave.

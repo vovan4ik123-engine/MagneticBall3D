@@ -41,7 +41,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "StaticEnemy DelayBeforeFirstAttack");
             unitState = UnitState::STAND_AIMING;
-            setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
+            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) < attackDistance)
@@ -69,7 +69,7 @@ namespace MagneticBall3D
                     {
                         //BR_INFO("%s", "StaticEnemy prepareToFirstAttack");
                         m_prepareToFirstAttack = false;
-                        m_prepareToFirstAttackStartTime = EnAndVars::mapPlayTimeSec;
+                        m_prepareToFirstAttackStartTime = EnumsAndVars::mapPlayTimeSec;
                     }
                     else
                     {
@@ -82,7 +82,7 @@ namespace MagneticBall3D
         else
         {
             unitState = UnitState::STAND_AIMING;
-            setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
+            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
             m_prepareToFirstAttack = true;
         }
     }
@@ -96,8 +96,8 @@ namespace MagneticBall3D
     {
         //BR_INFO("%s", "StaticEnemy::attack()");
         rotateToPoint(playerOrigin, true);
-        setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::attack, true, true);
-        m_lastAttackTime = EnAndVars::mapPlayTimeSec;
+        setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::attack, true, true);
+        m_lastAttackTime = EnumsAndVars::mapPlayTimeSec;
         unitState = UnitState::ATTACKING;
     }
 

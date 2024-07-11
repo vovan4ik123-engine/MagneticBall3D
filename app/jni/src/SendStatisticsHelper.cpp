@@ -42,9 +42,9 @@ namespace MagneticBall3D
         {
             m_canSendPlayerDieEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_player_die";
+            std::string eventType = "map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex) + "_player_die";
 
-            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "die_time_sec", int(EnAndVars::mapPlayTimeSec));
+            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "die_time_sec", int(EnumsAndVars::mapPlayTimeSec));
         }
     }
 
@@ -59,7 +59,7 @@ namespace MagneticBall3D
         {
             m_canSendMapStartEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_start";
+            std::string eventType = "map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex) + "_start";
 
             Beryll::GoogleAnalytics::getInstance()->sendEventEmpty(eventType);
         }
@@ -71,9 +71,9 @@ namespace MagneticBall3D
         {
             m_canSendMapWinEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_win";
+            std::string eventType = "map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex) + "_win";
 
-            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "win_time_sec", int(EnAndVars::mapPlayTimeSec));
+            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "win_time_sec", int(EnumsAndVars::mapPlayTimeSec));
         }
     }
 
@@ -83,9 +83,9 @@ namespace MagneticBall3D
         {
             m_canSendMapLoseEvent = false;
 
-            std::string eventType = "map_" + std::to_string(EnAndVars::MapsProgress::currentMapIndex) + "_lose";
+            std::string eventType = "map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex) + "_lose";
 
-            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "lose_time_sec", int(EnAndVars::mapPlayTimeSec));
+            Beryll::GoogleAnalytics::getInstance()->sendEventIntParam(eventType, "lose_time_sec", int(EnumsAndVars::mapPlayTimeSec));
         }
     }
 

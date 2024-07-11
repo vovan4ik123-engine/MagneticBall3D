@@ -43,32 +43,32 @@ namespace DataBaseHelper
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowSettings);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
-                storeSettingsBackgroundMusic(EnAndVars::SettingsMenu::backgroundMusic);
+                storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+                storeSettingsBackgroundMusic(EnumsAndVars::SettingsMenu::backgroundMusic);
 
                 // Create table CurrencyBalance and insert 1 row.
                 Beryll::DataBase::setSqlQuery(createTableCurrencyBalance);
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowCurrencyBalance);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+                storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
                 // MapsProgress.
                 Beryll::DataBase::setSqlQuery(createTableMapsProgress);
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowMapsProgress);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
-                storeMapsProgressLastOpenedMapIndex(EnAndVars::MapsProgress::lastOpenedMapIndex);
+                storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
+                storeMapsProgressLastOpenedMapIndex(EnumsAndVars::MapsProgress::lastOpenedMapIndex);
 
                 // EnergySystem.
                 Beryll::DataBase::setSqlQuery(createTableEnergySystem);
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowEnergySystem);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
-                storeEnergySystemLastSecUpdated(EnAndVars::EnergySystem::lastSecUpdated);
-                storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
+                storeEnergySystemCurrentAmount(EnumsAndVars::EnergySystem::currentAmount);
+                storeEnergySystemLastSecUpdated(EnumsAndVars::EnergySystem::lastSecUpdated);
+                storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -106,13 +106,13 @@ namespace DataBaseHelper
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "FPSLimit contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][1]))
-                    EnAndVars::SettingsMenu::FPSLimit = std::get<long long int>(rows[0][1]);
-                BR_INFO("FPSLimit after read: %d", EnAndVars::SettingsMenu::FPSLimit);
+                    EnumsAndVars::SettingsMenu::FPSLimit = std::get<long long int>(rows[0][1]);
+                BR_INFO("FPSLimit after read: %d", EnumsAndVars::SettingsMenu::FPSLimit);
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "BackgroundMusic contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][2]))
-                    EnAndVars::SettingsMenu::backgroundMusic = std::get<long long int>(rows[0][2]) == 1; // True if column contains 1.
-                BR_INFO("backgroundMusic after read: %d", int(EnAndVars::SettingsMenu::backgroundMusic));
+                    EnumsAndVars::SettingsMenu::backgroundMusic = std::get<long long int>(rows[0][2]) == 1; // True if column contains 1.
+                BR_INFO("backgroundMusic after read: %d", int(EnumsAndVars::SettingsMenu::backgroundMusic));
             }
         }
         catch(const Beryll::DataBaseException& e)
@@ -141,9 +141,9 @@ namespace DataBaseHelper
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "Result of selectCurrencyBalanceCrystals contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][1]))
-                    EnAndVars::CurrencyBalance::crystals = std::get<long long int>(rows[0][1]);
+                    EnumsAndVars::CurrencyBalance::crystals = std::get<long long int>(rows[0][1]);
 
-                BR_INFO("crystals after read: %d", EnAndVars::CurrencyBalance::crystals);
+                BR_INFO("crystals after read: %d", EnumsAndVars::CurrencyBalance::crystals);
             }
         }
         catch(const Beryll::DataBaseException& e)
@@ -239,15 +239,15 @@ namespace DataBaseHelper
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "CurrentMapIndex contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][1]))
-                    EnAndVars::MapsProgress::currentMapIndex = std::get<long long int>(rows[0][1]);
-                BR_INFO("currentMapIndex after read: %d", EnAndVars::MapsProgress::currentMapIndex);
+                    EnumsAndVars::MapsProgress::currentMapIndex = std::get<long long int>(rows[0][1]);
+                BR_INFO("currentMapIndex after read: %d", EnumsAndVars::MapsProgress::currentMapIndex);
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastOpenedMapIndex contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][2]))
-                    EnAndVars::MapsProgress::lastOpenedMapIndex = std::get<long long int>(rows[0][2]);
-                BR_INFO("lastOpenedMapIndex after read: %d", EnAndVars::MapsProgress::lastOpenedMapIndex);
+                    EnumsAndVars::MapsProgress::lastOpenedMapIndex = std::get<long long int>(rows[0][2]);
+                BR_INFO("lastOpenedMapIndex after read: %d", EnumsAndVars::MapsProgress::lastOpenedMapIndex);
 
-                // EnAndVars::MapsProgress::maxMapIndex is hardcoded and const. Should not be changed during game.
+                // EnumsAndVars::MapsProgress::maxMapIndex is hardcoded and const. Should not be changed during game.
             }
         }
         catch(const Beryll::DataBaseException& e)
@@ -316,18 +316,18 @@ namespace DataBaseHelper
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "CurrentAmount contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][1]))
-                    EnAndVars::EnergySystem::currentAmount = std::get<long long int>(rows[0][1]);
-                BR_INFO("currentAmount after read: %d", EnAndVars::EnergySystem::currentAmount);
+                    EnumsAndVars::EnergySystem::currentAmount = std::get<long long int>(rows[0][1]);
+                BR_INFO("currentAmount after read: %d", EnumsAndVars::EnergySystem::currentAmount);
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "LastSecUpdated contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][2]))
-                    EnAndVars::EnergySystem::lastSecUpdated = std::get<long long int>(rows[0][2]);
-                BR_INFO("lastSecUpdated after read: %d", EnAndVars::EnergySystem::lastSecUpdated);
+                    EnumsAndVars::EnergySystem::lastSecUpdated = std::get<long long int>(rows[0][2]);
+                BR_INFO("lastSecUpdated after read: %d", EnumsAndVars::EnergySystem::lastSecUpdated);
 
                 BR_ASSERT((std::holds_alternative<long long int>(rows[0][3])), "%s", "LastSecOneEnergyRestored contains wrong data.");
                 if(std::holds_alternative<long long int>(rows[0][3]))
-                    EnAndVars::EnergySystem::lastSecOneEnergyRestored = std::get<long long int>(rows[0][3]);
-                BR_INFO("lastSecOneEnergyRestored after read: %d", EnAndVars::EnergySystem::lastSecOneEnergyRestored);
+                    EnumsAndVars::EnergySystem::lastSecOneEnergyRestored = std::get<long long int>(rows[0][3]);
+                BR_INFO("lastSecOneEnergyRestored after read: %d", EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
         }
         catch(const Beryll::DataBaseException& e)

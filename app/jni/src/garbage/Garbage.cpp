@@ -24,7 +24,7 @@ namespace MagneticBall3D
             disableGarbage();
         }
 
-        if(!m_canBeMagnetized && m_pauseMagnetizationTime + m_pauseMagnetizationDelay < EnAndVars::mapPlayTimeSec)
+        if(!m_canBeMagnetized && m_pauseMagnetizationTime + m_pauseMagnetizationDelay < EnumsAndVars::mapPlayTimeSec)
         {
             m_canBeMagnetized = true;
         }

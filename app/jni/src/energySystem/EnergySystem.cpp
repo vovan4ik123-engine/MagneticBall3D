@@ -17,8 +17,8 @@ namespace MagneticBall3D
         m_energyTexture = Beryll::Renderer::createTexture("GUI/menus/start/Energy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonEnergyTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_fontAmount = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.025f);
-        m_fontRestoreTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.015f);
+        m_fontAmount = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
+        m_fontRestoreTimer = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.015f);
     }
 
     EnergySystem::~EnergySystem()
@@ -30,40 +30,40 @@ namespace MagneticBall3D
     {
         m_currentSec = Beryll::TimeStep::getSecSinceEpoch();
 
-        if(EnAndVars::EnergySystem::lastSecUpdated < m_currentSec)
+        if(EnumsAndVars::EnergySystem::lastSecUpdated < m_currentSec)
         {
-            //BR_INFO("if(EnAndVars::EnergySystem::lastSecUpdated < currentSec) %d", m_currentSec);
-            EnAndVars::EnergySystem::lastSecUpdated = m_currentSec;
-            DataBaseHelper::storeEnergySystemLastSecUpdated(EnAndVars::EnergySystem::lastSecUpdated);
+            //BR_INFO("if(EnumsAndVars::EnergySystem::lastSecUpdated < currentSec) %d", m_currentSec);
+            EnumsAndVars::EnergySystem::lastSecUpdated = m_currentSec;
+            DataBaseHelper::storeEnergySystemLastSecUpdated(EnumsAndVars::EnergySystem::lastSecUpdated);
 
-            if(EnAndVars::EnergySystem::currentAmount >= EnAndVars::EnergySystem::maxLimitToRestore)
+            if(EnumsAndVars::EnergySystem::currentAmount >= EnumsAndVars::EnergySystem::maxLimitToRestore)
             {
                 // Reset timer if we have max or more(more than max can be if user will buy energy for real money. There is no limit)
                 // If currentAmount will drop below maxLimitToRestore, energy restore process will  start from currentSec time.
-                EnAndVars::EnergySystem::lastSecOneEnergyRestored = m_currentSec;
-                DataBaseHelper::storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
+                EnumsAndVars::EnergySystem::lastSecOneEnergyRestored = m_currentSec;
+                DataBaseHelper::storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
-            else if(EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy <= m_currentSec)
+            else if(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored + EnumsAndVars::EnergySystem::secToRestoreOneEnergy <= m_currentSec)
             {
                 //BR_INFO("%s", "Need and can restore one or more energy.");
                 // Time when one energy can be restored. Or more if app launched after long time inactive.
-                const int amountCanBeRestored = (m_currentSec - EnAndVars::EnergySystem::lastSecOneEnergyRestored) / EnAndVars::EnergySystem::secToRestoreOneEnergy;
-                const int newAmount = EnAndVars::EnergySystem::currentAmount + amountCanBeRestored;
-                if(newAmount >= EnAndVars::EnergySystem::maxLimitToRestore)
+                const int amountCanBeRestored = (m_currentSec - EnumsAndVars::EnergySystem::lastSecOneEnergyRestored) / EnumsAndVars::EnergySystem::secToRestoreOneEnergy;
+                const int newAmount = EnumsAndVars::EnergySystem::currentAmount + amountCanBeRestored;
+                if(newAmount >= EnumsAndVars::EnergySystem::maxLimitToRestore)
                 {
-                    EnAndVars::EnergySystem::currentAmount = EnAndVars::EnergySystem::maxLimitToRestore;
-                    EnAndVars::EnergySystem::lastSecOneEnergyRestored = m_currentSec;
+                    EnumsAndVars::EnergySystem::currentAmount = EnumsAndVars::EnergySystem::maxLimitToRestore;
+                    EnumsAndVars::EnergySystem::lastSecOneEnergyRestored = m_currentSec;
                 }
                 else
                 {
-                    int amountRestored = newAmount - EnAndVars::EnergySystem::currentAmount;
-                    EnAndVars::EnergySystem::currentAmount = newAmount;
-                    EnAndVars::EnergySystem::lastSecOneEnergyRestored += EnAndVars::EnergySystem::secToRestoreOneEnergy * amountRestored;
+                    int amountRestored = newAmount - EnumsAndVars::EnergySystem::currentAmount;
+                    EnumsAndVars::EnergySystem::currentAmount = newAmount;
+                    EnumsAndVars::EnergySystem::lastSecOneEnergyRestored += EnumsAndVars::EnergySystem::secToRestoreOneEnergy * amountRestored;
                 }
 
-                //BR_INFO("amountCanBeRestored %d after restore %d", amountCanBeRestored, EnAndVars::EnergySystem::currentAmount);
-                DataBaseHelper::storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
-                DataBaseHelper::storeEnergySystemLastSecRestored(EnAndVars::EnergySystem::lastSecOneEnergyRestored);
+                //BR_INFO("amountCanBeRestored %d after restore %d", amountCanBeRestored, EnumsAndVars::EnergySystem::currentAmount);
+                DataBaseHelper::storeEnergySystemCurrentAmount(EnumsAndVars::EnergySystem::currentAmount);
+                DataBaseHelper::storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
         }
 
@@ -83,7 +83,7 @@ namespace MagneticBall3D
         ImGui::Begin(m_textAmountID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
         ImGui::PushFont(m_fontAmount);
-        ImGui::Text("%d/%d", EnAndVars::EnergySystem::currentAmount, EnAndVars::EnergySystem::maxLimitToRestore);
+        ImGui::Text("%d/%d", EnumsAndVars::EnergySystem::currentAmount, EnumsAndVars::EnergySystem::maxLimitToRestore);
         ImGui::PopFont();
 
         ImGui::End();
@@ -91,13 +91,13 @@ namespace MagneticBall3D
 
         // Text restore timer.
         m_textRestoreTimer = "";
-        if(EnAndVars::EnergySystem::currentAmount < EnAndVars::EnergySystem::maxLimitToRestore &&
-           EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy >= m_currentSec)
+        if(EnumsAndVars::EnergySystem::currentAmount < EnumsAndVars::EnergySystem::maxLimitToRestore &&
+           EnumsAndVars::EnergySystem::lastSecOneEnergyRestored + EnumsAndVars::EnergySystem::secToRestoreOneEnergy >= m_currentSec)
         {
             // Set timer about restore one energy.
-            uint64_t secLeft = (EnAndVars::EnergySystem::lastSecOneEnergyRestored + EnAndVars::EnergySystem::secToRestoreOneEnergy) - m_currentSec;
-            if(secLeft > EnAndVars::EnergySystem::secToRestoreOneEnergy)
-                secLeft = EnAndVars::EnergySystem::secToRestoreOneEnergy;
+            uint64_t secLeft = (EnumsAndVars::EnergySystem::lastSecOneEnergyRestored + EnumsAndVars::EnergySystem::secToRestoreOneEnergy) - m_currentSec;
+            if(secLeft > EnumsAndVars::EnergySystem::secToRestoreOneEnergy)
+                secLeft = EnumsAndVars::EnergySystem::secToRestoreOneEnergy;
 
             int min = secLeft / 60;
             int sec = secLeft % 60;
@@ -155,12 +155,12 @@ namespace MagneticBall3D
 
     bool EnergySystem::isEnoughForPlay()
     {
-        return EnAndVars::EnergySystem::currentAmount >= EnAndVars::EnergySystem::playCost;
+        return EnumsAndVars::EnergySystem::currentAmount >= EnumsAndVars::EnergySystem::playCost;
     }
 
     void EnergySystem::handlePlay()
     {
-        EnAndVars::EnergySystem::currentAmount -= EnAndVars::EnergySystem::playCost;
-        DataBaseHelper::storeEnergySystemCurrentAmount(EnAndVars::EnergySystem::currentAmount);
+        EnumsAndVars::EnergySystem::currentAmount -= EnumsAndVars::EnergySystem::playCost;
+        DataBaseHelper::storeEnergySystemCurrentAmount(EnumsAndVars::EnergySystem::currentAmount);
     }
 }

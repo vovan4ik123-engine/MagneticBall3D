@@ -125,7 +125,7 @@ namespace MagneticBall3D
 
         if(type == SoundType::PISTOL_SHOT)
         {
-            if(pistolShotTime + pistolShotDelay < EnAndVars::mapPlayTimeSec)
+            if(pistolShotTime + pistolShotDelay < EnumsAndVars::mapPlayTimeSec)
             {
                 float randomValue = Beryll::RandomGenerator::getFloat();
 
@@ -138,12 +138,12 @@ namespace MagneticBall3D
                 else if(randomValue < 1.0f)
                     Beryll::SoundsManager::playWAV(m_pistolShot4);
 
-                pistolShotTime = EnAndVars::mapPlayTimeSec;
+                pistolShotTime = EnumsAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::PISTOL_HIT)
         {
-            if(pistolHitTime + pistolHitDelay < EnAndVars::mapPlayTimeSec)
+            if(pistolHitTime + pistolHitDelay < EnumsAndVars::mapPlayTimeSec)
             {
                 float randomValue = Beryll::RandomGenerator::getFloat();
 
@@ -156,23 +156,23 @@ namespace MagneticBall3D
                 else if(randomValue < 1.0f)
                     Beryll::SoundsManager::playWAV(m_pistolHit4);
 
-                pistolHitTime = EnAndVars::mapPlayTimeSec;
+                pistolHitTime = EnumsAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::GRENADE_LAUNCHER_SHOT)
         {
-            if(grenadeLauncherShotTime + grenadeLauncherShotDelay < EnAndVars::mapPlayTimeSec)
+            if(grenadeLauncherShotTime + grenadeLauncherShotDelay < EnumsAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_grenadeLauncherShot1);
-                grenadeLauncherShotTime = EnAndVars::mapPlayTimeSec;
+                grenadeLauncherShotTime = EnumsAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::TANK_SHOT)
         {
-            if(tankShotTime + tankShotDelay < EnAndVars::mapPlayTimeSec)
+            if(tankShotTime + tankShotDelay < EnumsAndVars::mapPlayTimeSec)
             {
                 Beryll::SoundsManager::playWAV(m_tankShot1);
-                tankShotTime = EnAndVars::mapPlayTimeSec;
+                tankShotTime = EnumsAndVars::mapPlayTimeSec;
             }
         }
         else if(type == SoundType::RIFLE_SHOT)
@@ -183,7 +183,7 @@ namespace MagneticBall3D
 
     void Sounds::startBackgroundMusic(SoundType type)
     {
-        if(!EnAndVars::SettingsMenu::backgroundMusic)
+        if(!EnumsAndVars::SettingsMenu::backgroundMusic)
             return;
 
         if(type == SoundType::BACKGROUND_MUSIC_1)

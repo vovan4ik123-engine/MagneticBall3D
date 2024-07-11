@@ -39,29 +39,29 @@ namespace MagneticBall3D
 
         if(m_showStatistics)
         {
-            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.1f, 0, 0.55f, 0.03f);
+            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0, 0.55f, 0.03f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnAndVars::FontsPath::roboto, 0.025f, 0.1f, 0.025f, 0.75f, 0.03f);
+            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0.025f, 0.75f, 0.03f);
             m_guiObjects.push_back(m_statistics2);
-            m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
+            m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnumsAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
             m_guiObjects.push_back(m_swipeCount);
         }
 
-//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
+//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderAmbient);
 //        sliderAmbient->setValue(0.5f);
 //
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 0.7f);
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 0.7f);
 //        m_guiObjects.push_back(sliderSpecularPower);
 //        sliderSpecularPower->setValue(0.2f);
 //
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(0.5f);
 
-        m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
-        m_fontSmashedCount = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.02f);
-        m_fontSpeed = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.02f);
+        m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
+        m_fontSmashedCount = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
+        m_fontSpeed = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
 
         m_smashedCountTexture = Beryll::Renderer::createTexture("GUI/playState/KilledIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_speedTexture = Beryll::Renderer::createTexture("GUI/playState/SpeedIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -90,7 +90,7 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::updateBeforePhysics()
     {
-        if(EnAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::improvementSystemOnScreen)
             return;
 
         for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
@@ -116,8 +116,8 @@ namespace MagneticBall3D
             m_statistics2->text = stream.str();
 
             stream.str("");
-            stream << "Swipe: " << EnAndVars::mapSwipeCount;
-            stream << "  Time: " << int(EnAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+            stream << "Swipe: " << EnumsAndVars::mapSwipeCount;
+            stream << "  Time: " << int(EnumsAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
             m_swipeCount->text = stream.str();
             stream.str("");
 
@@ -133,7 +133,7 @@ namespace MagneticBall3D
         {
             m_buttonPauseClicked = false;
 
-            if(!EnAndVars::gameOnPause)
+            if(!EnumsAndVars::gameOnPause)
             {
                 GameStateHelper::pauseGame();
                 m_buttonResumeEnabled = true;
@@ -239,8 +239,8 @@ namespace MagneticBall3D
         if(m_showMapPlayTimer)
         {
             m_textMapPlayTimer = "";
-            int min = int(EnAndVars::mapPlayTimeSec / 60.0f);
-            int sec = int(std::fmod(EnAndVars::mapPlayTimeSec, 60.0f));
+            int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
+            int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
             if(min < 10)
                 m_textMapPlayTimer += "0";
 
@@ -276,7 +276,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_smashedCountTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSmashedCount);
-        ImGui::Text("%d", EnAndVars::enemiesKilledCount);
+        ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
         ImGui::PopFont();
         ImGui::End();
         ImGui::PopStyleColor(1);
@@ -294,7 +294,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_fontSpeed);
-        ImGui::Text("%d/%d", EnAndVars::playerCurrentSpeed, int(EnAndVars::playerMaxSpeedXZ));
+        ImGui::Text("%d/%d", EnumsAndVars::playerCurrentSpeed, int(EnumsAndVars::playerMaxSpeedXZ));
         ImGui::PopFont();
         ImGui::End();
         ImGui::PopStyleColor(1);

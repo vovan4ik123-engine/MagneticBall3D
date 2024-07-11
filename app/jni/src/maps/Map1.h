@@ -50,6 +50,6 @@ namespace MagneticBall3D
 
         // Prepare to boss.
         bool m_prepareToBoss = true;
-        const float m_prepareToBossTime = 360.0f;
+        const float m_prepareToBossTime = 4360.0f;
     };
 }

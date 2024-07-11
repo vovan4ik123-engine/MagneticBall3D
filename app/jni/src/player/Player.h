@@ -48,7 +48,7 @@ namespace MagneticBall3D
         const std::shared_ptr<Beryll::SimpleCollidingObject>& getObj() { return m_obj; };
         //void setObj(std::shared_ptr<Beryll::SimpleCollidingObject> so) { m_obj = std::move(so); }
 
-        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnAndVars::playerXPMultiplier); } }
+        void addToExp(int exp) { if(exp > 0) { m_currentLevelExp += (exp * EnumsAndVars::playerXPMultiplier); } }
 
         int getCurrentLevelExp() { return m_currentLevelExp; }
         int getCurrentLevelMaxExp() { return m_currentLevelMaxExp; }
@@ -61,7 +61,7 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnAndVars::playerDamageTakenMultiplier)); }
+        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnumsAndVars::playerDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
         void resurrect() { m_currentHP = m_maxHP; }
 
@@ -83,7 +83,7 @@ namespace MagneticBall3D
         float m_lastTimeOnBuilding = 0.0f; // Sec.
         float m_lastTimeOnGround = 0.0f; // Sec.
         float m_lastTimeOnJumpPad = 0.0f; // Sec.
-        const float m_applyAirGravityDelay = 0.65f; // Sec. For player after he stop collide with buildings.
+        const float m_applyAirGravityDelay = 0.7f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
         bool m_isOnAir = false;

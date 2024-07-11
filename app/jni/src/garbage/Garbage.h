@@ -37,7 +37,7 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnAndVars::garbageDamageTakenMultiplier)); }
+        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnumsAndVars::garbageDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
 
         bool getCanBeMagnetized() { return m_canBeMagnetized; }
@@ -46,7 +46,7 @@ namespace MagneticBall3D
             isMagnetized = false;
             m_canBeMagnetized = false;
             m_pauseMagnetizationDelay = timeSec;
-            m_pauseMagnetizationTime = EnAndVars::mapPlayTimeSec;
+            m_pauseMagnetizationTime = EnumsAndVars::mapPlayTimeSec;
         }
 
     private:

@@ -5,108 +5,108 @@ namespace MagneticBall3D
 {
     Improvements::Improvements()
     {
-        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnAndVars::playerMaxSpeedXZ += EnAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += EnAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += EnAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += EnAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
-                                                                                                                            {[&]() { EnAndVars::playerMaxSpeedXZ += EnAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnAndVars::playerImpulseFactorOnGround += EnAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
-                                                                                                                                                 EnAndVars::playerTorqueFactorOnGround += EnAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
-                                                                                                                                                 EnAndVars::playerImpulseFactorOnBuildingRoof += EnAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
-                                                                                                                                                 EnAndVars::playerTorqueFactorOnBuildingRoof += EnAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
+        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
+                                                                                                                            {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
+                                                                                                                            {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
+                                                                                                                            {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
+                                                                                                                            {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_ACCELERATE_FASTER,           5, {{[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
+                                                                                                                                                 EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
+                                                                                                                                                 EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                                                 EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
                                                                                                                                                  BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 0."); }},
-                                                                                                                               {[&]() { EnAndVars::playerImpulseFactorOnGround += EnAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnGround += EnAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerImpulseFactorOnBuildingRoof += EnAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnBuildingRoof += EnAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                               {[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
+                                                                                                                                                  EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
+                                                                                                                                                  EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                                                  EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
                                                                                                                                                   BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 1."); }},
-                                                                                                                               {[&]() { EnAndVars::playerImpulseFactorOnGround += EnAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnGround += EnAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerImpulseFactorOnBuildingRoof += EnAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnBuildingRoof += EnAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                               {[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
                                                                                                                                                   BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 2."); }},
-                                                                                                                               {[&]() { EnAndVars::playerImpulseFactorOnGround += EnAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnGround += EnAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerImpulseFactorOnBuildingRoof += EnAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnBuildingRoof += EnAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                               {[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
                                                                                                                                                   BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 3."); }},
-                                                                                                                               {[&]() { EnAndVars::playerImpulseFactorOnGround += EnAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnGround += EnAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerImpulseFactorOnBuildingRoof += EnAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
-                                                                                                                                                  EnAndVars::playerTorqueFactorOnBuildingRoof += EnAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                               {[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.08f;
+                                                                                                                                                    EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.08f;
                                                                                                                                                   BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
                                                                                                                                }},
-                                                    {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,         5, {{[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE, 5, {{[&]() { EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                            EnAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                            EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
+                                                    {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,         5, {{[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,    5, {{[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f;  BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE, 5, {{[&]() { EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                                                                                                            EnumsAndVars::garbageMaxCountMagnetized += 20;
+                                                                                                                                            EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                             m_player->selectNextModel();
                                                                                                                                             BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 0."); }},
-                                                                                                                        {[&](){ EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
+                                                                                                                        {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                                                                                                          EnumsAndVars::garbageMaxCountMagnetized += 20;
+                                                                                                                                          EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 1."); }},
-                                                                                                                        {[&](){ EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
+                                                                                                                        {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                                                                                                            EnumsAndVars::garbageMaxCountMagnetized += 20;
+                                                                                                                                            EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 2."); }},
-                                                                                                                        {[&](){ EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
+                                                                                                                        {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                                                                                                            EnumsAndVars::garbageMaxCountMagnetized += 20;
+                                                                                                                                            EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 3."); }},
-                                                                                                                        {[&](){ EnAndVars::playerMagneticRadius += 4.0f;
-                                                                                                                                          EnAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                          EnAndVars::playerTorqueFactorOnBuildingWall += EnAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
+                                                                                                                        {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                                                                                                            EnumsAndVars::garbageMaxCountMagnetized += 20;
+                                                                                                                                            EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                           m_player->selectNextModel();
                                                                                                                                           BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 4."); }},
                                                                                                                         }},
-                                                    {ImprovementType::PLAYER_INCREASE_MAX_HP,             5, {{[&]() { m_player->addToMaxHP(EnAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
-                                                                                                                              {[&]() { m_player->addToMaxHP(EnAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
-                                                                                                                              {[&]() { m_player->addToMaxHP(EnAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
-                                                                                                                              {[&]() { m_player->addToMaxHP(EnAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 3."); }},
-                                                                                                                              {[&]() { m_player->addToMaxHP(EnAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,            5, {{[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_EXP_GAIN,                    5, {{[&]() { EnAndVars::playerXPMultiplier += EnAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerXPMultiplier += EnAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerXPMultiplier += EnAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerXPMultiplier += EnAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerXPMultiplier += EnAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,             5, {{[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,    5, {{[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
-                                                    {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
-                                                    {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,           5, {{[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 2."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 3."); }},
-                                                                                                                              {[&]() { EnAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 4."); }}}}
+                                                    {ImprovementType::PLAYER_INCREASE_MAX_HP,             5, {{[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
+                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
+                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
+                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 3."); }},
+                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,            5, {{[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_EXP_GAIN,                    5, {{[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,             5, {{[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,    5, {{[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
+                                                    {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,          5, {{[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
+                                                    {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,           5, {{[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.1f;   BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 2."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.1f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 3."); }},
+                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.1f;  BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 4."); }}}}
                                                     };
 
         for(const ImprovementInfo& info : imprInfoVector)
@@ -192,7 +192,7 @@ namespace MagneticBall3D
 
             auto st = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
 
-            auto txt = std::make_shared<Beryll::Text>("00/00", EnAndVars::FontsPath::roboto, m_progressHeight,
+            auto txt = std::make_shared<Beryll::Text>("00/00", EnumsAndVars::FontsPath::roboto, m_progressHeight,
                                                       m_leftDefault, m_progressTop, 0.2f, 0.055f, false, true);
             txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
 
@@ -243,22 +243,22 @@ namespace MagneticBall3D
                 buttonReroll->enable();
 
             BR_INFO("%s", "improvementSystemOnScreen = true");
-            EnAndVars::improvementSystemOnScreen = true;
+            EnumsAndVars::improvementSystemOnScreen = true;
             Beryll::Physics::disableSimulation();
             m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
         }
 
-        if(EnAndVars::improvementSystemOnScreen && m_timeAppearsOnScreen + m_delayBeforeCanBeClicked < Beryll::TimeStep::getSecFromStart())
+        if(EnumsAndVars::improvementSystemOnScreen && m_timeAppearsOnScreen + m_delayBeforeCanBeClicked < Beryll::TimeStep::getSecFromStart())
         {
             if(buttonReroll->getIsEnabled())
             {
                 buttonReroll->updateBeforePhysics();
 
-                if(EnAndVars::CurrencyBalance::crystals >= m_rerollPrice && buttonReroll->getIsPressed())
+                if(EnumsAndVars::CurrencyBalance::crystals >= m_rerollPrice && buttonReroll->getIsPressed())
                 {
                     --m_rerollAttempts;
-                    EnAndVars::CurrencyBalance::crystals -= m_rerollPrice;
-                    DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+                    EnumsAndVars::CurrencyBalance::crystals -= m_rerollPrice;
+                    DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
                     selectImprovementsToShow();
 
@@ -279,7 +279,7 @@ namespace MagneticBall3D
                 if(block.button->getIsPressed())
                 {
                     BR_INFO("%s", "improvementSystemOnScreen = false");
-                    EnAndVars::improvementSystemOnScreen = false;
+                    EnumsAndVars::improvementSystemOnScreen = false;
                     Beryll::Physics::enableSimulation();
 
                     // Disable all.
@@ -372,7 +372,7 @@ namespace MagneticBall3D
 
     void Improvements::draw()
     {
-        if(EnAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::improvementSystemOnScreen)
         {
             for(const auto& block : m_allAvailableGUIBlocks)
             {
@@ -400,7 +400,7 @@ namespace MagneticBall3D
         if(m_allAvailableGUIBlocks.empty())
         {
             BR_INFO("%s", "m_allAvailableGUIBlocks.empty(). return;");
-            EnAndVars::improvementSystemOnScreen = false;
+            EnumsAndVars::improvementSystemOnScreen = false;
             return;
         }
         else if(m_allAvailableGUIBlocks.size() == 1)

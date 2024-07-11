@@ -1,6 +1,6 @@
 #pragma once
 
-namespace EnAndVars
+namespace EnumsAndVars
 {
     struct FontsPath
     {
@@ -37,8 +37,8 @@ namespace EnAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
+        static inline int currentMapIndex = 2; // Index of selected map on start screen.
+        static inline int lastOpenedMapIndex = 2; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 2; // Last possible map index (opened or not). Must be hardcoded before release.
     };
@@ -69,16 +69,16 @@ namespace EnAndVars
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 29.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
-    constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
+    constexpr inline float playerImpulseFactorOnGroundDefault = 0.1f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.13f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.12f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.11f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.1f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.38f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.36f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
@@ -89,7 +89,7 @@ namespace EnAndVars
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
-    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -7.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -9.0f, 0.0f};
     constexpr inline float playerMaxSpeedXZDefault = 80.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline int playerCurrentSpeed = 0;
@@ -148,13 +148,15 @@ namespace EnAndVars
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
     constexpr inline float enemiesMaxDistanceToSpawn = 400.0f;
     inline int enemiesKilledCount = 0;
+    inline float enemiesPauseAllActionsTime = -9999.0f; // After player resurrection pause enemies for some sec
+    inline float enemiesPauseAllActionsDelay = 0.0f;    // to give player time to collect garbage and prepare to fight.
 
     // Pause.
     inline bool gameOnPause = false;
     inline bool improvementSystemOnScreen = false;
 
     // Jump pad.
-    constexpr inline float jumpPadPower = 110.0f * playerMass; // Power for player.
+    constexpr inline float jumpPadPower = 120.0f * playerMass; // Power for player.
 
     // Map.
     inline float mapPlayTimeSec = 0.0f;
@@ -195,6 +197,8 @@ namespace EnAndVars
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
         enemiesKilledCount = 0;
+        enemiesPauseAllActionsTime = -9999.0f;
+        enemiesPauseAllActionsDelay = 0.0f;
 
         // Pause.
         gameOnPause = false;

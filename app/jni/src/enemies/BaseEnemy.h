@@ -52,9 +52,9 @@ namespace MagneticBall3D
         bool getIsEnabled() { return m_isEnabled; }
         bool getIsCanMove() { return m_isCanMove; }
         static int getActiveCount() { return BaseEnemy::m_activeEnemiesCount; }
-        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnAndVars::mapPlayTimeSec; }
-        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
-        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnAndVars::mapPlayTimeSec; }
+        bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVars::mapPlayTimeSec; }
+        bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVars::mapPlayTimeSec; }
+        bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVars::mapPlayTimeSec; }
 
         bool castRayToFindYPos = false;
         glm::ivec2 getCurrentPointToMove2DInt() { return m_currentPointToMove2DIntegers; };

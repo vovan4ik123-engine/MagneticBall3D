@@ -38,8 +38,8 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnAndVars::playerMagneticRadius = 50.0f;
-        EnAndVars::garbageMaxCountMagnetized = 85.0f;
+        EnumsAndVars::playerMagneticRadius = 50.0f;
+        EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
 
         m_gui->disableMapPlayTimer();
 
@@ -57,7 +57,7 @@ namespace MagneticBall3D
 
     void Map0Tutorial::updateBeforePhysics()
     {
-        if(EnAndVars::gameOnPause)
+        if(EnumsAndVars::gameOnPause)
         {
             m_gui->tutorialSwipeEnabled = false;
             m_gui->tutorialHowToSwipeEnabled = false;
@@ -65,7 +65,7 @@ namespace MagneticBall3D
             return;
         }
 
-        EnAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
+        EnumsAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
         Sounds::update();
 
@@ -92,7 +92,7 @@ namespace MagneticBall3D
 
     void Map0Tutorial::updateAfterPhysics()
     {
-        if(EnAndVars::gameOnPause)
+        if(EnumsAndVars::gameOnPause)
             return;
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
@@ -112,7 +112,7 @@ namespace MagneticBall3D
 
         // Tutorial progress.
         if(m_player->getObj()->getOrigin().x > 1300.0f)
-            EnAndVars::mapPlayerWin = true;
+            EnumsAndVars::mapPlayerWin = true;
         else if(m_player->getObj()->getOrigin().x > 1200.0f)
             SendStatisticsHelper::sendMap0_1200mPassed();
         else if(m_player->getObj()->getOrigin().x > 1030.0f)
@@ -171,7 +171,7 @@ namespace MagneticBall3D
         // 2. Draw scene.
         glm::mat4 modelMatrix{1.0f};
 
-        if(EnAndVars::gameOnPause || EnAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
             m_ambientLight = 0.25f;
         else
             m_ambientLight = 0.7f;
@@ -263,7 +263,7 @@ namespace MagneticBall3D
                                                                             Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(ground);
-        ground->setFriction(EnAndVars::staticEnvFriction);
+        ground->setFriction(EnumsAndVars::staticEnvFriction);
 
         const auto walls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Walls.fbx",
                                                                                        0.0f,
@@ -278,7 +278,7 @@ namespace MagneticBall3D
         {
             m_objWithNormalMap.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
-            obj->setFriction(EnAndVars::staticEnvFriction);
+            obj->setFriction(EnumsAndVars::staticEnvFriction);
         }
 
         const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map0Tutorial/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
@@ -295,7 +295,7 @@ namespace MagneticBall3D
         for(int i = 0; i < 2; ++i) // 2 * 32 = 64
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCommon.fbx",
-                                                                                                EnAndVars::garbageMass,
+                                                                                                EnumsAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
                                                                                                 Beryll::CollisionGroups::GARBAGE,
@@ -306,14 +306,14 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCommon)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnumsAndVars::garbageStartHP);
                 m_allGarbage.back().enableGarbage();
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
 
-                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
-                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
                 obj->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(300) + 200,
                                             Beryll::RandomGenerator::getInt(40) + 10,
                                             Beryll::RandomGenerator::getInt(100) - 50));
@@ -323,7 +323,7 @@ namespace MagneticBall3D
         for(int i = 0; i < 15; ++i) // 15 * 4 = 60
         {
             const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCopPistol_4items.fbx",
-                                                                                                   EnAndVars::garbageMass,
+                                                                                                   EnumsAndVars::garbageMass,
                                                                                                    false,
                                                                                                    Beryll::CollisionFlags::DYNAMIC,
                                                                                                    Beryll::CollisionGroups::GARBAGE,
@@ -334,13 +334,13 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopPistol)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, EnAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
 
-                obj->setDamping(EnAndVars::garbageLinearDamping, EnAndVars::garbageAngularDamping);
-                obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
 
@@ -359,8 +359,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            cop->setCurrentAnimationByIndex(EnAndVars::AnimationIndexes::stand, false, false);
-            cop->setDefaultAnimationByIndex(EnAndVars::AnimationIndexes::stand);
+            cop->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            cop->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             cop->unitType = UnitType::GUN;
             cop->attackType = AttackType::RANGE_DAMAGE_ONE;
 

@@ -20,9 +20,9 @@ namespace MagneticBall3D
         {
             m_gui->resurrectPlayer = false;
 
-            --EnAndVars::playerResurrectionAttempts;
-            EnAndVars::CurrencyBalance::crystals -= EnAndVars::playerCostOfResurrectionCrystals;
-            DataBaseHelper::storeCurrencyBalanceCrystals(EnAndVars::CurrencyBalance::crystals);
+            --EnumsAndVars::playerResurrectionAttempts;
+            EnumsAndVars::CurrencyBalance::crystals -= EnumsAndVars::playerCostOfResurrectionCrystals;
+            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
             SendStatisticsHelper::canSendPlayerDie();
 
@@ -32,21 +32,28 @@ namespace MagneticBall3D
 
             float mapXLength = glm::distance(m_minX, m_maxX);
             float mapZLength = glm::distance(m_minZ, m_maxZ);
-            if(mapXLength > mapZLength)
-                respawnEnemiesAtNewDistance(mapXLength * 0.4f, mapXLength * 0.8f);
-            else
-                respawnEnemiesAtNewDistance(mapZLength * 0.4f, mapZLength * 0.8f);
+            respawnEnemiesAtNewDistance(glm::max(mapXLength, mapZLength) * 0.5f);
+
+            // Set "stand" animation for all active enemies and pause them to give player some time to prepare for fight.
+            for(const auto& enemy : m_allAnimatedEnemies)
+            {
+                if(enemy->getIsEnabledUpdate())
+                    enemy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            }
+
+            EnumsAndVars::enemiesPauseAllActionsTime = EnumsAndVars::mapPlayTimeSec;
+            EnumsAndVars::enemiesPauseAllActionsDelay = 10.0f;
         }
 
-        if(EnAndVars::gameOnPause)
+        if(EnumsAndVars::gameOnPause)
             return;
 
         m_improvements.update();
 
-        if(EnAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::improvementSystemOnScreen)
             return;
 
-        EnAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
+        EnumsAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
         Sounds::update();
 
@@ -54,7 +61,8 @@ namespace MagneticBall3D
         handlePlayerWin();
 
         handleScreenSwipe();
-        updatePathfindingAndSpawnEnemies();
+        if(EnumsAndVars::enemiesPauseAllActionsTime + EnumsAndVars::enemiesPauseAllActionsDelay < EnumsAndVars::mapPlayTimeSec)
+            updatePathfindingAndSpawnEnemies();
         spawnCommonGarbage();
         handleJumpPads();
         checkPlayerOutOfMap();
@@ -62,7 +70,7 @@ namespace MagneticBall3D
 
     void BaseMap::updateAfterPhysics()
     {
-        if(EnAndVars::gameOnPause || EnAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
             return;
 
         const float distanceToEnableObjects = m_cameraDistance * 1.1f;
@@ -90,13 +98,14 @@ namespace MagneticBall3D
         }
 
         m_player->update();
-        updateEnemiesAndTheirsAttacks();
+        if(EnumsAndVars::enemiesPauseAllActionsTime + EnumsAndVars::enemiesPauseAllActionsDelay < EnumsAndVars::mapPlayTimeSec)
+            updateEnemiesAndTheirsAttacks();
         updateAndMagnetizeGarbage();
         killEnemies();
 
-        if(EnAndVars::prepareToBossPhase && BaseEnemy::getActiveCount() <= 0)
+        if(EnumsAndVars::prepareToBossPhase && BaseEnemy::getActiveCount() <= 0)
             startBossPhase();
-        else if(EnAndVars::bossPhase)
+        else if(EnumsAndVars::bossPhase)
             handlePossPhase();
 
         handleCamera();
@@ -135,7 +144,7 @@ namespace MagneticBall3D
     void BaseMap::loadPlayer()
     {
         auto playerAllBalls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/player/Player6Models.fbx",
-                                                                                       EnAndVars::playerMass,
+                                                                                       EnumsAndVars::playerMass,
                                                                                        true,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
                                                                                        Beryll::CollisionGroups::PLAYER,
@@ -153,17 +162,17 @@ namespace MagneticBall3D
             item->disableCollisionMesh();
             item->disableUpdate();
             item->disableDraw();
-            item->setDamping(EnAndVars::playerLinearDamping, EnAndVars::playerAngularDamping);
+            item->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
 
             m_animatedOrDynamicObjects.push_back(item);
             m_simpleObjForShadowMap.push_back(item);
         }
 
-        m_player = std::make_shared<Player>(playerAllBalls[0], EnAndVars::playerStartHP);
+        m_player = std::make_shared<Player>(playerAllBalls[0], EnumsAndVars::playerStartHP);
         m_player->setAllModels(playerAllBalls);
 
-        m_player->getObj()->setGravity(EnAndVars::playerGravityOnGround);
-        m_player->getObj()->setFriction(EnAndVars::playerFriction);
+        m_player->getObj()->setGravity(EnumsAndVars::playerGravityOnGround);
+        m_player->getObj()->setFriction(EnumsAndVars::playerFriction);
     }
 
     void BaseMap::updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth)
@@ -205,7 +214,7 @@ namespace MagneticBall3D
             if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 10.0f)
                 return;
 
-            ++EnAndVars::mapSwipeCount;
+            ++EnumsAndVars::mapSwipeCount;
 
             glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
@@ -218,7 +227,7 @@ namespace MagneticBall3D
 
             glm::qua cameraRotFromStartDir = glm::normalize(glm::rotation(m_startDir, Beryll::Camera::getCameraFrontDirectionXZ()));
             m_screenSwipe3D = glm::normalize(cameraRotFromStartDir * glm::normalize(m_screenSwipe3D));
-            m_screenSwipe3D *= (screenSwipeLength * EnAndVars::swipePowerMultiplier);
+            m_screenSwipe3D *= (screenSwipeLength * EnumsAndVars::swipePowerMultiplier);
 
             glm::vec3 powerForImpulse{0.0f};
             glm::vec3 powerForTorque{0.0f};
@@ -228,14 +237,14 @@ namespace MagneticBall3D
                 if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
                 {
                     float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
-                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeed() * EnAndVars::playerLeftRightTurnPower;
+                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeed() * EnumsAndVars::playerLeftRightTurnPower;
 
                     // For turn back.
                     if(moveToSwipeAngle > 2.6f) // > 150 degrees.
                     {
                         swipeFactorBasedOnAngleAndSpeed *= 1.3f;
                         // With bigger impulse the turn back become too sharper. Reduce it with impulse grown.
-                        swipeFactorBasedOnAngleAndSpeed *= EnAndVars::playerImpulseFactorOnGroundDefault / EnAndVars::playerImpulseFactorOnGround;
+                        swipeFactorBasedOnAngleAndSpeed *= EnumsAndVars::playerImpulseFactorOnGroundDefault / EnumsAndVars::playerImpulseFactorOnGround;
                     }
                 }
             }
@@ -245,34 +254,34 @@ namespace MagneticBall3D
 
             if(m_player->getIsOnGround())
             {
-                powerForImpulse = m_screenSwipe3D * EnAndVars::playerImpulseFactorOnGround;
+                powerForImpulse = m_screenSwipe3D * EnumsAndVars::playerImpulseFactorOnGround;
                 powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnGround;
+                powerForTorque = m_screenSwipe3D * EnumsAndVars::playerTorqueFactorOnGround;
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
-                if(m_player->getMoveSpeed() < EnAndVars::playerMaxSpeedXZDefault)
+                if(m_player->getMoveSpeed() < EnumsAndVars::playerMaxSpeedXZDefault)
                 {
                     // Help to player move faster on ground when speed is low.
-                    const float powerToHelpPlayer = (EnAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.011f;
+                    const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.011f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
             }
-            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec)
+            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec)
             {
                 // buildingNormalAngle = glm::half_pi<float>() if player on vertical wall. angleFactor will = 1.
                 // buildingNormalAngle = 0 if player on horizontal roof. angleFactor will = 0.
                 const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
 
-                const float impulseDiff = EnAndVars::playerImpulseFactorOnBuildingWall - EnAndVars::playerImpulseFactorOnBuildingRoof;
-                const float torqueDiff = EnAndVars::playerTorqueFactorOnBuildingWall - EnAndVars::playerTorqueFactorOnBuildingRoof;
+                const float impulseDiff = EnumsAndVars::playerImpulseFactorOnBuildingWall - EnumsAndVars::playerImpulseFactorOnBuildingRoof;
+                const float torqueDiff = EnumsAndVars::playerTorqueFactorOnBuildingWall - EnumsAndVars::playerTorqueFactorOnBuildingRoof;
 
-                powerForImpulse = m_screenSwipe3D * (EnAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
-                powerForTorque = m_screenSwipe3D * (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
+                powerForImpulse = m_screenSwipe3D * (EnumsAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
+                powerForTorque = m_screenSwipe3D * (EnumsAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
 
-                //BR_INFO("torq %f", (EnAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
+                //BR_INFO("torq %f", (EnumsAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
@@ -284,8 +293,8 @@ namespace MagneticBall3D
             }
             else // if(m_player->getIsOnAir())
             {
-                powerForImpulse = m_screenSwipe3D * EnAndVars::playerImpulseFactorOnAir;
-                powerForTorque = m_screenSwipe3D * EnAndVars::playerTorqueFactorOnAir;
+                powerForImpulse = m_screenSwipe3D * EnumsAndVars::playerImpulseFactorOnAir;
+                powerForTorque = m_screenSwipe3D * EnumsAndVars::playerTorqueFactorOnAir;
             }
 
             // If max allowed speed exceeded not all impulse power will applied.
@@ -293,7 +302,7 @@ namespace MagneticBall3D
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
             if(m_player->getIsOnGround() ||
-               (m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)) // Less than 10 degrees. Assume we are on flat roof.
+               (m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)) // Less than 10 degrees. Assume we are on flat roof.
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
                 glm::vec3 garbageImpulse = (powerForImpulse * 0.000065f) * applyImpulseFactor;
@@ -306,12 +315,12 @@ namespace MagneticBall3D
                         wrapper.obj->applyCentralImpulse(garbageImpulse);
                 }
             }
-            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec)
+            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec)
             {
                 const float helpOnBuilding = 60.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
                 //BR_INFO("helpOnBuilding %f", helpOnBuilding);
                 const glm::vec3 playerImpulse = BeryllConstants::worldUp * helpOnBuilding;
-                const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio * 2.5f;
+                const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVars::playerMassToGarbageMassRatio * 2.5f;
 
                 m_player->getObj()->applyCentralImpulse(playerImpulse);
 
@@ -326,7 +335,7 @@ namespace MagneticBall3D
 
     void BaseMap::updateAndMagnetizeGarbage()
     {
-        EnAndVars::garbageCountMagnetized = 0;
+        EnumsAndVars::garbageCountMagnetized = 0;
 
         // Check if magnetized garbage still in playerMagneticRadius.
         for(auto& wrapper : m_allGarbage)
@@ -335,9 +344,9 @@ namespace MagneticBall3D
                 wrapper.update();
 
             if(wrapper.getIsEnabled() && wrapper.isMagnetized && wrapper.getCanBeMagnetized() &&
-               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnAndVars::playerMagneticRadius)
+               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVars::playerMagneticRadius)
             {
-                ++EnAndVars::garbageCountMagnetized;
+                ++EnumsAndVars::garbageCountMagnetized;
             }
             else
             {
@@ -346,9 +355,9 @@ namespace MagneticBall3D
         }
 
         // Update gravity. And check for more garbage if we have limit for that.
-        float gravPower = EnAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnAndVars::garbageGravityIncreasedByPlayerSpeed);
-        if(gravPower > EnAndVars::garbageMaxGravityPower)
-            gravPower = EnAndVars::garbageMaxGravityPower;
+        float gravPower = EnumsAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed);
+        if(gravPower > EnumsAndVars::garbageMaxGravityPower)
+            gravPower = EnumsAndVars::garbageMaxGravityPower;
 
         float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
 
@@ -373,15 +382,15 @@ namespace MagneticBall3D
             }
             else if(wrapper.getIsEnabled())
             {
-                wrapper.obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+                wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
 
             // 2. Check for more garbage if we have limit for that.
-            if(EnAndVars::garbageCountMagnetized < EnAndVars::garbageMaxCountMagnetized &&
+            if(EnumsAndVars::garbageCountMagnetized < EnumsAndVars::garbageMaxCountMagnetized &&
                wrapper.getIsEnabled() && !wrapper.isMagnetized && wrapper.getCanBeMagnetized() &&
-               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnAndVars::playerMagneticRadius)
+               glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVars::playerMagneticRadius)
             {
-                ++EnAndVars::garbageCountMagnetized;
+                ++EnumsAndVars::garbageCountMagnetized;
                 wrapper.isMagnetized = true;
                 wrapper.obj->activate();
             }
@@ -418,13 +427,13 @@ namespace MagneticBall3D
                 }
 
                 // 2.
-                if(distanceToCurrent > EnAndVars::enemiesMinDistanceToSpawn && distanceToCurrent < EnAndVars::enemiesMaxDistanceToSpawn)
+                if(distanceToCurrent > EnumsAndVars::enemiesMinDistanceToSpawn && distanceToCurrent < EnumsAndVars::enemiesMaxDistanceToSpawn)
                 {
                     // We can spawn enemy at this point.
                     m_pointsToSpawnEnemies.push_back(point);
                 }
 
-                if(distanceToCurrent > EnAndVars::garbageCommonSpawnMinDistance && distanceToCurrent < EnAndVars::garbageCommonSpawnMaxDistance)
+                if(distanceToCurrent > EnumsAndVars::garbageCommonSpawnMinDistance && distanceToCurrent < EnumsAndVars::garbageCommonSpawnMaxDistance)
                 {
                     // We can spawn garbage at this point.
                     m_pointsToSpawnCommonGarbage.push_back(point);
@@ -452,10 +461,10 @@ namespace MagneticBall3D
         else if(m_pathFindingIteration == 2)
         {
             int enemiesUpdated = 0;
-            int& i = EnAndVars::enemiesCurrentPathfindingIndex;
+            int& i = EnumsAndVars::enemiesCurrentPathfindingIndex;
             for( ; i < m_allAnimatedEnemies.size(); ++i)
             {
-                if(enemiesUpdated >= EnAndVars::enemiesMaxPathfindingInOneFrame)
+                if(enemiesUpdated >= EnumsAndVars::enemiesMaxPathfindingInOneFrame)
                     break;
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate() && m_allAnimatedEnemies[i]->getIsCanMove())
@@ -468,11 +477,11 @@ namespace MagneticBall3D
                 }
             }
 
-            if(EnAndVars::enemiesCurrentPathfindingIndex >= m_allAnimatedEnemies.size())
+            if(EnumsAndVars::enemiesCurrentPathfindingIndex >= m_allAnimatedEnemies.size())
             {
                 // All enemies were updated.
                 //BR_INFO("Path for all enemies updated. Last index: %d", EnumsAndVariables::enemiesCurrentPathfindingIndex);
-                EnAndVars::enemiesCurrentPathfindingIndex = 0;
+                EnumsAndVars::enemiesCurrentPathfindingIndex = 0;
                 m_pathFindingIteration = 0; // Start from start again in next frame.
             }
 
@@ -605,7 +614,7 @@ namespace MagneticBall3D
                                 if(rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
                                     wrapper.pauseMagnetization(1.0f);
-                                    wrapper.obj->setGravity(EnAndVars::garbageGravityDefault, false, false);
+                                    wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
                                     wrapper.obj->applyCentralImpulse(glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin()) * 0.1f);
                                     break;
                                 }
@@ -651,11 +660,11 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
-        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnAndVars::garbageCountMagnetized * 0.11f;
+        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.11f;
 
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
-            radiusToKill = EnAndVars::playerDamageGroundRadiusAfterFall;
+            radiusToKill = EnumsAndVars::playerDamageGroundRadiusAfterFall;
             //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
         }
 
@@ -664,13 +673,13 @@ namespace MagneticBall3D
         for(const auto& enemy : m_allAnimatedEnemies)
         {
             if(enemy->getIsEnabledUpdate() &&
-               enemy->garbageAmountToDie < EnAndVars::garbageCountMagnetized &&
+               enemy->garbageAmountToDie < EnumsAndVars::garbageCountMagnetized &&
                glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill)
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
-                ++EnAndVars::enemiesKilledCount;
+                ++EnumsAndVars::enemiesKilledCount;
                 Sounds::playSoundEffect(SoundType::POP);
 
                 if(enemy->unitType == UnitType::GUN)
@@ -708,20 +717,20 @@ namespace MagneticBall3D
         const glm::vec3& cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
 
-        if(m_player->getLastTimeOnBuilding() + 1.0f > EnAndVars::mapPlayTimeSec &&
-           m_player->getBuildingNormalAngle() > 1.22f) // > 70 degrees. Assume player on vertical surface.
+        if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec &&
+           m_player->getBuildingNormalAngle() > 0.78f) // > 45 degrees. Assume player on vertical surface.
         {
-            if(glm::length(m_screenSwipe3D) > 180.0f * EnAndVars::swipePowerMultiplier)
+            if(glm::length(m_screenSwipe3D) > 180.0f * EnumsAndVars::swipePowerMultiplier)
                 desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
         }
-        else if(m_player->getMoveSpeedXZ() > EnAndVars::minPlayerSpeedToCameraFollow)
+        else if(m_player->getMoveSpeedXZ() > EnumsAndVars::minPlayerSpeedToCameraFollow)
         {
             desiredCameraBackXZ = -m_player->getMoveDirXZ();
         }
 
-        BR_ASSERT((!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ))), "%s", "Camera back dir in nan.");
+        //BR_ASSERT((!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ))), "%s", "Camera back dir in nan.");
 
-        //if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
+        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
         {
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
@@ -731,10 +740,10 @@ namespace MagneticBall3D
                 float angleRotate = angleDifference * 0.05f + 0.025f; // Default and fastest camera rotation speed.
                 float currentFPS = Beryll::GameLoop::getFPS();
 
-                if(currentFPS > EnAndVars::minFPSForCameraRotation)
+                if(currentFPS > EnumsAndVars::minFPSForCameraRotation)
                 {
                     // Reduce camera rotation speed if FPS is high. Camera will more smooth.
-                    const float currentFPSToMinFPSRatio = currentFPS / EnAndVars::minFPSForCameraRotation;
+                    const float currentFPSToMinFPSRatio = currentFPS / EnumsAndVars::minFPSForCameraRotation;
                     angleRotate = angleRotate / currentFPSToMinFPSRatio;
                 }
 
@@ -747,7 +756,7 @@ namespace MagneticBall3D
         m_cameraOffset.y = 0.0f;
         m_cameraOffset = glm::normalize(m_cameraOffset);
         m_cameraOffset.y = 0.09f +
-                           (EnAndVars::garbageCountMagnetized * 0.0015f) +
+                           (EnumsAndVars::garbageCountMagnetized * 0.0015f) +
                            (m_player->getObj()->getOrigin().y * 0.005f);
         m_cameraOffset.y = std::min(1.1f, m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
@@ -755,7 +764,7 @@ namespace MagneticBall3D
         m_cameraFront = m_player->getObj()->getOrigin();
 
         float maxCameraYOffset = m_startCameraYOffset +
-                                 (EnAndVars::garbageCountMagnetized * 0.15f) +
+                                 (EnumsAndVars::garbageCountMagnetized * 0.15f) +
                                  std::min(30.0f, m_player->getObj()->getOrigin().y * 0.08f + m_player->getMoveSpeedXZ() * 0.15f);
 
         if(!m_cameraHit)
@@ -767,17 +776,17 @@ namespace MagneticBall3D
             else
             {
                 if(m_cameraYOffset < maxCameraYOffset)
-                    m_cameraYOffset += EnAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+                    m_cameraYOffset += EnumsAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
                 else
-                    m_cameraYOffset -= EnAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+                    m_cameraYOffset -= EnumsAndVars::cameraUpOffsetMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
             }
         }
 
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (EnAndVars::garbageCountMagnetized * 0.7f) +
-                                  std::min(100.0f, m_player->getMoveSpeedXZ() * 0.8f) +
+                                  (EnumsAndVars::garbageCountMagnetized * 0.7f) +
+                                  m_player->getMoveSpeedXZ() +
                                   std::min(100.0f, m_player->getObj()->getOrigin().y * 0.28f);
 
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * maxCameraDistance;
@@ -800,7 +809,7 @@ namespace MagneticBall3D
             m_cameraDistance = maxCameraDistance * hitDistanceFactor;
 
             // m_cameraYOffset also should be changed if camera collision.
-            float minCameraUpOffset = m_startCameraYOffset + (EnAndVars::garbageCountMagnetized * 0.2f);
+            float minCameraUpOffset = m_startCameraYOffset + (EnumsAndVars::garbageCountMagnetized * 0.2f);
             m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
         else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
@@ -810,9 +819,9 @@ namespace MagneticBall3D
         else
         {
             if(m_cameraDistance < maxCameraDistance)
-                m_cameraDistance += EnAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+                m_cameraDistance += EnumsAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
             else
-                m_cameraDistance -= EnAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
+                m_cameraDistance -= EnumsAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
         }
 
 
@@ -826,7 +835,7 @@ namespace MagneticBall3D
         for(auto& wrapper : m_allGarbage)
         {
             if(spawnedCount >= count ||
-               (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnAndVars::garbageCommonMaxCountOnMap))
+               (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnumsAndVars::garbageCommonMaxCountOnMap))
                 break;
 
             if(!wrapper.getIsEnabled() && wrapper.getType() == type)
@@ -852,8 +861,8 @@ namespace MagneticBall3D
         if(m_player->getIsOnJumpPad())
         {
             BR_INFO("%s", "Apply jumppad.");
-            const glm::vec3 playerImpulse = BeryllConstants::worldUp * EnAndVars::jumpPadPower;
-            const glm::vec3 garbageImpulse = playerImpulse * EnAndVars::playerMassToGarbageMassRatio;
+            const glm::vec3 playerImpulse = BeryllConstants::worldUp * EnumsAndVars::jumpPadPower;
+            const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVars::playerMassToGarbageMassRatio;
 
             m_player->getObj()->applyCentralImpulse(playerImpulse);
 
@@ -871,9 +880,9 @@ namespace MagneticBall3D
         {
             SendStatisticsHelper::sendPlayerDie();
 
-            if(EnAndVars::playerResurrectionAttempts > 0)
+            if(EnumsAndVars::playerResurrectionAttempts > 0)
             {
-                if(EnAndVars::CurrencyBalance::crystals >= EnAndVars::playerCostOfResurrectionCrystals)
+                if(EnumsAndVars::CurrencyBalance::crystals >= EnumsAndVars::playerCostOfResurrectionCrystals)
                 {
                     m_gui->showMenuResurrect();
                 }
@@ -893,22 +902,22 @@ namespace MagneticBall3D
 
     void BaseMap::handlePlayerWin()
     {
-        if(EnAndVars::mapPlayerWin)
+        if(EnumsAndVars::mapPlayerWin)
         {
             SendStatisticsHelper::sendMapWin();
 
-            if(EnAndVars::MapsProgress::lastOpenedMapIndex == EnAndVars::MapsProgress::currentMapIndex)
+            if(EnumsAndVars::MapsProgress::lastOpenedMapIndex == EnumsAndVars::MapsProgress::currentMapIndex)
             {
-                ++EnAndVars::MapsProgress::lastOpenedMapIndex;
+                ++EnumsAndVars::MapsProgress::lastOpenedMapIndex;
 
-                BR_INFO("lastOpenedMapIndex: %d", EnAndVars::MapsProgress::lastOpenedMapIndex);
-                DataBaseHelper::storeMapsProgressLastOpenedMapIndex(EnAndVars::MapsProgress::lastOpenedMapIndex);
+                BR_INFO("lastOpenedMapIndex: %d", EnumsAndVars::MapsProgress::lastOpenedMapIndex);
+                DataBaseHelper::storeMapsProgressLastOpenedMapIndex(EnumsAndVars::MapsProgress::lastOpenedMapIndex);
 
-                if(EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
+                if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
                 {
-                    ++EnAndVars::MapsProgress::currentMapIndex;
-                    BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
-                    DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
+                    ++EnumsAndVars::MapsProgress::currentMapIndex;
+                    BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
+                    DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
                 }
             }
 
@@ -916,9 +925,9 @@ namespace MagneticBall3D
         }
     }
 
-    void BaseMap::respawnEnemiesAtNewDistance(float minDistance, float maxDistance)
+    void BaseMap::respawnEnemiesAtNewDistance(float minDistance)
     {
-        BR_ASSERT((minDistance > 10.0f && maxDistance > 20.0f && maxDistance > minDistance), "%s", "Wrong distance for respawn enemies.");
+        BR_ASSERT((minDistance > 100.0f), "%s", "Wrong distance for respawn enemies.");
 
         std::vector<glm::ivec2> newPositions;
         glm::vec2 playerPosXZ{m_player->getObj()->getOrigin().x, m_player->getObj()->getOrigin().z};
@@ -927,7 +936,7 @@ namespace MagneticBall3D
         for(const glm::ivec2& point : m_pathAllowedPositionsXZ)
         {
             distanceToCurrent = glm::distance(playerPosXZ, glm::vec2(float(point.x), float(point.y)));
-            if(distanceToCurrent > minDistance && distanceToCurrent < maxDistance)
+            if(distanceToCurrent > minDistance)
             {
                 // We can move enemy to this point.
                 newPositions.push_back(point);
@@ -953,14 +962,14 @@ namespace MagneticBall3D
     void BaseMap::spawnCommonGarbage()
     {
         if(!m_pointsToSpawnCommonGarbage.empty() &&
-           EnAndVars::garbageCommonSpawnTime + EnAndVars::garbageCommonSpawnDelay < EnAndVars::mapPlayTimeSec)
+           EnumsAndVars::garbageCommonSpawnTime + EnumsAndVars::garbageCommonSpawnDelay < EnumsAndVars::mapPlayTimeSec)
         {
-            EnAndVars::garbageCommonSpawnTime = EnAndVars::mapPlayTimeSec;
+            EnumsAndVars::garbageCommonSpawnTime = EnumsAndVars::mapPlayTimeSec;
 
             const glm::ivec2 spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
-            spawnGarbage(EnAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
+            spawnGarbage(EnumsAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
             //BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
         }
     }
@@ -990,7 +999,7 @@ namespace MagneticBall3D
         BR_INFO("%s", "prepareToBossPhase()");
 
         m_gui->showMenuKillAllBeforeBoss();
-        EnAndVars::prepareToBossPhase = true;
-        EnAndVars::bossPhase = false;
+        EnumsAndVars::prepareToBossPhase = true;
+        EnumsAndVars::bossPhase = false;
     }
 }

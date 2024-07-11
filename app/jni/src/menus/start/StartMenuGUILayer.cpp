@@ -28,7 +28,7 @@ namespace MagneticBall3D
         m_buttonMapSwipeRightTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonPlayTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonSettingsTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.025f);
+        m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -69,21 +69,21 @@ namespace MagneticBall3D
             m_buttonSettingsClicked = false;
             GameStateHelper::pushSettingsState();
         }
-        else if(m_buttonMapSwipeLeftClicked && EnAndVars::MapsProgress::currentMapIndex > 0)
+        else if(m_buttonMapSwipeLeftClicked && EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
             m_buttonMapSwipeLeftClicked = false;
-            --EnAndVars::MapsProgress::currentMapIndex;
-            BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
-            DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
+            --EnumsAndVars::MapsProgress::currentMapIndex;
+            BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
+            DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
         }
         else if(m_buttonMapSwipeRightClicked &&
-                EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::lastOpenedMapIndex &&
-                EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
+                EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
+                EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
             m_buttonMapSwipeRightClicked = false;
-            ++EnAndVars::MapsProgress::currentMapIndex;
-            BR_INFO("currentMapIndex: %d", EnAndVars::MapsProgress::currentMapIndex);
-            DataBaseHelper::storeMapsProgressCurrentMapIndex(EnAndVars::MapsProgress::currentMapIndex);
+            ++EnumsAndVars::MapsProgress::currentMapIndex;
+            BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
+            DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
         }
     }
 
@@ -119,7 +119,7 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Button map swipe left.
-        if(EnAndVars::MapsProgress::currentMapIndex > 0)
+        if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
             ImGui::SetNextWindowPos(ImVec2(0.05f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
@@ -133,8 +133,8 @@ namespace MagneticBall3D
         }
 
         // Button map swipe right.
-        if(EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::lastOpenedMapIndex &&
-           EnAndVars::MapsProgress::currentMapIndex < EnAndVars::MapsProgress::maxMapIndex)
+        if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
+           EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
             ImGui::SetNextWindowPos(ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
@@ -148,14 +148,14 @@ namespace MagneticBall3D
         }
 
         // Map texture(preview).
-        if(EnAndVars::MapsProgress::currentMapIndex < m_allMapsTextures.size())
+        if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsTextures.size())
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
             ImGui::Begin(m_mapTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsTextures[EnAndVars::MapsProgress::currentMapIndex]->getID()),
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.55f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
@@ -169,7 +169,7 @@ namespace MagneticBall3D
         ImGui::Begin(m_textCrystalsID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         ImGui::PushFont(m_fontCrystals);
-        ImGui::Text("Crystals: %d", EnAndVars::CurrencyBalance::crystals);
+        ImGui::Text("Crystals: %d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
 
         ImGui::End();

@@ -24,18 +24,18 @@ namespace MagneticBall3D
         m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_fontForAllCheckBoxes = Beryll::MainImGUI::getInstance()->createFont(EnAndVars::FontsPath::roboto, 0.03f);
+        m_fontForAllCheckBoxes = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
 
-        if(EnAndVars::SettingsMenu::FPSLimit == 30)
+        if(EnumsAndVars::SettingsMenu::FPSLimit == 30)
             m_30FPSChecked = true;
-        else if(EnAndVars::SettingsMenu::FPSLimit == 60)
+        else if(EnumsAndVars::SettingsMenu::FPSLimit == 60)
             m_60FPSChecked = true;
-        else if(EnAndVars::SettingsMenu::FPSLimit == 120)
+        else if(EnumsAndVars::SettingsMenu::FPSLimit == 120)
             m_120FPSChecked = true;
-        else if(EnAndVars::SettingsMenu::FPSLimit == 250)
+        else if(EnumsAndVars::SettingsMenu::FPSLimit == 250)
             m_250FPSChecked = true;
 
-        m_musicCheckBoxChecked = EnAndVars::SettingsMenu::backgroundMusic;
+        m_musicCheckBoxChecked = EnumsAndVars::SettingsMenu::backgroundMusic;
     }
 
     SettingsMenuGUILayer::~SettingsMenuGUILayer()
@@ -52,11 +52,11 @@ namespace MagneticBall3D
             return;
         }
 
-        if(m_musicCheckBoxChecked != EnAndVars::SettingsMenu::backgroundMusic)
+        if(m_musicCheckBoxChecked != EnumsAndVars::SettingsMenu::backgroundMusic)
         {
             BR_INFO("%s", "Enable/disable background music.");
-            EnAndVars::SettingsMenu::backgroundMusic = m_musicCheckBoxChecked;
-            DataBaseHelper::storeSettingsBackgroundMusic(EnAndVars::SettingsMenu::backgroundMusic);
+            EnumsAndVars::SettingsMenu::backgroundMusic = m_musicCheckBoxChecked;
+            DataBaseHelper::storeSettingsBackgroundMusic(EnumsAndVars::SettingsMenu::backgroundMusic);
         }
     }
 
@@ -199,27 +199,27 @@ namespace MagneticBall3D
         if(fps == 30)
         {
             m_30FPSChecked = true;
-            EnAndVars::SettingsMenu::FPSLimit = 30;
+            EnumsAndVars::SettingsMenu::FPSLimit = 30;
         }
         else if (fps == 60)
         {
             m_60FPSChecked = true;
-            EnAndVars::SettingsMenu::FPSLimit = 60;
+            EnumsAndVars::SettingsMenu::FPSLimit = 60;
         }
         else if (fps == 120)
         {
             m_120FPSChecked = true;
-            EnAndVars::SettingsMenu::FPSLimit = 120;
+            EnumsAndVars::SettingsMenu::FPSLimit = 120;
         }
         else if (fps == 250)
         {
             m_250FPSChecked = true;
-            EnAndVars::SettingsMenu::FPSLimit = 250;
+            EnumsAndVars::SettingsMenu::FPSLimit = 250;
         }
 
-        BR_INFO("Set FPSLimit: %d", EnAndVars::SettingsMenu::FPSLimit);
-        Beryll::GameLoop::setFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
+        BR_INFO("Set FPSLimit: %d", EnumsAndVars::SettingsMenu::FPSLimit);
+        Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
 
-        DataBaseHelper::storeSettingsFPSLimit(EnAndVars::SettingsMenu::FPSLimit);
+        DataBaseHelper::storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
     }
 }

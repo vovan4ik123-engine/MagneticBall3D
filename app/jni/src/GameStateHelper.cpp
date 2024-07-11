@@ -80,7 +80,7 @@ namespace MagneticBall3D
     {
         Beryll::Physics::hardRemoveAllObjects();
 
-        EnAndVars::reset();
+        EnumsAndVars::reset();
         StaticEnemy::staticPositions = {};
         StaticEnemy::spawnTime = -9999.0f;
         StaticEnemy::spawnDelay = 20.0f;
@@ -97,12 +97,12 @@ namespace MagneticBall3D
     void GameStateHelper::pauseGame()
     {
         Beryll::Physics::disableSimulation();
-        EnAndVars::gameOnPause = true;
+        EnumsAndVars::gameOnPause = true;
     }
 
     void GameStateHelper::resumeGame()
     {
         Beryll::Physics::enableSimulation();
-        EnAndVars::gameOnPause = false;
+        EnumsAndVars::gameOnPause = false;
     }
 }
