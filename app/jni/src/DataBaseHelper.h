@@ -13,12 +13,12 @@ namespace DataBaseHelper
     //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
     // Database schema.
-    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem            |
+    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem            |   DatabaseMigrations
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns:     ID                  |   ID                  |   ID                  |   ID                      |
+    // Columns:     ID                  |   ID                  |   ID                  |   ID                      |   LastScriptApplied
     //              FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount           |
     //              BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdated          |
-    //                                  |                       |                       |   LastSecOneEnergyRestored|
+    //              MeteorParticles     |                       |                       |   LastSecOneEnergyRestored|
 
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
     void prepareDatabase(); // Always call at app launch.
@@ -31,18 +31,21 @@ namespace DataBaseHelper
                                                    "Settings( "
                                                    "ID INTEGER PRIMARY KEY NOT NULL, "
                                                    "FPSLimit INTEGER, "
-                                                   "BackgroundMusic INTEGER "
+                                                   "BackgroundMusic INTEGER, "
+                                                   "MeteorParticles INTEGER "
                                                    ");";
 
-    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit, BackgroundMusic) VALUES(NULL, NULL, NULL);";
+    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit, BackgroundMusic, MeteorParticles) VALUES(NULL, NULL, NULL, NULL);";
     const inline std::string selectSettingsAll = "SELECT * FROM Settings LIMIT 1;";
     const inline std::string updateSettingsFPSLimit = "UPDATE Settings SET FPSLimit = :FPS;";
     const inline std::string updateSettingsBackgroundMusic = "UPDATE Settings SET BackgroundMusic = :playMusic;";
+    const inline std::string updateSettingsMeteorParticles = "UPDATE Settings SET MeteorParticles = :showParticles;";
 
     bool getIsSettingsTableEmpty();
     void readSettings();
     void storeSettingsFPSLimit(long long int value);
     void storeSettingsBackgroundMusic(bool playMusic);
+    void storeSettingsMeteorParticles(bool showParticles);
 
     // CurrencyBalance.
     const inline std::string createTableCurrencyBalance = "CREATE TABLE IF NOT EXISTS "
@@ -95,4 +98,28 @@ namespace DataBaseHelper
     void storeEnergySystemCurrentAmount(long long int value);
     void storeEnergySystemLastSecUpdated(long long int value);
     void storeEnergySystemLastSecRestored(long long int value);
+
+
+
+
+
+
+
+
+
+
+
+    // DatabaseMigrations.
+    const inline std::string createTableDatabaseMigrations = "CREATE TABLE IF NOT EXISTS "
+                                                             "DatabaseMigrations( "
+                                                             "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                             "LastScriptApplied INTEGER "
+                                                             ");";
+
+    const inline std::string insertFirstRowDatabaseMigrations = "INSERT INTO DatabaseMigrations(ID, LastScriptApplied) VALUES(NULL, NULL);";
+    const inline std::string selectDatabaseMigrationsAll = "SELECT * FROM DatabaseMigrations LIMIT 1;";
+    const inline std::string updateDatabaseMigrationsLastScriptApplied = "UPDATE DatabaseMigrations SET LastScriptApplied = :lastScript;";
+
+    void checkDatabaseMigrations();
+    void storeDatabaseMigrationsLastScriptApplied(long long int value);
 }

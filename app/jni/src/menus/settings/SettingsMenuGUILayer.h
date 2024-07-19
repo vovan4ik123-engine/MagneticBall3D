@@ -53,5 +53,12 @@ namespace MagneticBall3D
 
         static const std::string m_musicCheckBoxID;
         bool m_musicCheckBoxChecked;
+
+        // Meteor particles.
+        static const std::string m_meteorParticlesTextureID;
+        std::unique_ptr<Beryll::Texture> m_meteorParticlesTexture;
+
+        static const std::string m_meteorParticlesCheckBoxID;
+        bool m_meteorParticlesCheckBoxChecked;
     };
 }

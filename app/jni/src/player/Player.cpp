@@ -127,7 +127,7 @@ namespace MagneticBall3D
 
         m_previousYPos = m_obj->getOrigin().y;
 
-        if(m_isMeteor)
+        if(m_isMeteor && EnumsAndVars::SettingsMenu::meteorParticles)
             spamMeteorParticles();
 
         // Update HP.

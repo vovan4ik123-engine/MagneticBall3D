@@ -22,6 +22,7 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline int FPSLimit = 60;
         static inline bool backgroundMusic = true;
+        static inline bool meteorParticles = true;
         // Not stored in DB.
         // ...
     };
@@ -93,7 +94,7 @@ namespace EnumsAndVars
     constexpr inline float playerMaxSpeedXZDefault = 80.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline int playerCurrentSpeed = 0;
-    constexpr inline float playerSpeedForMeteor = playerMaxSpeedXZDefault + 10.0f;
+    constexpr inline float playerSpeedForMeteor = 90.0f;
     constexpr inline float playerLeftRightTurnPower = 0.02f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
