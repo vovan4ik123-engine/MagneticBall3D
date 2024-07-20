@@ -11,11 +11,13 @@ namespace MagneticBall3D
         // Spawned randomly on map around player.
         COMMON,
         // Appears after killing specific type of enemy.
-        COP_WITH_PISTOL,
-        COP_WITH_SHIELD,
-        COP_WITH_GRENADE_LAUNCHER,
-        SNIPER,
-        TANK
+        ENEMY_GUN,
+        ENEMY_GUN_SHIELD,
+        ENEMY_GRENADE_LAUNCHER,
+        ENEMY_SNIPER,
+        ENEMY_TANK,
+        ENEMY_ROCKET,
+        ENEMY_MAGNET
     };
 
     class Garbage

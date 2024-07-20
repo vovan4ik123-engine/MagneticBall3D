@@ -299,7 +299,7 @@ namespace MagneticBall3D
     {
         for(int i = 0; i < 7; ++i) // 7 * 31 = 217
         {
-            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageCommon.fbx",
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageCommon_31items.fbx",
                                                                                                 EnumsAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
@@ -312,6 +312,102 @@ namespace MagneticBall3D
             for(const auto& obj : garbageCommon)
             {
                 m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyGun_4items.fbx",
+                                                                                                   EnumsAndVars::garbageMass,
+                                                                                                   false,
+                                                                                                   Beryll::CollisionFlags::DYNAMIC,
+                                                                                                   Beryll::CollisionGroups::GARBAGE,
+                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyGunShield_4items.fbx",
+                                                                                                  EnumsAndVars::garbageMass,
+                                                                                                  false,
+                                                                                                  Beryll::CollisionFlags::DYNAMIC,
+                                                                                                  Beryll::CollisionGroups::GARBAGE,
+                                                                                                  Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                  Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                  Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                  Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 2; ++i) // 2 * 2 = 4
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemySniper_2items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_SNIPER, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 7; ++i) // 7 * 3 = 21
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyMagnet_3items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_MAGNET, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -338,8 +434,8 @@ namespace MagneticBall3D
 
             rat->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             rat->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            rat->unitType = UnitType::RAT_WITH_MAGNET;
-            rat->attackType = AttackType::STEAL_GARBAGE;
+            rat->unitType = UnitType::ENEMY_MAGNET;
+            rat->attackType = AttackType::MAGNETIZE_GARBAGE;
             rat->castRayToFindYPos = true;
 
             rat->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
@@ -367,7 +463,7 @@ namespace MagneticBall3D
 
             guard->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             guard->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            guard->unitType = UnitType::GUN;
+            guard->unitType = UnitType::ENEMY_GUN;
             guard->attackType = AttackType::RANGE_DAMAGE_ONE;
             guard->castRayToFindYPos = true;
 
@@ -397,7 +493,7 @@ namespace MagneticBall3D
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            copShield->unitType = UnitType::GUN_SHIELD;
+            copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
             copShield->castRayToFindYPos = true;
 
@@ -427,9 +523,8 @@ namespace MagneticBall3D
 
             sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            sniper->unitType = UnitType::SNIPER;
+            sniper->unitType = UnitType::ENEMY_SNIPER;
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
-            sniper->castRayToFindYPos = true;
 
             sniper->damage = 20.0f;
             sniper->attackDistance = 2500.0f;
@@ -442,6 +537,37 @@ namespace MagneticBall3D
             m_animatedOrDynamicObjects.push_back(sniper);
             m_allAnimatedEnemies.push_back(sniper);
             m_animatedObjForShadowMap.push_back(sniper);
+        }
+
+        for(int i = 0; i < 20; ++i)
+        {
+            auto tank = std::make_shared<MovableEnemy>("models3D/enemies/JunkyardBus.fbx",
+                                                       0.0f,
+                                                       false,
+                                                       Beryll::CollisionFlags::STATIC,
+                                                       Beryll::CollisionGroups::NONE,
+                                                       Beryll::CollisionGroups::NONE,
+                                                       Beryll::SceneObjectGroups::ENEMY);
+
+            tank->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            tank->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            tank->unitType = UnitType::ENEMY_ROCKET;
+            tank->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            tank->castRayToFindYPos = true;
+
+            tank->damage = 2.0f;
+            tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
+            tank->damageRadius = 6.0f;
+            tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+
+            tank->garbageAmountToDie = 25;
+            tank->reducePlayerSpeedWhenDie = 20.0f;
+            tank->experienceWhenDie = 200;
+            tank->getController().moveSpeed = 50.0f;
+
+            m_animatedOrDynamicObjects.push_back(tank);
+            m_allAnimatedEnemies.push_back(tank);
+            m_animatedObjForShadowMap.push_back(tank);
         }
     }
 
@@ -477,7 +603,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 50 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 50 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
@@ -499,13 +625,13 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 70 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 70 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 20 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 20 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -528,19 +654,19 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 90 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 90 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 30 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 30 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 20 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 20 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -564,25 +690,25 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 110 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 110 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 40 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 40 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 30 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 30 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
@@ -606,25 +732,25 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 130 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 130 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 50 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 40 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 40 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
@@ -644,39 +770,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 60 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 60 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 50 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 50 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 4 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 4 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -693,39 +819,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 70 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 60 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 60 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 6 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 6 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -742,39 +868,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 80 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 80 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 70 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 70 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 8 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 8 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -791,39 +917,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 90 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 90 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 80 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 80 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 10 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 10 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -840,39 +966,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 100 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 90 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 90 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 15 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 15 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -889,39 +1015,39 @@ namespace MagneticBall3D
             int gunCount = 0;
             int gunShieldCount = 0;
             int sniperCount = 0;
-            int tankCount = 0;
+            int rocketCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(ratCount < 150 && enemy->unitType == UnitType::RAT_WITH_MAGNET)
+                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
                 {
                     enemy->isCanBeSpawned = true;
                     ++ratCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 100 && enemy->unitType == UnitType::GUN)
+                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 100 && enemy->unitType == UnitType::GUN_SHIELD)
+                else if(gunShieldCount < 100 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::SNIPER)
+                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
                     enemy->isCanBeSpawned = true;
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(tankCount < 20 && enemy->unitType == UnitType::TANK)
+                else if(rocketCount < 20 && enemy->unitType == UnitType::ENEMY_ROCKET)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++tankCount;
+                    ++rocketCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
@@ -955,7 +1081,7 @@ namespace MagneticBall3D
                 if(enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
                     continue;
 
-                if(enemy->unitType != UnitType::SNIPER)
+                if(enemy->unitType != UnitType::ENEMY_SNIPER)
                 {
                     enemy->enableEnemy();
                     enemy->disableDraw();

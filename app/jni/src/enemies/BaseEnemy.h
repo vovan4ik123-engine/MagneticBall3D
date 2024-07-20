@@ -13,12 +13,13 @@ namespace MagneticBall3D
     enum class UnitType
     {
         NONE,
-        GUN,
-        GUN_SHIELD,
-        GRENADE_LAUNCHER,
-        SNIPER,
-        TANK,
-        RAT_WITH_MAGNET
+        ENEMY_GUN,
+        ENEMY_GUN_SHIELD,
+        ENEMY_GRENADE_LAUNCHER,
+        ENEMY_SNIPER,
+        ENEMY_TANK,
+        ENEMY_ROCKET,
+        ENEMY_MAGNET
     };
 
     enum class AttackType
@@ -26,7 +27,7 @@ namespace MagneticBall3D
         NONE,
         RANGE_DAMAGE_ONE,
         RANGE_DAMAGE_RADIUS,
-        STEAL_GARBAGE
+        MAGNETIZE_GARBAGE
     };
 
     class BaseEnemy : public Beryll::AnimatedCollidingCharacter

@@ -512,43 +512,46 @@ namespace MagneticBall3D
                 if(rayAttack)
                 {
                     // Play shot sounds.
-                    if(enemy->unitType == UnitType::GUN || enemy->unitType == UnitType::GUN_SHIELD)
+                    if(enemy->unitType == UnitType::ENEMY_GUN || enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                         Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
-                    else if(enemy->unitType == UnitType::SNIPER)
+                    else if(enemy->unitType == UnitType::ENEMY_SNIPER)
                         Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
-                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
                         Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
-                    else if(enemy->unitType == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::ENEMY_TANK)
                         Sounds::playSoundEffect(SoundType::TANK_SHOT);
+                    //else if(enemy->unitType == UnitType::ENEMY_ROCKET)
+                    //    Sounds::playSoundEffect(SoundType::ROCKET_SHOT);
 
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
-                    if(enemy->unitType == UnitType::GUN ||
-                       enemy->unitType == UnitType::GUN_SHIELD ||
-                       enemy->unitType == UnitType::SNIPER)
+                    if(enemy->unitType == UnitType::ENEMY_GUN ||
+                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD ||
+                       enemy->unitType == UnitType::ENEMY_SNIPER)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
                         from += enemy->getFaceDirXZ() * 14.0f;
                     }
-                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
                     {
                         from.y += 1.0f;
                         from += enemy->getFaceDirXZ() * 14.0f;
                     }
-                    else if(enemy->unitType == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::ENEMY_TANK ||
+                            enemy->unitType == UnitType::ENEMY_ROCKET)
                     {
                         from.y += enemy->getFromOriginToTop() * 0.8f;
                         from += enemy->getFaceDirXZ() * 30.0f;
                     }
 
-                    if(enemy->unitType == UnitType::GUN ||
-                       enemy->unitType == UnitType::GUN_SHIELD)
+                    if(enemy->unitType == UnitType::ENEMY_GUN ||
+                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.9f, 0.9f, 0.0f, 1.0f), glm::vec4(0.9f, 0.9f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
+                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.5f, 0.5f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.4f);
@@ -556,12 +559,13 @@ namespace MagneticBall3D
                         emitParticlesExplosion(rayAttack.hitPoint, 6, 1.5f, 1.5f,
                                                glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.8f);
                     }
-                    else if(enemy->unitType == UnitType::SNIPER)
+                    else if(enemy->unitType == UnitType::ENEMY_SNIPER)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
                                           glm::vec4(0.95f, 0.05f, 0.0f, 1.0f), glm::vec4(0.95f, 0.05f, 0.0f, 0.7f), 0.4f);
                     }
-                    else if(enemy->unitType == UnitType::TANK)
+                    else if(enemy->unitType == UnitType::ENEMY_TANK ||
+                            enemy->unitType == UnitType::ENEMY_ROCKET)
                     {
                         emitParticlesLine(from, rayAttack.hitPoint, 1.0f, 1.0f,
                                           glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.6f);
@@ -606,9 +610,9 @@ namespace MagneticBall3D
                                 }
                             }
                         }
-                        else if(enemy->attackType == AttackType::STEAL_GARBAGE)
+                        else if(enemy->attackType == AttackType::MAGNETIZE_GARBAGE)
                         {
-                            //BR_INFO("%s", "Garbage under attack =) by AttackType::STEAL_GARBAGE");
+                            //BR_INFO("%s", "Garbage under attack =) by AttackType::MAGNETIZE_GARBAGE");
                             for(auto& wrapper : m_allGarbage)
                             {
                                 if(rayAttack.hittedObjectID == wrapper.obj->getID())
@@ -623,9 +627,9 @@ namespace MagneticBall3D
                     }
 
                     // Play hit sounds.
-                    if(enemy->unitType == UnitType::GUN ||
-                       enemy->unitType == UnitType::GUN_SHIELD ||
-                       enemy->unitType == UnitType::SNIPER)
+                    if(enemy->unitType == UnitType::ENEMY_GUN ||
+                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD ||
+                       enemy->unitType == UnitType::ENEMY_SNIPER)
                         Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
             }
@@ -660,7 +664,7 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
-        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.11f;
+        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.09f;
 
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
@@ -674,7 +678,7 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledUpdate() &&
                enemy->garbageAmountToDie < EnumsAndVars::garbageCountMagnetized &&
-               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill)
+               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill + (enemy->getXZRadius() * 0.6f))
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
@@ -682,26 +686,34 @@ namespace MagneticBall3D
                 ++EnumsAndVars::enemiesKilledCount;
                 Sounds::playSoundEffect(SoundType::POP);
 
-                if(enemy->unitType == UnitType::GUN)
+                if(enemy->unitType == UnitType::ENEMY_GUN)
                 {
-                    spawnGarbage(1, GarbageType::COP_WITH_PISTOL, enemy->getOrigin());
+                    spawnGarbage(1, GarbageType::ENEMY_GUN, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::GUN_SHIELD)
+                else if(enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
-                    spawnGarbage(1, GarbageType::COP_WITH_SHIELD, enemy->getOrigin());
+                    spawnGarbage(1, GarbageType::ENEMY_GUN_SHIELD, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::GRENADE_LAUNCHER)
+                else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
                 {
-                    spawnGarbage(1, GarbageType::COP_WITH_GRENADE_LAUNCHER, enemy->getOrigin());
+                    spawnGarbage(1, GarbageType::ENEMY_GRENADE_LAUNCHER, enemy->getOrigin());
                 }
-                else if(enemy->unitType == UnitType::SNIPER)
+                else if(enemy->unitType == UnitType::ENEMY_SNIPER)
                 {
-                    spawnGarbage(1, GarbageType::SNIPER, enemy->getOrigin());
+                    spawnGarbage(1, GarbageType::ENEMY_SNIPER, enemy->getOrigin());
                     enemy->freeStaticPosition();
                 }
-                else if(enemy->unitType == UnitType::TANK)
+                else if(enemy->unitType == UnitType::ENEMY_TANK)
                 {
-                    spawnGarbage(1, GarbageType::TANK, enemy->getOrigin());
+                    spawnGarbage(1, GarbageType::ENEMY_TANK, enemy->getOrigin());
+                }
+                else if(enemy->unitType == UnitType::ENEMY_MAGNET)
+                {
+                    spawnGarbage(1, GarbageType::ENEMY_MAGNET, enemy->getOrigin());
+                }
+                else if(enemy->unitType == UnitType::ENEMY_ROCKET)
+                {
+                    spawnGarbage(1, GarbageType::ENEMY_ROCKET, enemy->getOrigin());
                 }
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
@@ -757,8 +769,9 @@ namespace MagneticBall3D
         m_cameraOffset = glm::normalize(m_cameraOffset);
         m_cameraOffset.y = 0.09f +
                            (EnumsAndVars::garbageCountMagnetized * 0.0015f) +
-                           (m_player->getObj()->getOrigin().y * 0.005f);
-        m_cameraOffset.y = std::min(1.1f, m_cameraOffset.y);
+                           (m_player->getObj()->getOrigin().y * 0.006f);
+        //m_cameraOffset.y = std::min(1.1f, m_cameraOffset.y);
+        //BR_INFO("m_cameraOffset.y %f", m_cameraOffset.y);
         m_cameraOffset = glm::normalize(m_cameraOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();

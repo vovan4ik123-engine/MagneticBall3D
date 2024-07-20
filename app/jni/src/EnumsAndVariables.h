@@ -11,9 +11,9 @@ namespace EnumsAndVars
 
     struct AnimationIndexes
     {
-        static constexpr inline int run = 0;
-        static constexpr inline int stand = 1;
-        static constexpr inline int attack = 2;
+        static constexpr inline int run = 0;    // 1_Run    - names in blender.
+        static constexpr inline int stand = 1;  // 2_Stand
+        static constexpr inline int attack = 2; // 3_Attack
     };
 
     // Database tables.
@@ -61,7 +61,7 @@ namespace EnumsAndVars
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
     constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 7.0f;
+    constexpr inline float minPlayerSpeedToCameraFollow = 10.0f;
     constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
 
     // Swipe.

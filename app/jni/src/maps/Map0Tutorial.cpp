@@ -334,7 +334,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopPistol)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::COP_WITH_PISTOL, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -361,7 +361,7 @@ namespace MagneticBall3D
 
             cop->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
             cop->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            cop->unitType = UnitType::GUN;
+            cop->unitType = UnitType::ENEMY_GUN;
             cop->attackType = AttackType::RANGE_DAMAGE_ONE;
 
             cop->damage = 0.0f;
