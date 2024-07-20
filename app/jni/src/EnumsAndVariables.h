@@ -68,7 +68,7 @@ namespace EnumsAndVars
     constexpr inline float swipePowerMultiplier = 2.1f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 29.0f;
+    constexpr inline float playerMagneticRadiusDefault = 28.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
     constexpr inline float playerImpulseFactorOnGroundDefault = 0.1f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
@@ -120,7 +120,7 @@ namespace EnumsAndVars
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 6.0f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
-    constexpr inline int garbageMaxCountMagnetizedDefault = 70;
+    constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
     constexpr inline int garbageCountMagnetizedDefault = 0;
     inline int garbageCountMagnetized = garbageCountMagnetizedDefault;
