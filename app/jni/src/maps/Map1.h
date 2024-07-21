@@ -48,8 +48,8 @@ namespace MagneticBall3D
         bool m_prepareWave12 = true;
         const float m_enemiesWave12Time = 330.0f;
 
-        // Prepare to boss.
-        bool m_prepareToBoss = true;
-        const float m_prepareToBossTime = 4360.0f;
+        // Last wave.
+        bool m_prepareLastWave = true;
+        const float m_prepareLastWaveTime = 360.0f;
     };
 }

@@ -164,8 +164,10 @@ namespace EnumsAndVars
     inline int mapSwipeCount = 0.0f;
     inline bool mapPlayerWin = false; // true = player win.
 
+    // Enemies last wave.
+    inline bool enemiesLastWavePhase = false;
     // Boss.
-    inline bool prepareToBossPhase = false;
+    inline bool mapHasBossPhase = false;
     inline bool bossPhase = false;
 
     inline void reset()
@@ -210,8 +212,10 @@ namespace EnumsAndVars
         mapSwipeCount = 0.0f;
         mapPlayerWin = false;
 
+        // Enemies last wave.
+        enemiesLastWavePhase = false;
         // Boss.
-        prepareToBossPhase = false;
+        mapHasBossPhase = false;
         bossPhase = false;
     }
 }

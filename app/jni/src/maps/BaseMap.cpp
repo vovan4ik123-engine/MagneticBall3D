@@ -103,8 +103,15 @@ namespace MagneticBall3D
         updateAndMagnetizeGarbage();
         killEnemies();
 
-        if(EnumsAndVars::prepareToBossPhase && BaseEnemy::getActiveCount() <= 0)
-            startBossPhase();
+        if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 0)
+        {
+            BR_INFO("%s", "if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 0)");
+
+            if(EnumsAndVars::mapHasBossPhase)
+                startBossPhase();
+            else
+                EnumsAndVars::mapPlayerWin = true;
+        }
         else if(EnumsAndVars::bossPhase)
             handlePossPhase();
 
@@ -837,6 +844,8 @@ namespace MagneticBall3D
                 m_cameraDistance -= EnumsAndVars::cameraZoomMaxSpeed * std::min(0.04f, Beryll::TimeStep::getTimeStepSec());
         }
 
+        if(glm::isnan(m_cameraDistance) || m_cameraDistance < 1.0f)
+            m_cameraDistance = 1.0f;
 
         Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
@@ -1007,12 +1016,25 @@ namespace MagneticBall3D
         }
     }
 
-    void BaseMap::prepareToBossPhase()
+    void BaseMap::lastWaveToBossPhase()
     {
-        BR_INFO("%s", "prepareToBossPhase()");
+        BR_INFO("%s", "lastWaveToBossPhase()");
 
-        m_gui->showMenuKillAllBeforeBoss();
-        EnumsAndVars::prepareToBossPhase = true;
+        m_gui->showMenuKillAllToSpawnBoss();
+
+        EnumsAndVars::enemiesLastWavePhase = true;
+        EnumsAndVars::mapHasBossPhase = true;
+        EnumsAndVars::bossPhase = false;
+    }
+
+    void BaseMap::lastWaveToWinPhase()
+    {
+        BR_INFO("%s", "lastWaveToWinPhase()");
+
+        m_gui->showMenuKillAllToWin();
+
+        EnumsAndVars::enemiesLastWavePhase = true;
+        EnumsAndVars::mapHasBossPhase = false;
         EnumsAndVars::bossPhase = false;
     }
 }

@@ -54,9 +54,10 @@ namespace MagneticBall3D
         void respawnEnemiesAtNewDistance(float minDistance);
 
         // Boss phase.
-        void prepareToBossPhase(); // At last enemies wave.
-        virtual void startBossPhase() = 0;
-        virtual void handlePossPhase() = 0;
+        void lastWaveToBossPhase(); // At last enemies wave if map has boss.
+        void lastWaveToWinPhase(); // At last enemies wave if map without boss.
+        virtual void startBossPhase() {}; // Maps with boss must override that.
+        virtual void handlePossPhase() {};
 
     protected:
         std::shared_ptr<PlayStateGUILayer> m_gui;

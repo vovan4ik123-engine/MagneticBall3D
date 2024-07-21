@@ -75,7 +75,8 @@ namespace MagneticBall3D
         m_resurrectButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectNoCrystalsTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectNoCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_loseTexture = Beryll::Renderer::createTexture("GUI/playState/Lose.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_killAllTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_killAllToSpawnBossTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_killAllToWinTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToWin.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_killAllButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_winTexture = Beryll::Renderer::createTexture("GUI/playState/Win.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_winButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -397,13 +398,22 @@ namespace MagneticBall3D
             ImGui::End();
         }
 
+        // Menu kill all can be before boss or without boss.
         if(m_menuKillAllEnabled)
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_killAllTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            if(m_killAllToSpawnBoss) // Show message to spawn boss.
+            {
+                ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToSpawnBossTexture->getID()),
+                             ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            }
+            else // Show message to win without boss.
+            {
+                ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToWinTexture->getID()),
+                             ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            }
             ImGui::End();
 
             ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
@@ -477,12 +487,26 @@ namespace MagneticBall3D
         m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
     }
 
-    void PlayStateGUILayer::showMenuKillAllBeforeBoss()
+    void PlayStateGUILayer::showMenuKillAllToSpawnBoss()
     {
         if(m_menuKillAllEnabled)
             return;
 
         m_menuKillAllEnabled = true;
+        m_killAllToSpawnBoss = true;
+
+        GameStateHelper::pauseGame();
+
+        m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
+    }
+
+    void PlayStateGUILayer::showMenuKillAllToWin()
+    {
+        if(m_menuKillAllEnabled)
+            return;
+
+        m_menuKillAllEnabled = true;
+        m_killAllToSpawnBoss = false;
 
         GameStateHelper::pauseGame();
 

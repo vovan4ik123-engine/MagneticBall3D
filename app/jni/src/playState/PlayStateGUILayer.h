@@ -18,7 +18,8 @@ namespace MagneticBall3D
 
         void showMenuResurrect();
         void showMenuResurrectNoCrystals();
-        void showMenuKillAllBeforeBoss();
+        void showMenuKillAllToSpawnBoss();
+        void showMenuKillAllToWin();
         void showMenuLose();
         void showMenuWin();
 
@@ -126,13 +127,15 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_loseTexture;
         bool m_menuLoseEnabled = false;
 
-        // Kill all enemies before boss.
+        // Last wave kill all enemies.
         static const std::string m_killAllTextureID;
-        std::unique_ptr<Beryll::Texture> m_killAllTexture;
+        std::unique_ptr<Beryll::Texture> m_killAllToSpawnBossTexture; // If map has boss.
+        std::unique_ptr<Beryll::Texture> m_killAllToWinTexture; // Without boss.
         static const std::string m_killAllButtonOkID;
         std::unique_ptr<Beryll::Texture> m_killAllButtonOkTexture;
         bool m_menuKillAllEnabled = false;
         bool m_killAllButtonClicked = false;
+        bool m_killAllToSpawnBoss = false;
 
         // Win.
         static const std::string m_winTextureID;

@@ -21,7 +21,7 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,-520.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-120.0f, 2.0f,450.0f));
         m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
@@ -40,7 +40,7 @@ namespace MagneticBall3D
         StaticEnemy::spawnDelay = 40.0f;
 
         loadShaders();
-        m_cameraOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.5f));
+        m_cameraOffset = glm::normalize(glm::vec3(0.5f, 0.0f, 1.0f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -1054,9 +1054,9 @@ namespace MagneticBall3D
 
             BR_INFO("Prepare wave 12. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareToBoss && EnumsAndVars::mapPlayTimeSec > m_prepareToBossTime)
+        else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {
-            m_prepareToBoss = false;
+            m_prepareLastWave = false;
 
             EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
@@ -1065,9 +1065,9 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
             }
 
-            prepareToBossPhase();
+            BR_INFO("enemiesLastWavePhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
 
-            BR_INFO("prepareToBossPhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            lastWaveToWinPhase();
         }
 
         // Spawn enemies.
@@ -1119,14 +1119,14 @@ namespace MagneticBall3D
 
     void Map2::startBossPhase()
     {
-        EnumsAndVars::bossPhase = true;
-        EnumsAndVars::prepareToBossPhase = false;
+        //EnumsAndVars::bossPhase = true;
+        //EnumsAndVars::enemiesLastWavePhase = false;
     }
 
     void Map2::handlePossPhase()
     {
 
-        EnumsAndVars::mapPlayerWin = true;
+        //EnumsAndVars::mapPlayerWin = true;
     }
 
     void Map2::spawnCommonGarbage()

@@ -339,7 +339,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 5 = 25
+        for(int i = 0; i < 4; ++i) // 4 * 5 = 20
         {
             const auto garbageCopShield = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopShield_5items.fbx",
                                                                                                    EnumsAndVars::garbageMass,
@@ -363,7 +363,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
         {
             const auto garbageCopGrenade = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopGrenade_3items.fbx",
                                                                                                     EnumsAndVars::garbageMass,
@@ -411,7 +411,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
         {
             const auto garbageTank = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageTank_3items.fbx",
                                                                                               EnumsAndVars::garbageMass,
@@ -1047,9 +1047,9 @@ namespace MagneticBall3D
 
             BR_INFO("Prepare wave 12. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
         }
-        else if(m_prepareToBoss && EnumsAndVars::mapPlayTimeSec > m_prepareToBossTime)
+        else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {
-            m_prepareToBoss = false;
+            m_prepareLastWave = false;
 
             EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
@@ -1058,9 +1058,9 @@ namespace MagneticBall3D
                 enemy->isCanBeSpawned = false;
             }
 
-            prepareToBossPhase();
+            BR_INFO("enemiesLastWavePhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
 
-            BR_INFO("prepareToBossPhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            lastWaveToBossPhase();
         }
 
         bool sortSnipersPositions = true;
@@ -1134,8 +1134,8 @@ namespace MagneticBall3D
         BR_INFO("%s", "startBossPhase()");
 
         m_gui->showMenuBossTankWithCommander();
+        EnumsAndVars::enemiesLastWavePhase = false;
         EnumsAndVars::bossPhase = true;
-        EnumsAndVars::prepareToBossPhase = false;
 
         // Enable boss.
         m_boss->enableBoss();
