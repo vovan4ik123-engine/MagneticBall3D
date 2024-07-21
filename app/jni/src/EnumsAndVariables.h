@@ -133,7 +133,7 @@ namespace EnumsAndVars
     constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
-    constexpr inline int garbageCommonMaxCountOnMapDefault = 140.0f;
+    constexpr inline int garbageCommonMaxCountOnMapDefault = 130.0f;
     inline int garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
     constexpr inline float garbageStartHP = 40.0f;
 
