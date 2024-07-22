@@ -71,6 +71,18 @@ namespace DataBaseHelper
                 storeEnergySystemLastSecUpdated(EnumsAndVars::EnergySystem::lastSecUpdated);
                 storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
 
+                // Shop.
+                Beryll::DataBase::setSqlQuery(createTableShop);
+                Beryll::DataBase::executeNotSelectQuery();
+                Beryll::DataBase::setSqlQuery(insertFirstRowShop);
+                Beryll::DataBase::executeNotSelectQuery();
+                storeShopItem1FirstBuy(EnumsAndVars::Shop::item1FirstBuy ? 1 : 0);
+                storeShopItem2FirstBuy(EnumsAndVars::Shop::item2FirstBuy ? 1 : 0);
+                storeShopItem3FirstBuy(EnumsAndVars::Shop::item3FirstBuy ? 1 : 0);
+                storeShopItem4FirstBuy(EnumsAndVars::Shop::item4FirstBuy ? 1 : 0);
+                storeShopItem5FirstBuy(EnumsAndVars::Shop::item5FirstBuy ? 1 : 0);
+                storeShopItem6FirstBuy(EnumsAndVars::Shop::item6FirstBuy ? 1 : 0);
+
                 // DatabaseMigrations.
                 Beryll::DataBase::setSqlQuery(createTableDatabaseMigrations);
                 Beryll::DataBase::executeNotSelectQuery();
@@ -100,6 +112,7 @@ namespace DataBaseHelper
             readCurrencyBalance();
             readMapsProgress();
             readEnergySystem();
+            readShop();
         }
     }
 
@@ -172,97 +185,6 @@ namespace DataBaseHelper
         }
     }
 
-    void storeSettingsFPSLimit(long long int value)
-    {
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateSettingsFPSLimit);
-            Beryll::DataBase::bindParameterLongLongInt(":FPS", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
-
-    void storeSettingsBackgroundMusic(bool playMusic)
-    {
-        long long int intValue = 0;
-        if(playMusic)
-            intValue = 1;
-
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateSettingsBackgroundMusic);
-            Beryll::DataBase::bindParameterLongLongInt(":playMusic", intValue);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
-
-    void storeSettingsMeteorParticles(bool showParticles)
-    {
-        long long int intValue = 0;
-        if(showParticles)
-            intValue = 1;
-
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateSettingsMeteorParticles);
-            Beryll::DataBase::bindParameterLongLongInt(":showParticles", intValue);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
-
-    void storeCurrencyBalanceCrystals(long long int value)
-    {
-        if(value < 0)
-            value = 0;
-
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateCurrencyBalanceCrystals);
-            Beryll::DataBase::bindParameterLongLongInt(":crystals", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
-
     void readMapsProgress()
     {
         try
@@ -296,46 +218,6 @@ namespace DataBaseHelper
         {
             std::string what = e.what();
             BR_ERROR("std::exception %s", what.c_str());
-        }
-    }
-
-    void storeMapsProgressCurrentMapIndex(long long int value)
-    {
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateMapsProgressCurrentMapIndex);
-            Beryll::DataBase::bindParameterLongLongInt(":currentMapIndex", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
-
-    void storeMapsProgressLastOpenedMapIndex(long long int value)
-    {
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateMapsProgressLastOpenedMapIndex);
-            Beryll::DataBase::bindParameterLongLongInt(":lastOpenedIndex", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
         }
     }
 
@@ -378,63 +260,57 @@ namespace DataBaseHelper
         }
     }
 
-    void storeEnergySystemCurrentAmount(long long int value)
+    void readShop()
     {
         try
         {
-            Beryll::DataBase::setSqlQuery(updateEnergySystemCurrentAmount);
-            Beryll::DataBase::bindParameterLongLongInt(":amount", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
+            Beryll::DataBase::setSqlQuery(selectShopAll);
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "readShop() rows are empty.");
 
-    void storeEnergySystemLastSecUpdated(long long int value)
-    {
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecUpdated);
-            Beryll::DataBase::bindParameterLongLongInt(":lastSecUpdated", value);
-            Beryll::DataBase::executeNotSelectQuery();
-        }
-        catch(const Beryll::DataBaseException& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
-        }
-        catch(const std::exception& e)
-        {
-            std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
-        }
-    }
+            BR_INFO("readShop() rows: %d columns: %d", rows.size(), rows[0].size());
 
-    void storeEnergySystemLastSecRestored(long long int value)
-    {
-        try
-        {
-            Beryll::DataBase::setSqlQuery(updateEnergySystemLastSecRestored);
-            Beryll::DataBase::bindParameterLongLongInt(":lastSecOneEnergyRestored", value);
-            Beryll::DataBase::executeNotSelectQuery();
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "Item1FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][1]))
+                EnumsAndVars::Shop::item1FirstBuy = std::get<long long int>(rows[0][1]) == 1; // True if column contains 1.
+            BR_INFO("Item1FirstBuy after read: %d", int(EnumsAndVars::Shop::item1FirstBuy));
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][2])), "%s", "Item2FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][2]))
+                EnumsAndVars::Shop::item2FirstBuy = std::get<long long int>(rows[0][2]) == 1; // True if column contains 1.
+            BR_INFO("Item2FirstBuy after read: %d", int(EnumsAndVars::Shop::item2FirstBuy));
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][3])), "%s", "Item3FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][3]))
+                EnumsAndVars::Shop::item3FirstBuy = std::get<long long int>(rows[0][3]) == 1; // True if column contains 1.
+            BR_INFO("Item3FirstBuy after read: %d", int(EnumsAndVars::Shop::item3FirstBuy));
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][4])), "%s", "Item4FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][4]))
+                EnumsAndVars::Shop::item4FirstBuy = std::get<long long int>(rows[0][4]) == 1; // True if column contains 1.
+            BR_INFO("Item4FirstBuy after read: %d", int(EnumsAndVars::Shop::item4FirstBuy));
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][5])), "%s", "Item5FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][5]))
+                EnumsAndVars::Shop::item5FirstBuy = std::get<long long int>(rows[0][5]) == 1; // True if column contains 1.
+            BR_INFO("Item5FirstBuy after read: %d", int(EnumsAndVars::Shop::item5FirstBuy));
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][6])), "%s", "Item6FirstBuy contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][6]))
+                EnumsAndVars::Shop::item6FirstBuy = std::get<long long int>(rows[0][6]) == 1; // True if column contains 1.
+            BR_INFO("Item6FirstBuy after read: %d", int(EnumsAndVars::Shop::item6FirstBuy));
         }
         catch(const Beryll::DataBaseException& e)
         {
             std::string what = e.what();
-            BR_ASSERT(false, "DataBaseException %s", what.c_str());
+            BR_ERROR("DataBaseException %s", what.c_str());
         }
         catch(const std::exception& e)
         {
             std::string what = e.what();
-            BR_ASSERT(false, "std::exception %s", what.c_str());
+            BR_ERROR("std::exception %s", what.c_str());
         }
     }
 
@@ -455,21 +331,24 @@ namespace DataBaseHelper
         BR_INFO("DatabaseMigrations lastScriptAppliedIndex: %d", lastScriptAppliedIndex);
 
 //        if(lastScriptAppliedIndex < 1)
+//        {
 //            applyDatabaseMigrationsScript1();
+//            storeDatabaseMigrationsLastScriptApplied(1);
+//        }
 //
 //        if(lastScriptAppliedIndex < 2)
+//        {
 //            applyDatabaseMigrationsScript2();
-//
-//        if(lastScriptAppliedIndex < 3)
-//            applyDatabaseMigrationsScript3();
+//            storeDatabaseMigrationsLastScriptApplied(2);
+//        }
     }
 
-    void storeDatabaseMigrationsLastScriptApplied(long long int value)
+    void executeSqlWithLongLongParam(const std::string& sql, const char* paramName, long long int value)
     {
         try
         {
-            Beryll::DataBase::setSqlQuery(updateDatabaseMigrationsLastScriptApplied);
-            Beryll::DataBase::bindParameterLongLongInt(":lastScript", value);
+            Beryll::DataBase::setSqlQuery(sql);
+            Beryll::DataBase::bindParameterLongLongInt(paramName, value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)

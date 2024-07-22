@@ -177,7 +177,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.4f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.2f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -201,7 +201,7 @@ namespace MagneticBall3D
         // If player is on building roof this building should be semitransparent.
         std::shared_ptr<Beryll::BaseSimpleObject> semiTransparentBuilding = nullptr;
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.8f);
 
         for(const auto& staticObj : m_staticEnv)
         {

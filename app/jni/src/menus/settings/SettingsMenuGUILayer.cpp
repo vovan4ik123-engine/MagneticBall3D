@@ -108,9 +108,9 @@ namespace MagneticBall3D
         // FPS check boxes.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{ 0.0f, 0.7f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
 
         ImGui::SetNextWindowPos(ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));

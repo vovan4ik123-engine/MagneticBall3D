@@ -56,6 +56,16 @@ namespace EnumsAndVars
                                                             // If player buy energy for real money dont apply any limit.
         static constexpr inline int playCost = 5;
     };
+
+    struct Shop
+    {
+        static inline bool item1FirstBuy = true;
+        static inline bool item2FirstBuy = true;
+        static inline bool item3FirstBuy = true;
+        static inline bool item4FirstBuy = true;
+        static inline bool item5FirstBuy = true;
+        static inline bool item6FirstBuy = true;
+    };
     // Database tables end.
 
     // Camera.
