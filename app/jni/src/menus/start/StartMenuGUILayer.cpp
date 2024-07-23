@@ -54,11 +54,11 @@ namespace MagneticBall3D
                 // Show menu for buy energy.
             //}
         }
-//        else if(m_buttonShop)
+//        else if(m_buttonShopClicked)
 //        {
 //            GameStateHelper::pushShopState();
 //        }
-//        else if(m_buttonTalents)
+//        else if(m_buttonTalentsClicked)
 //        {
 //            GameStateHelper::pushPlayerTalentsState();
 //        }
