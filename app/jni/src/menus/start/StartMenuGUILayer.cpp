@@ -58,7 +58,7 @@ namespace MagneticBall3D
 //        {
 //            GameStateHelper::pushShopState();
 //        }
-//        else if(m_buttonPlayerTalents)
+//        else if(m_buttonTalents)
 //        {
 //            GameStateHelper::pushPlayerTalentsState();
 //        }

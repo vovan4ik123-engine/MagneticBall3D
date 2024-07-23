@@ -54,6 +54,7 @@ import java.util.Hashtable;
 import java.util.Locale;
 
 import managers.GoogleAnalyticsManager;
+import managers.BillingManager;
 
 /**
     SDL Activity
@@ -390,6 +391,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         SDL.setContext(this);
 
         GoogleAnalyticsManager.init(mSingleton);
+        BillingManager.init(mSingleton);
 
         mClipboardHandler = new SDLClipboardHandler();
 
@@ -430,6 +432,10 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 SDLActivity.onNativeDropFile(filename);
             }
         }
+    }
+
+    public static SDLActivity getSDLActivity() {
+        return mSingleton;
     }
 
     protected void pauseNativeThread() {

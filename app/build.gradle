@@ -57,4 +57,7 @@ dependencies {
     // Import the Firebase BoM.
     implementation platform('com.google.firebase:firebase-bom:33.1.0')
     implementation 'com.google.firebase:firebase-analytics'
+
+    // Billing system.
+    implementation 'com.android.billingclient:billing:7.0.0'
 }
