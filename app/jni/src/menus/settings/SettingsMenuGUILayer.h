@@ -47,6 +47,10 @@ namespace MagneticBall3D
 
         void resetFPS(int fps);
 
+        // FPS tip.
+        static const std::string m_FPSTipTextureID;
+        std::unique_ptr<Beryll::Texture> m_FPSTipTexture;
+
         // Background music.
         static const std::string m_musicTextureID;
         std::unique_ptr<Beryll::Texture> m_musicTexture;

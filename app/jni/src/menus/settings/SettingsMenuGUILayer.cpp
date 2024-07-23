@@ -9,6 +9,7 @@ namespace MagneticBall3D
     const std::string SettingsMenuGUILayer::m_buttonBackID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_settingsTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_FPSLimitTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_FPSTipTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_30FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_60FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_120FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
@@ -24,6 +25,7 @@ namespace MagneticBall3D
 
         m_settingsTexture = Beryll::Renderer::createTexture("GUI/menus/settings/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_FPSTipTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSTip.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_meteorParticlesTexture = Beryll::Renderer::createTexture("GUI/menus/settings/MeteorParticles.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
@@ -160,8 +162,17 @@ namespace MagneticBall3D
         ImGui::PopFont();
         ImGui::End();
 
+        // FPS tip.
+        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.12f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_FPSTipTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSTipTexture->getID()),
+                     ImVec2(0.97f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::End();
+
         // Background music.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.14f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.18f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_musicTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -170,7 +181,7 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Background music check box.
-        ImGui::SetNextWindowPos(ImVec2(0.51f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.14f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.51f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.18f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_musicCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -180,7 +191,7 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Meteor particles.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.24f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_meteorParticlesTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -189,7 +200,7 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Meteor particles check box.
-        ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.24f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_meteorParticlesCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
