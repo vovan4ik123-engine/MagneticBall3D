@@ -145,7 +145,7 @@ namespace MagneticBall3D
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->activateDiffuseTextureMat1();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(3200, 3200);
+        m_shadowMap = Beryll::Renderer::createShadowMap(3500, 3500);
     }
 
     void BaseMap::loadPlayer()
@@ -239,7 +239,7 @@ namespace MagneticBall3D
             glm::vec3 powerForImpulse{0.0f};
             glm::vec3 powerForTorque{0.0f};
             float swipeFactorBasedOnAngleAndSpeed = 0.0f;
-            if(m_player->getMoveSpeed() > 2.0f)
+            if(m_player->getMoveSpeed() > 0.001f)
             {
                 if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
                 {
@@ -268,9 +268,9 @@ namespace MagneticBall3D
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
-                if(m_player->getMoveSpeed() < EnumsAndVars::playerMaxSpeedXZDefault)
+                if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
                 {
-                    // Help to player move faster on ground when speed is low.
+                    // Help to player move faster on flat surface when speed is low.
                     const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.011f;
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
@@ -292,10 +292,15 @@ namespace MagneticBall3D
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
-                if(m_player->getBuildingNormalAngle() < 0.1745f) // Less than 10 degrees. Assume we are on flat roof.
+                powerForImpulse += powerForImpulse * (swipeFactorBasedOnAngleAndSpeed * (1.0f - angleFactor));
+                powerForTorque += powerForTorque * (swipeFactorBasedOnAngleAndSpeed * (1.0f - angleFactor));
+
+                if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
                 {
-                    powerForImpulse += powerForImpulse * swipeFactorBasedOnAngleAndSpeed;
-                    powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
+                    // Help to player move faster on flat surface when speed is low.
+                    const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.01f;
+                    powerForImpulse += powerForImpulse * (powerToHelpPlayer * (1.0f - angleFactor));
+                    powerForTorque += powerForTorque * (powerToHelpPlayer * (1.0f - angleFactor));
                 }
             }
             else // if(m_player->getIsOnAir())
@@ -768,18 +773,18 @@ namespace MagneticBall3D
 
                 const glm::mat4 matr = glm::rotate(glm::mat4{1.0f}, angleRotate, glm::normalize(glm::axis(rotation)));
 
-                m_cameraOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
+                m_cameraAngleOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
             }
         }
 
-        m_cameraOffset.y = 0.0f;
-        m_cameraOffset = glm::normalize(m_cameraOffset);
-        m_cameraOffset.y = 0.09f +
-                           (EnumsAndVars::garbageCountMagnetized * 0.0015f) +
-                           (m_player->getObj()->getOrigin().y * 0.006f);
-        //m_cameraOffset.y = std::min(1.1f, m_cameraOffset.y);
-        //BR_INFO("m_cameraOffset.y %f", m_cameraOffset.y);
-        m_cameraOffset = glm::normalize(m_cameraOffset);
+        m_cameraAngleOffset.y = 0.0f;
+        m_cameraAngleOffset = glm::normalize(m_cameraAngleOffset);
+        m_cameraAngleOffset.y = 0.09f +
+                                (EnumsAndVars::garbageCountMagnetized * 0.0015f) +
+                                (m_player->getObj()->getOrigin().y * 0.006f);
+        //m_cameraAngleOffset.y = std::min(1.1f, m_cameraAngleOffset.y);
+        //BR_INFO("m_cameraAngleOffset.y %f", m_cameraAngleOffset.y);
+        m_cameraAngleOffset = glm::normalize(m_cameraAngleOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
@@ -805,11 +810,11 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (EnumsAndVars::garbageCountMagnetized * 0.7f) +
                                   m_player->getMoveSpeedXZ() +
-                                  std::min(100.0f, m_player->getObj()->getOrigin().y * 0.28f);
+                                  (EnumsAndVars::garbageCountMagnetized * 1.0f) +
+                                  (m_player->getObj()->getOrigin().y * 0.3f);
 
-        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraOffset * maxCameraDistance;
+        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraAngleOffset * maxCameraDistance;
 
         m_cameraHit = false;
         // Check camera ray collisions.
@@ -829,7 +834,7 @@ namespace MagneticBall3D
             m_cameraDistance = maxCameraDistance * hitDistanceFactor;
 
             // m_cameraYOffset also should be changed if camera collision.
-            float minCameraUpOffset = m_startCameraYOffset + (EnumsAndVars::garbageCountMagnetized * 0.2f);
+            float minCameraUpOffset = 8.0f + (EnumsAndVars::garbageCountMagnetized * 0.2f);
             m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
         }
         else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
@@ -847,7 +852,7 @@ namespace MagneticBall3D
         if(glm::isnan(m_cameraDistance) || m_cameraDistance < 1.0f)
             m_cameraDistance = 1.0f;
 
-        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraOffset * m_cameraDistance);
+        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraAngleOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
     }
 

@@ -38,8 +38,8 @@ namespace EnumsAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
+        static inline int currentMapIndex = 2; // Index of selected map on start screen.
+        static inline int lastOpenedMapIndex = 2; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 2; // Last possible map index (opened or not). Must be hardcoded before release.
     };
@@ -84,12 +84,12 @@ namespace EnumsAndVars
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
     constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.12f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.08f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.1f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.36f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.15f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.34f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;

@@ -40,7 +40,7 @@ namespace MagneticBall3D
         StaticEnemy::spawnDelay = 40.0f;
 
         loadShaders();
-        m_cameraOffset = glm::normalize(glm::vec3(0.5f, 0.0f, 1.0f));
+        m_cameraAngleOffset = glm::normalize(glm::vec3(0.5f, 0.0f, 1.0f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -85,7 +85,7 @@ namespace MagneticBall3D
 
         BR_INFO("Map2 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
 
-        m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.0f, 1.0f));
+        m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.6f, 1.0f));
         m_sunLightDir = -m_dirToSun;
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
