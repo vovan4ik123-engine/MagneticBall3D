@@ -28,9 +28,9 @@ namespace MagneticBall3D
 
         ImFont* m_fontForAllCheckBoxes;
 
-        // Texture settings.
-        static const std::string m_settingsTextureID;
-        std::unique_ptr<Beryll::Texture> m_settingsTexture;
+        // Settings header.
+        static const std::string m_settingsHeaderID;
+        std::unique_ptr<Beryll::Texture> m_settingsHeaderTexture;
 
         // FPS limit.
         static const std::string m_FPSLimitTextureID;

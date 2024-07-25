@@ -120,7 +120,7 @@ namespace MagneticBall3D
         updateSunPosition(sunPos, m_shadowsCubeWidth, m_shadowsCubeHeight, m_shadowsCubeDepth);
 
         Beryll::Renderer::disableFaceCulling();
-        if(BaseEnemy::getActiveCount() < 150)
+        if(BaseEnemy::getActiveCount() < 300)
             m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         else
             m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);

@@ -7,7 +7,7 @@ namespace MagneticBall3D
 {
     // All there IDs as strings required by ImGUI.
     const std::string SettingsMenuGUILayer::m_buttonBackID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string SettingsMenuGUILayer::m_settingsTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string SettingsMenuGUILayer::m_settingsHeaderID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_FPSLimitTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_FPSTipTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string SettingsMenuGUILayer::m_30FPSCheckBoxID = std::to_string(BeryllUtils::Common::generateID());
@@ -23,7 +23,7 @@ namespace MagneticBall3D
     {
         m_buttonBackTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_settingsTexture = Beryll::Renderer::createTexture("GUI/menus/settings/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_settingsHeaderTexture = Beryll::Renderer::createTexture("GUI/menus/settings/SettingsHeader.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_FPSTipTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSTip.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -81,20 +81,20 @@ namespace MagneticBall3D
     void SettingsMenuGUILayer::draw()
     {
         // Button back.
-        ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.905f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_buttonBackID.c_str(), nullptr, m_noBackgroundNoFrame);
         m_buttonBackClicked = ImGui::ImageButton(m_buttonBackID.c_str(),reinterpret_cast<ImTextureID>(m_buttonBackTexture->getID()),
-                                                 ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 
-        // Settings texture.
+        // Settings header.
         ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_settingsTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_settingsTexture->getID()),
+        ImGui::Begin(m_settingsHeaderID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_settingsHeaderTexture->getID()),
                      ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 

@@ -26,6 +26,11 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_buttonPlayTexture;
         bool m_buttonPlayClicked = false;
 
+        // Button shop.
+        static const std::string m_buttonShopID;
+        std::unique_ptr<Beryll::Texture> m_buttonShopTexture;
+        bool m_buttonShopClicked = false;
+
         // Button settings.
         static const std::string m_buttonSettingsID;
         std::unique_ptr<Beryll::Texture> m_buttonSettingsTexture;

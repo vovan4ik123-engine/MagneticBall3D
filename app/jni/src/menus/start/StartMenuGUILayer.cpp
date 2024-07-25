@@ -8,6 +8,7 @@ namespace MagneticBall3D
 {
     // All there IDs as strings required by ImGUI.
     const std::string StartMenuGUILayer::m_buttonPlayID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_buttonShopID = std::to_string(BeryllUtils::Common::generateID());
     const std::string StartMenuGUILayer::m_buttonSettingsID = std::to_string(BeryllUtils::Common::generateID());
     const std::string StartMenuGUILayer::m_buttonMapSwipeLeftID = std::to_string(BeryllUtils::Common::generateID());
     const std::string StartMenuGUILayer::m_buttonMapSwipeRightID = std::to_string(BeryllUtils::Common::generateID());
@@ -25,6 +26,7 @@ namespace MagneticBall3D
         m_buttonMapSwipeLeftTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonMapSwipeRightTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonPlayTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonShopTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_buttonSettingsTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
     }
@@ -54,12 +56,14 @@ namespace MagneticBall3D
                 // Show menu for buy energy.
             //}
         }
-//        else if(m_buttonShopClicked)
-//        {
-//            GameStateHelper::pushShopState();
-//        }
+        else if(m_buttonShopClicked)
+        {
+            m_buttonShopClicked = false;
+            GameStateHelper::pushShopState();
+        }
 //        else if(m_buttonTalentsClicked)
 //        {
+//            m_buttonTalentsClicked = false;
 //            GameStateHelper::pushPlayerTalentsState();
 //        }
         else if(m_buttonSettingsClicked)
@@ -105,8 +109,19 @@ namespace MagneticBall3D
 
         ImGui::End();
 
+        // Button shop.
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.905f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_buttonShopID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        m_buttonShopClicked = ImGui::ImageButton(m_buttonShopID.c_str(),reinterpret_cast<ImTextureID>(m_buttonShopTexture->getID()),
+                                                     ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
         // Button settings.
-        ImGui::SetNextWindowPos(ImVec2(0.66f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.66f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.905f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_buttonSettingsID.c_str(), nullptr, m_noBackgroundNoFrame);
