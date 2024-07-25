@@ -18,47 +18,62 @@ namespace MagneticBall3D
         // GUI based on raw ImGUI.
         // ImGUI flags.
         int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-                                    ImGuiWindowFlags_NoScrollbar;
+                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                    ImGuiWindowFlags_NoBackground;
+
+        int m_noBackgroundNoFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
+
+        int m_noFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                               ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus;
 
         // Button back.
-        static const std::string m_buttonBackID;
-        std::unique_ptr<Beryll::Texture> m_buttonBackTexture;
-        bool m_buttonBackClicked = false;
+        static const std::string m_backButtonID;
+        std::unique_ptr<Beryll::Texture> m_backButtonTexture;
+        bool m_backButtonClicked = false;
 
         // Shop header.
         static const std::string m_shopHeaderID;
         std::unique_ptr<Beryll::Texture> m_shopHeaderTexture;
 
-        // Button item1.
-        static const std::string m_buttonItem1ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem1Texture;
-        bool m_buttonItem1Clicked = false;
+        // Shop all items.
+        static const std::string m_allItemsMenuID;
+        // Crystals item1.
+        static const std::string m_item1ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item1ButtonTexture;
+        bool m_item1ButtonClicked = false;
+        // Crystals item2.
+        static const std::string m_item2ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item2ButtonTexture;
+        bool m_item2ButtonClicked = false;
+        // Crystals item3.
+        static const std::string m_item3ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item3ButtonTexture;
+        bool m_item3ButtonClicked = false;
+        // Crystals item4.
+        static const std::string m_item4ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item4ButtonTexture;
+        bool m_item4ButtonClicked = false;
+        // Crystals item5.
+        static const std::string m_item5ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item5ButtonTexture;
+        bool m_item5ButtonClicked = false;
+        // Crystals item6.
+        static const std::string m_item6ButtonID;
+        std::unique_ptr<Beryll::Texture> m_item6ButtonTexture;
+        bool m_item6ButtonClicked = false;
 
-        // Button item2.
-        static const std::string m_buttonItem2ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem2Texture;
-        bool m_buttonItem2Clicked = false;
-
-        // Button item3.
-        static const std::string m_buttonItem3ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem3Texture;
-        bool m_buttonItem3Clicked = false;
-
-        // Button item4.
-        static const std::string m_buttonItem4ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem4Texture;
-        bool m_buttonItem4Clicked = false;
-
-        // Button item5.
-        static const std::string m_buttonItem5ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem5Texture;
-        bool m_buttonItem5Clicked = false;
-
-        // Button item6.
-        static const std::string m_buttonItem6ID;
-        std::unique_ptr<Beryll::Texture> m_buttonItem6Texture;
-        bool m_buttonItem6Clicked = false;
+        // Purchase error.
+        static const std::string m_errorMenuID;
+        std::unique_ptr<Beryll::Texture> m_errorTexture;
+        static const std::string m_errorButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_errorButtonOkTexture;
+        bool m_errorButtonOkClicked = false;
+        bool m_showErrorMenu = false;
 
         // These callbacks can be called from different thread.
         std::function<void()> m_buyItem1SuccessCallback;

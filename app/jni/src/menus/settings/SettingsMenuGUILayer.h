@@ -22,9 +22,9 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoScrollbar;
 
         // Button back.
-        static const std::string m_buttonBackID;
-        std::unique_ptr<Beryll::Texture> m_buttonBackTexture;
-        bool m_buttonBackClicked = false;
+        static const std::string m_backButtonID;
+        std::unique_ptr<Beryll::Texture> m_backButtonTexture;
+        bool m_backButtonClicked = false;
 
         ImFont* m_fontForAllCheckBoxes;
 

@@ -13,9 +13,9 @@ namespace MagneticBall3D
     const std::string PlayStateGUILayer::m_smashedCountTextID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_speedTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_speedTextID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayStateGUILayer::m_buttonPauseID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayStateGUILayer::m_buttonResumeID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayStateGUILayer::m_buttonExitID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_pauseButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_resumeButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_exitButtonID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_tutorialSwipeID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_tutorialHowToSwipeID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_tutorialSwipeOnWallID = std::to_string(BeryllUtils::Common::generateID());
@@ -65,9 +65,9 @@ namespace MagneticBall3D
 
         m_smashedCountTexture = Beryll::Renderer::createTexture("GUI/playState/KilledIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_speedTexture = Beryll::Renderer::createTexture("GUI/playState/SpeedIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonPauseTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonResumeTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonExitTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_pauseButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_exitButtonTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeToMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialHowToSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialHowToSwipe.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialSwipeOnWallTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeOnWall.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -130,30 +130,30 @@ namespace MagneticBall3D
         if(m_timeAppearsOnScreen + m_delayBeforeCanBeClicked > Beryll::TimeStep::getSecFromStart())
             return;
 
-        if(m_buttonPauseClicked)
+        if(m_pauseButtonClicked)
         {
-            m_buttonPauseClicked = false;
+            m_pauseButtonClicked = false;
 
             if(!EnumsAndVars::gameOnPause)
             {
                 GameStateHelper::pauseGame();
-                m_buttonResumeEnabled = true;
-                m_buttonExitEnabled = true;
-                m_buttonExitLeft = 0.35f;
+                m_resumeButtonEnabled = true;
+                m_exitButtonEnabled = true;
+                m_exitButtonLeft = 0.35f;
             }
         }
-        else if(m_buttonResumeClicked)
+        else if(m_resumeButtonClicked)
         {
-            m_buttonResumeClicked = false;
-            m_buttonResumeEnabled = false;
-            m_buttonExitEnabled = false;
+            m_resumeButtonClicked = false;
+            m_resumeButtonEnabled = false;
+            m_exitButtonEnabled = false;
 
             GameStateHelper::resumeGame();
         }
-        else if(m_buttonExitClicked)
+        else if(m_exitButtonClicked)
         {
-            m_buttonExitClicked = false;
-            m_buttonExitEnabled = false;
+            m_exitButtonClicked = false;
+            m_exitButtonEnabled = false;
 
             // Pause game before exit to avoid update scene layer.
             GameStateHelper::pauseGame();
@@ -192,7 +192,7 @@ namespace MagneticBall3D
         {
             m_resurrectButtonClicked = false;
             m_menuResurrectEnabled = false;
-            m_buttonExitEnabled = false;
+            m_exitButtonEnabled = false;
 
             resurrectPlayer = true; // Will handled in BaseMap.cpp
             GameStateHelper::resumeGame();
@@ -303,29 +303,29 @@ namespace MagneticBall3D
         // Button pause.
         ImGui::SetNextWindowPos(ImVec2(-0.011f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-        ImGui::Begin(m_buttonPauseID.c_str(), nullptr, m_noBackgroundNoFrame);
-        m_buttonPauseClicked = ImGui::ImageButton(m_buttonPauseID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPauseTexture->getID()),
-                                                 ImVec2(0.13f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::Begin(m_pauseButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
+        m_pauseButtonClicked = ImGui::ImageButton(m_pauseButtonID.c_str(), reinterpret_cast<ImTextureID>(m_pauseButtonTexture->getID()),
+                                                  ImVec2(0.13f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::End();
 
         // Button resume.
-        if(m_buttonResumeEnabled)
+        if(m_resumeButtonEnabled)
         {
             ImGui::SetNextWindowPos(ImVec2(0.25f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.35f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin(m_buttonResumeID.c_str(), nullptr, m_noBackgroundNoFrame);
-            m_buttonResumeClicked = ImGui::ImageButton(m_buttonResumeID.c_str(),reinterpret_cast<ImTextureID>(m_buttonResumeTexture->getID()),
-                                                     ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::Begin(m_resumeButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_resumeButtonClicked = ImGui::ImageButton(m_resumeButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resumeButtonTexture->getID()),
+                                                       ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
         }
 
         // Button exit.
-        if(m_buttonExitEnabled)
+        if(m_exitButtonEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(m_buttonExitLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), m_buttonExitTop * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(m_exitButtonLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), m_exitButtonTop * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin(m_buttonExitID.c_str(), nullptr, m_noBackgroundNoFrame);
-            m_buttonExitClicked = ImGui::ImageButton(m_buttonExitID.c_str(),reinterpret_cast<ImTextureID>(m_buttonExitTexture->getID()),
+            ImGui::Begin(m_exitButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
+            m_exitButtonClicked = ImGui::ImageButton(m_exitButtonID.c_str(), reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
                                                      ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
         }
@@ -465,8 +465,8 @@ namespace MagneticBall3D
             return;
 
         m_menuResurrectEnabled = true;
-        m_buttonExitEnabled = true;
-        m_buttonExitLeft = 0.2f;
+        m_exitButtonEnabled = true;
+        m_exitButtonLeft = 0.2f;
 
         GameStateHelper::pauseGame();
 
@@ -479,8 +479,8 @@ namespace MagneticBall3D
             return;
 
         m_menuResurrectNoCrystalsEnabled = true;
-        m_buttonExitEnabled = true;
-        m_buttonExitLeft = 0.35f;
+        m_exitButtonEnabled = true;
+        m_exitButtonLeft = 0.35f;
 
         GameStateHelper::pauseGame();
 
@@ -519,8 +519,8 @@ namespace MagneticBall3D
             return;
 
         m_menuLoseEnabled = true;
-        m_buttonExitEnabled = true;
-        m_buttonExitLeft = 0.35f;
+        m_exitButtonEnabled = true;
+        m_exitButtonLeft = 0.35f;
 
         GameStateHelper::pauseGame();
 

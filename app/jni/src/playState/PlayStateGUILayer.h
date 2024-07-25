@@ -80,24 +80,24 @@ namespace MagneticBall3D
         static const std::string m_speedTextID;
         ImFont* m_fontSpeed;
 
-        // Button pause.
-        static const std::string m_buttonPauseID;
-        std::unique_ptr<Beryll::Texture> m_buttonPauseTexture;
-        bool m_buttonPauseClicked = false;
+        // Pause.
+        static const std::string m_pauseButtonID;
+        std::unique_ptr<Beryll::Texture> m_pauseButtonTexture;
+        bool m_pauseButtonClicked = false;
 
-        // Button resume.
-        static const std::string m_buttonResumeID;
-        std::unique_ptr<Beryll::Texture> m_buttonResumeTexture;
-        bool m_buttonResumeEnabled = false;
-        bool m_buttonResumeClicked = false;
+        // Resume.
+        static const std::string m_resumeButtonID;
+        std::unique_ptr<Beryll::Texture> m_resumeButtonTexture;
+        bool m_resumeButtonEnabled = false;
+        bool m_resumeButtonClicked = false;
 
-        // Button exit.
-        static const std::string m_buttonExitID;
-        std::unique_ptr<Beryll::Texture> m_buttonExitTexture;
-        bool m_buttonExitEnabled = false;
-        bool m_buttonExitClicked = false;
-        float m_buttonExitLeft = 0.0f;
-        const float m_buttonExitTop = 0.5f;
+        // Exit.
+        static const std::string m_exitButtonID;
+        std::unique_ptr<Beryll::Texture> m_exitButtonTexture;
+        bool m_exitButtonEnabled = false;
+        bool m_exitButtonClicked = false;
+        float m_exitButtonLeft = 0.0f;
+        const float m_exitButtonTop = 0.5f;
 
         // Map0Tutorial.
         static const std::string m_tutorialSwipeID;

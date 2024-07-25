@@ -76,12 +76,12 @@ namespace DataBaseHelper
                 Beryll::DataBase::executeNotSelectQuery();
                 Beryll::DataBase::setSqlQuery(insertFirstRowShop);
                 Beryll::DataBase::executeNotSelectQuery();
-                storeShopItem1FirstBuy(EnumsAndVars::Shop::item1FirstBuy ? 1 : 0);
-                storeShopItem2FirstBuy(EnumsAndVars::Shop::item2FirstBuy ? 1 : 0);
-                storeShopItem3FirstBuy(EnumsAndVars::Shop::item3FirstBuy ? 1 : 0);
-                storeShopItem4FirstBuy(EnumsAndVars::Shop::item4FirstBuy ? 1 : 0);
-                storeShopItem5FirstBuy(EnumsAndVars::Shop::item5FirstBuy ? 1 : 0);
-                storeShopItem6FirstBuy(EnumsAndVars::Shop::item6FirstBuy ? 1 : 0);
+                storeShopItem1FirstBuy(1);
+                storeShopItem2FirstBuy(1);
+                storeShopItem3FirstBuy(1);
+                storeShopItem4FirstBuy(1);
+                storeShopItem5FirstBuy(1);
+                storeShopItem6FirstBuy(1);
 
                 // DatabaseMigrations.
                 Beryll::DataBase::setSqlQuery(createTableDatabaseMigrations);
