@@ -47,10 +47,10 @@ namespace MagneticBall3D
         ImFont* m_fontRestoreTimer;
         std::string m_textRestoreTimer;
 
-        // Button energy. Transparent. On top of texture + texts.
-        static const std::string m_buttonEnergyID;
-        std::unique_ptr<Beryll::Texture> m_buttonEnergyTexture;
-        bool m_buttonEnergyClicked = false;
+        // Energy button. Transparent. On top of texture + texts.
+        static const std::string m_energyButtonID;
+        std::unique_ptr<Beryll::Texture> m_energyButtonTexture;
+        bool m_energyButtonClicked = false;
 
         // Menu buy energy.
     };

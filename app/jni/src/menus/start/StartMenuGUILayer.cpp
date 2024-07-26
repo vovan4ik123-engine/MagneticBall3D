@@ -7,28 +7,30 @@
 namespace MagneticBall3D
 {
     // All there IDs as strings required by ImGUI.
-    const std::string StartMenuGUILayer::m_buttonPlayID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_buttonShopID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_buttonSettingsID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_buttonMapSwipeLeftID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_buttonMapSwipeRightID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_mapTextureID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string StartMenuGUILayer::m_textCrystalsID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_playButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_shopButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_talentsButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_settingsButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_mapSwipeLeftButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_mapSwipeRightButtonID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_mapPreviewTextureID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string StartMenuGUILayer::m_crystalsTextID = std::to_string(BeryllUtils::Common::generateID());
 
     StartMenuGUILayer::StartMenuGUILayer()
     {
         m_ID = Beryll::LayerID::START_SCREEN_GUI;
 
-        m_allMapsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map0Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map0Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 
-        m_buttonMapSwipeLeftTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonMapSwipeRightTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonPlayTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonShopTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonSettingsTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_fontCrystals = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
+        m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_playButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_shopButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_talentsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/PlayerTalents.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_settingsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_crystalsFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -40,9 +42,9 @@ namespace MagneticBall3D
     {
         //EnergySystem::getInstance().update();
 
-        if(m_buttonPlayClicked)
+        if(m_playButtonClicked)
         {
-            m_buttonPlayClicked = false;
+            m_playButtonClicked = false;
 
             //if(EnergySystem::getInstance().isEnoughForPlay())
             {
@@ -56,33 +58,33 @@ namespace MagneticBall3D
                 // Show menu for buy energy.
             //}
         }
-        else if(m_buttonShopClicked)
+        else if(m_shopButtonClicked)
         {
-            m_buttonShopClicked = false;
+            m_shopButtonClicked = false;
             GameStateHelper::pushShopState();
         }
-//        else if(m_buttonTalentsClicked)
-//        {
-//            m_buttonTalentsClicked = false;
-//            GameStateHelper::pushPlayerTalentsState();
-//        }
-        else if(m_buttonSettingsClicked)
+        else if(m_talentsButtonClicked)
         {
-            m_buttonSettingsClicked = false;
+            m_talentsButtonClicked = false;
+            GameStateHelper::pushPlayerTalentsState();
+        }
+        else if(m_settingsButtonClicked)
+        {
+            m_settingsButtonClicked = false;
             GameStateHelper::pushSettingsState();
         }
-        else if(m_buttonMapSwipeLeftClicked && EnumsAndVars::MapsProgress::currentMapIndex > 0)
+        else if(m_mapSwipeLeftButtonClicked && EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            m_buttonMapSwipeLeftClicked = false;
+            m_mapSwipeLeftButtonClicked = false;
             --EnumsAndVars::MapsProgress::currentMapIndex;
             BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
         }
-        else if(m_buttonMapSwipeRightClicked &&
+        else if(m_mapSwipeRightButtonClicked &&
                 EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
                 EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            m_buttonMapSwipeRightClicked = false;
+            m_mapSwipeRightButtonClicked = false;
             ++EnumsAndVars::MapsProgress::currentMapIndex;
             BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
@@ -98,90 +100,101 @@ namespace MagneticBall3D
     {
         //EnergySystem::getInstance().draw();
 
-        // Button play.
+        // Play.
         ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.7f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_buttonPlayID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Begin(m_playButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonPlayClicked = ImGui::ImageButton(m_buttonPlayID.c_str(),reinterpret_cast<ImTextureID>(m_buttonPlayTexture->getID()),
+        m_playButtonClicked = ImGui::ImageButton(m_playButtonID.c_str(), reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
                                                  ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.09f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
 
-        // Button shop.
+        // Shop.
         ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_buttonShopID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Begin(m_shopButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonShopClicked = ImGui::ImageButton(m_buttonShopID.c_str(),reinterpret_cast<ImTextureID>(m_buttonShopTexture->getID()),
-                                                     ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        m_shopButtonClicked = ImGui::ImageButton(m_shopButtonID.c_str(), reinterpret_cast<ImTextureID>(m_shopButtonTexture->getID()),
+                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
 
-        // Button settings.
+        // Talents.
+        ImGui::SetNextWindowPos(ImVec2(0.33f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+
+        ImGui::Begin(m_talentsButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
+
+        m_talentsButtonClicked = ImGui::ImageButton(m_talentsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_talentsButtonTexture->getID()),
+                                                    ImVec2(0.33f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+        ImGui::End();
+
+        // Settings.
         ImGui::SetNextWindowPos(ImVec2(0.66f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_buttonSettingsID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Begin(m_settingsButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonSettingsClicked = ImGui::ImageButton(m_buttonSettingsID.c_str(),reinterpret_cast<ImTextureID>(m_buttonSettingsTexture->getID()),
+        m_settingsButtonClicked = ImGui::ImageButton(m_settingsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_settingsButtonTexture->getID()),
                                                      ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
 
-        // Button map swipe left.
+        // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
             ImGui::SetNextWindowPos(ImVec2(0.05f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-            ImGui::Begin(m_buttonMapSwipeLeftID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Begin(m_mapSwipeLeftButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            m_buttonMapSwipeLeftClicked = ImGui::ImageButton(m_buttonMapSwipeLeftID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeLeftTexture->getID()),
+            m_mapSwipeLeftButtonClicked = ImGui::ImageButton(m_mapSwipeLeftButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
                                                              ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
         }
 
-        // Button map swipe right.
+        // Map swipe right.
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
             ImGui::SetNextWindowPos(ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-            ImGui::Begin(m_buttonMapSwipeRightID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Begin(m_mapSwipeRightButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            m_buttonMapSwipeRightClicked = ImGui::ImageButton(m_buttonMapSwipeRightID.c_str(),reinterpret_cast<ImTextureID>(m_buttonMapSwipeRightTexture->getID()),
+            m_mapSwipeRightButtonClicked = ImGui::ImageButton(m_mapSwipeRightButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
                                                               ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
         }
 
-        // Map texture(preview).
-        if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsTextures.size())
+        // Map preview.
+        if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-            ImGui::Begin(m_mapTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Begin(m_mapPreviewTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.55f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
             ImGui::End();
         }
 
-        // Text crystals.
+        // Crystals.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.7f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
-        ImGui::Begin(m_textCrystalsID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Begin(m_crystalsTextID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        ImGui::PushFont(m_fontCrystals);
+        ImGui::PushFont(m_crystalsFont);
         ImGui::Text("Crystals: %d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
 

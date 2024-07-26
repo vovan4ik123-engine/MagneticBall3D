@@ -80,7 +80,7 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::draw()
     {
-        // Button back.
+        // Back.
         ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 

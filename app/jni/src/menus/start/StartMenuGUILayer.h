@@ -21,37 +21,42 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoScrollbar;
 
-        // Button play.
-        static const std::string m_buttonPlayID;
-        std::unique_ptr<Beryll::Texture> m_buttonPlayTexture;
-        bool m_buttonPlayClicked = false;
+        // Play.
+        static const std::string m_playButtonID;
+        std::unique_ptr<Beryll::Texture> m_playButtonTexture;
+        bool m_playButtonClicked = false;
 
-        // Button shop.
-        static const std::string m_buttonShopID;
-        std::unique_ptr<Beryll::Texture> m_buttonShopTexture;
-        bool m_buttonShopClicked = false;
+        // Shop.
+        static const std::string m_shopButtonID;
+        std::unique_ptr<Beryll::Texture> m_shopButtonTexture;
+        bool m_shopButtonClicked = false;
 
-        // Button settings.
-        static const std::string m_buttonSettingsID;
-        std::unique_ptr<Beryll::Texture> m_buttonSettingsTexture;
-        bool m_buttonSettingsClicked = false;
+        // Talents.
+        static const std::string m_talentsButtonID;
+        std::unique_ptr<Beryll::Texture> m_talentsButtonTexture;
+        bool m_talentsButtonClicked = false;
 
-        // Button map swipe left.
-        static const std::string m_buttonMapSwipeLeftID;
-        std::unique_ptr<Beryll::Texture> m_buttonMapSwipeLeftTexture;
-        bool m_buttonMapSwipeLeftClicked = false;
+        // Settings.
+        static const std::string m_settingsButtonID;
+        std::unique_ptr<Beryll::Texture> m_settingsButtonTexture;
+        bool m_settingsButtonClicked = false;
 
-        // Button map swipe right.
-        static const std::string m_buttonMapSwipeRightID;
-        std::unique_ptr<Beryll::Texture> m_buttonMapSwipeRightTexture;
-        bool m_buttonMapSwipeRightClicked = false;
+        // Map swipe left.
+        static const std::string m_mapSwipeLeftButtonID;
+        std::unique_ptr<Beryll::Texture> m_mapSwipeLeftButtonTexture;
+        bool m_mapSwipeLeftButtonClicked = false;
 
-        // Texture map(preview).
-        static const std::string m_mapTextureID;
-        std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsTextures;
+        // Map swipe right.
+        static const std::string m_mapSwipeRightButtonID;
+        std::unique_ptr<Beryll::Texture> m_mapSwipeRightButtonTexture;
+        bool m_mapSwipeRightButtonClicked = false;
 
-        // Text crystals.
-        static const std::string m_textCrystalsID;
-        ImFont* m_fontCrystals;
+        // Map preview.
+        static const std::string m_mapPreviewTextureID;
+        std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsPreviewsTextures;
+
+        // Crystals.
+        static const std::string m_crystalsTextID;
+        ImFont* m_crystalsFont;
     };
 }

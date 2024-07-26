@@ -8,14 +8,14 @@ namespace MagneticBall3D
     const std::string EnergySystem::m_energyTextureID = std::to_string(BeryllUtils::Common::generateID());
     const std::string EnergySystem::m_textAmountID = std::to_string(BeryllUtils::Common::generateID());
     const std::string EnergySystem::m_textRestoreTimerID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_buttonEnergyID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_energyButtonID = std::to_string(BeryllUtils::Common::generateID());
 
     EnergySystem::EnergySystem()
     {
         BR_INFO("%s", "EnergySystem::EnergySystem()");
 
         m_energyTexture = Beryll::Renderer::createTexture("GUI/menus/start/Energy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_buttonEnergyTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_energyButtonTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_fontAmount = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
         m_fontRestoreTimer = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.015f);
@@ -67,9 +67,9 @@ namespace MagneticBall3D
             }
         }
 
-        if(m_buttonEnergyClicked)
+        if(m_energyButtonClicked)
         {
-            BR_INFO("%s", "m_buttonEnergyClicked");
+            BR_INFO("%s", "m_energyButtonClicked");
         }
     }
 
@@ -144,9 +144,9 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.39f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_buttonEnergyID.c_str(), nullptr, m_noBackgroundNoFrame);
+        ImGui::Begin(m_energyButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_buttonEnergyClicked = ImGui::ImageButton(m_buttonEnergyID.c_str(), reinterpret_cast<ImTextureID>(m_buttonEnergyTexture->getID()),
+        m_energyButtonClicked = ImGui::ImageButton(m_energyButtonID.c_str(), reinterpret_cast<ImTextureID>(m_energyButtonTexture->getID()),
                                                    ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
 
         ImGui::End();
