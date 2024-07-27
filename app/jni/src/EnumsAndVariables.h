@@ -66,6 +66,49 @@ namespace EnumsAndVars
         static inline bool item5FirstBuy = true;
         static inline bool item6FirstBuy = true;
     };
+
+    struct PlayerTalentData
+    {
+        // Stored in DB.
+        const std::string name;
+        int currentLevel = 0;
+        float percentsToImprove = 0; // Percents to add to default value.
+        // Not stored in DB.
+        const std::string description;
+        const int maxLevel = 0;
+        const float increasePerLevelValue = 0; // Percents in range 0...100 added per level.
+        const std::string increasePerLevelText; // To show for user.
+        const std::vector<int> pricePerLevel; // Crystals.
+        std::function<void()> improveLevel;
+
+        int getPriceCrystals()
+        {
+            BR_ASSERT((pricePerLevel.empty() == false), "%s", "pricePerLevel.empty().");
+
+            if(currentLevel < pricePerLevel.size())
+                return pricePerLevel[currentLevel];
+            else
+                return pricePerLevel.back();
+        }
+    };
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, 0, "Increase max\nspeed limit.", 12, 5.0f, "+5%",
+                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21},
+                                                           [](){}},
+                                                          {"MagneticRadius", 0, 0, "Increase\nmagnetic radius.", 20, 5.0f, "+5%",
+                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
+                                                           [](){}},
+                                                          {"AmountOfMagnetizedGarbage", 0, 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%",
+                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
+                                                           [](){}},
+                                                          {"AccelerateFaster", 0, 0, "Increase\nacceleration.", 6, 5.0f, "+5%",
+                                                           {20, 21, 22, 23, 24, 25},
+                                                           [](){}},
+                                                          {"BallAndGarbageProtection", 0, 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%",
+                                                           {5},
+                                                           [](){}},
+                                                          {"ResurrectionAttempts", 0, 0, "Increase number\nof resurrections.", 3, 100.0f, "+1",
+                                                           {70},
+                                                           [](){}}};
     // Database tables end.
 
     // Camera.
@@ -114,8 +157,9 @@ namespace EnumsAndVars
     inline float playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
     constexpr inline float playerXPMultiplierDefault = 1.0f;
     inline float playerXPMultiplier = playerXPMultiplierDefault;
-    constexpr inline float playerStartHP = 500.0f;
-    constexpr inline int playerResurrectionAttemptsDefault = 2;
+    constexpr inline float playerStartHPDefault = 500.0f;
+    inline float playerStartHP = playerStartHPDefault;
+    constexpr inline int playerResurrectionAttemptsDefault = 1;
     inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;
     constexpr inline int playerCostOfResurrectionCrystals = 10;
     constexpr inline float playerDamageGroundRadiusAfterFallDefault = 0.0f;
@@ -145,7 +189,8 @@ namespace EnumsAndVars
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
     constexpr inline int garbageCommonMaxCountOnMapDefault = 130.0f;
     inline int garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
-    constexpr inline float garbageStartHP = 40.0f;
+    constexpr inline float garbageStartHPDefault = 40.0f;
+    inline float garbageStartHP = garbageStartHPDefault;
 
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
@@ -195,6 +240,7 @@ namespace EnumsAndVars
         playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
         playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
         playerXPMultiplier = playerXPMultiplierDefault;
+        playerStartHP = playerStartHPDefault;
         playerResurrectionAttempts = playerResurrectionAttemptsDefault;
         playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
@@ -205,6 +251,7 @@ namespace EnumsAndVars
         garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
         garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
         garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
+        garbageStartHP = garbageStartHPDefault;
 
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;

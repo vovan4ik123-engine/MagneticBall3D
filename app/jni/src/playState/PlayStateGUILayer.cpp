@@ -59,9 +59,9 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(sliderSunPower);
 //        sliderSunPower->setValue(0.5f);
 
-        m_fontMapPlayTimer = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
-        m_fontSmashedCount = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
-        m_fontSpeed = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
+        m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
+        m_smashedCountFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
+        m_speedFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
 
         m_smashedCountTexture = Beryll::Renderer::createTexture("GUI/playState/KilledIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_speedTexture = Beryll::Renderer::createTexture("GUI/playState/SpeedIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -239,26 +239,26 @@ namespace MagneticBall3D
         // Text map timer.
         if(m_showMapPlayTimer)
         {
-            m_textMapPlayTimer = "";
+            m_mapPlayTimerText = "";
             int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
             int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
             if(min < 10)
-                m_textMapPlayTimer += "0";
+                m_mapPlayTimerText += "0";
 
-            m_textMapPlayTimer += std::to_string(min);
-            m_textMapPlayTimer += ":";
+            m_mapPlayTimerText += std::to_string(min);
+            m_mapPlayTimerText += ":";
 
             if(sec < 10)
-                m_textMapPlayTimer += "0";
+                m_mapPlayTimerText += "0";
 
-            m_textMapPlayTimer += std::to_string(sec);
+            m_mapPlayTimerText += std::to_string(sec);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
             ImGui::SetNextWindowPos(ImVec2(0.42f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_mapPlayTimerID.c_str(), nullptr, m_noBackgroundNoFrame);
-            ImGui::PushFont(m_fontMapPlayTimer);
-            ImGui::Text("%s", m_textMapPlayTimer.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
+            ImGui::PushFont(m_mapPlayTimerFont);
+            ImGui::Text("%s", m_mapPlayTimerText.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
             ImGui::PopFont();
             ImGui::End();
             ImGui::PopStyleColor(1);
@@ -276,7 +276,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.002f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_smashedCountTextID.c_str(), nullptr, m_noBackgroundNoFrame);
-        ImGui::PushFont(m_fontSmashedCount);
+        ImGui::PushFont(m_smashedCountFont);
         ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
         ImGui::PopFont();
         ImGui::End();
@@ -294,7 +294,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.032f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
-        ImGui::PushFont(m_fontSpeed);
+        ImGui::PushFont(m_speedFont);
         ImGui::Text("%d/%d", EnumsAndVars::playerCurrentSpeed, int(EnumsAndVars::playerMaxSpeedXZ));
         ImGui::PopFont();
         ImGui::End();

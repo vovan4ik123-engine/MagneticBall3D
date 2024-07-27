@@ -28,7 +28,7 @@ namespace MagneticBall3D
         ImprovementInfo(ImprovementType t, int maxLvl, std::vector<std::function<void()>> action)
         : type(t), maxLevel(maxLvl), actions(std::move(action))
         {
-            BR_ASSERT((actions.empty() == false), "%s", "actions can not be empty.")
+            BR_ASSERT((actions.empty() == false), "%s", "actions can not be empty.");
         }
 
         ImprovementType type;

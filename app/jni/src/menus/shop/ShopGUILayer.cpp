@@ -332,6 +332,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::Begin(m_errorMenuID.c_str(), nullptr, m_noFrame);
+
             ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_errorTexture->getID()),
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
