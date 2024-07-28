@@ -39,43 +39,33 @@ namespace DataBaseHelper
             try
             {
                 // Create table Settings and insert 1 row.
-                Beryll::DataBase::setSqlQuery(createTableSettings);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowSettings);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableSettings);
+                executeSql(insertSettings);
                 storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
                 storeSettingsBackgroundMusic(EnumsAndVars::SettingsMenu::backgroundMusic);
                 storeSettingsMeteorParticles(EnumsAndVars::SettingsMenu::meteorParticles);
 
                 // Create table CurrencyBalance and insert 1 row.
-                Beryll::DataBase::setSqlQuery(createTableCurrencyBalance);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowCurrencyBalance);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableCurrencyBalance);
+                executeSql(insertCurrencyBalance);
                 storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
                 // MapsProgress.
-                Beryll::DataBase::setSqlQuery(createTableMapsProgress);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowMapsProgress);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableMapsProgress);
+                executeSql(insertMapsProgress);
                 storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
                 storeMapsProgressLastOpenedMapIndex(EnumsAndVars::MapsProgress::lastOpenedMapIndex);
 
                 // EnergySystem.
-                Beryll::DataBase::setSqlQuery(createTableEnergySystem);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowEnergySystem);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableEnergySystem);
+                executeSql(insertEnergySystem);
                 storeEnergySystemCurrentAmount(EnumsAndVars::EnergySystem::currentAmount);
                 storeEnergySystemLastSecUpdated(EnumsAndVars::EnergySystem::lastSecUpdated);
                 storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
 
                 // Shop.
-                Beryll::DataBase::setSqlQuery(createTableShop);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowShop);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableShop);
+                executeSql(insertShop);
                 storeShopItem1FirstBuy(1);
                 storeShopItem2FirstBuy(1);
                 storeShopItem3FirstBuy(1);
@@ -84,12 +74,16 @@ namespace DataBaseHelper
                 storeShopItem6FirstBuy(1);
 
                 // DatabaseMigrations.
-                Beryll::DataBase::setSqlQuery(createTableDatabaseMigrations);
-                Beryll::DataBase::executeNotSelectQuery();
-                Beryll::DataBase::setSqlQuery(insertFirstRowDatabaseMigrations);
-                Beryll::DataBase::executeNotSelectQuery();
+                executeSql(createTableDatabaseMigrations);
+                executeSql(insertDatabaseMigrations);
                 storeDatabaseMigrationsLastScriptApplied(0);
 
+                // Player talents.
+                executeSql(createTablePlayerTalents);
+                for(const auto& talent : EnumsAndVars::allPlayerTalents)
+                {
+                    insertPlayerTalentsTalent(talent.name, talent.currentLevel);
+                }
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -113,6 +107,7 @@ namespace DataBaseHelper
             readMapsProgress();
             readEnergySystem();
             readShop();
+            readPlayerTalents();
         }
     }
 
@@ -335,20 +330,50 @@ namespace DataBaseHelper
 //            applyDatabaseMigrationsScript1();
 //            storeDatabaseMigrationsLastScriptApplied(1);
 //        }
-//
+//        // No else here. Only new if().
 //        if(lastScriptAppliedIndex < 2)
 //        {
 //            applyDatabaseMigrationsScript2();
 //            storeDatabaseMigrationsLastScriptApplied(2);
 //        }
+//        // No else here. Only new if().
     }
 
-    void executeSqlWithLongLongParam(const std::string& sql, const char* paramName, long long int value)
+    void readPlayerTalents()
     {
+        Beryll::DataBase::setSqlQuery(selectPlayerTalentsAll);
+        std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+        BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "readPlayerTalents() rows are empty.");
+
+        BR_INFO("readPlayerTalents() rows: %d columns: %d", rows.size(), rows[0].size());
+
+        for(int i = 0; i <rows.size(); ++i)
+        {
+            BR_ASSERT((std::holds_alternative<long long int>(rows[i][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+            BR_ASSERT((std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2])),
+                      "%s", "Name or CurrentLevel contains wrong data.");
+            if(std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2]))
+            {
+                for(auto& talent : EnumsAndVars::allPlayerTalents)
+                {
+                    if(talent.name == std::get<std::string>(rows[i][1]))
+                    {
+                        talent.currentLevel = std::get<long long int>(rows[i][2]);
+                        BR_INFO("Read talent:%s. Level:%d", talent.name.c_str(),talent.currentLevel);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void executeSql(const std::string& sql)
+    {
+        BR_INFO("executeSql() %s", sql.c_str());
         try
         {
             Beryll::DataBase::setSqlQuery(sql);
-            Beryll::DataBase::bindParameterLongLongInt(paramName, value);
             Beryll::DataBase::executeNotSelectQuery();
         }
         catch(const Beryll::DataBaseException& e)

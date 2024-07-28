@@ -369,7 +369,7 @@ namespace MagneticBall3D
             cop->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 2.0f;
 
             cop->garbageAmountToDie = 10;
-            cop->reducePlayerSpeedWhenDie = 2.0f;
+            cop->reducePlayerSpeedWhenDie = 0.0f;
             cop->experienceWhenDie = 0;
 
             m_animatedOrDynamicObjects.push_back(cop);

@@ -327,7 +327,7 @@ namespace MagneticBall3D
 
         if(m_showErrorMenu)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.9f });
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));

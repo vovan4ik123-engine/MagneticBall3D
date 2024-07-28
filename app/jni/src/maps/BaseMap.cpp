@@ -368,14 +368,12 @@ namespace MagneticBall3D
 
         // Update gravity. And check for more garbage if we have limit for that.
         float gravPower = EnumsAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed);
-        if(gravPower > EnumsAndVars::garbageMaxGravityPower)
-            gravPower = EnumsAndVars::garbageMaxGravityPower;
 
         float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
 
         for(auto& wrapper : m_allGarbage)
         {
-            // 1. And update gravity.
+            // 1. Update gravity.
             if(wrapper.isMagnetized)
             {
                 glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());

@@ -84,7 +84,8 @@ namespace MagneticBall3D
         int m_selectedCurrentLevel = 0;
         int m_selectedMaxLevel = 0;
         int m_selectedPriceCrystals = 0;
-        int m_selectedIndex = 0;
+        int m_selectedCanBeImprovedByAds = 0;
+        static int m_selectedIndex;
 
         void selectTalent(int index);
 

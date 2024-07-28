@@ -5,32 +5,38 @@
 namespace DataBaseHelper
 {
     // Data types:
-    //NULL - The value is a NULL value.
-    //INTEGER - The value is a signed integer, stored in 0, 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
-    //REAL - The value is a floating point value, stored as an 8-byte IEEE floating point number.
-    //TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
-    //BLOB - The value is a blob of data, stored exactly as it was input.
-    //Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
+    // NULL - The value is a NULL value.
+    // INTEGER - The value is a signed integer, stored in 0, 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
+    // REAL - The value is a floating point value, stored as an 8-byte IEEE floating point number.
+    // TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
+    // BLOB - The value is a blob of data, stored exactly as it was input.
+    // Use INTEGER 0 or 1 For bool. Sqlite don't store bool.
 
-    // Database schema.
-    // Tables:      Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem            |   DatabaseMigrations  | Shop
+    // Database schema part 1.
+    // Tables:  Settings            |   CurrencyBalance     |   MapsProgress        |   EnergySystem            |   DatabaseMigrations  | Shop
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    // Columns: ID                  |   ID                  |   ID                  |   ID                      |   LastScriptApplied   | Item1FirstBuy
+    //          FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount           |                       | Item2FirstBuy
+    //          BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdated          |                       | Item3FirstBuy
+    //          MeteorParticles     |                       |                       |   LastSecOneEnergyRestored|                       | Item4FirstBuy
+    //                                                                                                          |                       | Item5FirstBuy
+    //                                                                                                          |                       | Item6FirstBuy
+
+    // Database schema part 2.
+    // Tables:  PlayerTalents   |
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns:     ID                  |   ID                  |   ID                  |   ID                      |   LastScriptApplied   | Item1FirstBuy
-    //              FPSLimit            |   Crystals            |   CurrentMapIndex     |   CurrentAmount           |                       | Item2FirstBuy
-    //              BackgroundMusic     |                       |   LastOpenedMapIndex  |   LastSecUpdated          |                       | Item3FirstBuy
-    //              MeteorParticles     |                       |                       |   LastSecOneEnergyRestored|                       | Item4FirstBuy
-    //                                                                                                              |                       | Item5FirstBuy
-    //                                                                                                              |                       | Item6FirstBuy
-
+    // Columns: Name            |
+    //          CurrentLevel    |
+    //
 
     // Common data.
     const inline std::string dataBaseName = "MagneticBall3D.sqlite";
     void prepareDatabase(); // Always call at app launch.
     // const inline std::string deleteAllSettings = "DELETE FROM Settings;";
     //const inline std::string insertIntoBattlesProgress = "INSERT INTO BattlesProgress(ID, MaxAvailableBattle, AllBattlesFinished) "
-    //                                                     "VALUES(NULL, :battleNumber, :allFinished);";
+    //                                                     "VALUES(NULL, :::battleNumber, :::allFinished);";
 
-    void executeSqlWithLongLongParam(const std::string& sql, const char* paramName, long long int value);
+    void executeSql(const std::string& sql);
 
     // Settings.
     const inline std::string createTableSettings = "CREATE TABLE IF NOT EXISTS "
@@ -41,17 +47,17 @@ namespace DataBaseHelper
                                                    "MeteorParticles INTEGER "
                                                    ");";
 
-    const inline std::string insertFirstRowSettings = "INSERT INTO Settings(ID, FPSLimit, BackgroundMusic, MeteorParticles) VALUES(NULL, NULL, NULL, NULL);";
+    const inline std::string insertSettings = "INSERT INTO Settings(ID, FPSLimit, BackgroundMusic, MeteorParticles) VALUES(NULL, NULL, NULL, NULL);";
     const inline std::string selectSettingsAll = "SELECT * FROM Settings LIMIT 1;";
-    const inline std::string updateSettingsFPSLimit = "UPDATE Settings SET FPSLimit = :FPS;";
-    const inline std::string updateSettingsBackgroundMusic = "UPDATE Settings SET BackgroundMusic = :playMusic;";
-    const inline std::string updateSettingsMeteorParticles = "UPDATE Settings SET MeteorParticles = :showParticles;";
+    const inline std::string updateSettingsFPSLimit = "UPDATE Settings SET FPSLimit = :::FPS;";
+    const inline std::string updateSettingsBackgroundMusic = "UPDATE Settings SET BackgroundMusic = :::playMusic;";
+    const inline std::string updateSettingsMeteorParticles = "UPDATE Settings SET MeteorParticles = :::showParticles;";
 
     bool getIsSettingsTableEmpty();
     void readSettings();
     inline void storeSettingsFPSLimit(long long int value)
     {
-        executeSqlWithLongLongParam(updateSettingsFPSLimit, ":FPS", value);
+        executeSql(std::regex_replace(updateSettingsFPSLimit, std::regex(":::FPS"), std::to_string(value)));
     }
     inline void storeSettingsBackgroundMusic(bool playMusic)
     {
@@ -59,7 +65,7 @@ namespace DataBaseHelper
         if(playMusic)
             intValue = 1;
 
-        executeSqlWithLongLongParam(updateSettingsBackgroundMusic, ":playMusic", intValue);
+        executeSql(std::regex_replace(updateSettingsBackgroundMusic, std::regex(":::playMusic"), std::to_string(intValue)));
     }
     inline void storeSettingsMeteorParticles(bool showParticles)
     {
@@ -67,7 +73,7 @@ namespace DataBaseHelper
         if(showParticles)
             intValue = 1;
 
-        executeSqlWithLongLongParam(updateSettingsMeteorParticles, ":showParticles", intValue);
+        executeSql(std::regex_replace(updateSettingsMeteorParticles, std::regex(":::showParticles"), std::to_string(intValue)));
     }
 
     // CurrencyBalance.
@@ -77,9 +83,9 @@ namespace DataBaseHelper
                                                           "Crystals INTEGER "
                                                           ");";
 
-    const inline std::string insertFirstRowCurrencyBalance = "INSERT INTO CurrencyBalance(ID, Crystals) VALUES(NULL, NULL);";
+    const inline std::string insertCurrencyBalance = "INSERT INTO CurrencyBalance(ID, Crystals) VALUES(NULL, NULL);";
     const inline std::string selectCurrencyBalanceCrystals = "SELECT * FROM CurrencyBalance LIMIT 1;";
-    const inline std::string updateCurrencyBalanceCrystals = "UPDATE CurrencyBalance SET Crystals = :crystals;";
+    const inline std::string updateCurrencyBalanceCrystals = "UPDATE CurrencyBalance SET Crystals = :::crystals;";
 
     void readCurrencyBalance();
     inline void storeCurrencyBalanceCrystals(long long int value)
@@ -87,7 +93,7 @@ namespace DataBaseHelper
         if(value < 0)
             value = 0;
 
-        executeSqlWithLongLongParam(updateCurrencyBalanceCrystals, ":crystals", value);
+        executeSql(std::regex_replace(updateCurrencyBalanceCrystals, std::regex(":::crystals"), std::to_string(value)));
     }
 
     // MapsProgress.
@@ -98,19 +104,19 @@ namespace DataBaseHelper
                                                        "LastOpenedMapIndex INTEGER "
                                                        ");";
 
-    const inline std::string insertFirstRowMapsProgress = "INSERT INTO MapsProgress(ID, CurrentMapIndex, LastOpenedMapIndex) VALUES(NULL, NULL, NULL);";
+    const inline std::string insertMapsProgress = "INSERT INTO MapsProgress(ID, CurrentMapIndex, LastOpenedMapIndex) VALUES(NULL, NULL, NULL);";
     const inline std::string selectMapsProgressAll = "SELECT * FROM MapsProgress LIMIT 1;";
-    const inline std::string updateMapsProgressCurrentMapIndex = "UPDATE MapsProgress SET CurrentMapIndex = :currentMapIndex;";
-    const inline std::string updateMapsProgressLastOpenedMapIndex = "UPDATE MapsProgress SET LastOpenedMapIndex = :lastOpenedIndex;";
+    const inline std::string updateMapsProgressCurrentMapIndex = "UPDATE MapsProgress SET CurrentMapIndex = :::currentMapIndex;";
+    const inline std::string updateMapsProgressLastOpenedMapIndex = "UPDATE MapsProgress SET LastOpenedMapIndex = :::lastOpenedIndex;";
 
     void readMapsProgress();
     inline void storeMapsProgressCurrentMapIndex(long long int value)
     {
-        executeSqlWithLongLongParam(updateMapsProgressCurrentMapIndex, ":currentMapIndex", value);
+        executeSql(std::regex_replace(updateMapsProgressCurrentMapIndex, std::regex(":::currentMapIndex"), std::to_string(value)));
     }
     inline void storeMapsProgressLastOpenedMapIndex(long long int value)
     {
-        executeSqlWithLongLongParam(updateMapsProgressLastOpenedMapIndex, ":lastOpenedIndex", value);
+        executeSql(std::regex_replace(updateMapsProgressLastOpenedMapIndex, std::regex(":::lastOpenedIndex"), std::to_string(value)));
     }
 
     // EnergySystem.
@@ -122,25 +128,25 @@ namespace DataBaseHelper
                                                        "LastSecOneEnergyRestored INTEGER "
                                                        ");";
 
-    const inline std::string insertFirstRowEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdated, LastSecOneEnergyRestored) "
+    const inline std::string insertEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdated, LastSecOneEnergyRestored) "
                                                           "VALUES(NULL, NULL, NULL, NULL);";
     const inline std::string selectEnergySystemAll = "SELECT * FROM EnergySystem LIMIT 1;";
-    const inline std::string updateEnergySystemCurrentAmount = "UPDATE EnergySystem SET CurrentAmount = :amount;";
-    const inline std::string updateEnergySystemLastSecUpdated = "UPDATE EnergySystem SET LastSecUpdated = :lastSecUpdated;";
-    const inline std::string updateEnergySystemLastSecRestored = "UPDATE EnergySystem SET LastSecOneEnergyRestored = :lastSecOneEnergyRestored;";
+    const inline std::string updateEnergySystemCurrentAmount = "UPDATE EnergySystem SET CurrentAmount = :::amount;";
+    const inline std::string updateEnergySystemLastSecUpdated = "UPDATE EnergySystem SET LastSecUpdated = :::lastSecUpdated;";
+    const inline std::string updateEnergySystemLastSecRestored = "UPDATE EnergySystem SET LastSecOneEnergyRestored = :::lastSecOneEnergyRestored;";
 
     void readEnergySystem();
     inline void storeEnergySystemCurrentAmount(long long int value)
     {
-        executeSqlWithLongLongParam(updateEnergySystemCurrentAmount, ":amount", value);
+        executeSql(std::regex_replace(updateEnergySystemCurrentAmount, std::regex(":::amount"), std::to_string(value)));
     }
     inline void storeEnergySystemLastSecUpdated(long long int value)
     {
-        executeSqlWithLongLongParam(updateEnergySystemLastSecUpdated, ":lastSecUpdated", value);
+        executeSql(std::regex_replace(updateEnergySystemLastSecUpdated, std::regex(":::lastSecUpdated"), std::to_string(value)));
     }
     inline void storeEnergySystemLastSecRestored(long long int value)
     {
-        executeSqlWithLongLongParam(updateEnergySystemLastSecRestored, ":lastSecOneEnergyRestored", value);
+        executeSql(std::regex_replace(updateEnergySystemLastSecRestored, std::regex(":::lastSecOneEnergyRestored"), std::to_string(value)));
     }
 
     // Shop.
@@ -155,40 +161,40 @@ namespace DataBaseHelper
                                                "Item6FirstBuy INTEGER "
                                                ");";
 
-    const inline std::string insertFirstRowShop = "INSERT INTO Shop(ID, Item1FirstBuy, Item2FirstBuy, Item3FirstBuy, Item4FirstBuy, Item5FirstBuy, Item6FirstBuy) "
+    const inline std::string insertShop = "INSERT INTO Shop(ID, Item1FirstBuy, Item2FirstBuy, Item3FirstBuy, Item4FirstBuy, Item5FirstBuy, Item6FirstBuy) "
                                                   "VALUES(NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
     const inline std::string selectShopAll = "SELECT * FROM Shop LIMIT 1;";
-    const inline std::string updateShopItem1FirstBuy = "UPDATE Shop SET Item1FirstBuy = :item1FirstBuy;";
-    const inline std::string updateShopItem2FirstBuy = "UPDATE Shop SET Item2FirstBuy = :item2FirstBuy;";
-    const inline std::string updateShopItem3FirstBuy = "UPDATE Shop SET Item3FirstBuy = :item3FirstBuy;";
-    const inline std::string updateShopItem4FirstBuy = "UPDATE Shop SET Item4FirstBuy = :item4FirstBuy;";
-    const inline std::string updateShopItem5FirstBuy = "UPDATE Shop SET Item5FirstBuy = :item5FirstBuy;";
-    const inline std::string updateShopItem6FirstBuy = "UPDATE Shop SET Item6FirstBuy = :item6FirstBuy;";
+    const inline std::string updateShopItem1FirstBuy = "UPDATE Shop SET Item1FirstBuy = :::item1FirstBuy;";
+    const inline std::string updateShopItem2FirstBuy = "UPDATE Shop SET Item2FirstBuy = :::item2FirstBuy;";
+    const inline std::string updateShopItem3FirstBuy = "UPDATE Shop SET Item3FirstBuy = :::item3FirstBuy;";
+    const inline std::string updateShopItem4FirstBuy = "UPDATE Shop SET Item4FirstBuy = :::item4FirstBuy;";
+    const inline std::string updateShopItem5FirstBuy = "UPDATE Shop SET Item5FirstBuy = :::item5FirstBuy;";
+    const inline std::string updateShopItem6FirstBuy = "UPDATE Shop SET Item6FirstBuy = :::item6FirstBuy;";
 
     void readShop();
     inline void storeShopItem1FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem1FirstBuy, ":item1FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem1FirstBuy, std::regex(":::item1FirstBuy"), std::to_string(value)));
     }
     inline void storeShopItem2FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem2FirstBuy, ":item2FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem2FirstBuy, std::regex(":::item2FirstBuy"), std::to_string(value)));
     }
     inline void storeShopItem3FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem3FirstBuy, ":item3FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem3FirstBuy, std::regex(":::item3FirstBuy"), std::to_string(value)));
     }
     inline void storeShopItem4FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem4FirstBuy, ":item4FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem4FirstBuy, std::regex(":::item4FirstBuy"), std::to_string(value)));
     }
     inline void storeShopItem5FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem5FirstBuy, ":item5FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem5FirstBuy, std::regex(":::item5FirstBuy"), std::to_string(value)));
     }
     inline void storeShopItem6FirstBuy(long long int value)
     {
-        executeSqlWithLongLongParam(updateShopItem6FirstBuy, ":item6FirstBuy", value);
+        executeSql(std::regex_replace(updateShopItem6FirstBuy, std::regex(":::item6FirstBuy"), std::to_string(value)));
     }
 
     // DatabaseMigrations.
@@ -198,13 +204,45 @@ namespace DataBaseHelper
                                                              "LastScriptApplied INTEGER "
                                                              ");";
 
-    const inline std::string insertFirstRowDatabaseMigrations = "INSERT INTO DatabaseMigrations(ID, LastScriptApplied) VALUES(NULL, NULL);";
+    const inline std::string insertDatabaseMigrations = "INSERT INTO DatabaseMigrations(ID, LastScriptApplied) VALUES(NULL, NULL);";
     const inline std::string selectDatabaseMigrationsAll = "SELECT * FROM DatabaseMigrations LIMIT 1;";
-    const inline std::string updateDatabaseMigrationsLastScriptApplied = "UPDATE DatabaseMigrations SET LastScriptApplied = :lastScript;";
+    const inline std::string updateDatabaseMigrationsLastScriptApplied = "UPDATE DatabaseMigrations SET LastScriptApplied = :::lastScript;";
 
     void checkDatabaseMigrations();
     inline void storeDatabaseMigrationsLastScriptApplied(long long int value)
     {
-        executeSqlWithLongLongParam(updateDatabaseMigrationsLastScriptApplied, ":lastScript", value);
+        executeSql(std::regex_replace(updateDatabaseMigrationsLastScriptApplied, std::regex(":::lastScript"), std::to_string(value)));
+    }
+
+    // Player talents.
+    const inline std::string createTablePlayerTalents = "CREATE TABLE IF NOT EXISTS "
+                                                        "PlayerTalents( "
+                                                        "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                        "Name TEXT, "
+                                                        "CurrentLevel INTEGER "
+                                                        ");";
+
+    const inline std::string insertPlayerTalents = "INSERT INTO PlayerTalents(ID, Name, CurrentLevel) VALUES(NULL, :::talentName, :::talentLevel);";
+    const inline std::string selectPlayerTalentsAll = "SELECT * FROM PlayerTalents;";
+    const inline std::string updatePlayerTalentsCurrentLevel = "UPDATE PlayerTalents SET CurrentLevel = :::talentLevel WHERE Name = :::talentName;";
+
+    void readPlayerTalents();
+    inline void insertPlayerTalentsTalent(std::string talentName, long long int level)
+    {
+        talentName = "'" + talentName + "'"; // In SQLite TEXT should be inside quote: '...'
+        std::string preparedSQL = insertPlayerTalents;
+        preparedSQL = std::regex_replace(preparedSQL, std::regex(":::talentName"), talentName);
+        preparedSQL = std::regex_replace(preparedSQL, std::regex(":::talentLevel"), std::to_string(level));
+
+        executeSql(preparedSQL);
+    }
+    inline void updatePlayerTalent(std::string talentName, long long int level)
+    {
+        talentName = "'" + talentName + "'"; // In SQLite TEXT should be inside quote: '...'
+        std::string preparedSQL = updatePlayerTalentsCurrentLevel;
+        preparedSQL = std::regex_replace(preparedSQL, std::regex(":::talentName"), talentName);
+        preparedSQL = std::regex_replace(preparedSQL, std::regex(":::talentLevel"), std::to_string(level));
+
+        executeSql(preparedSQL);
     }
 }

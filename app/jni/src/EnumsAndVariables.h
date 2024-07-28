@@ -1,4 +1,5 @@
 #pragma once
+#include "DataBaseHelper.h"
 
 namespace EnumsAndVars
 {
@@ -72,14 +73,15 @@ namespace EnumsAndVars
         // Stored in DB.
         const std::string name;
         int currentLevel = 0;
-        float percentsToImprove = 0; // Percents to add to default value.
         // Not stored in DB.
         const std::string description;
         const int maxLevel = 0;
-        const float increasePerLevelValue = 0; // Percents in range 0...100 added per level.
+        const float increasePerLevel = 0; // Percents in range 0...100 added per level.
         const std::string increasePerLevelText; // To show for user.
+        const bool canBeImprovedByAd;
         const std::vector<int> pricePerLevel; // Crystals.
-        std::function<void()> improveLevel;
+
+        std::function<void()> improveLevel; // Logic for level improvement.
 
         int getPriceCrystals()
         {
@@ -90,25 +92,102 @@ namespace EnumsAndVars
             else
                 return pricePerLevel.back();
         }
+
+        float getPercentsToImprove() // Percents to add to default value.
+        {
+            return float(currentLevel) * increasePerLevel;
+        }
     };
-    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, 0, "Increase max\nspeed limit.", 12, 5.0f, "+5%",
-                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21},
-                                                           [](){}},
-                                                          {"MagneticRadius", 0, 0, "Increase\nmagnetic radius.", 20, 5.0f, "+5%",
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 15, 5.0f, "+5%", true,
+                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+                                                           []()
+                                                           {
+                                                                BR_ASSERT((allPlayerTalents[0].currentLevel < allPlayerTalents[0].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                                BR_ASSERT((allPlayerTalents[0].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                                if(allPlayerTalents[0].currentLevel >= allPlayerTalents[0].maxLevel || allPlayerTalents[0].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                    return;
+                                                                // Update currency after subtract price.
+                                                                CurrencyBalance::crystals -= allPlayerTalents[0].getPriceCrystals();
+                                                                DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                                // Update talent.
+                                                                ++allPlayerTalents[0].currentLevel;
+                                                                DataBaseHelper::updatePlayerTalent(allPlayerTalents[0].name,allPlayerTalents[0].currentLevel);
+                                                           }},
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 40, 5.0f, "+5%", true,
                                                            {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
-                                                           [](){}},
-                                                          {"AmountOfMagnetizedGarbage", 0, 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%",
+                                                           []()
+                                                           {
+                                                               BR_ASSERT((allPlayerTalents[1].currentLevel < allPlayerTalents[1].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                               BR_ASSERT((allPlayerTalents[1].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                               if(allPlayerTalents[1].currentLevel >= allPlayerTalents[1].maxLevel || allPlayerTalents[1].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                   return;
+                                                               // Update currency after subtract price.
+                                                               CurrencyBalance::crystals -= allPlayerTalents[1].getPriceCrystals();
+                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                               // Update talent.
+                                                               ++allPlayerTalents[1].currentLevel;
+                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[1].name,allPlayerTalents[1].currentLevel);
+                                                           }},
+                                                          {"AmountOfMagnetizedGarbage", 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%", true,
                                                            {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
-                                                           [](){}},
-                                                          {"AccelerateFaster", 0, 0, "Increase\nacceleration.", 6, 5.0f, "+5%",
-                                                           {20, 21, 22, 23, 24, 25},
-                                                           [](){}},
-                                                          {"BallAndGarbageProtection", 0, 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%",
+                                                           []()
+                                                           {
+                                                               BR_ASSERT((allPlayerTalents[2].currentLevel < allPlayerTalents[2].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                               BR_ASSERT((allPlayerTalents[2].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                               if(allPlayerTalents[2].currentLevel >= allPlayerTalents[2].maxLevel || allPlayerTalents[2].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                   return;
+                                                               // Update currency after subtract price.
+                                                               CurrencyBalance::crystals -= allPlayerTalents[2].getPriceCrystals();
+                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                               // Update talent.
+                                                               ++allPlayerTalents[2].currentLevel;
+                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[2].name,allPlayerTalents[2].currentLevel);
+                                                           }},
+                                                          {"AccelerateFaster", 0, "Increase\nacceleration.", 6, 5.0f, "+5%", true,
+                                                           {30, 31, 32, 33, 34, 35},
+                                                           []()
+                                                           {
+                                                               BR_ASSERT((allPlayerTalents[3].currentLevel < allPlayerTalents[3].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                               BR_ASSERT((allPlayerTalents[3].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                               if(allPlayerTalents[3].currentLevel >= allPlayerTalents[3].maxLevel || allPlayerTalents[3].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                   return;
+                                                               // Update currency after subtract price.
+                                                               CurrencyBalance::crystals -= allPlayerTalents[3].getPriceCrystals();
+                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                               // Update talent.
+                                                               ++allPlayerTalents[3].currentLevel;
+                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[3].name,allPlayerTalents[3].currentLevel);
+                                                           }},
+                                                          {"BallAndGarbageProtection", 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%", true,
                                                            {5},
-                                                           [](){}},
-                                                          {"ResurrectionAttempts", 0, 0, "Increase number\nof resurrections.", 3, 100.0f, "+1",
-                                                           {70},
-                                                           [](){}}};
+                                                           []()
+                                                           {
+                                                               BR_ASSERT((allPlayerTalents[4].currentLevel < allPlayerTalents[4].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                               BR_ASSERT((allPlayerTalents[4].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                               if(allPlayerTalents[4].currentLevel >= allPlayerTalents[4].maxLevel || allPlayerTalents[4].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                   return;
+                                                               // Update currency after subtract price.
+                                                               CurrencyBalance::crystals -= allPlayerTalents[4].getPriceCrystals();
+                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                               // Update talent.
+                                                               ++allPlayerTalents[4].currentLevel;
+                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[4].name,allPlayerTalents[4].currentLevel);
+                                                           }},
+                                                          {"ResurrectionAttempts", 0, "Increase number\nof resurrections.", 3, 100.0f, "+1", false,
+                                                           {80},
+                                                           []()
+                                                           {
+                                                               BR_ASSERT((allPlayerTalents[5].currentLevel < allPlayerTalents[5].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
+                                                               BR_ASSERT((allPlayerTalents[5].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                                                               if(allPlayerTalents[5].currentLevel >= allPlayerTalents[5].maxLevel || allPlayerTalents[5].getPriceCrystals() > CurrencyBalance::crystals)
+                                                                   return;
+                                                               // Update currency after subtract price.
+                                                               CurrencyBalance::crystals -= allPlayerTalents[5].getPriceCrystals();
+                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+                                                               // Update talent.
+                                                               ++allPlayerTalents[5].currentLevel;
+                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[5].name,allPlayerTalents[5].currentLevel);
+                                                           }}};
     // Database tables end.
 
     // Camera.
@@ -121,7 +200,7 @@ namespace EnumsAndVars
     constexpr inline float swipePowerMultiplier = 2.1f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 28.0f;
+    constexpr inline float playerMagneticRadiusDefault = 30.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
     constexpr inline float playerImpulseFactorOnGroundDefault = 0.1f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
@@ -169,10 +248,9 @@ namespace EnumsAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
-    constexpr inline float garbageMaxGravityPower = 900.0f;
+    constexpr inline float garbageMinGravityPower = 5.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 5.8f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.2f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
@@ -228,30 +306,30 @@ namespace EnumsAndVars
     inline void reset()
     {
         // Player.
-        playerMagneticRadius = playerMagneticRadiusDefault;
-        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
-        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-        playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
-        playerMaxSpeedXZ = playerMaxSpeedXZDefault;
+        playerMagneticRadius = playerMagneticRadiusDefault * (1.0f + allPlayerTalents[1].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.
+        playerMaxSpeedXZ = playerMaxSpeedXZDefault * (1.0f + allPlayerTalents[0].getPercentsToImprove() / 100.0f);
         playerCurrentSpeed = 0;
         playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
         playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
         playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
         playerXPMultiplier = playerXPMultiplierDefault;
-        playerStartHP = playerStartHPDefault;
-        playerResurrectionAttempts = playerResurrectionAttemptsDefault;
+        playerStartHP = playerStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
+        playerResurrectionAttempts = playerResurrectionAttemptsDefault * int(1.0f + std::roundf(allPlayerTalents[5].getPercentsToImprove() / 100.0f));
         playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 
         // Garbage.
-        garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
+        garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault * (1.0f + allPlayerTalents[2].getPercentsToImprove() / 100.0f);
         garbageCountMagnetized = garbageCountMagnetizedDefault;
         garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
         garbageCommonSpawnTime = garbageCommonSpawnTimeDefault;
         garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
         garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
-        garbageStartHP = garbageStartHPDefault;
+        garbageStartHP = garbageStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
 
         // Enemies.
         enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;

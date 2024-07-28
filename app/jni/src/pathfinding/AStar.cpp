@@ -83,7 +83,7 @@ namespace MagneticBall3D
                 }
             }
 
-            if(current->coordinates == end || current == nullptr)
+            if(current == nullptr || current->coordinates == end)
                 break;
 
             current->nodeInOpenSet = false;
@@ -142,6 +142,9 @@ namespace MagneticBall3D
         }
 
         m_allNodesCreated.clear();
+
+        if(path.empty())
+            return {start};
 
         std::reverse(path.begin(), path.end());
         return path;

@@ -1,9 +1,12 @@
 #include "PlayerTalentsGUILayer.h"
 #include "EnumsAndVariables.h"
 #include "GameStateHelper.h"
+#include "DataBaseHelper.h"
 
 namespace MagneticBall3D
 {
+    int PlayerTalentsGUILayer::m_selectedIndex = 0;
+
     const std::string PlayerTalentsGUILayer::m_backButtonID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayerTalentsGUILayer::m_talentsHeaderID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayerTalentsGUILayer::m_allTalentsMenuID = std::to_string(BeryllUtils::Common::generateID());
@@ -48,8 +51,7 @@ namespace MagneticBall3D
         m_selectedValueLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.021f);
         m_valueToAddFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
 
-        // Select max speed talent by default.
-        selectTalent(0);
+        selectTalent(m_selectedIndex);
     }
 
     PlayerTalentsGUILayer::~PlayerTalentsGUILayer()
@@ -110,7 +112,16 @@ namespace MagneticBall3D
         {
             m_improveByCrystalsClicked = false;
             BR_INFO("%s", "m_improveByCrystalsClicked.");
-            m_showNoCrystalsMenu = true;
+
+            if(EnumsAndVars::allPlayerTalents[m_selectedIndex].getPriceCrystals() <= EnumsAndVars::CurrencyBalance::crystals)
+            {
+                EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
+                selectTalent(m_selectedIndex); // Recalculate values.
+            }
+            else
+            {
+                m_showNoCrystalsMenu = true;
+            }
         }
 
         if(m_noCrystalsButtonOkClicked)
@@ -214,14 +225,17 @@ namespace MagneticBall3D
             ImGui::SetCursorPos(ImVec2(0.44f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::Text("%s", m_selectedValueToAdd.c_str());
 
-            ImGui::SetCursorPos(ImVec2(0.75f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::Text("or");
+            if(m_selectedCanBeImprovedByAds)
+            {
+                ImGui::SetCursorPos(ImVec2(0.75f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                ImGui::Text("or");
+
+                ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
+                ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByAdTexture->getID()),
+                             ImVec2(textureWidth, menuSelectedHeight));
+            }
             ImGui::PopFont();
             ImGui::PopStyleColor(1);
-
-            ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByAdTexture->getID()),
-                         ImVec2(textureWidth, menuSelectedHeight));
 
             ImGui::SetCursorPos(ImVec2(textureCrystalsLeftPos, 0.0f));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByCrystalsTexture->getID()),
@@ -253,9 +267,12 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth(), menuSelectedHeight));
             ImGui::Begin(m_improveTalentMenuID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
-            m_improveByAdClicked = ImGui::ImageButton(m_improveTalentByAdButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
-                                                      ImVec2(textureWidth, menuSelectedHeight));
+            if(m_selectedCanBeImprovedByAds)
+            {
+                ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
+                m_improveByAdClicked = ImGui::ImageButton(m_improveTalentByAdButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
+                                                          ImVec2(textureWidth, menuSelectedHeight));
+            }
 
             ImGui::SetCursorPos(ImVec2(textureCrystalsLeftPos, 0.0f));
             m_improveByCrystalsClicked = ImGui::ImageButton(m_improveTalentByCrystalsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
@@ -268,7 +285,7 @@ namespace MagneticBall3D
         // Not enough crystals menu.
         if(m_showNoCrystalsMenu)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.9f });
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
@@ -295,40 +312,34 @@ namespace MagneticBall3D
         if(m_selectedIndex == 0) // Max speed. = 0
         {
             m_selectedTalentTexture = m_maxSpeedButtonTexture;
-            currentValue = EnumsAndVars::playerMaxSpeedXZDefault +
-                           EnumsAndVars::playerMaxSpeedXZDefault * (EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f);
+            currentValue = EnumsAndVars::playerMaxSpeedXZDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 1) // Magnetic radius. = 1
         {
             m_selectedTalentTexture = m_magneticRadiusButtonTexture;
-            currentValue = EnumsAndVars::playerMagneticRadiusDefault +
-                           EnumsAndVars::playerMagneticRadiusDefault * (EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f);
+            currentValue = EnumsAndVars::playerMagneticRadiusDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 2) // Amount of magnetized garbage. = 2
         {
             m_selectedTalentTexture = m_amountOfMagnetizedGarbageButtonTexture;
-            currentValue = EnumsAndVars::garbageMaxCountMagnetizedDefault +
-                           EnumsAndVars::garbageMaxCountMagnetizedDefault * (EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f);
+            currentValue = EnumsAndVars::garbageMaxCountMagnetizedDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 3) // Accelerate faster. = 3
         {
             m_selectedTalentTexture = m_accelerateFasterButtonTexture;
-            currentValue = EnumsAndVars::playerImpulseFactorOnGroundDefault +
-                           EnumsAndVars::playerImpulseFactorOnGroundDefault * (EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f);
+            currentValue = EnumsAndVars::playerImpulseFactorOnGroundDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
 
             currentValue *= 100.0f; // Because original value too small. Show it for user in range 10...15.
         }
         else if(m_selectedIndex == 4) // Ball and garbage protection. = 4
         {
             m_selectedTalentTexture = m_ballAndGarbageProtectionButtonTexture;
-            currentValue = EnumsAndVars::garbageStartHPDefault +
-                           EnumsAndVars::garbageStartHPDefault * (EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f);
+            currentValue = EnumsAndVars::garbageStartHPDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 5) // Resurrection attempts. = 5
         {
             m_selectedTalentTexture = m_resurrectionAttemptsButtonTexture;
-            currentValue = EnumsAndVars::playerResurrectionAttemptsDefault +
-                           EnumsAndVars::playerResurrectionAttemptsDefault * int(std::roundf(EnumsAndVars::allPlayerTalents[m_selectedIndex].percentsToImprove / 100.0f));
+            currentValue = EnumsAndVars::playerResurrectionAttemptsDefault * int(1.0f + std::roundf(EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f));
         }
         else
         {
@@ -338,6 +349,7 @@ namespace MagneticBall3D
         m_selectedDescription = EnumsAndVars::allPlayerTalents[m_selectedIndex].description;
         m_selectedValueToAdd = EnumsAndVars::allPlayerTalents[m_selectedIndex].increasePerLevelText;
         m_selectedPriceCrystals = EnumsAndVars::allPlayerTalents[m_selectedIndex].getPriceCrystals();
+        m_selectedCanBeImprovedByAds = EnumsAndVars::allPlayerTalents[m_selectedIndex].canBeImprovedByAd;
 
         std::stringstream stream;
         stream << std::fixed << std::setprecision(1) << currentValue;
