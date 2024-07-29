@@ -25,6 +25,9 @@ namespace MagneticBall3D
         static void sendMap0_onBuilding();
         static void sendMap0_1200mPassed();
 
+        // Talents.
+        static void sendTalentImproved(std::string name, const int level, std::string currencySpent); // currencySpent = ad or crystals.
+
     private:
         static bool m_canSendPlayerDieEvent;
         static bool m_canSendMapStartEvent;

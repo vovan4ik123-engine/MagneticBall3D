@@ -73,8 +73,8 @@ namespace MagneticBall3D
             m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
 
             if(m_buildingNormalAngle > 1.48f && m_buildingNormalAngle < 1.658f && // > 85 && < 95 degrees.
-               m_lastTimeOnGround + 0.8f < EnumsAndVars::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 0.8f < EnumsAndVars::mapPlayTimeSec) // Collision with wall after being in air for 0.7 sec.
+               m_lastTimeOnGround + 1.0f < EnumsAndVars::mapPlayTimeSec &&
+               m_lastTimeOnBuilding + 1.0f < EnumsAndVars::mapPlayTimeSec) // Collision with wall after being in air for 1.0 sec.
             {
                 BR_INFO(" %s", "Player resetVelocities()");
                 m_obj->resetVelocities();

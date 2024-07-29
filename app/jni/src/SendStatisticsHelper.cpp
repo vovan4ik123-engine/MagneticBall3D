@@ -158,4 +158,11 @@ namespace MagneticBall3D
             Beryll::GoogleAnalytics::getInstance()->sendEventEmpty("map_0_1200m_passed");
         }
     }
+
+    void SendStatisticsHelper::sendTalentImproved(std::string name, const int level, std::string currencySpent)
+    {
+        std::string event = "talent_" + name + "_level_" + std::to_string(level) + "_improved_by_" + currencySpent;
+
+        Beryll::GoogleAnalytics::getInstance()->sendEventEmpty(event);
+    }
 }

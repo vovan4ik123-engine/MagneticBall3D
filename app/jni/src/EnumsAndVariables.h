@@ -114,7 +114,7 @@ namespace EnumsAndVars
                                                                 DataBaseHelper::updatePlayerTalent(allPlayerTalents[0].name,allPlayerTalents[0].currentLevel);
                                                            }},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 40, 5.0f, "+5%", true,
-                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
+                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25},
                                                            []()
                                                            {
                                                                BR_ASSERT((allPlayerTalents[1].currentLevel < allPlayerTalents[1].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
@@ -210,7 +210,7 @@ namespace EnumsAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.15f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.12f;
     constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.34f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
@@ -248,9 +248,9 @@ namespace EnumsAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 5.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.2f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.6f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
@@ -308,9 +308,9 @@ namespace EnumsAndVars
         // Player.
         playerMagneticRadius = playerMagneticRadiusDefault * (1.0f + allPlayerTalents[1].getPercentsToImprove() / 100.0f);
         playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.
         playerMaxSpeedXZ = playerMaxSpeedXZDefault * (1.0f + allPlayerTalents[0].getPercentsToImprove() / 100.0f);
         playerCurrentSpeed = 0;

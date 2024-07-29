@@ -1256,7 +1256,7 @@ namespace MagneticBall3D
                                 wrapper.takeDamage(25.0f);
 
                             if(distance < 20.0f)
-                                wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 4.0f);
+                                wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 1.7f);
                         }
                     }
                 }

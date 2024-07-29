@@ -311,60 +311,86 @@ namespace DataBaseHelper
 
     void checkDatabaseMigrations()
     {
-        Beryll::DataBase::setSqlQuery(selectDatabaseMigrationsAll);
-        std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
-        BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "checkDatabaseMigrations() rows are empty.");
+        try
+        {
+            Beryll::DataBase::setSqlQuery(selectDatabaseMigrationsAll);
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "checkDatabaseMigrations() rows are empty.");
 
-        BR_INFO("checkDatabaseMigrations() rows: %d columns: %d", rows.size(), rows[0].size());
+            BR_INFO("checkDatabaseMigrations() rows: %d columns: %d", rows.size(), rows[0].size());
 
-        BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
-        BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "LastScriptApplied contains wrong data.");
-        int lastScriptAppliedIndex = 0;
-        if (std::holds_alternative<long long int>(rows[0][1]))
-            lastScriptAppliedIndex = std::get<long long int>(rows[0][1]);
-        BR_INFO("DatabaseMigrations lastScriptAppliedIndex: %d", lastScriptAppliedIndex);
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "LastScriptApplied contains wrong data.");
+            int lastScriptAppliedIndex = 0;
+            if (std::holds_alternative<long long int>(rows[0][1]))
+                lastScriptAppliedIndex = std::get<long long int>(rows[0][1]);
+            BR_INFO("DatabaseMigrations lastScriptAppliedIndex: %d", lastScriptAppliedIndex);
 
-//        if(lastScriptAppliedIndex < 1)
-//        {
-//            applyDatabaseMigrationsScript1();
-//            storeDatabaseMigrationsLastScriptApplied(1);
-//        }
-//        // No else here. Only new if().
-//        if(lastScriptAppliedIndex < 2)
-//        {
-//            applyDatabaseMigrationsScript2();
-//            storeDatabaseMigrationsLastScriptApplied(2);
-//        }
-//        // No else here. Only new if().
+            //        if(lastScriptAppliedIndex < 1)
+            //        {
+            //            applyDatabaseMigrationsScript1();
+            //            storeDatabaseMigrationsLastScriptApplied(1);
+            //        }
+            //        // No else here. Only new if().
+            //        if(lastScriptAppliedIndex < 2)
+            //        {
+            //            applyDatabaseMigrationsScript2();
+            //            storeDatabaseMigrationsLastScriptApplied(2);
+            //        }
+            //        // No else here. Only new if().
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("std::exception %s", what.c_str());
+        }
     }
 
     void readPlayerTalents()
     {
-        Beryll::DataBase::setSqlQuery(selectPlayerTalentsAll);
-        std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
-        BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "readPlayerTalents() rows are empty.");
-
-        BR_INFO("readPlayerTalents() rows: %d columns: %d", rows.size(), rows[0].size());
-
-        for(int i = 0; i <rows.size(); ++i)
+        try
         {
-            BR_ASSERT((std::holds_alternative<long long int>(rows[i][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+            Beryll::DataBase::setSqlQuery(selectPlayerTalentsAll);
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "readPlayerTalents() rows are empty.");
 
-            BR_ASSERT((std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2])),
-                      "%s", "Name or CurrentLevel contains wrong data.");
-            if(std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2]))
+            BR_INFO("readPlayerTalents() rows: %d columns: %d", rows.size(), rows[0].size());
+
+            for(int i = 0; i <rows.size(); ++i)
             {
-                for(auto& talent : EnumsAndVars::allPlayerTalents)
+                BR_ASSERT((std::holds_alternative<long long int>(rows[i][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+                BR_ASSERT((std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2])),
+                          "%s", "Name or CurrentLevel contains wrong data.");
+                if(std::holds_alternative<std::string>(rows[i][1]) && std::holds_alternative<long long int>(rows[i][2]))
                 {
-                    if(talent.name == std::get<std::string>(rows[i][1]))
+                    for(auto& talent : EnumsAndVars::allPlayerTalents)
                     {
-                        talent.currentLevel = std::get<long long int>(rows[i][2]);
-                        BR_INFO("Read talent:%s. Level:%d", talent.name.c_str(),talent.currentLevel);
-                        break;
+                        if(talent.name == std::get<std::string>(rows[i][1]))
+                        {
+                            talent.currentLevel = std::get<long long int>(rows[i][2]);
+                            BR_INFO("Read talent:%s. Level:%d", talent.name.c_str(),talent.currentLevel);
+                            break;
+                        }
                     }
                 }
             }
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("std::exception %s", what.c_str());
         }
     }
 

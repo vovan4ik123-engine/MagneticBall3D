@@ -288,7 +288,7 @@ namespace MagneticBall3D
                 powerForImpulse = m_screenSwipe3D * (EnumsAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
                 powerForTorque = m_screenSwipe3D * (EnumsAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
 
-                //BR_INFO("torq %f", (EnumsAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor));
+                //BR_INFO("imp %f", (EnumsAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor));
 
                 powerForTorque *= radiusForTorqueMultiplier;
 
@@ -327,7 +327,7 @@ namespace MagneticBall3D
                         wrapper.obj->applyCentralImpulse(garbageImpulse);
                 }
             }
-            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec)
+            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f) // On wall.
             {
                 const float helpOnBuilding = 60.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
                 //BR_INFO("helpOnBuilding %f", helpOnBuilding);
@@ -387,7 +387,7 @@ namespace MagneticBall3D
 
                 if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                 {
-                    wrapper.obj->setLinearVelocity(objToPlayerDir * 4.0f);
+                    wrapper.obj->setLinearVelocity(objToPlayerDir * 15.0f);
                 }
             }
             else if(wrapper.getIsEnabled())
@@ -674,7 +674,7 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
-        float radiusToKill = std::max(8.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.09f;
+        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.11f;
 
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
@@ -688,7 +688,7 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledUpdate() &&
                enemy->garbageAmountToDie < EnumsAndVars::garbageCountMagnetized &&
-               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill + (enemy->getXZRadius() * 0.6f))
+               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill + (enemy->getXZRadius() * 0.5f))
             {
                 enemy->disableEnemy();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
