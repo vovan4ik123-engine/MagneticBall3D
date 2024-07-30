@@ -60,6 +60,7 @@ namespace EnumsAndVars
 
     struct Shop
     {
+        // Stored in DB.
         static inline bool item1FirstBuy = true;
         static inline bool item2FirstBuy = true;
         static inline bool item3FirstBuy = true;
@@ -188,6 +189,12 @@ namespace EnumsAndVars
                                                                ++allPlayerTalents[5].currentLevel;
                                                                DataBaseHelper::updatePlayerTalent(allPlayerTalents[5].name,allPlayerTalents[5].currentLevel);
                                                            }}};
+    struct GameDifficulty
+    {
+        // Stored in DB.
+        static inline int level = 0;
+    };
+
     // Database tables end.
 
     // Camera.

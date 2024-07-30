@@ -245,4 +245,22 @@ namespace DataBaseHelper
 
         executeSql(preparedSQL);
     }
+
+    // Game difficulty.
+    const inline std::string createTableGameDifficulty = "CREATE TABLE IF NOT EXISTS "
+                                                         "GameDifficulty( "
+                                                         "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                         "Level INTEGER "
+                                                         ");";
+
+    const inline std::string insertGameDifficulty = "INSERT INTO GameDifficulty(ID, Level) VALUES(NULL, NULL);";
+    const inline std::string selectGameDifficultyAll = "SELECT * FROM GameDifficulty LIMIT 1;";
+    const inline std::string updateGameDifficultyLevel = "UPDATE GameDifficulty SET Level = :::level;";
+
+    void readGameDifficulty();
+    inline void storeGameDifficultyLevel(long long int value)
+    {
+        BR_ASSERT((value >= 0 && value < 3), "%s", "GameDifficulty should be 0 or 1 or 2.");
+        executeSql(std::regex_replace(updateGameDifficultyLevel, std::regex(":::level"), std::to_string(value)));
+    }
 }
