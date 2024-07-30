@@ -11,7 +11,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(10.0f);
 
         // Allocate enough spase for all vectors to avoid vector reallocation.
-        const int maxGarbageCount = 350;
+        const int maxGarbageCount = 400;
         m_allGarbage.reserve(maxGarbageCount);
         m_allAnimatedEnemies.reserve(500);
         m_animatedOrDynamicObjects.reserve(500 + maxGarbageCount);
@@ -47,11 +47,12 @@ namespace MagneticBall3D
         m_maxX = 800.0f;
         m_minZ = -800.0f;
         m_maxZ = 800.0f;
-        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
+
+        m_pathFinderEnemies = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
         std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesWalls.fbx");
         for(const auto& wall : walls)
         {
-            m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
         BR_INFO("Map2 pathfinder walls: %d", walls.size());
@@ -67,23 +68,23 @@ namespace MagneticBall3D
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
-        m_pathFinderBoss = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 40);
-        std::vector<glm::vec3> wallsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossWalls.fbx");
-        for(const auto& wall : wallsBoss)
-        {
-            m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-        }
-
-        BR_INFO("Map2 pathfinder wallsBoss: %d", wallsBoss.size());
-
-        std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
-        m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
-        for(const auto& point : allowedPointsBoss)
-        {
-            m_pathAllowedPositionsXZBoss.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
-        }
-
-        BR_INFO("Map2 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
+//        m_pathFinderBoss = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 40);
+//        std::vector<glm::vec3> wallsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossWalls.fbx");
+//        for(const auto& wall : wallsBoss)
+//        {
+//            m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+//        }
+//
+//        BR_INFO("Map2 pathfinder wallsBoss: %d", wallsBoss.size());
+//
+//        std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
+//        m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
+//        for(const auto& point : allowedPointsBoss)
+//        {
+//            m_pathAllowedPositionsXZBoss.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+//        }
+//
+//        BR_INFO("Map2 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
 
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.7f, 1.0f));
         m_sunLightDir = -m_dirToSun;
@@ -100,7 +101,6 @@ namespace MagneticBall3D
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");
-
     }
 
     Map2::~Map2()
@@ -276,7 +276,7 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::JUMPPAD,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::CollisionGroups::PLAYER,
                                                                                        Beryll::SceneObjectGroups::JUMPPAD);
 
         for(const auto& obj : jumpPads)
@@ -1109,7 +1109,7 @@ namespace MagneticBall3D
 
                     const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
 
-                    enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
+                    enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
 
                     enemy->setOrigin(enemy->getStartPointMoveFrom());
                 }

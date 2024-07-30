@@ -118,7 +118,7 @@ namespace MagneticBall3D
         glm::vec3 m_screenSwipe3D{0.0f};
 
         // Pathfinding for enemies.
-        AStar m_pathFinder; // Assign new object with map size in constructor of specific map.
+        AStar m_pathFinderEnemies; // Assign new object with map size in constructor of specific map.
         std::vector<glm::ivec2> m_pathAllowedPositionsXZ; // Points for enemy movements.
         glm::ivec2 m_playerClosestAllowedPos{0}; // On m_allowedPointsToMoveXZ.
         std::vector<glm::ivec2> m_pointsToSpawnEnemies; // From m_allowedPointsToMoveXZ.

@@ -39,10 +39,10 @@ namespace EnumsAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 2; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 2; // Last index of map available for select and play.
+        static inline int currentMapIndex = 3; // Index of selected map on start screen.
+        static inline int lastOpenedMapIndex = 3; // Last index of map available for select and play.
         // Not stored in DB.
-        static constexpr inline int maxMapIndex = 2; // Last possible map index (opened or not). Must be hardcoded before release.
+        static constexpr inline int maxMapIndex = 3; // Last possible map index (opened or not). Must be hardcoded before release.
     };
 
     struct EnergySystem

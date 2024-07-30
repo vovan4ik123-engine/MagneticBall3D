@@ -461,7 +461,7 @@ namespace MagneticBall3D
             ++m_pathFindingIteration;
 
             // 1.
-            m_pathFinder.clearBlockedPositions();
+            m_pathFinderEnemies.clearBlockedPositions();
 
             // 2.
             spawnEnemies();
@@ -479,9 +479,9 @@ namespace MagneticBall3D
 
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate() && m_allAnimatedEnemies[i]->getIsCanMove())
                 {
-                    m_allAnimatedEnemies[i]->setPathArray(m_pathFinder.findPath(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt(), m_playerClosestAllowedPos, 7), 0);
+                    m_allAnimatedEnemies[i]->setPathArray(m_pathFinderEnemies.findPath(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt(), m_playerClosestAllowedPos, 7), 0);
 
-                    m_pathFinder.addBlockedPosition(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt());
+                    m_pathFinderEnemies.addBlockedPosition(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt());
 
                     ++enemiesUpdated;
                 }
@@ -977,7 +977,7 @@ namespace MagneticBall3D
             {
                 const glm::ivec2 spawnPoint2D = newPositions[Beryll::RandomGenerator::getInt(newPositions.size() - 1)];
 
-                enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 5), 1);
+                enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 5), 1);
 
                 enemy->setOrigin(enemy->getStartPointMoveFrom());
             }

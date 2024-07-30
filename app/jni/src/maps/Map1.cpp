@@ -12,7 +12,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(10.0f);
 
         // Allocate enough spase for all vectors to avoid vector reallocation.
-        const int maxGarbageCount = 350;
+        const int maxGarbageCount = 400;
         m_allGarbage.reserve(maxGarbageCount);
         m_allAnimatedEnemies.reserve(500);
         m_animatedOrDynamicObjects.reserve(500 + maxGarbageCount);
@@ -56,11 +56,12 @@ namespace MagneticBall3D
         m_maxX = 800.0f;
         m_minZ = -800.0f;
         m_maxZ = 800.0f;
-        m_pathFinder = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
+
+        m_pathFinderEnemies = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
         std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathEnemiesWalls.fbx");
         for(const auto& wall : walls)
         {
-            m_pathFinder.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
         }
 
         BR_INFO("Map1 pathfinder walls: %d", walls.size());
@@ -273,7 +274,7 @@ namespace MagneticBall3D
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::JUMPPAD,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                       Beryll::CollisionGroups::PLAYER,
                                                                                        Beryll::SceneObjectGroups::JUMPPAD);
 
         for(const auto& obj : jumpPads)
@@ -1083,7 +1084,7 @@ namespace MagneticBall3D
 
                     const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
 
-                    enemy->setPathArray(m_pathFinder.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
+                    enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
 
                     enemy->setOrigin(enemy->getStartPointMoveFrom());
                 }
