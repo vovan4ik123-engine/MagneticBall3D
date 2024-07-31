@@ -118,7 +118,7 @@ namespace MagneticBall3D
             {
                 EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
                 selectTalent(m_selectedIndex); // Recalculate values.
-                SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "crystals");
+                SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "crystal");
             }
             else
             {

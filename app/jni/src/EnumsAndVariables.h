@@ -82,7 +82,19 @@ namespace EnumsAndVars
         const bool canBeImprovedByAd;
         const std::vector<int> pricePerLevel; // Crystals.
 
-        std::function<void()> improveLevel; // Logic for level improvement.
+        void improveLevel()
+        {
+            BR_ASSERT((currentLevel < maxLevel), "%s", "improveLevel(): currentLevel must be less than maxLevel.");
+            BR_ASSERT((getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+            if(currentLevel >= maxLevel || getPriceCrystals() > CurrencyBalance::crystals)
+                return;
+            // Update currency after subtract price.
+            CurrencyBalance::crystals -= getPriceCrystals();
+            DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+            // Update talent.
+            ++currentLevel;
+            DataBaseHelper::updatePlayerTalent(name, currentLevel);
+        }
 
         int getPriceCrystals()
         {
@@ -100,95 +112,18 @@ namespace EnumsAndVars
         }
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20, 5.0f, "+5%", true,
-                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25},
-                                                           []()
-                                                           {
-                                                                BR_ASSERT((allPlayerTalents[0].currentLevel < allPlayerTalents[0].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                                BR_ASSERT((allPlayerTalents[0].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                                if(allPlayerTalents[0].currentLevel >= allPlayerTalents[0].maxLevel || allPlayerTalents[0].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                    return;
-                                                                // Update currency after subtract price.
-                                                                CurrencyBalance::crystals -= allPlayerTalents[0].getPriceCrystals();
-                                                                DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                                // Update talent.
-                                                                ++allPlayerTalents[0].currentLevel;
-                                                                DataBaseHelper::updatePlayerTalent(allPlayerTalents[0].name,allPlayerTalents[0].currentLevel);
-                                                           }},
+                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25}},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60, 5.0f, "+5%", true,
-                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25},
-                                                           []()
-                                                           {
-                                                               BR_ASSERT((allPlayerTalents[1].currentLevel < allPlayerTalents[1].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                               BR_ASSERT((allPlayerTalents[1].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                               if(allPlayerTalents[1].currentLevel >= allPlayerTalents[1].maxLevel || allPlayerTalents[1].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                   return;
-                                                               // Update currency after subtract price.
-                                                               CurrencyBalance::crystals -= allPlayerTalents[1].getPriceCrystals();
-                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                               // Update talent.
-                                                               ++allPlayerTalents[1].currentLevel;
-                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[1].name,allPlayerTalents[1].currentLevel);
-                                                           }},
-                                                          {"AmountOfMagnetizedGarbage", 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%", true,
-                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22},
-                                                           []()
-                                                           {
-                                                               BR_ASSERT((allPlayerTalents[2].currentLevel < allPlayerTalents[2].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                               BR_ASSERT((allPlayerTalents[2].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                               if(allPlayerTalents[2].currentLevel >= allPlayerTalents[2].maxLevel || allPlayerTalents[2].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                   return;
-                                                               // Update currency after subtract price.
-                                                               CurrencyBalance::crystals -= allPlayerTalents[2].getPriceCrystals();
-                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                               // Update talent.
-                                                               ++allPlayerTalents[2].currentLevel;
-                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[2].name,allPlayerTalents[2].currentLevel);
-                                                           }},
-                                                          {"AccelerateFaster", 0, "Increase\nacceleration.", 6, 5.0f, "+5%", true,
-                                                           {30, 31, 32, 33, 34, 35},
-                                                           []()
-                                                           {
-                                                               BR_ASSERT((allPlayerTalents[3].currentLevel < allPlayerTalents[3].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                               BR_ASSERT((allPlayerTalents[3].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                               if(allPlayerTalents[3].currentLevel >= allPlayerTalents[3].maxLevel || allPlayerTalents[3].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                   return;
-                                                               // Update currency after subtract price.
-                                                               CurrencyBalance::crystals -= allPlayerTalents[3].getPriceCrystals();
-                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                               // Update talent.
-                                                               ++allPlayerTalents[3].currentLevel;
-                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[3].name,allPlayerTalents[3].currentLevel);
-                                                           }},
-                                                          {"BallAndGarbageProtection", 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%", true,
-                                                           {5},
-                                                           []()
-                                                           {
-                                                               BR_ASSERT((allPlayerTalents[4].currentLevel < allPlayerTalents[4].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                               BR_ASSERT((allPlayerTalents[4].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                               if(allPlayerTalents[4].currentLevel >= allPlayerTalents[4].maxLevel || allPlayerTalents[4].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                   return;
-                                                               // Update currency after subtract price.
-                                                               CurrencyBalance::crystals -= allPlayerTalents[4].getPriceCrystals();
-                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                               // Update talent.
-                                                               ++allPlayerTalents[4].currentLevel;
-                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[4].name,allPlayerTalents[4].currentLevel);
-                                                           }},
-                                                          {"ResurrectionAttempts", 0, "Increase number\nof resurrections.", 3, 100.0f, "+1", false,
-                                                           {80},
-                                                           []()
-                                                           {
-                                                               BR_ASSERT((allPlayerTalents[5].currentLevel < allPlayerTalents[5].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
-                                                               BR_ASSERT((allPlayerTalents[5].getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                                                               if(allPlayerTalents[5].currentLevel >= allPlayerTalents[5].maxLevel || allPlayerTalents[5].getPriceCrystals() > CurrencyBalance::crystals)
-                                                                   return;
-                                                               // Update currency after subtract price.
-                                                               CurrencyBalance::crystals -= allPlayerTalents[5].getPriceCrystals();
-                                                               DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
-                                                               // Update talent.
-                                                               ++allPlayerTalents[5].currentLevel;
-                                                               DataBaseHelper::updatePlayerTalent(allPlayerTalents[5].name,allPlayerTalents[5].currentLevel);
-                                                           }}};
+                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25}},
+                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%", true,
+                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22}},
+                                                          {"Accelerate", 0, "Increase\nacceleration.", 6, 5.0f, "+5%", true,
+                                                           {30, 31, 32, 33, 34, 35}},
+                                                          {"Protection", 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%", true,
+                                                           {5}},
+                                                          {"Resurrection", 0, "Increase number\nof resurrections.", 3, 100.0f, "+1", false,
+                                                           {80}}
+                                                          };
     struct GameDifficulty
     {
         // Stored in DB.

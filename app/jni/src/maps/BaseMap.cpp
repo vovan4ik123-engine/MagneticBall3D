@@ -627,7 +627,7 @@ namespace MagneticBall3D
                             {
                                 if(rayAttack.hittedObjectID == wrapper.obj->getID())
                                 {
-                                    wrapper.pauseMagnetization(1.0f);
+                                    wrapper.pauseMagnetization(1.25f);
                                     wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
                                     wrapper.obj->applyCentralImpulse(glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin()) * 0.1f);
                                     break;

@@ -128,7 +128,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadowsNormals->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadowsNormals->set1Float("ambientLight", m_ambientLight * 0.5f);
-        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 0.2f);
+        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 0.3f);
 
         for(const auto& normalMapObj : m_objWithNormalMap)
         {
