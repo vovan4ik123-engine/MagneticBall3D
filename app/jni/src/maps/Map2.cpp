@@ -289,6 +289,7 @@ namespace MagneticBall3D
         for(const auto& obj : envNoColliders1)
         {
             m_staticEnv.push_back(obj);
+            m_simpleObjForShadowMap.push_back(obj);
         }
     }
 

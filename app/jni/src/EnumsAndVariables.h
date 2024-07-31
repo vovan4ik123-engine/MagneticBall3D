@@ -23,7 +23,7 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline int FPSLimit = 60;
         static inline bool backgroundMusic = true;
-        static inline bool meteorParticles = true;
+        static inline bool meteorParticles = false;
         // Not stored in DB.
         // ...
     };
@@ -99,8 +99,8 @@ namespace EnumsAndVars
             return float(currentLevel) * increasePerLevel;
         }
     };
-    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 15, 5.0f, "+5%", true,
-                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20, 5.0f, "+5%", true,
+                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25},
                                                            []()
                                                            {
                                                                 BR_ASSERT((allPlayerTalents[0].currentLevel < allPlayerTalents[0].maxLevel), "%s", "improveLevel(): allPlayerTalents currentLevel must be less than maxLevel.");
@@ -114,7 +114,7 @@ namespace EnumsAndVars
                                                                 ++allPlayerTalents[0].currentLevel;
                                                                 DataBaseHelper::updatePlayerTalent(allPlayerTalents[0].name,allPlayerTalents[0].currentLevel);
                                                            }},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 40, 5.0f, "+5%", true,
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60, 5.0f, "+5%", true,
                                                            {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25},
                                                            []()
                                                            {

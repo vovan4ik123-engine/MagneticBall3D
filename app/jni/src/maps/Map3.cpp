@@ -62,7 +62,7 @@ namespace MagneticBall3D
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
-        m_dirToSun = glm::normalize(glm::vec3(-1.0f, 5.0f, -1.0f));
+        m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.0f, -1.0f));
         m_sunLightDir = -m_dirToSun;
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
@@ -237,6 +237,7 @@ namespace MagneticBall3D
         for(const auto& obj : envNoColliders1)
         {
             m_staticEnv.push_back(obj);
+            m_simpleObjForShadowMap.push_back(obj);
         }
     }
 
