@@ -49,15 +49,16 @@ namespace MagneticBall3D
 
 //        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderAmbient);
-//        sliderAmbient->setValue(0.5f);
-//
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 0.7f);
-//        m_guiObjects.push_back(sliderSpecularPower);
-//        sliderSpecularPower->setValue(0.2f);
-//
+//        sliderAmbient->setValue(0.7f);
+
 //        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
 //        m_guiObjects.push_back(sliderSunPower);
-//        sliderSunPower->setValue(0.5f);
+//        sliderSunPower->setValue(0.25f);
+
+//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2.0f);
+//        m_guiObjects.push_back(sliderSpecularPower);
+//        sliderSpecularPower->setValue(1.0f);
+
 
         m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
         m_smashedCountFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);

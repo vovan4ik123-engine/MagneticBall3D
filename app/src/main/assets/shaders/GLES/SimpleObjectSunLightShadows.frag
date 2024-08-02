@@ -16,6 +16,7 @@ uniform vec3 sunLightDir;
 uniform vec3 cameraPos;
 
 uniform float ambientLight;
+uniform float sunLightStrength;
 uniform float specularLightStrength;
 
 uniform float alphaTransparency;
@@ -23,7 +24,7 @@ uniform float alphaTransparency;
 void main()
 {
     // diffuse
-    float diffuse = max(dot(normal, -sunLightDir), 0.0f);
+    float diffuse = max(dot(normal, -sunLightDir), 0.0f) * sunLightStrength;
 
     // specular
     vec3 fragToCameraDir = normalize(cameraPos - fragPos);

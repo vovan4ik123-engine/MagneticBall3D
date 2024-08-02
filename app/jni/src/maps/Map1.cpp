@@ -178,7 +178,8 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.2f);
+        m_simpleObjSunLightShadows->set1Float("sunLightStrength", 0.25f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -187,6 +188,8 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->setMatrix3x3Float("normalMatrix", glm::mat3(modelMatrix));
         Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
 
+        m_simpleObjSunLightShadows->set1Float("sunLightStrength", 1.0f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.2f);
         for(const auto& wrapper : m_allGarbage)
         {
             if(wrapper.obj->getIsEnabledDraw())
