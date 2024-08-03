@@ -21,7 +21,7 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-555.0f, 2.0f,-600.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-490.0f, 2.0f,-633.0f));
         m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
@@ -35,6 +35,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(90.0f);
 
         loadShaders();
+        m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
         handleCamera();
 
         m_minX = -800.0f;

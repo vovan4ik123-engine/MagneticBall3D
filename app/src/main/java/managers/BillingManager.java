@@ -30,6 +30,7 @@ public class BillingManager implements PurchasesUpdatedListener, ProductDetailsR
     private static BillingClient billingClient;
 
     public static void init(SDLActivity activity) {
+        Log.v("BillingManager", "init(SDLActivity activity)");
         billingManager = new BillingManager();
 
         billingClient = BillingClient.newBuilder(activity)
@@ -38,7 +39,7 @@ public class BillingManager implements PurchasesUpdatedListener, ProductDetailsR
                 .build();
     }
 
-    // Called from C++ code to purchase.
+    // Called from C++ code.
     public static void makeInAppPurchase(String productID) {
         Log.v("BillingManager", "testBillingLogs makeInAppPurchase(String productID): " + productID + " ThreadID: " + Thread.currentThread().getId());
         inAppProductID = productID;

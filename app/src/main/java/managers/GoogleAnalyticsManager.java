@@ -11,10 +11,11 @@ public class GoogleAnalyticsManager {
     private static FirebaseAnalytics firebaseAnalytics;
 
     public static void init(SDLActivity activity) {
+        Log.v("GoogleAnalyticsManager", "init(SDLActivity activity)");
         firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
     }
 
-    // Called from C++ code to send event.
+    // Called from C++ code.
     public static void sendEventEmpty(String eventType) {
         Log.v("GoogleAnalyticsManager", "sendEventEmpty(): " + eventType);
 

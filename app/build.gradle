@@ -55,9 +55,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Import the Firebase BoM.
-    implementation platform('com.google.firebase:firebase-bom:33.1.0')
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
     implementation 'com.google.firebase:firebase-analytics'
 
     // Billing system.
     implementation 'com.android.billingclient:billing:7.0.0'
+
+    // Ads.
+    implementation 'com.google.android.gms:play-services-ads:23.2.0'
 }

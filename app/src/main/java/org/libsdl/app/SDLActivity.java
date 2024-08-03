@@ -55,6 +55,7 @@ import java.util.Locale;
 
 import managers.GoogleAnalyticsManager;
 import managers.BillingManager;
+import managers.AdsManager;
 
 /**
     SDL Activity
@@ -392,6 +393,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
         GoogleAnalyticsManager.init(mSingleton);
         BillingManager.init(mSingleton);
+        AdsManager.init(mSingleton);
 
         mClipboardHandler = new SDLClipboardHandler();
 

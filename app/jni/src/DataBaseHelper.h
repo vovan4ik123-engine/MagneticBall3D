@@ -263,4 +263,7 @@ namespace DataBaseHelper
         BR_ASSERT((value >= 0 && value < 3), "%s", "GameDifficulty should be 0 or 1 or 2.");
         executeSql(std::regex_replace(updateGameDifficultyLevel, std::regex(":::level"), std::to_string(value)));
     }
+
+    // Time. (AdTime, DailyRewardTime)
+
 }
