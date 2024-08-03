@@ -68,7 +68,7 @@ namespace MagneticBall3D
         bool m_errorButtonOkClicked = false;
         bool m_showErrorMenu = false;
 
-        // These callbacks can be called from different thread.
+        // Billing system callbacks. Can be called from different thread.
         std::function<void()> m_buyItem1SuccessCallback;
         std::function<void()> m_buyItem2SuccessCallback;
         std::function<void()> m_buyItem3SuccessCallback;
@@ -76,7 +76,7 @@ namespace MagneticBall3D
         std::function<void()> m_buyItem5SuccessCallback;
         std::function<void()> m_buyItem6SuccessCallback;
         std::function<void()> m_commonErrorCallback;
-        // Assigned from different thread.
+        // Can be assigned from different thread.
         static std::atomic<bool> m_item1Bought;
         static std::atomic<bool> m_item2Bought;
         static std::atomic<bool> m_item3Bought;

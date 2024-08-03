@@ -73,6 +73,7 @@ namespace MagneticBall3D
         static const std::string m_selectedTalentMenuID;
         std::shared_ptr<Beryll::Texture> m_selectedTalentTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTexture;
+        std::shared_ptr<Beryll::Texture> m_improveByAdTimerTexture;
         std::shared_ptr<Beryll::Texture> m_improveByCrystalsTexture;
         std::shared_ptr<Beryll::Texture> m_maxLevelReachedTexture;
         ImFont* m_selectedDescriptionFont;
@@ -86,6 +87,8 @@ namespace MagneticBall3D
         int m_selectedPriceCrystals = 0;
         int m_selectedCanBeImprovedByAds = 0;
         static int m_selectedIndex;
+        std::string m_adTimerText;
+        ImFont* m_adTimerFont;
 
         void selectTalent(int index);
 
@@ -104,10 +107,10 @@ namespace MagneticBall3D
         bool m_noCrystalsButtonOkClicked = false;
         bool m_showNoCrystalsMenu = false;
 
-        // Ad callback. These callbacks can be called from different thread.
+        // Ad callbacks. Can be called from different thread.
         std::function<void()> m_rewardedAdSuccessCallback;
         std::function<void()> m_rewardedAdErrorCallback;
-        // Assigned from different thread.
+        // Can be assigned from different thread.
         static std::atomic<bool> m_rewardedAdSuccess;
         static std::atomic<bool> m_rewardedAdError;
         // Ad loading menu.

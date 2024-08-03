@@ -23,9 +23,9 @@ namespace DataBaseHelper
     //                                                                                                          |                       | Item6FirstBuy
 
     // Database schema part 2.
-    // Tables:  PlayerTalents   |
+    // Tables:  PlayerTalents   |   Ads
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns: Name            |
+    // Columns: Name            |   RewardedAdTime
     //          CurrentLevel    |
     //
 
@@ -264,6 +264,23 @@ namespace DataBaseHelper
         executeSql(std::regex_replace(updateGameDifficultyLevel, std::regex(":::level"), std::to_string(value)));
     }
 
-    // Time. (AdTime, DailyRewardTime)
+    // Ads.
+    const inline std::string createTableAds = "CREATE TABLE IF NOT EXISTS "
+                                              "Ads( "
+                                              "ID INTEGER PRIMARY KEY NOT NULL, "
+                                              "RewardedAdTime INTEGER "
+                                              ");";
+
+    const inline std::string insertAds = "INSERT INTO Ads(ID, RewardedAdTime) VALUES(NULL, NULL);";
+    const inline std::string selectAdsAll = "SELECT * FROM Ads LIMIT 1;";
+    const inline std::string updateAdsRewardedAdTime = "UPDATE Ads SET RewardedAdTime = :::rewardedAdTime;";
+
+    void readAds();
+    inline void storeAdsRewardedAdTime(long long int value)
+    {
+        executeSql(std::regex_replace(updateAdsRewardedAdTime, std::regex(":::rewardedAdTime"), std::to_string(value)));
+    }
+
+    // Daily Reward.
 
 }

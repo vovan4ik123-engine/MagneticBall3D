@@ -45,6 +45,7 @@ namespace MagneticBall3D
 
 
         m_improveByAdTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdsImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_improveByAdTimerTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdsImageTimer.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_improveByCrystalsTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/CrystalsImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_maxLevelReachedTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MaxLevelReached.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
@@ -54,6 +55,7 @@ namespace MagneticBall3D
         m_selectedDescriptionFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.024f);
         m_selectedValueLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.021f);
         m_valueToAddFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
+        m_adTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.035f);
 
         selectTalent(m_selectedIndex);
 
@@ -148,6 +150,9 @@ namespace MagneticBall3D
             EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
             selectTalent(m_selectedIndex); // Recalculate values.
             SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "ad");
+
+            EnumsAndVars::Ads::rewardedAdTime = Beryll::TimeStep::getSecSinceEpoch();
+            DataBaseHelper::storeAdsRewardedAdTime(EnumsAndVars::Ads::rewardedAdTime);
         }
 
         if(PlayerTalentsGUILayer::m_rewardedAdError)
@@ -255,18 +260,58 @@ namespace MagneticBall3D
             ImGui::PushFont(m_valueToAddFont);
             ImGui::SetCursorPos(ImVec2(0.44f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::Text("%s", m_selectedValueToAdd.c_str());
+            ImGui::PopFont();
+            ImGui::PopStyleColor(1);
 
             if(m_selectedCanBeImprovedByAds)
             {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.7f, 0.0f, 1.0f });
+                ImGui::PushFont(m_valueToAddFont);
                 ImGui::SetCursorPos(ImVec2(0.75f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
                 ImGui::Text("or");
+                ImGui::PopFont();
+                ImGui::PopStyleColor(1);
 
-                ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
-                ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByAdTexture->getID()),
-                             ImVec2(textureWidth, menuSelectedHeight));
+                if(EnumsAndVars::Ads::rewardedAdTime + EnumsAndVars::Ads::rewardedAdTimeDelay <= Beryll::TimeStep::getSecSinceEpoch())
+                {
+                    ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
+                    ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByAdTexture->getID()),
+                                 ImVec2(textureWidth, menuSelectedHeight));
+                }
+                else
+                {
+                    ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
+                    ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByAdTimerTexture->getID()),
+                                 ImVec2(textureWidth, menuSelectedHeight));
+
+                    // Show timer.
+                    m_adTimerText = "";
+                    uint64_t secLeft = (EnumsAndVars::Ads::rewardedAdTime + EnumsAndVars::Ads::rewardedAdTimeDelay) - Beryll::TimeStep::getSecSinceEpoch();
+                    if(secLeft > EnumsAndVars::Ads::rewardedAdTimeDelay)
+                        secLeft = EnumsAndVars::Ads::rewardedAdTimeDelay;
+
+                    int min = secLeft / 60;
+                    int sec = secLeft % 60;
+
+                    if(min < 10)
+                        m_adTimerText += "0";
+
+                    m_adTimerText += std::to_string(min);
+                    m_adTimerText += ":";
+
+                    if(sec < 10)
+                        m_adTimerText += "0";
+
+                    m_adTimerText += std::to_string(sec);
+
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+                    ImGui::PushFont(m_adTimerFont);
+                    ImGui::SetCursorPos(ImVec2(0.565f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.029f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                    ImGui::Text("%s", m_adTimerText.c_str());
+                    ImGui::PopFont();
+                    ImGui::PopStyleColor(1);
+                }
             }
-            ImGui::PopFont();
-            ImGui::PopStyleColor(1);
 
             ImGui::SetCursorPos(ImVec2(textureCrystalsLeftPos, 0.0f));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByCrystalsTexture->getID()),
@@ -298,7 +343,8 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth(), menuSelectedHeight));
             ImGui::Begin(m_improveTalentMenuID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-            if(m_selectedCanBeImprovedByAds)
+            if(m_selectedCanBeImprovedByAds &&
+               EnumsAndVars::Ads::rewardedAdTime + EnumsAndVars::Ads::rewardedAdTimeDelay <= Beryll::TimeStep::getSecSinceEpoch())
             {
                 ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
                 m_improveByAdClicked = ImGui::ImageButton(m_improveTalentByAdButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),

@@ -89,6 +89,11 @@ namespace DataBaseHelper
                 executeSql(createTableGameDifficulty);
                 executeSql(insertGameDifficulty);
                 storeGameDifficultyLevel(EnumsAndVars::GameDifficulty::level);
+
+                // Ads. createTableAds
+                executeSql(createTableAds);
+                executeSql(insertAds);
+                storeAdsRewardedAdTime(0);
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -114,6 +119,7 @@ namespace DataBaseHelper
             readShop();
             readPlayerTalents();
             readGameDifficulty();
+            readAds();
         }
     }
 
@@ -416,6 +422,35 @@ namespace DataBaseHelper
             if(std::holds_alternative<long long int>(rows[0][1]))
                 EnumsAndVars::GameDifficulty::level = std::get<long long int>(rows[0][1]);
             BR_INFO("GameDifficulty::level after read: %d", EnumsAndVars::GameDifficulty::level);
+        }
+        catch(const Beryll::DataBaseException& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("DataBaseException %s", what.c_str());
+        }
+        catch(const std::exception& e)
+        {
+            std::string what = e.what();
+            BR_ERROR("std::exception %s", what.c_str());
+        }
+    }
+
+    void readAds()
+    {
+        try
+        {
+            Beryll::DataBase::setSqlQuery(selectAdsAll);
+            std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = Beryll::DataBase::executeSelectQuery();
+            BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "readAds() rows are empty.");
+
+            BR_INFO("readAds() rows: %d columns: %d", rows.size(), rows[0].size());
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
+
+            BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "RewardedAdTime contains wrong data.");
+            if(std::holds_alternative<long long int>(rows[0][1]))
+                EnumsAndVars::Ads::rewardedAdTime = std::get<long long int>(rows[0][1]);
+            BR_INFO("Ads::rewardedAdTime after read: %d", EnumsAndVars::Ads::rewardedAdTime);
         }
         catch(const Beryll::DataBaseException& e)
         {

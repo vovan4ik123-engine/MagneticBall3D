@@ -40,12 +40,12 @@ namespace MagneticBall3D
         static const std::string m_energyTextureID;
         std::unique_ptr<Beryll::Texture> m_energyTexture;
 
-        static const std::string m_textAmountID;
-        ImFont* m_fontAmount;
+        static const std::string m_energyAmountTextID;
+        ImFont* m_energyAmountFont;
 
-        static const std::string m_textRestoreTimerID;
-        ImFont* m_fontRestoreTimer;
-        std::string m_textRestoreTimer;
+        static const std::string m_restoreTimerTextID;
+        std::string m_restoreTimerText;
+        ImFont* m_restoreTimerFont;
 
         // Energy button. Transparent. On top of texture + texts.
         static const std::string m_energyButtonID;

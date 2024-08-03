@@ -6,8 +6,8 @@ namespace MagneticBall3D
 {
     // All there IDs as strings required by ImGUI.
     const std::string EnergySystem::m_energyTextureID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_textAmountID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_textRestoreTimerID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_energyAmountTextID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string EnergySystem::m_restoreTimerTextID = std::to_string(BeryllUtils::Common::generateID());
     const std::string EnergySystem::m_energyButtonID = std::to_string(BeryllUtils::Common::generateID());
 
     EnergySystem::EnergySystem()
@@ -17,8 +17,8 @@ namespace MagneticBall3D
         m_energyTexture = Beryll::Renderer::createTexture("GUI/menus/start/Energy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_energyButtonTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_fontAmount = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
-        m_fontRestoreTimer = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.015f);
+        m_energyAmountFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
+        m_restoreTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.015f);
     }
 
     EnergySystem::~EnergySystem()
@@ -80,9 +80,9 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.45f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.008f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
-        ImGui::Begin(m_textAmountID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
+        ImGui::Begin(m_energyAmountTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-        ImGui::PushFont(m_fontAmount);
+        ImGui::PushFont(m_energyAmountFont);
         ImGui::Text("%d/%d", EnumsAndVars::EnergySystem::currentAmount, EnumsAndVars::EnergySystem::maxLimitToRestore);
         ImGui::PopFont();
 
@@ -90,7 +90,7 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Text restore timer.
-        m_textRestoreTimer = "";
+        m_restoreTimerText = "";
         if(EnumsAndVars::EnergySystem::currentAmount < EnumsAndVars::EnergySystem::maxLimitToRestore &&
            EnumsAndVars::EnergySystem::lastSecOneEnergyRestored + EnumsAndVars::EnergySystem::secToRestoreOneEnergy >= m_currentSec)
         {
@@ -103,24 +103,24 @@ namespace MagneticBall3D
             int sec = secLeft % 60;
 
             if(min < 10)
-                m_textRestoreTimer += "0";
+                m_restoreTimerText += "0";
 
-            m_textRestoreTimer += std::to_string(min);
-            m_textRestoreTimer += ":";
+            m_restoreTimerText += std::to_string(min);
+            m_restoreTimerText += ":";
 
             if(sec < 10)
-                m_textRestoreTimer += "0";
+                m_restoreTimerText += "0";
 
-            m_textRestoreTimer += std::to_string(sec);
+            m_restoreTimerText += std::to_string(sec);
         }
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.033f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
-        ImGui::Begin(m_textRestoreTimerID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
+        ImGui::Begin(m_restoreTimerTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-        ImGui::PushFont(m_fontRestoreTimer);
-        ImGui::Text("%s", m_textRestoreTimer.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
+        ImGui::PushFont(m_restoreTimerFont);
+        ImGui::Text("%s", m_restoreTimerText.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
         ImGui::PopFont();
 
         ImGui::End();

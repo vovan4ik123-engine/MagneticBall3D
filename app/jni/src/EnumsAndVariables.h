@@ -130,6 +130,13 @@ namespace EnumsAndVars
         static inline int level = 0;
     };
 
+    struct Ads
+    {
+        // Stored in DB.
+        static inline uint64_t rewardedAdTime = 0; // Time in sec since epoch (1.1.1970) of last rewarded ad shown.
+        // Not stored in DB.
+        static constexpr inline int rewardedAdTimeDelay = 240; // 240 sec between rewarded ads.
+    };
     // Database tables end.
 
     // Camera.
