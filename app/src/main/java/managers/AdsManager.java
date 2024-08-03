@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.android.gms.ads.AdError;
@@ -13,54 +12,48 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.initialization.AdapterStatus;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import org.libsdl.app.SDLActivity;
 
-public class AdsManager implements OnInitializationCompleteListener {
+public class AdsManager { // implements OnInitializationCompleteListener
 
-    public static AtomicBoolean isAdInitialized = new AtomicBoolean(false);
+    //public static AtomicBoolean isAdInitialized = new AtomicBoolean(false);
     public static AtomicBoolean isAdLoaded = new AtomicBoolean(false);
     public static RewardedAd rewardedAd;
     public static SDLActivity activity;
-    private static AdsManager adsManager;
 
-    public static void init(SDLActivity activ) {
+    public static void init(SDLActivity activ)  {
         Log.v("AdsManager", "init(SDLActivity activity)");
         AdsManager.activity = activ;
-
-        Log.v("AdsManager", "MobileAds.initialize 1");
-        // Initialize the Google Mobile Ads SDK on a background thread.
-        //new Thread(() -> { MobileAds.initialize(AdsManager.activity, adsManager); }).start();
-        MobileAds.initialize(AdsManager.activity, adsManager); // calls onInitializationComplete().
-        Log.v("AdsManager", "MobileAds.initialize 2");
+        MobileAds.initialize(AdsManager.activity, initializationStatus -> {}); // calls onInitializationComplete().
+        Log.v("AdsManager", "loadAd()");
+        loadAd(false);
     }
 
-    @Override
-    public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-        Log.v("AdsManager", "onInitializationComplete()");
-        Map<String, AdapterStatus> networks = initializationStatus.getAdapterStatusMap();
-
-        for (Map.Entry<String, AdapterStatus> pair : networks.entrySet()) {
-            Log.v("AdsManager", "network name: " + pair.getKey() + " status: " + pair.getValue().getInitializationState().toString());
-            // If any network is ready set isAdsInitialized = true.
-            if(pair.getValue().getInitializationState() == AdapterStatus.State.READY) {
-                AdsManager.isAdInitialized.set(true);
-            }
-        }
-
-        if(AdsManager.isAdInitialized.get()) {
-            // Preload ad if initialization successful.
-            loadAd(false);
-        }
-    }
+//    @Override
+//    public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+//        Log.v("AdsManager", "onInitializationComplete()");
+//        Map<String, AdapterStatus> networks = initializationStatus.getAdapterStatusMap();
+//
+//        for (Map.Entry<String, AdapterStatus> pair : networks.entrySet()) {
+//            Log.v("AdsManager", "network name: " + pair.getKey() + " status: " + pair.getValue().getInitializationState().toString());
+//            // If any network is ready set isAdsInitialized = true.
+//            if(pair.getValue().getInitializationState() == AdapterStatus.State.READY) {
+//                AdsManager.isAdInitialized.set(true);
+//            }
+//        }
+//
+//        if(AdsManager.isAdInitialized.get()) {
+//            // Preload ad if initialization successful.
+//            loadAd(false);
+//        }
+//    }
 
     private static void loadAd(boolean showAfterLoad) {
+        Log.v("AdsManager", "loadAd()");
         AdsManager.isAdLoaded.set(false);
         AdsManager.rewardedAd = null;
 
@@ -71,7 +64,6 @@ public class AdsManager implements OnInitializationCompleteListener {
                 Log.v("AdsManager", "Load ads error: " + loadAdError.toString());
                 AdsManager.isAdLoaded.set(false);
                 AdsManager.rewardedAd = null;
-                loadAd(false);
             }
 
             @Override
@@ -92,9 +84,6 @@ public class AdsManager implements OnInitializationCompleteListener {
                         // Called when ad is dismissed.
                         // Set the ad reference to null so you don't show the ad a second time.
                         Log.v("AdsManager", "Ad dismissed fullscreen content.");
-                        AdsManager.rewardedAd = null;
-                        AdsManager.isAdLoaded.set(false);
-                        loadAd(false);
                     }
 
                     @Override
@@ -103,16 +92,13 @@ public class AdsManager implements OnInitializationCompleteListener {
                         Log.v("AdsManager", "Ad failed to show fullscreen content.");
                         AdsManager.rewardedAd = null;
                         AdsManager.isAdLoaded.set(false);
-                        loadAd(false);
+                        rewardedAdErrorCallback();
                     }
 
                     @Override
                     public void onAdImpression() {
                         // Called when an impression is recorded for an ad.
                         Log.v("AdsManager", "Ad recorded an impression.");
-                        AdsManager.rewardedAd = null;
-                        AdsManager.isAdLoaded.set(false);
-                        loadAd(false);
                     }
 
                     @Override
@@ -130,20 +116,26 @@ public class AdsManager implements OnInitializationCompleteListener {
     }
 
     private static void showAd() {
-        if (AdsManager.rewardedAd != null) {
-            AdsManager.rewardedAd.show(AdsManager.activity, new OnUserEarnedRewardListener() {
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    Log.v("AdsManager", "The user earned the reward.");
-                    AdsManager.rewardedAd = null;
-                    AdsManager.isAdLoaded.set(false);
-                    loadAd(false);
+        AdsManager.activity.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                Log.v("AdsManager", "showAd()");
+                if (AdsManager.rewardedAd != null) {
+                    AdsManager.rewardedAd.show(AdsManager.activity, new OnUserEarnedRewardListener() {
+                        @Override
+                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                            Log.v("AdsManager", "The user earned the reward.");
+                            AdsManager.rewardedAd = null;
+                            AdsManager.isAdLoaded.set(false);
+                            loadAd(false);
+                            rewardedAdSuccessCallback();
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
-    // Public method to call from outside by user request to show ad.
+    // Called from C++ code.
     public static void showRewardedAd() {
         Log.v("AdsManager", "showRewardedAd()");
         if(AdsManager.isAdLoaded.get()) {
@@ -153,6 +145,6 @@ public class AdsManager implements OnInitializationCompleteListener {
         }
     }
 
-    public static native void adsSuccessCallback();
-    public static native void adsErrorCallback();
+    public static native void rewardedAdSuccessCallback();
+    public static native void rewardedAdErrorCallback();
 }

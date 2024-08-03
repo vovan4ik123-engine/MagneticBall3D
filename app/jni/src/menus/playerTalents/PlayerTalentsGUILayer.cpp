@@ -24,6 +24,9 @@ namespace MagneticBall3D
     const std::string PlayerTalentsGUILayer::m_noCrystalsMenuID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayerTalentsGUILayer::m_noCrystalsButtonOkID = std::to_string(BeryllUtils::Common::generateID());
 
+    std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
+    std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdError = false;
+
     PlayerTalentsGUILayer::PlayerTalentsGUILayer()
     {
         //float m_screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
@@ -53,6 +56,18 @@ namespace MagneticBall3D
         m_valueToAddFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
 
         selectTalent(m_selectedIndex);
+
+        // These callbacks can be called from different thread.
+        m_rewardedAdSuccessCallback = []() -> void
+        {
+            BR_INFO("%s", "m_rewardedAdSuccessCallback called");
+            PlayerTalentsGUILayer::m_rewardedAdSuccess = true;
+        };
+        m_rewardedAdErrorCallback = []() -> void
+        {
+            BR_INFO("%s", "m_rewardedAdErrorCallback called");
+            PlayerTalentsGUILayer::m_rewardedAdError = true;
+        };
     }
 
     PlayerTalentsGUILayer::~PlayerTalentsGUILayer()
@@ -108,6 +123,7 @@ namespace MagneticBall3D
         {
             m_improveByAdClicked = false;
             BR_INFO("%s", "m_improveByAdClicked.");
+            Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback);
         }
         else if(m_improveByCrystalsClicked)
         {
@@ -124,6 +140,19 @@ namespace MagneticBall3D
             {
                 m_showNoCrystalsMenu = true;
             }
+        }
+
+        if(PlayerTalentsGUILayer::m_rewardedAdSuccess)
+        {
+            PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
+            EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
+            selectTalent(m_selectedIndex); // Recalculate values.
+            SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "ad");
+        }
+
+        if(PlayerTalentsGUILayer::m_rewardedAdError)
+        {
+            PlayerTalentsGUILayer::m_rewardedAdError = false;
         }
 
         if(m_noCrystalsButtonOkClicked)

@@ -76,7 +76,7 @@ namespace MagneticBall3D
         std::function<void()> m_buyItem5SuccessCallback;
         std::function<void()> m_buyItem6SuccessCallback;
         std::function<void()> m_commonErrorCallback;
-        // Сan be assigned from different thread.
+        // Assigned from different thread.
         static std::atomic<bool> m_item1Bought;
         static std::atomic<bool> m_item2Bought;
         static std::atomic<bool> m_item3Bought;

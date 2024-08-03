@@ -104,6 +104,15 @@ namespace MagneticBall3D
         bool m_noCrystalsButtonOkClicked = false;
         bool m_showNoCrystalsMenu = false;
 
+        // Ad callback. These callbacks can be called from different thread.
+        std::function<void()> m_rewardedAdSuccessCallback;
+        std::function<void()> m_rewardedAdErrorCallback;
+        // Assigned from different thread.
+        static std::atomic<bool> m_rewardedAdSuccess;
+        static std::atomic<bool> m_rewardedAdError;
         // Ad loading menu.
+
+        // Ad error.
+
     };
 }
