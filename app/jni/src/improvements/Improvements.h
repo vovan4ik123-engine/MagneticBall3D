@@ -100,8 +100,7 @@ namespace MagneticBall3D
         std::vector<int> m_IDsSelected; // Contains IDs of selected improvements.
         std::shared_ptr<Player> m_player;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonReroll;
-        int m_rerollAttempts = 2;
-        static constexpr int m_rerollPrice = 5;
+        int m_rerollAttempts = 1;
 
         // Positions of GUI block in range 0...1.
         // To create blocks.

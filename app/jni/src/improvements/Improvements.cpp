@@ -254,11 +254,9 @@ namespace MagneticBall3D
             {
                 buttonReroll->updateBeforePhysics();
 
-                if(EnumsAndVars::CurrencyBalance::crystals >= m_rerollPrice && buttonReroll->getIsPressed())
+                if(buttonReroll->getIsPressed())
                 {
                     --m_rerollAttempts;
-                    EnumsAndVars::CurrencyBalance::crystals -= m_rerollPrice;
-                    DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
                     selectImprovementsToShow();
 
