@@ -31,7 +31,7 @@ namespace EnumsAndVars
     struct CurrencyBalance
     {
         // Stored in DB.
-        static inline int crystals = 900;
+        static inline int crystals = 90;
         // Not stored in DB.
         // ...
     };
@@ -69,6 +69,11 @@ namespace EnumsAndVars
         static inline bool item6FirstBuy = true;
     };
 
+    enum class PlayerTalentCurrency
+    {
+        AD,
+        CRYSTALS
+    };
     struct PlayerTalentData
     {
         // Stored in DB.
@@ -82,15 +87,23 @@ namespace EnumsAndVars
         const bool canBeImprovedByAd;
         const std::vector<int> pricePerLevel; // Crystals.
 
-        void improveLevel()
+        void improveLevel(PlayerTalentCurrency currency)
         {
             BR_ASSERT((currentLevel < maxLevel), "%s", "improveLevel(): currentLevel must be less than maxLevel.");
-            BR_ASSERT((getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-            if(currentLevel >= maxLevel || getPriceCrystals() > CurrencyBalance::crystals)
+            if(currentLevel >= maxLevel)
                 return;
-            // Update currency after subtract price.
-            CurrencyBalance::crystals -= getPriceCrystals();
-            DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+
+            if(currency == PlayerTalentCurrency::CRYSTALS)
+            {
+                BR_ASSERT((getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                if(getPriceCrystals() > CurrencyBalance::crystals)
+                    return;
+
+                // Update currency after subtract price.
+                CurrencyBalance::crystals -= getPriceCrystals();
+                DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
+            }
+
             // Update talent.
             ++currentLevel;
             DataBaseHelper::updatePlayerTalent(name, currentLevel);
@@ -112,13 +125,13 @@ namespace EnumsAndVars
         }
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20, 5.0f, "+5%", true,
-                                                           {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25}},
+                                                           {20}},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60, 5.0f, "+5%", true,
-                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25}},
+                                                           {10}},
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%", true,
-                                                           {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22}},
-                                                          {"Accelerate", 0, "Increase\nacceleration.", 6, 5.0f, "+5%", true,
-                                                           {30, 31, 32, 33, 34, 35}},
+                                                           {20}},
+                                                          {"Accelerate", 0, "Increase\nacceleration.", 10, 3.0f, "+3%", true,
+                                                           {30}},
                                                           {"Protection", 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%", true,
                                                            {5}},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3, 100.0f, "+1", false,
@@ -135,8 +148,16 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline uint64_t rewardedAdTime = 0; // Time in sec since epoch (1.1.1970) of last rewarded ad shown.
         // Not stored in DB.
-        static constexpr inline int rewardedAdTimeDelay = 240; // 240 sec between rewarded ads.
+        static constexpr inline int rewardedAdTimeDelay = 20; // 240 sec between rewarded ads.
     };
+
+    struct DailyReward
+    {
+        // Stored in DB.
+        static inline uint64_t tookTime = 0; // Time in sec since epoch (1.1.1970) of last daily reward took.
+        static inline int tookDay = 1; // Must be 1 - 7. Represent day of week.
+    };
+
     // Database tables end.
 
     // Camera.

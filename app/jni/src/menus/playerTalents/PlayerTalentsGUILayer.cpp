@@ -142,7 +142,7 @@ namespace MagneticBall3D
 
             if(EnumsAndVars::allPlayerTalents[m_selectedIndex].getPriceCrystals() <= EnumsAndVars::CurrencyBalance::crystals)
             {
-                EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
+                EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel(EnumsAndVars::PlayerTalentCurrency::CRYSTALS);
                 selectTalent(m_selectedIndex); // Recalculate values.
                 SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, "crystal");
             }
@@ -156,7 +156,7 @@ namespace MagneticBall3D
         {
             PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
             m_showAdLoadingMenu = false;
-            EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
+            EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel(EnumsAndVars::PlayerTalentCurrency::AD);
             selectTalent(m_selectedIndex); // Recalculate values.
             SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, "ad");
 

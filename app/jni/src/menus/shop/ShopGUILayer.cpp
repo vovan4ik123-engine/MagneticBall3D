@@ -146,7 +146,7 @@ namespace MagneticBall3D
             ShopGUILayer::m_item1Bought = false;
             BR_INFO("%s", "Item 1 bought.");
 
-            int addCrystals = 60;
+            int addCrystals = 80;
             if(EnumsAndVars::Shop::item1FirstBuy)
             {
                 EnumsAndVars::Shop::item1FirstBuy = false;
@@ -164,7 +164,7 @@ namespace MagneticBall3D
             ShopGUILayer::m_item2Bought = false;
             BR_INFO("%s", "Item 2 bought.");
 
-            int addCrystals = 150;
+            int addCrystals = 200;
             if(EnumsAndVars::Shop::item2FirstBuy)
             {
                 EnumsAndVars::Shop::item2FirstBuy = false;
@@ -182,7 +182,7 @@ namespace MagneticBall3D
             ShopGUILayer::m_item3Bought = false;
             BR_INFO("%s", "Item 3 bought.");
 
-            int addCrystals = 400;
+            int addCrystals = 500;
             if(EnumsAndVars::Shop::item3FirstBuy)
             {
                 EnumsAndVars::Shop::item3FirstBuy = false;

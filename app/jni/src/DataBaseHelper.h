@@ -23,10 +23,10 @@ namespace DataBaseHelper
     //                                                                                                          |                       | Item6FirstBuy
 
     // Database schema part 2.
-    // Tables:  PlayerTalents   |   Ads
+    // Tables:  PlayerTalents   |   Ads             |   DailyReward
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // Columns: Name            |   RewardedAdTime
-    //          CurrentLevel    |
+    // Columns: Name            |   RewardedAdTime  |   TookTime
+    //          CurrentLevel    |                   |   TookDay
     //
 
     // Common data.
@@ -37,6 +37,7 @@ namespace DataBaseHelper
     //                                                     "VALUES(NULL, :::battleNumber, :::allFinished);";
 
     void executeSql(const std::string& sql);
+    std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> executeSqlSelect(const std::string& sql);
 
     // Settings.
     const inline std::string createTableSettings = "CREATE TABLE IF NOT EXISTS "
@@ -282,5 +283,26 @@ namespace DataBaseHelper
     }
 
     // Daily Reward.
+    const inline std::string createTableDailyReward = "CREATE TABLE IF NOT EXISTS "
+                                                      "DailyReward( "
+                                                      "ID INTEGER PRIMARY KEY NOT NULL, "
+                                                      "TookTime INTEGER, "
+                                                      "TookDay INTEGER "
+                                                      ");";
 
+    const inline std::string insertDailyReward = "INSERT INTO DailyReward(ID, TookTime, TookDay) VALUES(NULL, NULL, NULL);";
+    const inline std::string selectDailyRewardAll = "SELECT * FROM DailyReward LIMIT 1;";
+    const inline std::string updateDailyRewardTookTime = "UPDATE DailyReward SET TookTime = :::tookTime;";
+    const inline std::string updateDailyRewardTookDay = "UPDATE DailyReward SET TookDay = :::tookDay;";
+
+    void readDailyReward();
+    inline void storeDailyRewardTookTime(long long int value)
+    {
+        executeSql(std::regex_replace(updateDailyRewardTookTime, std::regex(":::tookTime"), std::to_string(value)));
+    }
+    inline void storeDailyRewardTookDay(long long int value)
+    {
+        BR_ASSERT((value > 0 && value < 8), "%s", "DailyReward TookDay represent day of week and must be in range 1 - 7.");
+        executeSql(std::regex_replace(updateDailyRewardTookDay, std::regex(":::tookDay"), std::to_string(value)));
+    }
 }
