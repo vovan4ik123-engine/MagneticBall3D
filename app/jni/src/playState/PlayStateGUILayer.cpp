@@ -237,7 +237,7 @@ namespace MagneticBall3D
         ImGui::End();
         ImGui::PopStyleColor(3);
 
-        // Text map timer.
+        // Play timer.
         if(m_showMapPlayTimer)
         {
             m_mapPlayTimerText = "";
@@ -323,7 +323,7 @@ namespace MagneticBall3D
         // Button exit.
         if(m_exitButtonEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(m_exitButtonLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), m_exitButtonTop * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(m_exitButtonLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_exitButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_exitButtonClicked = ImGui::ImageButton(m_exitButtonID.c_str(), reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
@@ -371,7 +371,7 @@ namespace MagneticBall3D
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_resurrectButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_resurrectButtonClicked = ImGui::ImageButton(m_resurrectButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_resurrectButtonOkTexture->getID()),
@@ -417,7 +417,7 @@ namespace MagneticBall3D
             }
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_killAllButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_killAllButtonClicked = ImGui::ImageButton(m_killAllButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_killAllButtonOkTexture->getID()),
@@ -434,7 +434,7 @@ namespace MagneticBall3D
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_winButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_winButtonClicked = ImGui::ImageButton(m_winButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_winButtonOkTexture->getID()),
@@ -451,7 +451,7 @@ namespace MagneticBall3D
                          ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.5f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_tankWithCommanderButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_tankWithCommanderButtonClicked = ImGui::ImageButton(m_tankWithCommanderButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_tankWithCommanderButtonOkTexture->getID()),

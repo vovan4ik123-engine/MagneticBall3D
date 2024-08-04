@@ -23,6 +23,9 @@ namespace MagneticBall3D
     const std::string PlayerTalentsGUILayer::m_improveTalentByCrystalsButtonID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayerTalentsGUILayer::m_noCrystalsMenuID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayerTalentsGUILayer::m_noCrystalsButtonOkID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayerTalentsGUILayer::m_adLoadingMenuID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayerTalentsGUILayer::m_adErrorMenuID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayerTalentsGUILayer::m_adErrorButtonOkID = std::to_string(BeryllUtils::Common::generateID());
 
     std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
     std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdError = false;
@@ -44,13 +47,17 @@ namespace MagneticBall3D
         m_resurrectionAttemptsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/ResurrectionAttempts.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
 
-        m_improveByAdTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdsImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_improveByAdTimerTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdsImageTimer.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_improveByAdTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_improveByAdTimerTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImageTimer.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_improveByCrystalsTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/CrystalsImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_maxLevelReachedTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MaxLevelReached.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_noCrystalsTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/NotEnoughCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_noCrystalsButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adLoadingTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdLoading.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/SomethingWentWrong.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_selectedDescriptionFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.024f);
         m_selectedValueLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.021f);
@@ -125,6 +132,7 @@ namespace MagneticBall3D
         {
             m_improveByAdClicked = false;
             BR_INFO("%s", "m_improveByAdClicked.");
+            m_showAdLoadingMenu = true;
             Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback);
         }
         else if(m_improveByCrystalsClicked)
@@ -136,7 +144,7 @@ namespace MagneticBall3D
             {
                 EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
                 selectTalent(m_selectedIndex); // Recalculate values.
-                SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "crystal");
+                SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, "crystal");
             }
             else
             {
@@ -147,9 +155,10 @@ namespace MagneticBall3D
         if(PlayerTalentsGUILayer::m_rewardedAdSuccess)
         {
             PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
+            m_showAdLoadingMenu = false;
             EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel();
             selectTalent(m_selectedIndex); // Recalculate values.
-            SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, m_selectedCurrentLevel, "ad");
+            SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, "ad");
 
             EnumsAndVars::Ads::rewardedAdTime = Beryll::TimeStep::getSecSinceEpoch();
             DataBaseHelper::storeAdsRewardedAdTime(EnumsAndVars::Ads::rewardedAdTime);
@@ -158,12 +167,20 @@ namespace MagneticBall3D
         if(PlayerTalentsGUILayer::m_rewardedAdError)
         {
             PlayerTalentsGUILayer::m_rewardedAdError = false;
+            m_showAdLoadingMenu = false;
+            m_showAdErrorMenu = true;
         }
 
         if(m_noCrystalsButtonOkClicked)
         {
             m_noCrystalsButtonOkClicked = false;
             m_showNoCrystalsMenu = false;
+        }
+
+        if(m_adErrorButtonOkClicked)
+        {
+            m_adErrorButtonOkClicked = false;
+            m_showAdErrorMenu = false;
         }
     }
 
@@ -334,7 +351,8 @@ namespace MagneticBall3D
         ImGui::End();
         ImGui::PopStyleColor(1);
 
-        if(m_selectedCurrentLevel < m_selectedMaxLevel) // Two transparent buttons.
+        // Two transparent buttons.
+        if(m_selectedCurrentLevel < m_selectedMaxLevel)
         {
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
@@ -375,6 +393,43 @@ namespace MagneticBall3D
             ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             m_noCrystalsButtonOkClicked = ImGui::ImageButton(m_noCrystalsButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_noCrystalsButtonOkTexture->getID()),
                                                         ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::End();
+            ImGui::PopStyleColor(1);
+        }
+
+        // Ad loading menu.
+        if(m_showAdLoadingMenu)
+        {
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
+            ImGui::SetNextWindowFocus();
+            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::Begin(m_adLoadingMenuID.c_str(), nullptr, m_noFrame);
+
+            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+            ImGui::End();
+            ImGui::PopStyleColor(1);
+        }
+
+        // Ad error.
+        if(m_showAdErrorMenu)
+        {
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
+            ImGui::SetNextWindowFocus();
+            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::Begin(m_adErrorMenuID.c_str(), nullptr, m_noFrame);
+
+            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
+                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+
+            ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            m_adErrorButtonOkClicked = ImGui::ImageButton(m_adErrorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
+                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }

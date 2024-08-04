@@ -57,7 +57,7 @@ public class AdsManager { // implements OnInitializationCompleteListener
         AdsManager.isAdLoaded.set(false);
         AdsManager.rewardedAd = null;
 
-        AdRequest adRequest = new AdRequest.Builder().build(); // ca-app-pub-3940256099942544/5224354917
+        AdRequest adRequest = new AdRequest.Builder().build(); // Test ad id: ca-app-pub-3940256099942544/5224354917
         RewardedAd.load(AdsManager.activity, "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {

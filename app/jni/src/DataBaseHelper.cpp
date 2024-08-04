@@ -90,10 +90,10 @@ namespace DataBaseHelper
                 executeSql(insertGameDifficulty);
                 storeGameDifficultyLevel(EnumsAndVars::GameDifficulty::level);
 
-                // Ads. createTableAds
+                // Ads.
                 executeSql(createTableAds);
                 executeSql(insertAds);
-                storeAdsRewardedAdTime(0);
+                storeAdsRewardedAdTime(EnumsAndVars::Ads::rewardedAdTime);
             }
             catch(const Beryll::DataBaseException& e)
             {

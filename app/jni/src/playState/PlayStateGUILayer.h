@@ -97,7 +97,6 @@ namespace MagneticBall3D
         bool m_exitButtonEnabled = false;
         bool m_exitButtonClicked = false;
         float m_exitButtonLeft = 0.0f;
-        const float m_exitButtonTop = 0.5f;
 
         // Map0Tutorial.
         static const std::string m_tutorialSwipeID;
