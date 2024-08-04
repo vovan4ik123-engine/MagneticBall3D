@@ -124,18 +124,18 @@ namespace EnumsAndVars
             return float(currentLevel) * increasePerLevel;
         }
     };
-    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20, 5.0f, "+5%", true,
-                                                           {20}},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60, 5.0f, "+5%", true,
-                                                           {10}},
-                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20, 5.0f, "+5%", true,
-                                                           {20}},
-                                                          {"Accelerate", 0, "Increase\nacceleration.", 10, 3.0f, "+3%", true,
-                                                           {30}},
-                                                          {"Protection", 0, "Increase ball and\ngarbage protection.", 100, 5.0f, "+5%", true,
-                                                           {5}},
-                                                          {"Resurrection", 0, "Increase number\nof resurrections.", 3, 100.0f, "+1", false,
-                                                           {80}}
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20,
+                                                           5.0f, "+5%", true, {20}},
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60,
+                                                           5.0f, "+5%", true, {10}},
+                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
+                                                           5.0f, "+5%", true, {20}},
+                                                          {"Accelerate", 0, "Increase\nacceleration.", 10,
+                                                           3.0f, "+3%", true, {30}},
+                                                          {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
+                                                           5.0f, "+5%", true, {10}},
+                                                          {"Resurrection", 0, "Increase number\nof resurrections.", 3,
+                                                           100.0f, "+1", false, {100}}
                                                           };
     struct GameDifficulty
     {
@@ -156,6 +156,9 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline uint64_t tookTime = 0; // Time in sec since epoch (1.1.1970) of last daily reward took.
         static inline int tookDay = 1; // Must be 1 - 7. Represent day of week.
+        // Not stored in DB.
+        static constexpr inline int day1to6Reward = 10; // Crystals for 1 - 6 day.
+        static constexpr inline int day7Reward = 20; // Crystals for 7 day.
     };
 
     // Database tables end.
