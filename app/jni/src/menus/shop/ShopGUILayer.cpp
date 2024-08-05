@@ -32,11 +32,17 @@ namespace MagneticBall3D
 
         m_shopHeaderTexture = Beryll::Renderer::createTexture("GUI/menus/shop/ShopHeader.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item1ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item1FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item2ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item2FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item3ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem3.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item3FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem3FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item4ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem4.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item4FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem4FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item5ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem5.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item5FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem5FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item6ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem6.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_item6FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem6FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_errorTexture = Beryll::Renderer::createTexture("GUI/menus/shop/PurchaseError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_errorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
@@ -270,76 +276,106 @@ namespace MagneticBall3D
 
     void ShopGUILayer::draw()
     {
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Back.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_backButtonID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
         m_backButtonClicked = ImGui::ImageButton(m_backButtonID.c_str(), reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
         ImGui::End();
 
         // Shop header.
-        ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_shopHeaderID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_shopHeaderTexture->getID()),
-                     ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
         ImGui::End();
 
         // Shop all items.
-        ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.8f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.5f }); // Clicked.
+        ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, 0.1f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 0.8f * GUIHeight));
         ImGui::Begin(m_allItemsMenuID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
 
         // Crystals item1.
-        ImGui::SetCursorPos(ImVec2(0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item1ButtonClicked = ImGui::ImageButton(m_item1ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item1ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.05f * GUIHeight));
+        if(EnumsAndVars::Shop::item1FirstBuy)
+            m_item1ButtonClicked = ImGui::ImageButton(m_item1ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item1FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item1ButtonClicked = ImGui::ImageButton(m_item1ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item1ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item2.
-        ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item2ButtonClicked = ImGui::ImageButton(m_item2ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item2ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.05f * GUIHeight));
+        if(EnumsAndVars::Shop::item2FirstBuy)
+            m_item2ButtonClicked = ImGui::ImageButton(m_item2ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item2FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item2ButtonClicked = ImGui::ImageButton(m_item2ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item2ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item3.
-        ImGui::SetCursorPos(ImVec2(0.68f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item3ButtonClicked = ImGui::ImageButton(m_item3ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item3ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.05f * GUIHeight));
+        if(EnumsAndVars::Shop::item3FirstBuy)
+            m_item3ButtonClicked = ImGui::ImageButton(m_item3ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item3FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item3ButtonClicked = ImGui::ImageButton(m_item3ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item3ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item4.
-        ImGui::SetCursorPos(ImVec2(0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.275f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item4ButtonClicked = ImGui::ImageButton(m_item4ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item4ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.275f * GUIHeight));
+        if(EnumsAndVars::Shop::item4FirstBuy)
+            m_item4ButtonClicked = ImGui::ImageButton(m_item4ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item4FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item4ButtonClicked = ImGui::ImageButton(m_item4ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item4ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item5.
-        ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.275f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item5ButtonClicked = ImGui::ImageButton(m_item5ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item5ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.275f * GUIHeight));
+        if(EnumsAndVars::Shop::item5FirstBuy)
+            m_item5ButtonClicked = ImGui::ImageButton(m_item5ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item5FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item5ButtonClicked = ImGui::ImageButton(m_item5ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item5ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item6.
-        ImGui::SetCursorPos(ImVec2(0.68f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.275f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        m_item6ButtonClicked = ImGui::ImageButton(m_item6ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item6ButtonTexture->getID()),
-                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.2f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.275f * GUIHeight));
+        if(EnumsAndVars::Shop::item6FirstBuy)
+            m_item6ButtonClicked = ImGui::ImageButton(m_item6ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item6FirstBuyButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+        else
+            m_item6ButtonClicked = ImGui::ImageButton(m_item6ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item6ButtonTexture->getID()),
+                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         ImGui::End();
+        ImGui::PopStyleColor(3);
 
         if(m_showErrorMenu)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
             ImGui::Begin(m_errorMenuID.c_str(), nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.26f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_errorTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             m_errorButtonOkClicked = ImGui::ImageButton(m_errorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }

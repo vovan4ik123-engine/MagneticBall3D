@@ -75,9 +75,11 @@ namespace MagneticBall3D
 
     void EnergySystem::draw()
     {
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Text amount.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.45f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.008f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.45f * GUIWidth, 0.008f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_energyAmountTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
@@ -114,7 +116,7 @@ namespace MagneticBall3D
             m_restoreTimerText += std::to_string(sec);
         }
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.033f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.47f * GUIWidth, 0.033f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_restoreTimerTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
@@ -127,13 +129,13 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Texture energy.
-        ImGui::SetNextWindowPos(ImVec2(0.39f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.39f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_energyTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
         ImGui::Image(reinterpret_cast<ImTextureID>(m_energyTexture->getID()),
-                     ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
 
         ImGui::End();
 
@@ -141,13 +143,13 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        ImGui::SetNextWindowPos(ImVec2(0.39f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.39f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_energyButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         m_energyButtonClicked = ImGui::ImageButton(m_energyButtonID.c_str(), reinterpret_cast<ImTextureID>(m_energyButtonTexture->getID()),
-                                                   ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                   ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
 
         ImGui::End();
         ImGui::PopStyleColor(3);

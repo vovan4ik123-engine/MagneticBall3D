@@ -215,12 +215,14 @@ namespace MagneticBall3D
             }
         }
 
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // HP bar.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
         ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9565f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * GUIWidth, 0.9565f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * GUIWidth, 0.025f * GUIHeight));
         ImGui::Begin(m_progressBarHPID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::ProgressBar(progressBarHP);
         ImGui::End();
@@ -230,8 +232,8 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
         ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 0.0f, 1.0f, 1.0f});
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(-0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.976f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(1.04f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.02f * GUIWidth, 0.976f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.04f * GUIWidth, 0.03f * GUIHeight));
         ImGui::Begin(m_progressBarXPID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::ProgressBar(progressBarXP);
         ImGui::End();
@@ -255,7 +257,7 @@ namespace MagneticBall3D
             m_mapPlayTimerText += std::to_string(sec);
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-            ImGui::SetNextWindowPos(ImVec2(0.42f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.42f * GUIWidth, -0.005f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_mapPlayTimerID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::PushFont(m_mapPlayTimerFont);
@@ -266,15 +268,15 @@ namespace MagneticBall3D
         }
 
         // Smashed count.
-        ImGui::SetNextWindowPos(ImVec2(0.77f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.77f * GUIWidth, -0.005f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_smashedCountTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_smashedCountTexture->getID()),
-                     ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.26f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.002f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.84f * GUIWidth, 0.002f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_smashedCountTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_smashedCountFont);
@@ -284,15 +286,15 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Speed.
-        ImGui::SetNextWindowPos(ImVec2(0.77f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.025f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.77f * GUIWidth, 0.025f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_speedTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_speedTexture->getID()),
-                     ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.26f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.84f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.032f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.84f * GUIWidth, 0.032f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_speedFont);
@@ -302,160 +304,160 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Button pause.
-        ImGui::SetNextWindowPos(ImVec2(-0.011f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.005f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.011f * GUIWidth, -0.005f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin(m_pauseButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
         m_pauseButtonClicked = ImGui::ImageButton(m_pauseButtonID.c_str(), reinterpret_cast<ImTextureID>(m_pauseButtonTexture->getID()),
-                                                  ImVec2(0.13f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                  ImVec2(0.13f * GUIWidth, 0.05f * GUIHeight));
         ImGui::End();
 
         // Button resume.
         if(m_resumeButtonEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.25f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.35f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.25f * GUIWidth, 0.35f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_resumeButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_resumeButtonClicked = ImGui::ImageButton(m_resumeButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resumeButtonTexture->getID()),
-                                                       ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                       ImVec2(0.5f * GUIWidth, 0.08f * GUIHeight));
             ImGui::End();
         }
 
         // Button exit.
         if(m_exitButtonEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(m_exitButtonLeft * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(m_exitButtonLeft * GUIWidth, 0.52f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_exitButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_exitButtonClicked = ImGui::ImageButton(m_exitButtonID.c_str(), reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
-                                                     ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                     ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
         }
 
         // Map0Tutorial.
         if(tutorialSwipeEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.093f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.48f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.093f * GUIWidth, 0.48f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeTexture->getID()),
-                         ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.435f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.8f * GUIWidth, 0.435f * GUIHeight));
             ImGui::End();
         }
 
         if(tutorialHowToSwipeEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.12f * GUIWidth, 0.07f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialHowToSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialHowToSwipeTexture->getID()),
-                         ImVec2(0.76f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.14f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.76f * GUIWidth, 0.14f * GUIHeight));
             ImGui::End();
         }
 
         if(tutorialSwipeOnWallEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.12f * GUIWidth, 0.07f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialSwipeOnWallID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeOnWallTexture->getID()),
-                         ImVec2(0.76f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.76f * GUIWidth, 0.08f * GUIHeight));
             ImGui::End();
         }
 
         if(m_menuResurrectEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_resurrectTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.5f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.5f * GUIWidth, 0.52f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_resurrectButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_resurrectButtonClicked = ImGui::ImageButton(m_resurrectButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_resurrectButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
         }
 
         if(m_menuResurrectNoCrystalsEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_resurrectNoCrystalsTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectNoCrystalsTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             ImGui::End();
         }
 
         if(m_menuLoseEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_loseTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_loseTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             ImGui::End();
         }
 
         // Menu kill all can be before boss or without boss.
         if(m_menuKillAllEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_killAllTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             if(m_killAllToSpawnBoss) // Show message to spawn boss.
             {
                 ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToSpawnBossTexture->getID()),
-                             ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                             ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             }
             else // Show message to win without boss.
             {
                 ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToWinTexture->getID()),
-                             ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                             ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             }
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_killAllButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_killAllButtonClicked = ImGui::ImageButton(m_killAllButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_killAllButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
         }
 
         if(m_menuWinEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_winTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_winButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_winButtonClicked = ImGui::ImageButton(m_winButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_winButtonOkTexture->getID()),
-                                                    ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                    ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
         }
 
         if(m_menuTankWithCommanderEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_tankWithCommanderTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
             ImGui::End();
 
-            ImGui::SetNextWindowPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin(m_tankWithCommanderButtonOkID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_tankWithCommanderButtonClicked = ImGui::ImageButton(m_tankWithCommanderButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_tankWithCommanderButtonOkTexture->getID()),
-                                                                  ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                                  ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
         }
     }

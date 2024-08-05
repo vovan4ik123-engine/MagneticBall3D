@@ -101,60 +101,62 @@ namespace MagneticBall3D
     {
         //EnergySystem::getInstance().draw();
 
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Play.
-        ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.7f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.7f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_playButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         m_playButtonClicked = ImGui::ImageButton(m_playButtonID.c_str(), reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
-                                                 ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.09f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.4f * GUIWidth, 0.09f * GUIHeight));
 
         ImGui::End();
 
         // Shop.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_shopButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         m_shopButtonClicked = ImGui::ImageButton(m_shopButtonID.c_str(), reinterpret_cast<ImTextureID>(m_shopButtonTexture->getID()),
-                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
 
         ImGui::End();
 
         // Talents.
-        ImGui::SetNextWindowPos(ImVec2(0.33f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.33f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_talentsButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         m_talentsButtonClicked = ImGui::ImageButton(m_talentsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_talentsButtonTexture->getID()),
-                                                    ImVec2(0.33f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                    ImVec2(0.33f * GUIWidth, 0.105f * GUIHeight));
 
         ImGui::End();
 
         // Settings.
-        ImGui::SetNextWindowPos(ImVec2(0.66f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.66f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_settingsButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
         m_settingsButtonClicked = ImGui::ImageButton(m_settingsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_settingsButtonTexture->getID()),
-                                                     ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                     ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
 
         ImGui::End();
 
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.05f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.05f * GUIWidth, 0.3f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
             ImGui::Begin(m_mapSwipeLeftButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
             m_mapSwipeLeftButtonClicked = ImGui::ImageButton(m_mapSwipeLeftButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
-                                                             ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                             ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
 
             ImGui::End();
         }
@@ -163,13 +165,13 @@ namespace MagneticBall3D
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.8f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.3f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.8f * GUIWidth, 0.3f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
             ImGui::Begin(m_mapSwipeRightButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
             m_mapSwipeRightButtonClicked = ImGui::ImageButton(m_mapSwipeRightButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
-                                                              ImVec2(0.15f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                              ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
 
             ImGui::End();
         }
@@ -177,20 +179,20 @@ namespace MagneticBall3D
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.1f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
             ImGui::Begin(m_mapPreviewTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
 
             ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.55f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.55f * GUIHeight));
 
             ImGui::End();
         }
 
         // Crystals.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.7f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.7f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_crystalsTextID.c_str(), nullptr, m_noBackgroundNoFrame);

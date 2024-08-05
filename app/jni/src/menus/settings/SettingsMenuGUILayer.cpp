@@ -80,31 +80,33 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::draw()
     {
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Back.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_backButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
         m_backButtonClicked = ImGui::ImageButton(m_backButtonID.c_str(), reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
         ImGui::End();
 
         // Settings header.
-        ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_settingsHeaderID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_settingsHeaderTexture->getID()),
-                     ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
         ImGui::End();
 
         // FPS limit.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * GUIWidth, 0.08f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_FPSLimitTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSLimitTexture->getID()),
-                     ImVec2(0.24f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.24f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         // FPS check boxes.
@@ -114,7 +116,7 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
         ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
 
-        ImGui::SetNextWindowPos(ImVec2(0.26f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.26f * GUIWidth, 0.08f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_30FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -126,7 +128,7 @@ namespace MagneticBall3D
         ImGui::PopFont();
         ImGui::End();
 
-        ImGui::SetNextWindowPos(ImVec2(0.41f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.41f * GUIWidth, 0.08f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_60FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -138,7 +140,7 @@ namespace MagneticBall3D
         ImGui::PopFont();
         ImGui::End();
 
-        ImGui::SetNextWindowPos(ImVec2(0.56f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.56f * GUIWidth, 0.08f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_120FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -150,7 +152,7 @@ namespace MagneticBall3D
         ImGui::PopFont();
         ImGui::End();
 
-        ImGui::SetNextWindowPos(ImVec2(0.74f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.08f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.74f * GUIWidth, 0.08f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_250FPSCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -163,25 +165,25 @@ namespace MagneticBall3D
         ImGui::End();
 
         // FPS tip.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.12f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * GUIWidth, 0.12f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_FPSTipTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSTipTexture->getID()),
-                     ImVec2(0.97f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.97f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         // Background music.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.18f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * GUIWidth, 0.18f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_musicTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_musicTexture->getID()),
-                     ImVec2(0.49f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.49f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         // Background music check box.
-        ImGui::SetNextWindowPos(ImVec2(0.51f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.18f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.51f * GUIWidth, 0.18f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_musicCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);
@@ -191,16 +193,16 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Meteor particles.
-        ImGui::SetNextWindowPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.24f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.01f * GUIWidth, 0.24f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_meteorParticlesTextureID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
-                     ImVec2(0.45f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.45f * GUIWidth, 0.03f * GUIHeight));
         ImGui::End();
 
         // Meteor particles check box.
-        ImGui::SetNextWindowPos(ImVec2(0.47f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.24f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.47f * GUIWidth, 0.24f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
         ImGui::Begin(m_meteorParticlesCheckBoxID.c_str(), nullptr, m_noBackgroundNoFrame);

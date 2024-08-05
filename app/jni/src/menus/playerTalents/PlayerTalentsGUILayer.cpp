@@ -191,55 +191,57 @@ namespace MagneticBall3D
 
     void PlayerTalentsGUILayer::draw()
     {
+        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Back.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.9f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_backButtonID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
         m_backButtonClicked = ImGui::ImageButton(m_backButtonID.c_str(), reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.34f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.105f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
         ImGui::End();
 
         // Talents header.
-        ImGui::SetNextWindowPos(ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.0f));
+        ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
         ImGui::Begin(m_talentsHeaderID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_talentsHeaderTexture->getID()),
-                     ImVec2(0.4f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.06f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                     ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
         ImGui::End();
 
         // All talents.
-        float iconSidePixels = 0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float row1TopPos = 0.05f * Beryll::MainImGUI::getInstance()->getGUIHeight();
-        float row2TopPos = row1TopPos + iconSidePixels + (0.02f * Beryll::MainImGUI::getInstance()->getGUIHeight());
+        float iconSidePixels = 0.3f * GUIWidth;
+        float row1TopPos = 0.05f * GUIHeight;
+        float row2TopPos = row1TopPos + iconSidePixels + (0.02f * GUIHeight);
 
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.0f, 0.0f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.1f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.65f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.1f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(GUIWidth, 0.65f * GUIHeight));
         ImGui::Begin(m_allTalentsMenuID.c_str(), nullptr, m_noFrameNoFocus);
         // Max speed.
-        ImGui::SetCursorPos(ImVec2(0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row1TopPos));
+        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, row1TopPos));
         m_maxSpeedButtonClicked = ImGui::ImageButton(m_maxSpeedButtonID.c_str(), reinterpret_cast<ImTextureID>(m_maxSpeedButtonTexture->getID()),
                                                      ImVec2(iconSidePixels, iconSidePixels));
         // Magnetic radius.
-        ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row1TopPos));
+        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, row1TopPos));
         m_magneticRadiusButtonClicked = ImGui::ImageButton(m_magneticRadiusButtonID.c_str(), reinterpret_cast<ImTextureID>(m_magneticRadiusButtonTexture->getID()),
                                                            ImVec2(iconSidePixels, iconSidePixels));
         // Amount of magnetized garbage.
-        ImGui::SetCursorPos(ImVec2(0.68f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row1TopPos));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, row1TopPos));
         m_amountOfMagnetizedGarbageButtonClicked = ImGui::ImageButton(m_amountOfMagnetizedGarbageButtonID.c_str(), reinterpret_cast<ImTextureID>(m_amountOfMagnetizedGarbageButtonTexture->getID()),
                                                                       ImVec2(iconSidePixels, iconSidePixels));
         // Accelerate faster.
-        ImGui::SetCursorPos(ImVec2(0.02f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row2TopPos));
+        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, row2TopPos));
         m_accelerateFasterButtonClicked = ImGui::ImageButton(m_accelerateFasterButtonID.c_str(), reinterpret_cast<ImTextureID>(m_accelerateFasterButtonTexture->getID()),
                                                              ImVec2(iconSidePixels, iconSidePixels));
         // Ball and garbage protection.
-        ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row2TopPos));
+        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, row2TopPos));
         m_ballAndGarbageProtectionButtonClicked = ImGui::ImageButton(m_ballAndGarbageProtectionButtonID.c_str(), reinterpret_cast<ImTextureID>(m_ballAndGarbageProtectionButtonTexture->getID()),
                                                                      ImVec2(iconSidePixels, iconSidePixels));
         //Resurrection attempts.
-        ImGui::SetCursorPos(ImVec2(0.68f * Beryll::MainImGUI::getInstance()->getGUIWidth(), row2TopPos));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, row2TopPos));
         m_resurrectionAttemptsButtonClicked = ImGui::ImageButton(m_resurrectionAttemptsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resurrectionAttemptsButtonTexture->getID()),
                                                                  ImVec2(iconSidePixels, iconSidePixels));
 
@@ -247,44 +249,44 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Menu selected talent.
-        float menuSelectedHeight = 0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float menuSelectedHeight = 0.2f * GUIWidth;
         float text1TopPos = menuSelectedHeight * 0.05f;
         float text2TopPos = menuSelectedHeight * 0.75f;
 
-        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-        ImGui::SetNextWindowSize(ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth(), menuSelectedHeight));
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.7f, 0.7f, 0.7f, 1.0f });
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
         ImGui::Begin(m_selectedTalentMenuID.c_str(), nullptr, m_noFrameNoFocus);
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::PushFont(m_selectedDescriptionFont);
-        ImGui::SetCursorPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), text1TopPos));
+        ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, text1TopPos));
         ImGui::Text("%s", m_selectedDescription.c_str());
         ImGui::PopFont();
 
         ImGui::PushFont(m_selectedValueLevelFont);
-        ImGui::SetCursorPos(ImVec2(0.01f * Beryll::MainImGUI::getInstance()->getGUIWidth(), text2TopPos));
+        ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, text2TopPos));
         ImGui::Text("Value:%s  Lvl:%d/%d", m_selectedValue.c_str(), m_selectedCurrentLevel, m_selectedMaxLevel);
         ImGui::PopFont();
         ImGui::PopStyleColor(1);
 
-        float textureAdLeftPos = 0.55f * Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float textureCrystalsLeftPos = 0.81f * Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float textureWidth = 0.19f * Beryll::MainImGUI::getInstance()->getGUIWidth();
+        float textureAdLeftPos = 0.55f * GUIWidth;
+        float textureCrystalsLeftPos = 0.81f * GUIWidth;
+        float textureWidth = 0.19f * GUIWidth;
         if(m_selectedCurrentLevel < m_selectedMaxLevel) // Not max level.
         {
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.7f, 0.0f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.5f, 0.0f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.44f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.44f * GUIWidth, 0.03f * GUIHeight));
             ImGui::Text("%s", m_selectedValueToAdd.c_str());
             ImGui::PopFont();
             ImGui::PopStyleColor(1);
 
             if(m_selectedCanBeImprovedByAds)
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.7f, 0.0f, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.5f, 0.0f, 1.0f });
                 ImGui::PushFont(m_valueToAddFont);
-                ImGui::SetCursorPos(ImVec2(0.75f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.03f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                ImGui::SetCursorPos(ImVec2(0.75f * GUIWidth, 0.03f * GUIHeight));
                 ImGui::Text("or");
                 ImGui::PopFont();
                 ImGui::PopStyleColor(1);
@@ -323,7 +325,7 @@ namespace MagneticBall3D
 
                     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
                     ImGui::PushFont(m_adTimerFont);
-                    ImGui::SetCursorPos(ImVec2(0.565f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.029f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                    ImGui::SetCursorPos(ImVec2(0.565f * GUIWidth, 0.029f * GUIHeight));
                     ImGui::Text("%s", m_adTimerText.c_str());
                     ImGui::PopFont();
                     ImGui::PopStyleColor(1);
@@ -336,7 +338,7 @@ namespace MagneticBall3D
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.88f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.055f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.88f * GUIWidth, 0.055f * GUIHeight));
             ImGui::Text("%d", m_selectedPriceCrystals);
             ImGui::PopFont();
             ImGui::PopStyleColor(1);
@@ -345,7 +347,7 @@ namespace MagneticBall3D
         {
             ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_maxLevelReachedTexture->getID()),
-                         ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth() - textureAdLeftPos, menuSelectedHeight));
+                         ImVec2(GUIWidth - textureAdLeftPos, menuSelectedHeight));
         }
 
         ImGui::End();
@@ -357,8 +359,8 @@ namespace MagneticBall3D
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
             ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.5f }); // Clicked.
-            ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::SetNextWindowSize(ImVec2(Beryll::MainImGUI::getInstance()->getGUIWidth(), menuSelectedHeight));
+            ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
             ImGui::Begin(m_improveTalentMenuID.c_str(), nullptr, m_noBackgroundNoFrame);
 
             if(m_selectedCanBeImprovedByAds &&
@@ -382,17 +384,17 @@ namespace MagneticBall3D
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
             ImGui::Begin(m_noCrystalsMenuID.c_str(), nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.26f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_noCrystalsTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             m_noCrystalsButtonOkClicked = ImGui::ImageButton(m_noCrystalsButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_noCrystalsButtonOkTexture->getID()),
-                                                        ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                        ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }
@@ -402,13 +404,13 @@ namespace MagneticBall3D
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
             ImGui::Begin(m_adLoadingMenuID.c_str(), nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.26f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
             ImGui::End();
             ImGui::PopStyleColor(1);
@@ -419,17 +421,17 @@ namespace MagneticBall3D
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), -0.01f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 1.02f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
             ImGui::Begin(m_adErrorMenuID.c_str(), nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.26f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.26f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
-                         ImVec2(0.6f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.25f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.35f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.52f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
             m_adErrorButtonOkClicked = ImGui::ImageButton(m_adErrorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * Beryll::MainImGUI::getInstance()->getGUIWidth(), 0.07f * Beryll::MainImGUI::getInstance()->getGUIHeight()));
+                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }
