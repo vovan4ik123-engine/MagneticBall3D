@@ -23,5 +23,9 @@ namespace MagneticBall3D
         void handlePossPhase() override;
 
         // Enemies waves.
+        bool m_prepareWave1 = true;
+        const float m_enemiesWave1Time = 0.0f; // Sec.
+        bool m_prepareWave2 = true;
+        const float m_enemiesWave2Time = 1.0f;
     };
 }

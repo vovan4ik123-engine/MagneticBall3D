@@ -276,8 +276,8 @@ namespace MagneticBall3D
 
     void ShopGUILayer::draw()
     {
-        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Back.
         ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
@@ -297,9 +297,6 @@ namespace MagneticBall3D
         ImGui::End();
 
         // Shop all items.
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.5f }); // Clicked.
         ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, 0.1f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 0.8f * GUIHeight));
         ImGui::Begin(m_allItemsMenuID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
@@ -359,7 +356,6 @@ namespace MagneticBall3D
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         ImGui::End();
-        ImGui::PopStyleColor(3);
 
         if(m_showErrorMenu)
         {

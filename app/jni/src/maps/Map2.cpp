@@ -91,7 +91,7 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnumsAndVars::garbageCommonSpawnCount = 4;
+        EnumsAndVars::garbageCommonSpawnCount = 3;
 
         SendStatisticsHelper::sendMapStart();
 
@@ -1103,6 +1103,7 @@ namespace MagneticBall3D
                 if(BaseEnemy::getActiveCount() >= EnumsAndVars::enemiesMaxActiveCountOnGround)
                     break;
 
+                // Already spawned or can not be spawned.
                 if(enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
                     continue;
 

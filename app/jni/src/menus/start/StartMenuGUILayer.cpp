@@ -101,8 +101,8 @@ namespace MagneticBall3D
     {
         //EnergySystem::getInstance().draw();
 
-        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Play.
         ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.7f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.

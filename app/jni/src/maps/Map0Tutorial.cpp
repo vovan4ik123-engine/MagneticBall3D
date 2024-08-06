@@ -38,8 +38,10 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnumsAndVars::playerMagneticRadius = 50.0f;
-        EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
+        if(EnumsAndVars::playerMagneticRadius < 50)
+            EnumsAndVars::playerMagneticRadius = 50.0f;
+        if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
+            EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
 
         m_gui->disableMapPlayTimer();
 

@@ -75,8 +75,8 @@ namespace MagneticBall3D
 
     void EnergySystem::draw()
     {
-        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Text amount.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.45f * GUIWidth, 0.008f * GUIHeight));

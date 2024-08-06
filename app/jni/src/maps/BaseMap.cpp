@@ -540,8 +540,8 @@ namespace MagneticBall3D
                        enemy->unitType == UnitType::ENEMY_GUN_SHIELD ||
                        enemy->unitType == UnitType::ENEMY_SNIPER)
                     {
-                        from.y += enemy->getFromOriginToTop() * 0.8f;
-                        from += enemy->getFaceDirXZ() * 14.0f;
+                        from.y += enemy->getFromOriginToTop() * 0.75f;
+                        from += enemy->getFaceDirXZ() * 15.0f;
                     }
                     else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
                     {

@@ -29,7 +29,7 @@ namespace MagneticBall3D
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
-        loadEnemies();
+        //loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
@@ -44,13 +44,13 @@ namespace MagneticBall3D
         m_maxZ = 800.0f;
 
         m_pathFinderEnemies = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
-        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesWalls.fbx");
-        for(const auto& wall : walls)
-        {
-            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-        }
-
-        BR_INFO("Map2 pathfinder walls: %d", walls.size());
+//        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesWalls.fbx");
+//        for(const auto& wall : walls)
+//        {
+//            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+//        }
+//
+//        BR_INFO("Map2 pathfinder walls: %d", walls.size());
 
         std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
@@ -68,7 +68,10 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        EnumsAndVars::garbageCommonSpawnCount = 4;
+        if(EnumsAndVars::playerMagneticRadius < 50)
+            EnumsAndVars::playerMagneticRadius = 50.0f;
+
+        EnumsAndVars::garbageCommonSpawnCount = 3;
 
         SendStatisticsHelper::sendMapStart();
 
@@ -247,11 +250,61 @@ namespace MagneticBall3D
 
     void Map3::loadGarbage()
     {
+        for(int i = 0; i < 6; ++i) // 6 * 31 = 186
+        {
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map3/GarbageCommon_31items.fbx",
+                                                                                                EnumsAndVars::garbageMass,
+                                                                                                false,
+                                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                                Beryll::CollisionGroups::GARBAGE,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::SceneObjectGroups::GARBAGE);
 
+            for(const auto& obj : garbageCommon)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map3::loadEnemies()
     {
+        for(int i = 0; i < 110; ++i)
+        {
+            auto janitorBroom = std::make_shared<MovableEnemy>("models3D/enemies/JanitorBroom.fbx",
+                                                               0.0f,
+                                                               false,
+                                                               Beryll::CollisionFlags::STATIC,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::SceneObjectGroups::ENEMY);
+
+            janitorBroom->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            janitorBroom->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            janitorBroom->unitType = UnitType::ENEMY_GUN;
+            janitorBroom->attackType = AttackType::RANGE_DAMAGE_ONE;
+
+            janitorBroom->damage = 0.5f;
+            janitorBroom->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            janitorBroom->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+
+            janitorBroom->garbageAmountToDie = 10;
+            janitorBroom->reducePlayerSpeedWhenDie = 6.0f;
+            janitorBroom->experienceWhenDie = 25;
+            janitorBroom->getController().moveSpeed = 25.0f;
+
+            m_animatedOrDynamicObjects.push_back(janitorBroom);
+            m_allAnimatedEnemies.push_back(janitorBroom);
+            m_animatedObjForShadowMap.push_back(janitorBroom);
+        }
 
     }
 
@@ -262,7 +315,66 @@ namespace MagneticBall3D
 
     void Map3::spawnEnemies()
     {
+        // Prepare waves.
+        if(m_prepareWave1 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave1Time)
+        {
+            m_prepareWave1 = false;
 
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+            }
+
+            BR_INFO("Prepare wave 1. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave2 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave2Time)
+        {
+            m_prepareWave2 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gunCount = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gunCount < 115 && enemy->unitType == UnitType::ENEMY_GUN)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gunCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 2. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+
+        // Spawn enemies.
+        if(!m_pointsToSpawnEnemies.empty())
+        {
+            for(const auto& enemy : m_allAnimatedEnemies)
+            {
+                if(BaseEnemy::getActiveCount() >= EnumsAndVars::enemiesMaxActiveCountOnGround)
+                    break;
+
+                // Already spawned or can not be spawned.
+                if(enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
+                    continue;
+
+                enemy->enableEnemy();
+                enemy->disableDraw();
+
+                const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
+
+                enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
+
+                enemy->setOrigin(enemy->getStartPointMoveFrom());
+            }
+        }
+
+        //BR_INFO("BaseEnemy::getActiveCount(): %d", BaseEnemy::getActiveCount());
     }
 
     void Map3::startBossPhase()

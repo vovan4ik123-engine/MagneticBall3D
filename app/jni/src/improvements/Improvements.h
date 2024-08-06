@@ -20,7 +20,8 @@ namespace MagneticBall3D
         PLAYER_HEAL_AT_NEW_LVL,
         PLAYER_DAMAGE_GROUND_AFTER_FALL,
         GARBAGE_SPAWN_MORE_ON_MAP,
-        GARBAGE_TAKE_LESS_DAMAGE
+        GARBAGE_TAKE_LESS_DAMAGE,
+        JUMPPAD_POWER
     };
 
     struct ImprovementInfo
@@ -108,7 +109,7 @@ namespace MagneticBall3D
         float m_buttonWidth = 0.3f;
         float m_buttonTop = 0.35f;
         float m_buttonHeight = 0.25f;
-        float m_progressTop = 0.54f;
+        float m_progressTop = 0.545f;
         float m_progressHeight = 0.05f;
         // To position before show on screen. Only left-right pos should be changed.
         float m_leftPos1BlockButton = 0.35f;

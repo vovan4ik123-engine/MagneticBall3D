@@ -215,8 +215,8 @@ namespace MagneticBall3D
             }
         }
 
-        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // HP bar.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
         ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});

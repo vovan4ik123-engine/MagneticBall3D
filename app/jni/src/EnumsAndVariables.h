@@ -126,7 +126,7 @@ namespace EnumsAndVars
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20,
                                                            5.0f, "+5%", true, {20}},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 60,
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
                                                            5.0f, "+5%", true, {10}},
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
                                                            5.0f, "+5%", true, {20}},
@@ -148,7 +148,7 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline uint64_t rewardedAdTime = 0; // Time in sec since epoch (1.1.1970) of last rewarded ad shown.
         // Not stored in DB.
-        static constexpr inline int rewardedAdTimeDelay = 20; // 240 sec between rewarded ads.
+        static constexpr inline int rewardedAdTimeDelay = 240; // 240 sec between rewarded ads.
     };
 
     struct DailyReward
@@ -223,7 +223,7 @@ namespace EnumsAndVars
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.6f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.2f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
@@ -258,12 +258,13 @@ namespace EnumsAndVars
     inline float enemiesPauseAllActionsTime = -9999.0f; // After player resurrection pause enemies for some sec
     inline float enemiesPauseAllActionsDelay = 0.0f;    // to give player time to collect garbage and prepare to fight.
 
+    // Jump pad.
+    constexpr inline float jumpPadPowerDefault = 120.0f * playerMass; // Power for player.
+    inline float jumpPadPower = jumpPadPowerDefault;
+
     // Pause.
     inline bool gameOnPause = false;
     inline bool improvementSystemOnScreen = false;
-
-    // Jump pad.
-    constexpr inline float jumpPadPower = 120.0f * playerMass; // Power for player.
 
     // Map.
     inline float mapPlayTimeSec = 0.0f;
@@ -310,6 +311,9 @@ namespace EnumsAndVars
         enemiesKilledCount = 0;
         enemiesPauseAllActionsTime = -9999.0f;
         enemiesPauseAllActionsDelay = 0.0f;
+
+        // Jump pad.
+        jumpPadPower = jumpPadPowerDefault;
 
         // Pause.
         gameOnPause = false;

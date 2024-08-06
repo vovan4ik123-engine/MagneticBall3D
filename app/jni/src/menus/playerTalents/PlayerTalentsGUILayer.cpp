@@ -191,8 +191,8 @@ namespace MagneticBall3D
 
     void PlayerTalentsGUILayer::draw()
     {
-        float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Back.
         ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
@@ -218,7 +218,7 @@ namespace MagneticBall3D
 
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.0f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.1f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(GUIWidth, 0.65f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(GUIWidth, 0.7f * GUIHeight));
         ImGui::Begin(m_allTalentsMenuID.c_str(), nullptr, m_noFrameNoFocus);
         // Max speed.
         ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, row1TopPos));
@@ -253,7 +253,7 @@ namespace MagneticBall3D
         float text1TopPos = menuSelectedHeight * 0.05f;
         float text2TopPos = menuSelectedHeight * 0.75f;
 
-        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.7f, 0.7f, 0.7f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.75f, 0.75f, 0.75f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
         ImGui::Begin(m_selectedTalentMenuID.c_str(), nullptr, m_noFrameNoFocus);
@@ -284,7 +284,7 @@ namespace MagneticBall3D
 
             if(m_selectedCanBeImprovedByAds)
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.5f, 0.0f, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.4f, 0.0f, 1.0f });
                 ImGui::PushFont(m_valueToAddFont);
                 ImGui::SetCursorPos(ImVec2(0.75f * GUIWidth, 0.03f * GUIHeight));
                 ImGui::Text("or");
@@ -338,7 +338,7 @@ namespace MagneticBall3D
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.88f * GUIWidth, 0.055f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.87f * GUIWidth, 0.055f * GUIHeight));
             ImGui::Text("%d", m_selectedPriceCrystals);
             ImGui::PopFont();
             ImGui::PopStyleColor(1);
