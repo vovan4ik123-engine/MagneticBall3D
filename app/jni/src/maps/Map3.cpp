@@ -29,7 +29,7 @@ namespace MagneticBall3D
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
-        //loadEnemies();
+        loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
         Beryll::LoadingScreen::showProgress(90.0f);
@@ -70,6 +70,8 @@ namespace MagneticBall3D
 
         if(EnumsAndVars::playerMagneticRadius < 50)
             EnumsAndVars::playerMagneticRadius = 50.0f;
+        if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
+            EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
 
         EnumsAndVars::garbageCommonSpawnCount = 3;
 
@@ -100,10 +102,7 @@ namespace MagneticBall3D
         updateSunPosition(sunPos, m_shadowsCubeWidth, m_shadowsCubeHeight, m_shadowsCubeDepth);
 
         Beryll::Renderer::disableFaceCulling();
-        if(BaseEnemy::getActiveCount() < 200)
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
-        else
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
@@ -277,7 +276,41 @@ namespace MagneticBall3D
 
     void Map3::loadEnemies()
     {
-        for(int i = 0; i < 110; ++i)
+        for(int i = 0; i < 90; ++i)
+        {
+            auto janitorRake = std::make_shared<MovableEnemy>("models3D/enemies/JanitorRake.fbx",
+                                                               0.0f,
+                                                               false,
+                                                               Beryll::CollisionFlags::STATIC,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::CollisionGroups::NONE,
+                                                               Beryll::SceneObjectGroups::ENEMY);
+
+            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            janitorRake->unitType = UnitType::ENEMY_MELEE;
+            janitorRake->attackType = AttackType::MELEE_DAMAGE_ONE;
+            janitorRake->attackSound = SoundType::NONE;
+            janitorRake->attackHitSound = SoundType::STICK_HIT;
+            janitorRake->dieSound = SoundType::POP;
+            janitorRake->dieGarbageType = GarbageType::ENEMY_MELEE;
+
+            janitorRake->damage = 0.5f;
+            janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 5.0f;
+            janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+
+            janitorRake->garbageAmountToDie = 10;
+            janitorRake->reducePlayerSpeedWhenDie = 0.5f;
+            janitorRake->experienceWhenDie = 25;
+            janitorRake->getController().moveSpeed = 40.0f;
+
+            m_animatedOrDynamicObjects.push_back(janitorRake);
+            m_allAnimatedEnemies.push_back(janitorRake);
+            m_animatedObjForShadowMap.push_back(janitorRake);
+        }
+
+
+        for(int i = 0; i < 80; ++i)
         {
             auto janitorBroom = std::make_shared<MovableEnemy>("models3D/enemies/JanitorBroom.fbx",
                                                                0.0f,
@@ -291,21 +324,57 @@ namespace MagneticBall3D
             janitorBroom->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             janitorBroom->unitType = UnitType::ENEMY_GUN;
             janitorBroom->attackType = AttackType::RANGE_DAMAGE_ONE;
+            janitorBroom->attackSound = SoundType::NONE;
+            janitorBroom->attackHitSound = SoundType::BROOM_HIT;
+            janitorBroom->dieSound = SoundType::POP;
+            janitorBroom->dieGarbageType = GarbageType::ENEMY_GUN;
 
             janitorBroom->damage = 0.5f;
-            janitorBroom->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
-            janitorBroom->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             janitorBroom->garbageAmountToDie = 10;
-            janitorBroom->reducePlayerSpeedWhenDie = 6.0f;
+            janitorBroom->reducePlayerSpeedWhenDie = 0.5f;
             janitorBroom->experienceWhenDie = 25;
-            janitorBroom->getController().moveSpeed = 25.0f;
+            janitorBroom->getController().moveSpeed = 35.0f;
 
             m_animatedOrDynamicObjects.push_back(janitorBroom);
             m_allAnimatedEnemies.push_back(janitorBroom);
             m_animatedObjForShadowMap.push_back(janitorBroom);
         }
 
+        for(int i = 0; i < 70; ++i)
+        {
+            auto copShield = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistolShield.fbx",
+                                                            0.0f,
+                                                            false,
+                                                            Beryll::CollisionFlags::STATIC,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::SceneObjectGroups::ENEMY);
+
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
+            copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
+            copShield->attackSound = SoundType::PISTOL_SHOT;
+            copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->dieSound = SoundType::POP;
+            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
+
+            copShield->damage = 0.5f;
+            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
+            copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+
+            copShield->garbageAmountToDie = 10;
+            copShield->reducePlayerSpeedWhenDie = 0.5f;
+            copShield->experienceWhenDie = 30;
+            copShield->getController().moveSpeed = 30.0f;
+
+            m_animatedOrDynamicObjects.push_back(copShield);
+            m_allAnimatedEnemies.push_back(copShield);
+            m_animatedObjForShadowMap.push_back(copShield);
+        }
     }
 
     void Map3::loadBoss()
@@ -335,20 +404,41 @@ namespace MagneticBall3D
 
             EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int gunCount = 0;
+            int meleeCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 115 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(meleeCount < 5 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++gunCount;
+                    ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
             BR_INFO("Prepare wave 2. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave3 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave3Time)
+        {
+            m_prepareWave3 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int meleeCount = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(meleeCount < 15 && enemy->unitType == UnitType::ENEMY_MELEE)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++meleeCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 3. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
         }
 
         // Spawn enemies.

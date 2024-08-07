@@ -465,7 +465,7 @@ namespace MagneticBall3D
 
             copPistol->damage = 5.0f;
             copPistol->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
-            copPistol->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            copPistol->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copPistol->garbageAmountToDie = 10;
             copPistol->reducePlayerSpeedWhenDie = 6.0f;
@@ -498,7 +498,7 @@ namespace MagneticBall3D
 
             copShield->damage = 5.0f;
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
-            copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->garbageAmountToDie = 10;
             copShield->reducePlayerSpeedWhenDie = 10.0f;
@@ -531,7 +531,7 @@ namespace MagneticBall3D
 
             sniper->damage = 15.0f;
             sniper->attackDistance = 2500.0f;
-            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             sniper->garbageAmountToDie = 10;
             sniper->reducePlayerSpeedWhenDie = 0.0f;
@@ -564,7 +564,7 @@ namespace MagneticBall3D
             copGrenade->damage = 1.0f;
             copGrenade->attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             copGrenade->damageRadius = 3.0f;
-            copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copGrenade->garbageAmountToDie = 10;
             copGrenade->reducePlayerSpeedWhenDie = 8.0f;
@@ -598,7 +598,7 @@ namespace MagneticBall3D
             tank->damage = 2.0f;
             tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
             tank->damageRadius = 6.0f;
-            tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             tank->garbageAmountToDie = 25;
             tank->reducePlayerSpeedWhenDie = 20.0f;

@@ -15,6 +15,7 @@ namespace MagneticBall3D
     enum class UnitType
     {
         NONE,
+        ENEMY_MELEE,
         ENEMY_GUN,
         ENEMY_GUN_SHIELD,
         ENEMY_GRENADE_LAUNCHER,
@@ -27,6 +28,7 @@ namespace MagneticBall3D
     enum class AttackType
     {
         NONE,
+        MELEE_DAMAGE_ONE,
         RANGE_DAMAGE_ONE,
         RANGE_DAMAGE_RADIUS,
         MAGNETIZE_GARBAGE

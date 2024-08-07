@@ -502,7 +502,7 @@ namespace MagneticBall3D
 
             guard->damage = 5.0f;
             guard->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
-            guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             guard->garbageAmountToDie = 12;
             guard->reducePlayerSpeedWhenDie = 10.0f;
@@ -536,7 +536,7 @@ namespace MagneticBall3D
 
             copShield->damage = 5.0f;
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
-            copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->garbageAmountToDie = 10;
             copShield->reducePlayerSpeedWhenDie = 10.0f;
@@ -569,7 +569,7 @@ namespace MagneticBall3D
 
             sniper->damage = 20.0f;
             sniper->attackDistance = 2500.0f;
-            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             sniper->garbageAmountToDie = 10;
             sniper->reducePlayerSpeedWhenDie = 0.0f;
@@ -603,7 +603,7 @@ namespace MagneticBall3D
             junkyardBusRocket->damage = 2.0f;
             junkyardBusRocket->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
             junkyardBusRocket->damageRadius = 6.0f;
-            junkyardBusRocket->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            junkyardBusRocket->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             junkyardBusRocket->garbageAmountToDie = 25;
             junkyardBusRocket->reducePlayerSpeedWhenDie = 20.0f;

@@ -585,7 +585,7 @@ namespace MagneticBall3D
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
                     {
                         // Garbage under attack =).
-                        if(enemy->attackType == AttackType::RANGE_DAMAGE_ONE)
+                        if(enemy->attackType == AttackType::RANGE_DAMAGE_ONE || enemy->attackType == AttackType::MELEE_DAMAGE_ONE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
                             for(auto& wrapper : m_allGarbage)

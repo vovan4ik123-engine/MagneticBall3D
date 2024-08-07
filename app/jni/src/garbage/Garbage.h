@@ -17,7 +17,8 @@ namespace MagneticBall3D
         ENEMY_SNIPER,
         ENEMY_TANK,
         ENEMY_ROCKET,
-        ENEMY_MAGNET
+        ENEMY_MAGNET,
+        ENEMY_MELEE
     };
 
     class Garbage
