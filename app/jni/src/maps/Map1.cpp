@@ -367,7 +367,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
+        for(int i = 0; i < 7; ++i) // 7 * 3 = 21
         {
             const auto garbageCopGrenade = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopGrenade_3items.fbx",
                                                                                                     EnumsAndVars::garbageMass,
@@ -458,6 +458,10 @@ namespace MagneticBall3D
             copPistol->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copPistol->unitType = UnitType::ENEMY_GUN;
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
+            copPistol->attackSound = SoundType::PISTOL_SHOT;
+            copPistol->attackHitSound = SoundType::PISTOL_HIT;
+            copPistol->dieSound = SoundType::POP;
+            copPistol->dieGarbageType = GarbageType::ENEMY_GUN;
 
             copPistol->damage = 5.0f;
             copPistol->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
@@ -487,6 +491,10 @@ namespace MagneticBall3D
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
+            copShield->attackSound = SoundType::PISTOL_SHOT;
+            copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->dieSound = SoundType::POP;
+            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
 
             copShield->damage = 5.0f;
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
@@ -516,6 +524,10 @@ namespace MagneticBall3D
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             sniper->unitType = UnitType::ENEMY_SNIPER;
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
+            sniper->attackSound = SoundType::RIFLE_SHOT;
+            sniper->attackHitSound = SoundType::PISTOL_HIT;
+            sniper->dieSound = SoundType::POP;
+            sniper->dieGarbageType = GarbageType::ENEMY_SNIPER;
 
             sniper->damage = 15.0f;
             sniper->attackDistance = 2500.0f;
@@ -544,6 +556,10 @@ namespace MagneticBall3D
             copGrenade->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copGrenade->unitType = UnitType::ENEMY_GRENADE_LAUNCHER;
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            copGrenade->attackSound = SoundType::GRENADE_LAUNCHER_SHOT;
+            copGrenade->attackHitSound = SoundType::NONE;
+            copGrenade->dieSound = SoundType::POP;
+            copGrenade->dieGarbageType = GarbageType::ENEMY_GRENADE_LAUNCHER;
 
             copGrenade->damage = 1.0f;
             copGrenade->attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
@@ -574,6 +590,10 @@ namespace MagneticBall3D
             tank->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             tank->unitType = UnitType::ENEMY_TANK;
             tank->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            tank->attackSound = SoundType::TANK_SHOT;
+            tank->attackHitSound = SoundType::NONE;
+            tank->dieSound = SoundType::POP;
+            tank->dieGarbageType = GarbageType::ENEMY_TANK;
 
             tank->damage = 2.0f;
             tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;

@@ -6,13 +6,17 @@ namespace MagneticBall3D
 {
     enum class SoundType
     {
+        NONE,
         PISTOL_SHOT,
         PISTOL_HIT,
         GRENADE_LAUNCHER_SHOT,
         TANK_SHOT,
         RIFLE_SHOT,
         POP,
-
+        STICK_HIT,
+        BROOM_HIT,
+        BIG_ROCKET_LAUNCH,
+        DAMAGE_GROUND,
 
         BACKGROUND_MUSIC_1,
         BACKGROUND_MUSIC_2

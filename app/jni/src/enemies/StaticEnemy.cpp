@@ -92,13 +92,11 @@ namespace MagneticBall3D
         // Does not need for StaticEnemy.
     }
 
-    void StaticEnemy::attack(const glm::vec3& playerOrigin)
+    void StaticEnemy::die()
     {
-        //BR_INFO("%s", "StaticEnemy::attack()");
-        rotateToPoint(playerOrigin, true);
-        setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::attack, true, true);
-        m_lastAttackTime = EnumsAndVars::mapPlayTimeSec;
-        unitState = UnitState::ATTACKING;
+        Sounds::playSoundEffect(dieSound);
+        disableEnemy();
+        freeStaticPosition();
     }
 
     void StaticEnemy::freeStaticPosition()

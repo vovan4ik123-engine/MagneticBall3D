@@ -2,6 +2,8 @@
 
 #include "EngineHeaders.h"
 #include "EnumsAndVariables.h"
+#include "Sounds.h"
+#include "garbage/Garbage.h"
 
 namespace MagneticBall3D
 {
@@ -44,7 +46,8 @@ namespace MagneticBall3D
         ~BaseEnemy() override;
         
         virtual void update(const glm::vec3& playerOrigin) = 0;
-        virtual void attack(const glm::vec3& playerOrigin) = 0;
+        virtual void die() = 0;
+        void attack(const glm::vec3& playerOrigin);
         virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
         virtual void setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove) = 0; // Implement for MovableEnemy.
 
@@ -64,6 +67,10 @@ namespace MagneticBall3D
         UnitState unitState = UnitState::MOVE;
         UnitType unitType = UnitType::NONE;
         AttackType attackType = AttackType::NONE;
+        SoundType attackSound = SoundType::NONE;
+        SoundType attackHitSound = SoundType::NONE;
+        SoundType dieSound = SoundType::NONE;
+        GarbageType dieGarbageType = GarbageType::NONE; // Spawn garbage when die.
 
         bool isCanBeSpawned = false;
 

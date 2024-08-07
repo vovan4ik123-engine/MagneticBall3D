@@ -461,6 +461,10 @@ namespace MagneticBall3D
             rat->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             rat->unitType = UnitType::ENEMY_MAGNET;
             rat->attackType = AttackType::MAGNETIZE_GARBAGE;
+            rat->attackSound = SoundType::NONE;
+            rat->attackHitSound = SoundType::NONE;
+            rat->dieSound = SoundType::POP;
+            rat->dieGarbageType = GarbageType::ENEMY_MAGNET;
             rat->castRayToFindYPos = true;
 
             rat->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
@@ -490,6 +494,10 @@ namespace MagneticBall3D
             guard->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             guard->unitType = UnitType::ENEMY_GUN;
             guard->attackType = AttackType::RANGE_DAMAGE_ONE;
+            guard->attackSound = SoundType::PISTOL_SHOT;
+            guard->attackHitSound = SoundType::PISTOL_HIT;
+            guard->dieSound = SoundType::POP;
+            guard->dieGarbageType = GarbageType::ENEMY_GUN;
             guard->castRayToFindYPos = true;
 
             guard->damage = 5.0f;
@@ -520,6 +528,10 @@ namespace MagneticBall3D
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
+            copShield->attackSound = SoundType::PISTOL_SHOT;
+            copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->dieSound = SoundType::POP;
+            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
             copShield->castRayToFindYPos = true;
 
             copShield->damage = 5.0f;
@@ -550,6 +562,10 @@ namespace MagneticBall3D
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             sniper->unitType = UnitType::ENEMY_SNIPER;
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
+            sniper->attackSound = SoundType::RIFLE_SHOT;
+            sniper->attackHitSound = SoundType::PISTOL_HIT;
+            sniper->dieSound = SoundType::POP;
+            sniper->dieGarbageType = GarbageType::ENEMY_SNIPER;
 
             sniper->damage = 20.0f;
             sniper->attackDistance = 2500.0f;
@@ -566,7 +582,7 @@ namespace MagneticBall3D
 
         for(int i = 0; i < 20; ++i)
         {
-            auto tank = std::make_shared<MovableEnemy>("models3D/enemies/JunkyardBus.fbx",
+            auto junkyardBusRocket = std::make_shared<MovableEnemy>("models3D/enemies/JunkyardBus.fbx",
                                                        0.0f,
                                                        false,
                                                        Beryll::CollisionFlags::STATIC,
@@ -574,25 +590,29 @@ namespace MagneticBall3D
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::SceneObjectGroups::ENEMY);
 
-            tank->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
-            tank->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            tank->unitType = UnitType::ENEMY_ROCKET;
-            tank->attackType = AttackType::RANGE_DAMAGE_RADIUS;
-            tank->castRayToFindYPos = true;
+            junkyardBusRocket->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            junkyardBusRocket->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            junkyardBusRocket->unitType = UnitType::ENEMY_ROCKET;
+            junkyardBusRocket->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            junkyardBusRocket->attackSound = SoundType::BIG_ROCKET_LAUNCH;
+            junkyardBusRocket->attackHitSound = SoundType::NONE;
+            junkyardBusRocket->dieSound = SoundType::POP;
+            junkyardBusRocket->dieGarbageType = GarbageType::ENEMY_ROCKET;
+            junkyardBusRocket->castRayToFindYPos = true;
 
-            tank->damage = 2.0f;
-            tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
-            tank->damageRadius = 6.0f;
-            tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
+            junkyardBusRocket->damage = 2.0f;
+            junkyardBusRocket->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
+            junkyardBusRocket->damageRadius = 6.0f;
+            junkyardBusRocket->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.1f;
 
-            tank->garbageAmountToDie = 25;
-            tank->reducePlayerSpeedWhenDie = 20.0f;
-            tank->experienceWhenDie = 200;
-            tank->getController().moveSpeed = 50.0f;
+            junkyardBusRocket->garbageAmountToDie = 25;
+            junkyardBusRocket->reducePlayerSpeedWhenDie = 20.0f;
+            junkyardBusRocket->experienceWhenDie = 200;
+            junkyardBusRocket->getController().moveSpeed = 50.0f;
 
-            m_animatedOrDynamicObjects.push_back(tank);
-            m_allAnimatedEnemies.push_back(tank);
-            m_animatedObjForShadowMap.push_back(tank);
+            m_animatedOrDynamicObjects.push_back(junkyardBusRocket);
+            m_allAnimatedEnemies.push_back(junkyardBusRocket);
+            m_animatedObjForShadowMap.push_back(junkyardBusRocket);
         }
     }
 

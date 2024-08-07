@@ -93,7 +93,7 @@ namespace MagneticBall3D
 
     void Sounds::playSoundEffect(SoundType type)
     {
-        if(m_numberOfCurrentlyPlayingWAV >= 8)
+        if(type == SoundType::NONE || m_numberOfCurrentlyPlayingWAV >= 8)
             return;
 
         if(type == SoundType::POP)

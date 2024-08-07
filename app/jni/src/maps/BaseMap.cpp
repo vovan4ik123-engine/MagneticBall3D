@@ -521,18 +521,6 @@ namespace MagneticBall3D
 
                 if(rayAttack)
                 {
-                    // Play shot sounds.
-                    if(enemy->unitType == UnitType::ENEMY_GUN || enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                        Sounds::playSoundEffect(SoundType::PISTOL_SHOT);
-                    else if(enemy->unitType == UnitType::ENEMY_SNIPER)
-                        Sounds::playSoundEffect(SoundType::RIFLE_SHOT);
-                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
-                        Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
-                    else if(enemy->unitType == UnitType::ENEMY_TANK)
-                        Sounds::playSoundEffect(SoundType::TANK_SHOT);
-                    //else if(enemy->unitType == UnitType::ENEMY_ROCKET)
-                    //    Sounds::playSoundEffect(SoundType::ROCKET_SHOT);
-
                     // Spam particles.
                     glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
@@ -586,6 +574,7 @@ namespace MagneticBall3D
 
                     enemy->attack(m_player->getObj()->getOrigin());
 
+                    // Do damage.
                     if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
                     {
                         // Player attacked.
@@ -635,12 +624,6 @@ namespace MagneticBall3D
                             }
                         }
                     }
-
-                    // Play hit sounds.
-                    if(enemy->unitType == UnitType::ENEMY_GUN ||
-                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD ||
-                       enemy->unitType == UnitType::ENEMY_SNIPER)
-                        Sounds::playSoundEffect(SoundType::PISTOL_HIT);
                 }
             }
         }
@@ -690,41 +673,11 @@ namespace MagneticBall3D
                enemy->garbageAmountToDie < EnumsAndVars::garbageCountMagnetized &&
                glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill + (enemy->getXZRadius() * 0.5f))
             {
-                enemy->disableEnemy();
+                enemy->die();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
                 addToExp += enemy->experienceWhenDie;
                 ++EnumsAndVars::enemiesKilledCount;
-                Sounds::playSoundEffect(SoundType::POP);
-
-                if(enemy->unitType == UnitType::ENEMY_GUN)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_GUN, enemy->getOrigin());
-                }
-                else if(enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_GUN_SHIELD, enemy->getOrigin());
-                }
-                else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_GRENADE_LAUNCHER, enemy->getOrigin());
-                }
-                else if(enemy->unitType == UnitType::ENEMY_SNIPER)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_SNIPER, enemy->getOrigin());
-                    enemy->freeStaticPosition();
-                }
-                else if(enemy->unitType == UnitType::ENEMY_TANK)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_TANK, enemy->getOrigin());
-                }
-                else if(enemy->unitType == UnitType::ENEMY_MAGNET)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_MAGNET, enemy->getOrigin());
-                }
-                else if(enemy->unitType == UnitType::ENEMY_ROCKET)
-                {
-                    spawnGarbage(1, GarbageType::ENEMY_ROCKET, enemy->getOrigin());
-                }
+                spawnGarbage(1, enemy->dieGarbageType, enemy->getOrigin());
 
                 //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
             }
@@ -863,7 +816,7 @@ namespace MagneticBall3D
                (type == GarbageType::COMMON && Garbage::getCommonActiveCount() >= EnumsAndVars::garbageCommonMaxCountOnMap))
                 break;
 
-            if(!wrapper.getIsEnabled() && wrapper.getType() == type)
+            if(wrapper.getType() == type && !wrapper.getIsEnabled())
             {
                 wrapper.enableGarbage();
                 spawnPoint.x += (Beryll::RandomGenerator::getFloat() - 0.5f) * 6.0f;

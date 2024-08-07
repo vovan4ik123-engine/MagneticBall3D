@@ -52,4 +52,16 @@ namespace MagneticBall3D
         m_prepareToFirstAttackStartTime = -9999.0f;
         m_prepareToFirstAttack = true;
     }
+
+    void BaseEnemy::attack(const glm::vec3& playerOrigin)
+    {
+        //BR_INFO("%s", "BaseEnemy::attack()");
+        rotateToPoint(playerOrigin, true);
+        setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::attack, true, true);
+        m_lastAttackTime = EnumsAndVars::mapPlayTimeSec;
+        unitState = UnitState::ATTACKING;
+
+        Sounds::playSoundEffect(attackSound);
+        Sounds::playSoundEffect(attackHitSound);
+    }
 }

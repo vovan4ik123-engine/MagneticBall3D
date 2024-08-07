@@ -368,6 +368,10 @@ namespace MagneticBall3D
             cop->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             cop->unitType = UnitType::ENEMY_GUN;
             cop->attackType = AttackType::RANGE_DAMAGE_ONE;
+            cop->attackSound = SoundType::PISTOL_SHOT;
+            cop->attackHitSound = SoundType::PISTOL_HIT;
+            cop->dieSound = SoundType::POP;
+            cop->dieGarbageType = GarbageType::ENEMY_GUN;
 
             cop->damage = 0.0f;
             cop->attackDistance = 100.0f;

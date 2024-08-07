@@ -26,7 +26,7 @@ namespace MagneticBall3D
         ~StaticEnemy() override;
 
         void update(const glm::vec3& playerOrigin) override;
-        void attack(const glm::vec3& playerOrigin) override;
+        void die() override;
         void freeStaticPosition() override;
         void setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove) override
         {

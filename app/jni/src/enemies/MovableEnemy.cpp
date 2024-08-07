@@ -126,15 +126,6 @@ namespace MagneticBall3D
         }
     }
 
-    void MovableEnemy::attack(const glm::vec3& playerOrigin)
-    {
-        //BR_INFO("%s", "MovableEnemy::attack()");
-        rotateToPoint(playerOrigin, true);
-        setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::attack, true, true);
-        m_lastAttackTime = EnumsAndVars::mapPlayTimeSec;
-        unitState = UnitState::ATTACKING;
-    }
-
     void MovableEnemy::setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove)
     {
         if(pathArray.empty() || indexToMove < 0)
@@ -196,5 +187,11 @@ namespace MagneticBall3D
                 }
             }
         }
+    }
+
+    void MovableEnemy::die()
+    {
+        Sounds::playSoundEffect(dieSound);
+        disableEnemy();
     }
 }
