@@ -365,11 +365,11 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
             ImGui::Begin(m_errorMenuID.c_str(), nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.26f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_errorTexture->getID()),
                          ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.52f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
             m_errorButtonOkClicked = ImGui::ImageButton(m_errorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
                                                           ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();

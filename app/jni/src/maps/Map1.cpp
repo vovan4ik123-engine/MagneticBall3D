@@ -1097,7 +1097,7 @@ namespace MagneticBall3D
                 if(BaseEnemy::getActiveCount() >= EnumsAndVars::enemiesMaxActiveCountOnGround)
                     break;
 
-                // Already spawned or can not be spawned.
+                // Enemy already spawned or can not be spawned.
                 if(enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
                     continue;
 

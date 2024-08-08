@@ -213,7 +213,7 @@ namespace EnumsAndVars
     inline float playerStartHP = playerStartHPDefault;
     constexpr inline int playerResurrectionAttemptsDefault = 1;
     inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;
-    constexpr inline int playerCostOfResurrectionCrystals = 10;
+    constexpr inline int playerCostOfResurrectionCrystals = 5;
     constexpr inline float playerDamageGroundRadiusAfterFallDefault = 0.0f;
     inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
 

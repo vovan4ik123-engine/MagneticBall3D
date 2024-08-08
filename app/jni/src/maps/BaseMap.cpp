@@ -21,8 +21,6 @@ namespace MagneticBall3D
             m_gui->resurrectPlayer = false;
 
             --EnumsAndVars::playerResurrectionAttempts;
-            EnumsAndVars::CurrencyBalance::crystals -= EnumsAndVars::playerCostOfResurrectionCrystals;
-            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
             SendStatisticsHelper::canSendPlayerDie();
 
@@ -860,14 +858,7 @@ namespace MagneticBall3D
 
             if(EnumsAndVars::playerResurrectionAttempts > 0)
             {
-                if(EnumsAndVars::CurrencyBalance::crystals >= EnumsAndVars::playerCostOfResurrectionCrystals)
-                {
-                    m_gui->showMenuResurrect();
-                }
-                else // Can resurrect but no crystals.
-                {
-                    m_gui->showMenuResurrectNoCrystals();
-                }
+                m_gui->showMenuResurrect();
             }
             else // Lose menu.
             {

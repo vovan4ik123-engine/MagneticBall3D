@@ -17,7 +17,6 @@ namespace MagneticBall3D
         void disableMapPlayTimer() { m_showMapPlayTimer = false; }
 
         void showMenuResurrect();
-        void showMenuResurrectNoCrystals();
         void showMenuKillAllToSpawnBoss();
         void showMenuKillAllToWin();
         void showMenuLose();
@@ -56,6 +55,9 @@ namespace MagneticBall3D
         int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoScrollbar;
+
+        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
 
         // HP bar.
         static const std::string m_progressBarHPID;
@@ -96,6 +98,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_exitButtonTexture;
         bool m_exitButtonEnabled = false;
         bool m_exitButtonClicked = false;
+        float m_exitButtonTop = 0.0f;
         float m_exitButtonLeft = 0.0f;
 
         // Map0Tutorial.
@@ -109,17 +112,23 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnWallTexture;
 
         // Resurrect.
-        static const std::string m_resurrectTextureID;
+        static const std::string m_resurrectMenuID;
         std::unique_ptr<Beryll::Texture> m_resurrectTexture;
-        static const std::string m_resurrectButtonOkID;
-        std::unique_ptr<Beryll::Texture> m_resurrectButtonOkTexture;
+        static const std::string m_resurrectByCrystalsButtonID;
+        std::unique_ptr<Beryll::Texture> m_resurrectByCrystalsButtonTexture;
+        static const std::string m_resurrectByAdButtonID;
+        std::unique_ptr<Beryll::Texture> m_resurrectByAdButtonTexture;
         bool m_menuResurrectEnabled = false;
-        bool m_resurrectButtonClicked = false;
+        bool m_resurrectByCrystalsButtonClicked = false;
+        bool m_resurrectByAdButtonClicked = false;
 
-        // Resurrect No Crystals.
-        static const std::string m_resurrectNoCrystalsTextureID;
-        std::unique_ptr<Beryll::Texture> m_resurrectNoCrystalsTexture;
-        bool m_menuResurrectNoCrystalsEnabled = false;
+        // Not enough crystals menu.
+        static const std::string m_noCrystalsMenuID;
+        std::unique_ptr<Beryll::Texture> m_noCrystalsTexture;
+        static const std::string m_noCrystalsButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_noCrystalsButtonOkTexture;
+        bool m_noCrystalsButtonOkClicked = false;
+        bool m_showNoCrystalsMenu = false;
 
         // Lose.
         static const std::string m_loseTextureID;
