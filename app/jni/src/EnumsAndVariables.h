@@ -31,7 +31,7 @@ namespace EnumsAndVars
     struct CurrencyBalance
     {
         // Stored in DB.
-        static inline int crystals = 130;
+        static inline int crystals = 115;
         // Not stored in DB.
         // ...
     };

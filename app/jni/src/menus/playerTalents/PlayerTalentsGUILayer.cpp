@@ -54,9 +54,8 @@ namespace MagneticBall3D
 
         m_noCrystalsTexture = Beryll::Renderer::createTexture("GUI/NotEnoughCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_noCrystalsButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adErrorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adLoadingTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdLoading.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/SomethingWentWrong.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adLoadingTexture = Beryll::Renderer::createTexture("GUI/AdLoading.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/SomethingWentWrong.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_adErrorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_selectedDescriptionFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.024f);
@@ -132,7 +131,7 @@ namespace MagneticBall3D
         {
             m_improveByAdClicked = false;
             BR_INFO("%s", "m_improveByAdClicked.");
-            m_showAdLoadingMenu = true;
+            m_adLoadingMenuShow = true;
             Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback);
         }
         else if(m_improveByCrystalsClicked)
@@ -152,10 +151,22 @@ namespace MagneticBall3D
             }
         }
 
+        if(m_noCrystalsButtonOkClicked)
+        {
+            m_noCrystalsButtonOkClicked = false;
+            m_showNoCrystalsMenu = false;
+        }
+
+        if(m_adErrorButtonOkClicked)
+        {
+            m_adErrorButtonOkClicked = false;
+            m_adErrorMenuShow = false;
+        }
+
         if(PlayerTalentsGUILayer::m_rewardedAdSuccess)
         {
             PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
-            m_showAdLoadingMenu = false;
+            m_adLoadingMenuShow = false;
             EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel(EnumsAndVars::PlayerTalentCurrency::AD);
             selectTalent(m_selectedIndex); // Recalculate values.
             SendStatisticsHelper::sendTalentImproved(EnumsAndVars::allPlayerTalents[m_selectedIndex].name, "ad");
@@ -167,20 +178,8 @@ namespace MagneticBall3D
         if(PlayerTalentsGUILayer::m_rewardedAdError)
         {
             PlayerTalentsGUILayer::m_rewardedAdError = false;
-            m_showAdLoadingMenu = false;
-            m_showAdErrorMenu = true;
-        }
-
-        if(m_noCrystalsButtonOkClicked)
-        {
-            m_noCrystalsButtonOkClicked = false;
-            m_showNoCrystalsMenu = false;
-        }
-
-        if(m_adErrorButtonOkClicked)
-        {
-            m_adErrorButtonOkClicked = false;
-            m_showAdErrorMenu = false;
+            m_adLoadingMenuShow = false;
+            m_adErrorMenuShow = true;
         }
     }
 
@@ -399,8 +398,8 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        // Ad loading menu.
-        if(m_showAdLoadingMenu)
+        // Ad loading.
+        if(m_adLoadingMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
@@ -417,7 +416,7 @@ namespace MagneticBall3D
         }
 
         // Ad error.
-        if(m_showAdErrorMenu)
+        if(m_adErrorMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();

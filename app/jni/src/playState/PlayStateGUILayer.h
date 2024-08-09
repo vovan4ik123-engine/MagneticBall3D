@@ -14,7 +14,7 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        void disableMapPlayTimer() { m_showMapPlayTimer = false; }
+        void disableMapPlayTimer() { m_mapPlayTimerShow = false; }
 
         void showMenuResurrect();
         void showMenuKillAllToSpawnBoss();
@@ -68,7 +68,7 @@ namespace MagneticBall3D
         static const std::string m_mapPlayTimerID;
         std::string m_mapPlayTimerText;
         ImFont* m_mapPlayTimerFont;
-        bool m_showMapPlayTimer = false;
+        bool m_mapPlayTimerShow = false;
 
         // Smashed count.
         static const std::string m_smashedCountTextureID;
@@ -118,7 +118,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_resurrectByCrystalsButtonTexture;
         static const std::string m_resurrectByAdButtonID;
         std::unique_ptr<Beryll::Texture> m_resurrectByAdButtonTexture;
-        bool m_menuResurrectEnabled = false;
+        bool m_resurrectMenuShow = false;
         bool m_resurrectByCrystalsButtonClicked = false;
         bool m_resurrectByAdButtonClicked = false;
 
@@ -128,12 +128,30 @@ namespace MagneticBall3D
         static const std::string m_noCrystalsButtonOkID;
         std::unique_ptr<Beryll::Texture> m_noCrystalsButtonOkTexture;
         bool m_noCrystalsButtonOkClicked = false;
-        bool m_showNoCrystalsMenu = false;
+        bool m_noCrystalsMenuShow = false;
+
+        // Ad callbacks. Can be called from different thread.
+        std::function<void()> m_rewardedAdSuccessCallback;
+        std::function<void()> m_rewardedAdErrorCallback;
+        // Can be assigned from different thread.
+        static std::atomic<bool> m_rewardedAdSuccess;
+        static std::atomic<bool> m_rewardedAdError;
+        // Ad loading.
+        static const std::string m_adLoadingMenuID;
+        std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
+        bool m_adLoadingMenuShow = false;
+        // Ad error.
+        static const std::string m_adErrorMenuID;
+        std::unique_ptr<Beryll::Texture> m_adErrorTexture;
+        static const std::string m_adErrorButtonOkID;
+        std::unique_ptr<Beryll::Texture> m_adErrorButtonOkTexture;
+        bool m_adErrorButtonOkClicked = false;
+        bool m_adErrorMenuShow = false;
 
         // Lose.
         static const std::string m_loseTextureID;
         std::unique_ptr<Beryll::Texture> m_loseTexture;
-        bool m_menuLoseEnabled = false;
+        bool m_loseMenuShow = false;
 
         // Last wave kill all enemies.
         static const std::string m_killAllTextureID;
@@ -141,7 +159,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_killAllToWinTexture; // Without boss.
         static const std::string m_killAllButtonOkID;
         std::unique_ptr<Beryll::Texture> m_killAllButtonOkTexture;
-        bool m_menuKillAllEnabled = false;
+        bool m_killAllMenuShow = false;
         bool m_killAllButtonClicked = false;
         bool m_killAllToSpawnBoss = false;
 
@@ -150,7 +168,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_winTexture;
         static const std::string m_winButtonOkID;
         std::unique_ptr<Beryll::Texture> m_winButtonOkTexture;
-        bool m_menuWinEnabled = false;
+        bool m_winMenuShow = false;
         bool m_winButtonClicked = false;
 
         // Menus before specific bosses.
@@ -159,7 +177,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_tankWithCommanderTexture;
         static const std::string m_tankWithCommanderButtonOkID;
         std::unique_ptr<Beryll::Texture> m_tankWithCommanderButtonOkTexture;
-        bool m_menuTankWithCommanderEnabled = false;
+        bool m_tankWithCommanderMenuShow = false;
         bool m_tankWithCommanderButtonClicked = false;
     };
 }

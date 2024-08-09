@@ -64,6 +64,7 @@ public class AdsManager { // implements OnInitializationCompleteListener
                 Log.v("AdsManager", "Load ads error: " + loadAdError.toString());
                 AdsManager.isAdLoaded.set(false);
                 AdsManager.rewardedAd = null;
+                rewardedAdErrorCallback();
             }
 
             @Override

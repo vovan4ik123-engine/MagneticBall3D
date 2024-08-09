@@ -32,7 +32,12 @@ namespace MagneticBall3D
 
     const std::string PlayStateGUILayer::m_noCrystalsMenuID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_noCrystalsButtonOkID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_adLoadingMenuID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_adErrorMenuID = std::to_string(BeryllUtils::Common::generateID());
+    const std::string PlayStateGUILayer::m_adErrorButtonOkID = std::to_string(BeryllUtils::Common::generateID());
 
+    std::atomic<bool> PlayStateGUILayer::m_rewardedAdSuccess = false;
+    std::atomic<bool> PlayStateGUILayer::m_rewardedAdError = false;
 
     PlayStateGUILayer::PlayStateGUILayer()
     {
@@ -79,8 +84,12 @@ namespace MagneticBall3D
         m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectByCrystalsButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectByAdButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByAd.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
         m_noCrystalsTexture = Beryll::Renderer::createTexture("GUI/NotEnoughCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_noCrystalsButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adLoadingTexture = Beryll::Renderer::createTexture("GUI/AdLoading.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/SomethingWentWrong.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_loseTexture = Beryll::Renderer::createTexture("GUI/playState/Lose.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_killAllToSpawnBossTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -90,6 +99,18 @@ namespace MagneticBall3D
         m_winButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tankWithCommanderTexture = Beryll::Renderer::createTexture("GUI/playState/BossTankWithCommander.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tankWithCommanderButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
+        // These callbacks can be called from different thread.
+        m_rewardedAdSuccessCallback = []() -> void
+        {
+            BR_INFO("%s", "m_rewardedAdSuccessCallback called");
+            PlayStateGUILayer::m_rewardedAdSuccess = true;
+        };
+        m_rewardedAdErrorCallback = []() -> void
+        {
+            BR_INFO("%s", "m_rewardedAdErrorCallback called");
+            PlayStateGUILayer::m_rewardedAdError = true;
+        };
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -174,14 +195,14 @@ namespace MagneticBall3D
         else if(m_killAllButtonClicked)
         {
             m_killAllButtonClicked = false;
-            m_menuKillAllEnabled = false;
+            m_killAllMenuShow = false;
 
             GameStateHelper::resumeGame();
         }
         else if(m_winButtonClicked)
         {
             m_winButtonClicked = false;
-            m_menuWinEnabled = false;
+            m_winMenuShow = false;
 
             // Pause game before exit to avoid update scene layer.
             GameStateHelper::pauseGame();
@@ -193,9 +214,16 @@ namespace MagneticBall3D
         else if(m_tankWithCommanderButtonClicked)
         {
             m_tankWithCommanderButtonClicked = false;
-            m_menuTankWithCommanderEnabled = false;
+            m_tankWithCommanderMenuShow = false;
 
             GameStateHelper::resumeGame();
+        }
+        else if(m_resurrectByAdButtonClicked)
+        {
+            m_resurrectByAdButtonClicked = false;
+            BR_INFO("%s", "m_resurrectByAdButtonClicked");
+            m_adLoadingMenuShow = true;
+            Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback);
         }
         else if(m_resurrectByCrystalsButtonClicked)
         {
@@ -204,7 +232,7 @@ namespace MagneticBall3D
 
             if(EnumsAndVars::CurrencyBalance::crystals >= EnumsAndVars::playerCostOfResurrectionCrystals)
             {
-                m_menuResurrectEnabled = false;
+                m_resurrectMenuShow = false;
 
                 EnumsAndVars::CurrencyBalance::crystals -= EnumsAndVars::playerCostOfResurrectionCrystals;
                 DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
@@ -213,19 +241,37 @@ namespace MagneticBall3D
             }
             else
             {
-                m_showNoCrystalsMenu = true;
+                m_noCrystalsMenuShow = true;
             }
-        }
-        else if(m_resurrectByAdButtonClicked)
-        {
-            m_resurrectByAdButtonClicked = false;
-            BR_INFO("%s", "m_resurrectByAdButtonClicked");
         }
 
         if(m_noCrystalsButtonOkClicked)
         {
             m_noCrystalsButtonOkClicked = false;
-            m_showNoCrystalsMenu = false;
+            m_noCrystalsMenuShow = false;
+        }
+
+        if(m_adErrorButtonOkClicked)
+        {
+            m_adErrorButtonOkClicked = false;
+            m_adErrorMenuShow = false;
+        }
+
+        if(PlayStateGUILayer::m_rewardedAdSuccess)
+        {
+            PlayStateGUILayer::m_rewardedAdSuccess = false;
+            m_adLoadingMenuShow = false;
+            m_resurrectMenuShow = false;
+
+            resurrectPlayer = true; // Will handled in BaseMap.cpp
+            GameStateHelper::resumeGame();
+        }
+
+        if(PlayStateGUILayer::m_rewardedAdError)
+        {
+            PlayStateGUILayer::m_rewardedAdError = false;
+            m_adLoadingMenuShow = false;
+            m_adErrorMenuShow = true;
         }
     }
 
@@ -269,7 +315,7 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(3);
 
         // Play timer.
-        if(m_showMapPlayTimer)
+        if(m_mapPlayTimerShow)
         {
             m_mapPlayTimerText = "";
             int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
@@ -393,7 +439,7 @@ namespace MagneticBall3D
             ImGui::End();
         }
 
-        if(m_menuResurrectEnabled)
+        if(m_resurrectMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.0f, 0.0f, 1.0f });
             ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
@@ -404,8 +450,8 @@ namespace MagneticBall3D
                          ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.3f * GUIWidth, 0.255f * GUIHeight));
-            m_resurrectByCrystalsButtonClicked = ImGui::ImageButton(m_resurrectByCrystalsButtonID.c_str(),reinterpret_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
-                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+            m_resurrectByCrystalsButtonClicked = ImGui::ImageButton(m_resurrectByCrystalsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
+                                                                    ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.255f * GUIHeight));
             m_resurrectByAdButtonClicked = ImGui::ImageButton(m_resurrectByAdButtonID.c_str(),reinterpret_cast<ImTextureID>(m_resurrectByAdButtonTexture->getID()),
@@ -420,7 +466,7 @@ namespace MagneticBall3D
         }
 
         // Not enough crystals menu.
-        if(m_showNoCrystalsMenu)
+        if(m_noCrystalsMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
@@ -439,7 +485,44 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        if(m_menuLoseEnabled)
+        // Ad loading.
+        if(m_adLoadingMenuShow)
+        {
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
+            ImGui::SetNextWindowFocus();
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            ImGui::Begin(m_adLoadingMenuID.c_str(), nullptr, m_noFrame);
+
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
+
+            ImGui::End();
+            ImGui::PopStyleColor(1);
+        }
+
+        // Ad error.
+        if(m_adErrorMenuShow)
+        {
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
+            ImGui::SetNextWindowFocus();
+            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            ImGui::Begin(m_adErrorMenuID.c_str(), nullptr, m_noFrame);
+
+            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
+                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
+            m_adErrorButtonOkClicked = ImGui::ImageButton(m_adErrorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
+                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+            ImGui::End();
+            ImGui::PopStyleColor(1);
+        }
+
+        if(m_loseMenuShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
@@ -450,7 +533,7 @@ namespace MagneticBall3D
         }
 
         // Menu kill all can be before boss or without boss.
-        if(m_menuKillAllEnabled)
+        if(m_killAllMenuShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
@@ -475,7 +558,7 @@ namespace MagneticBall3D
             ImGui::End();
         }
 
-        if(m_menuWinEnabled)
+        if(m_winMenuShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
@@ -492,7 +575,7 @@ namespace MagneticBall3D
             ImGui::End();
         }
 
-        if(m_menuTankWithCommanderEnabled)
+        if(m_tankWithCommanderMenuShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
@@ -512,10 +595,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuResurrect()
     {
-        if(m_menuResurrectEnabled)
+        if(m_resurrectMenuShow)
             return;
 
-        m_menuResurrectEnabled = true;
+        m_resurrectMenuShow = true;
 
         GameStateHelper::pauseGame();
 
@@ -524,10 +607,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuKillAllToSpawnBoss()
     {
-        if(m_menuKillAllEnabled)
+        if(m_killAllMenuShow)
             return;
 
-        m_menuKillAllEnabled = true;
+        m_killAllMenuShow = true;
         m_killAllToSpawnBoss = true;
 
         GameStateHelper::pauseGame();
@@ -537,10 +620,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuKillAllToWin()
     {
-        if(m_menuKillAllEnabled)
+        if(m_killAllMenuShow)
             return;
 
-        m_menuKillAllEnabled = true;
+        m_killAllMenuShow = true;
         m_killAllToSpawnBoss = false;
 
         GameStateHelper::pauseGame();
@@ -550,10 +633,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuLose()
     {
-        if(m_menuLoseEnabled)
+        if(m_loseMenuShow)
             return;
 
-        m_menuLoseEnabled = true;
+        m_loseMenuShow = true;
         m_exitButtonEnabled = true;
         m_exitButtonTop = 0.65f;
         m_exitButtonLeft = 0.35f;
@@ -565,10 +648,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuWin()
     {
-        if(m_menuWinEnabled)
+        if(m_winMenuShow)
             return;
 
-        m_menuWinEnabled = true;
+        m_winMenuShow = true;
 
         GameStateHelper::pauseGame();
 
@@ -577,10 +660,10 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuBossTankWithCommander()
     {
-        if(m_menuTankWithCommanderEnabled)
+        if(m_tankWithCommanderMenuShow)
             return;
 
-        m_menuTankWithCommanderEnabled = true;
+        m_tankWithCommanderMenuShow = true;
 
         GameStateHelper::pauseGame();
 
