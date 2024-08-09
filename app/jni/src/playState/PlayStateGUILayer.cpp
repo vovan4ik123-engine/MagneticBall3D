@@ -2,6 +2,7 @@
 #include "EnumsAndVariables.h"
 #include "GameStateHelper.h"
 #include "DataBaseHelper.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -223,6 +224,7 @@ namespace MagneticBall3D
             m_resurrectByAdButtonClicked = false;
             BR_INFO("%s", "m_resurrectByAdButtonClicked");
             m_adLoadingMenuShow = true;
+            Sounds::pauseBackgroundMusic();
             Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback);
         }
         else if(m_resurrectByCrystalsButtonClicked)
@@ -255,6 +257,7 @@ namespace MagneticBall3D
         {
             m_adErrorButtonOkClicked = false;
             m_adErrorMenuShow = false;
+            Sounds::resumeBackgroundMusic();
         }
 
         if(PlayStateGUILayer::m_rewardedAdSuccess)
@@ -265,6 +268,7 @@ namespace MagneticBall3D
 
             resurrectPlayer = true; // Will handled in BaseMap.cpp
             GameStateHelper::resumeGame();
+            Sounds::resumeBackgroundMusic();
         }
 
         if(PlayStateGUILayer::m_rewardedAdError)

@@ -200,4 +200,14 @@ namespace MagneticBall3D
     {
         Beryll::SoundsManager::stopBackgroundMP3();
     }
+
+    void Sounds::pauseBackgroundMusic()
+    {
+        Beryll::SoundsManager::pauseBackgroundMP3();
+    }
+
+    void Sounds::resumeBackgroundMusic()
+    {
+        Beryll::SoundsManager::resumeBackgroundMP3();
+    }
 }

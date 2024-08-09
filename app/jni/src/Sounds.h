@@ -35,6 +35,8 @@ namespace MagneticBall3D
         static void playSoundEffect(SoundType type);
         static void startBackgroundMusic(SoundType type);
         static void stopBackgroundMusic();
+        static void pauseBackgroundMusic();
+        static void resumeBackgroundMusic();
 
         static float pistolShotTime;
         static float pistolShotDelay;
