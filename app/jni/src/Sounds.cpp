@@ -6,6 +6,15 @@ namespace MagneticBall3D
     bool Sounds::m_loaded = false;
     int Sounds::m_numberOfCurrentlyPlayingWAV = 0;
 
+    // Sounds.
+    std::string Sounds::m_pop1 = "sounds/Pop1.wav";
+    std::string Sounds::m_pop2 = "sounds/Pop2.wav";
+    std::string Sounds::m_pop3 = "sounds/Pop3.wav";
+    std::string Sounds::m_pop4 = "sounds/Pop4.wav";
+    std::string Sounds::m_pop5 = "sounds/Pop5.wav";
+    std::string Sounds::m_pop6 = "sounds/Pop6.wav";
+    std::string Sounds::m_pop7 = "sounds/Pop7.wav";
+    std::string Sounds::m_pop8 = "sounds/Pop8.wav";
     std::string Sounds::m_pistolShot1 = "sounds/PistolShot1.wav";
     std::string Sounds::m_pistolShot2 = "sounds/PistolShot2.wav";
     std::string Sounds::m_pistolShot3 = "sounds/PistolShot3.wav";
@@ -18,26 +27,18 @@ namespace MagneticBall3D
     std::string Sounds::m_pistolHit4 = "sounds/PistolHit4.wav";
     float Sounds::pistolHitTime = 0.0f;
     float Sounds::pistolHitDelay = 0.01f;
-
     std::string Sounds::m_grenadeLauncherShot1 = "sounds/GrenadeLauncherShot1.wav";
     float Sounds::grenadeLauncherShotTime = 0.0f;
     float Sounds::grenadeLauncherShotDelay = 0.01f;
-
     std::string Sounds::m_tankShot1 = "sounds/TankShot1.wav";
     float Sounds::tankShotTime = 0.0f;
     float Sounds::tankShotDelay = 0.01f;
-
     std::string Sounds::m_rifleShot1 = "sounds/RifleShot1.wav";
+    std::string Sounds::m_stickHit1 = "sounds/StickHit1.wav";
+    std::string Sounds::m_stickHit2 = "sounds/StickHit2.wav";
+    std::string Sounds::m_broomHit1 = "sounds/BroomHit1.wav";
 
-    std::string Sounds::m_pop1 = "sounds/Pop1.wav";
-    std::string Sounds::m_pop2 = "sounds/Pop2.wav";
-    std::string Sounds::m_pop3 = "sounds/Pop3.wav";
-    std::string Sounds::m_pop4 = "sounds/Pop4.wav";
-    std::string Sounds::m_pop5 = "sounds/Pop5.wav";
-    std::string Sounds::m_pop6 = "sounds/Pop6.wav";
-    std::string Sounds::m_pop7 = "sounds/Pop7.wav";
-    std::string Sounds::m_pop8 = "sounds/Pop8.wav";
-
+    // Music.
     std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
     std::string Sounds::m_backgroundMusic2 = "sounds/BackgroundMusic2.mp3";
 
@@ -78,6 +79,11 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_pop6, 80);
         Beryll::SoundsManager::loadWAV(m_pop7, 80);
         Beryll::SoundsManager::loadWAV(m_pop8, 80);
+
+        Beryll::SoundsManager::loadWAV(m_stickHit1, 40);
+        Beryll::SoundsManager::loadWAV(m_stickHit2, 40);
+
+        Beryll::SoundsManager::loadWAV(m_broomHit1, 40);
 
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 21);
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 21);
@@ -178,6 +184,19 @@ namespace MagneticBall3D
         else if(type == SoundType::RIFLE_SHOT)
         {
             Beryll::SoundsManager::playWAV(m_rifleShot1);
+        }
+        else if(type == SoundType::STICK_HIT)
+        {
+            float randomValue = Beryll::RandomGenerator::getFloat();
+
+            if(randomValue < 0.5f)
+                Beryll::SoundsManager::playWAV(m_stickHit1);
+            else
+                Beryll::SoundsManager::playWAV(m_stickHit2);
+        }
+        else if(type == SoundType::BROOM_HIT)
+        {
+            Beryll::SoundsManager::playWAV(m_broomHit1);
         }
     }
 

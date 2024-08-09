@@ -52,21 +52,6 @@ namespace MagneticBall3D
         static int m_numberOfCurrentlyPlayingWAV;
 
         // Sounds.
-        static std::string m_pistolShot1;
-        static std::string m_pistolShot2;
-        static std::string m_pistolShot3;
-        static std::string m_pistolShot4;
-        static std::string m_pistolHit1;
-        static std::string m_pistolHit2;
-        static std::string m_pistolHit3;
-        static std::string m_pistolHit4;
-
-        static std::string m_grenadeLauncherShot1;
-
-        static std::string m_tankShot1;
-
-        static std::string m_rifleShot1;
-
         static std::string m_pop1;
         static std::string m_pop2;
         static std::string m_pop3;
@@ -75,6 +60,20 @@ namespace MagneticBall3D
         static std::string m_pop6;
         static std::string m_pop7;
         static std::string m_pop8;
+        static std::string m_pistolShot1;
+        static std::string m_pistolShot2;
+        static std::string m_pistolShot3;
+        static std::string m_pistolShot4;
+        static std::string m_pistolHit1;
+        static std::string m_pistolHit2;
+        static std::string m_pistolHit3;
+        static std::string m_pistolHit4;
+        static std::string m_grenadeLauncherShot1;
+        static std::string m_tankShot1;
+        static std::string m_rifleShot1;
+        static std::string m_stickHit1;
+        static std::string m_stickHit2;
+        static std::string m_broomHit1;
 
         // Music.
         static std::string m_backgroundMusic1;
