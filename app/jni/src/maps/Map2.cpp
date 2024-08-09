@@ -180,7 +180,7 @@ namespace MagneticBall3D
         Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
 
         m_simpleObjSunLightShadows->set1Float("sunLightStrength", 1.0f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.2f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
         for(const auto& wrapper : m_allGarbage)
         {
             if(wrapper.obj->getIsEnabledDraw())
@@ -193,8 +193,7 @@ namespace MagneticBall3D
             }
         }
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.8f);
-
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.7f);
         for(const auto& staticObj : m_staticEnv)
         {
             if(staticObj->getIsEnabledDraw())

@@ -44,22 +44,22 @@ namespace MagneticBall3D
         m_maxZ = 800.0f;
 
         m_pathFinderEnemies = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
-//        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesWalls.fbx");
-//        for(const auto& wall : walls)
-//        {
-//            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-//        }
-//
-//        BR_INFO("Map2 pathfinder walls: %d", walls.size());
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map3/PathEnemiesWalls.fbx");
+        for(const auto& wall : walls)
+        {
+            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+        }
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map2/PathEnemiesAllowedPositions.fbx");
+        BR_INFO("Map3 pathfinder walls: %d", walls.size());
+
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map3/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
             m_pathAllowedPositionsXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
         }
 
-        BR_INFO("Map2 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
+        BR_INFO("Map3 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
@@ -142,7 +142,7 @@ namespace MagneticBall3D
         Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
 
         m_simpleObjSunLightShadows->set1Float("sunLightStrength", 1.0f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.2f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
         for(const auto& wrapper : m_allGarbage)
         {
             if(wrapper.obj->getIsEnabledDraw())
@@ -155,8 +155,7 @@ namespace MagneticBall3D
             }
         }
 
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.8f);
-
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 0.7f);
         for(const auto& staticObj : m_staticEnv)
         {
             if(staticObj->getIsEnabledDraw())
@@ -173,7 +172,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->set3Float("sunLightDir", m_sunLightDir);
         m_simpleObjSunLightShadowsNormals->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadowsNormals->set1Float("ambientLight", m_ambientLight * 0.5f);
-        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 0.25f);
+        m_simpleObjSunLightShadowsNormals->set1Float("specularLightStrength", 0.22f);
 
         for(const auto& normalMapObj : m_objWithNormalMap)
         {
@@ -276,7 +275,7 @@ namespace MagneticBall3D
 
     void Map3::loadEnemies()
     {
-        for(int i = 0; i < 90; ++i)
+        for(int i = 0; i < 110; ++i)
         {
             auto janitorRake = std::make_shared<MovableEnemy>("models3D/enemies/JanitorRake.fbx",
                                                                0.0f,
@@ -310,7 +309,7 @@ namespace MagneticBall3D
         }
 
 
-        for(int i = 0; i < 80; ++i)
+        for(int i = 0; i < 100; ++i)
         {
             auto janitorBroom = std::make_shared<MovableEnemy>("models3D/enemies/JanitorBroom.fbx",
                                                                0.0f,
@@ -343,7 +342,7 @@ namespace MagneticBall3D
             m_animatedObjForShadowMap.push_back(janitorBroom);
         }
 
-        for(int i = 0; i < 70; ++i)
+        for(int i = 0; i < 90; ++i)
         {
             auto copShield = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistolShield.fbx",
                                                             0.0f,
@@ -550,13 +549,13 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 60 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 30 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                else if(gunShieldCount < 40 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -585,13 +584,13 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 85 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 50 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                else if(gunShieldCount < 70 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -614,19 +613,19 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(meleeCount < 90 && enemy->unitType == UnitType::ENEMY_MELEE)
+                if(meleeCount < 110 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 80 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunShieldCount < 70 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                else if(gunShieldCount < 90 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
