@@ -16,7 +16,7 @@ namespace MagneticBall3D
         STICK_HIT,
         BROOM_HIT,
         BIG_ROCKET_LAUNCH,
-        DAMAGE_GROUND,
+        FELL_ON_GROUND,
 
         BACKGROUND_MUSIC_1,
         BACKGROUND_MUSIC_2
@@ -46,6 +46,10 @@ namespace MagneticBall3D
         static float grenadeLauncherShotDelay;
         static float tankShotTime;
         static float tankShotDelay;
+        static float fellOnGroundTime;
+        static float fellOnGroundDelay;
+        static float bigRocketLaunchTime;
+        static float bigRocketLaunchDelay;
 
     private:
         static bool m_loaded;
@@ -74,6 +78,9 @@ namespace MagneticBall3D
         static std::string m_stickHit1;
         static std::string m_stickHit2;
         static std::string m_broomHit1;
+        static std::string m_fellOnGround1;
+        static std::string m_bigRocketLaunch1;
+        static std::string m_bigRocketLaunch2;
 
         // Music.
         static std::string m_backgroundMusic1;

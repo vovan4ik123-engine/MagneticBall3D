@@ -616,7 +616,9 @@ namespace MagneticBall3D
                                 {
                                     wrapper.pauseMagnetization(1.25f);
                                     wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
-                                    wrapper.obj->applyCentralImpulse(glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin()) * 0.1f);
+                                    glm::vec3 impulseDir = glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin());
+                                    impulseDir.y += 0.4f;
+                                    wrapper.obj->applyCentralImpulse(impulseDir * 0.1f);
                                     break;
                                 }
                             }
@@ -661,6 +663,7 @@ namespace MagneticBall3D
         {
             radiusToKill = EnumsAndVars::playerDamageGroundRadiusAfterFall;
             //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
+            Sounds::playSoundEffect(SoundType::FELL_ON_GROUND);
         }
 
         float speedToReduce = 0.0f;

@@ -111,7 +111,7 @@ namespace MagneticBall3D
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
             m_ambientLight = 0.25f;
         else
-            m_ambientLight = 0.7f;
+            m_ambientLight = 0.6f;
 
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->set3Float("sunLightDir", m_sunLightDir);

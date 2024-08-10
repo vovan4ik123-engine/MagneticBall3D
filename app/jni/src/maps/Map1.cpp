@@ -1262,7 +1262,7 @@ namespace MagneticBall3D
                 emitParticlesExplosion(rayAttack.hitPoint, 6, 4.0f, 4.0f,
                                        glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 1.2f);
 
-                Sounds::playSoundEffect(SoundType::GRENADE_LAUNCHER_SHOT);
+                Sounds::playSoundEffect(SoundType::TANK_SHOT);
 
                 if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
                 {
