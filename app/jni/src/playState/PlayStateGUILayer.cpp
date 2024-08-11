@@ -393,7 +393,7 @@ namespace MagneticBall3D
         // Button resume.
         if(m_resumeButtonEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.25f * GUIWidth, 0.35f * GUIHeight));
+            ImGui::SetNextWindowPos(ImVec2(0.25f * GUIWidth, 0.42f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_resumeButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
             m_resumeButtonClicked = ImGui::ImageButton(m_resumeButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resumeButtonTexture->getID()),

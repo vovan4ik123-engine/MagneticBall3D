@@ -85,7 +85,7 @@ namespace EnumsAndVars
         const float increasePerLevel = 0; // Percents in range 0...100 added per level.
         const std::string increasePerLevelText; // To show for user.
         const bool canBeImprovedByAd;
-        const std::vector<int> pricePerLevel; // Crystals.
+        const int priceCrystals;
 
         void improveLevel(PlayerTalentCurrency currency)
         {
@@ -95,12 +95,12 @@ namespace EnumsAndVars
 
             if(currency == PlayerTalentCurrency::CRYSTALS)
             {
-                BR_ASSERT((getPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                if(getPriceCrystals() > CurrencyBalance::crystals)
+                BR_ASSERT((priceCrystals <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                if(priceCrystals > CurrencyBalance::crystals)
                     return;
 
                 // Update currency after subtract price.
-                CurrencyBalance::crystals -= getPriceCrystals();
+                CurrencyBalance::crystals -= priceCrystals;
                 DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
             }
 
@@ -109,33 +109,23 @@ namespace EnumsAndVars
             DataBaseHelper::updatePlayerTalent(name, currentLevel);
         }
 
-        int getPriceCrystals()
-        {
-            BR_ASSERT((pricePerLevel.empty() == false), "%s", "pricePerLevel.empty().");
-
-            if(currentLevel < pricePerLevel.size())
-                return pricePerLevel[currentLevel];
-            else
-                return pricePerLevel.back();
-        }
-
         float getPercentsToImprove() // Percents to add to default value.
         {
             return float(currentLevel) * increasePerLevel;
         }
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20,
-                                                           5.0f, "+5%", true, {20}},
+                                                           5.0f, "+5%", true, 20},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
-                                                           5.0f, "+5%", true, {10}},
+                                                           5.0f, "+5%", true, 10},
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
-                                                           5.0f, "+5%", true, {20}},
+                                                           5.0f, "+5%", true, 20},
                                                           {"Accelerate", 0, "Increase\nacceleration.", 10,
-                                                           3.0f, "+3%", true, {30}},
+                                                           3.0f, "+3%", true, 30},
                                                           {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
-                                                           5.0f, "+5%", true, {10}},
+                                                           5.0f, "+5%", true, 10},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3,
-                                                           100.0f, "+1", false, {100}}
+                                                           100.0f, "+1", false, 100}
                                                           };
     struct GameDifficulty
     {

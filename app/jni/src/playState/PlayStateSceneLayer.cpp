@@ -18,11 +18,11 @@ namespace MagneticBall3D
         if(EnumsAndVars::MapsProgress::currentMapIndex == 0)
             m_map = std::make_shared<Map0Tutorial>(gui);
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 1)
-            m_map = std::make_shared<Map1>(gui);
+            m_map = std::make_shared<Map3>(gui);
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 2)
             m_map = std::make_shared<Map2>(gui);
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 3)
-            m_map = std::make_shared<Map3>(gui);
+            m_map = std::make_shared<Map1>(gui);
         else
         {
             BR_ASSERT(false, "Map index does not handled: %d", EnumsAndVars::MapsProgress::currentMapIndex);

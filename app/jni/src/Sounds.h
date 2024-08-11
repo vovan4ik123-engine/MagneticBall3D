@@ -38,19 +38,6 @@ namespace MagneticBall3D
         static void pauseBackgroundMusic();
         static void resumeBackgroundMusic();
 
-        static float pistolShotTime;
-        static float pistolShotDelay;
-        static float pistolHitTime;
-        static float pistolHitDelay;
-        static float grenadeLauncherShotTime;
-        static float grenadeLauncherShotDelay;
-        static float tankShotTime;
-        static float tankShotDelay;
-        static float fellOnGroundTime;
-        static float fellOnGroundDelay;
-        static float bigRocketLaunchTime;
-        static float bigRocketLaunchDelay;
-
     private:
         static bool m_loaded;
         static int m_numberOfCurrentlyPlayingWAV;
@@ -68,19 +55,30 @@ namespace MagneticBall3D
         static std::string m_pistolShot2;
         static std::string m_pistolShot3;
         static std::string m_pistolShot4;
+        static float m_pistolShotTime;
+        static float m_pistolShotDelay;
         static std::string m_pistolHit1;
         static std::string m_pistolHit2;
         static std::string m_pistolHit3;
         static std::string m_pistolHit4;
+        static float m_pistolHitTime;
+        static float m_pistolHitDelay;
         static std::string m_grenadeLauncherShot1;
+        static float m_grenadeLauncherShotTime;
+        static float m_grenadeLauncherShotDelay;
         static std::string m_tankShot1;
+        static float m_tankShotTime;
+        static float m_tankShotDelay;
         static std::string m_rifleShot1;
         static std::string m_stickHit1;
         static std::string m_stickHit2;
         static std::string m_broomHit1;
         static std::string m_fellOnGround1;
+        static float m_fellOnGroundTime;
+        static float m_fellOnGroundDelay;
         static std::string m_bigRocketLaunch1;
-        static std::string m_bigRocketLaunch2;
+        static float m_bigRocketLaunchTime;
+        static float m_bigRocketLaunchDelay;
 
         // Music.
         static std::string m_backgroundMusic1;

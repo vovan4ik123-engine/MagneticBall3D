@@ -139,7 +139,7 @@ namespace MagneticBall3D
             m_improveByCrystalsClicked = false;
             BR_INFO("%s", "m_improveByCrystalsClicked.");
 
-            if(EnumsAndVars::allPlayerTalents[m_selectedIndex].getPriceCrystals() <= EnumsAndVars::CurrencyBalance::crystals)
+            if(EnumsAndVars::allPlayerTalents[m_selectedIndex].priceCrystals <= EnumsAndVars::CurrencyBalance::crystals)
             {
                 EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel(EnumsAndVars::PlayerTalentCurrency::CRYSTALS);
                 selectTalent(m_selectedIndex); // Recalculate values.
@@ -337,7 +337,7 @@ namespace MagneticBall3D
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.87f * GUIWidth, 0.055f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.875f * GUIWidth, 0.055f * GUIHeight));
             ImGui::Text("%d", m_selectedPriceCrystals);
             ImGui::PopFont();
             ImGui::PopStyleColor(1);
@@ -481,7 +481,7 @@ namespace MagneticBall3D
 
         m_selectedDescription = EnumsAndVars::allPlayerTalents[m_selectedIndex].description;
         m_selectedValueToAdd = EnumsAndVars::allPlayerTalents[m_selectedIndex].increasePerLevelText;
-        m_selectedPriceCrystals = EnumsAndVars::allPlayerTalents[m_selectedIndex].getPriceCrystals();
+        m_selectedPriceCrystals = EnumsAndVars::allPlayerTalents[m_selectedIndex].priceCrystals;
         m_selectedCanBeImprovedByAds = EnumsAndVars::allPlayerTalents[m_selectedIndex].canBeImprovedByAd;
 
         std::stringstream stream;

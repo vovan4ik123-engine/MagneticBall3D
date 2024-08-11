@@ -271,6 +271,78 @@ namespace MagneticBall3D
                 obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
+
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map3/GarbageEnemyJanitorRake_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_MELEE, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map3/GarbageEnemyJanitorBroom_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map3/GarbageEnemyGunShield_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map3::loadEnemies()

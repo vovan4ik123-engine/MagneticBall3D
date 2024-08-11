@@ -21,9 +21,9 @@ namespace MagneticBall3D
         m_ID = Beryll::LayerID::START_SCREEN_GUI;
 
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map0Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map3Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 
         m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
