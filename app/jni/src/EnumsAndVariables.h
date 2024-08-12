@@ -22,7 +22,7 @@ namespace EnumsAndVars
     {
         // Stored in DB.
         static inline int FPSLimit = 60;
-        static inline bool backgroundMusic = true;
+        static inline bool backgroundMusic = false;
         static inline bool meteorParticles = false;
         // Not stored in DB.
         // ...

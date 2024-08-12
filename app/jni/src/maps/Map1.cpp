@@ -106,7 +106,7 @@ namespace MagneticBall3D
 
         Beryll::LoadingScreen::showProgress(100.0f);
 
-        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);
+        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");

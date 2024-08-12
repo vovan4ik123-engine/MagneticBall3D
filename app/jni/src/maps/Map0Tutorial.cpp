@@ -48,13 +48,11 @@ namespace MagneticBall3D
         SendStatisticsHelper::sendMapStart();
 
         Beryll::LoadingScreen::showProgress(100.0f);
-
-        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
     }
 
     Map0Tutorial::~Map0Tutorial()
     {
-        Sounds::stopBackgroundMusic();
+        
     }
 
     void Map0Tutorial::updateBeforePhysics()

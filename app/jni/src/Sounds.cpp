@@ -89,8 +89,8 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_fellOnGround1, 80);
         Beryll::SoundsManager::loadWAV(m_bigRocketLaunch1, 40);
 
-        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 21);
-        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 21);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 11);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 11);
 
         m_loaded = true;
     }

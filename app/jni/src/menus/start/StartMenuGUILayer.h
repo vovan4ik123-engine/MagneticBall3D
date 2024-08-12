@@ -21,6 +21,17 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoScrollbar;
 
+        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
+
+        int m_noFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                               ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+        // Crystals.
+        static const std::string m_mainMenuID;
+        std::unique_ptr<Beryll::Texture> m_crystalIconTexture;
+        ImFont* m_crystalsFont;
+
         // Play.
         static const std::string m_playButtonID;
         std::unique_ptr<Beryll::Texture> m_playButtonTexture;
@@ -52,11 +63,6 @@ namespace MagneticBall3D
         bool m_mapSwipeRightButtonClicked = false;
 
         // Map preview.
-        static const std::string m_mapPreviewTextureID;
         std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsPreviewsTextures;
-
-        // Crystals.
-        static const std::string m_crystalsTextID;
-        ImFont* m_crystalsFont;
     };
 }
