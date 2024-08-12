@@ -31,6 +31,7 @@ namespace MagneticBall3D
         m_shopButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_talentsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/PlayerTalents.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_settingsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
         m_crystalsFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
     }
 
@@ -105,48 +106,48 @@ namespace MagneticBall3D
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.75f, 0.75f, 0.75f, 1.0f });
-        ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, 0.0f * GUIHeight));
+        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, -0.01f * GUIHeight));
         // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-        ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.0f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
 
         ImGui::Begin(m_mainMenuID.c_str(), nullptr, m_noFrameNoFocus);
 
         // Crystals.
-        ImGui::SetCursorPos(ImVec2(0.79f * GUIWidth, 0.0f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.79f * GUIWidth, 0.01f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_crystalIconTexture->getID()),
                      ImVec2(0.06f * GUIWidth, 0.06f * GUIWidth));
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::PushFont(m_crystalsFont);
-        ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.003f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.013f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
         ImGui::PopStyleColor(1);
 
         // Play.
-        ImGui::SetCursorPos(ImVec2(0.3f * GUIWidth, 0.7f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.735f * GUIHeight));
         m_playButtonClicked = ImGui::ImageButton(m_playButtonID.c_str(), reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
                                                  ImVec2(0.4f * GUIWidth, 0.09f * GUIHeight));
 
         // Shop.
-        ImGui::SetCursorPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.91f * GUIHeight));
         m_shopButtonClicked = ImGui::ImageButton(m_shopButtonID.c_str(), reinterpret_cast<ImTextureID>(m_shopButtonTexture->getID()),
                                                  ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
 
         // Talents.
-        ImGui::SetCursorPos(ImVec2(0.33f * GUIWidth, 0.9f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.34f * GUIWidth, 0.91f * GUIHeight));
         m_talentsButtonClicked = ImGui::ImageButton(m_talentsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_talentsButtonTexture->getID()),
-                                                    ImVec2(0.33f * GUIWidth, 0.105f * GUIHeight));
+                                                    ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
 
         // Settings.
-        ImGui::SetCursorPos(ImVec2(0.66f * GUIWidth, 0.9f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.91f * GUIHeight));
         m_settingsButtonClicked = ImGui::ImageButton(m_settingsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_settingsButtonTexture->getID()),
                                                      ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
 
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetCursorPos(ImVec2(0.05f * GUIWidth, 0.3f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.335f * GUIHeight));
             m_mapSwipeLeftButtonClicked = ImGui::ImageButton(m_mapSwipeLeftButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
                                                              ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
         }
@@ -154,7 +155,7 @@ namespace MagneticBall3D
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.1f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.21f * GUIWidth, 0.11f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
                          ImVec2(0.6f * GUIWidth, 0.55f * GUIHeight));
         }
@@ -163,7 +164,7 @@ namespace MagneticBall3D
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetCursorPos(ImVec2(0.8f * GUIWidth, 0.3f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.335f * GUIHeight));
             m_mapSwipeRightButtonClicked = ImGui::ImageButton(m_mapSwipeRightButtonID.c_str(), reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
                                                               ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
         }

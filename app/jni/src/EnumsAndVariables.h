@@ -199,7 +199,7 @@ namespace EnumsAndVars
     inline float playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
     constexpr inline float playerXPMultiplierDefault = 1.0f;
     inline float playerXPMultiplier = playerXPMultiplierDefault;
-    constexpr inline float playerStartHPDefault = 500.0f;
+    constexpr inline float playerStartHPDefault = 5.0f;
     inline float playerStartHP = playerStartHPDefault;
     constexpr inline int playerResurrectionAttemptsDefault = 1;
     inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;
