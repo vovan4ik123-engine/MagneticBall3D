@@ -46,7 +46,7 @@ namespace MagneticBall3D
 
         const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
 
-        if(m_showStatistics)
+        if(m_statisticsShow)
         {
             m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0, 0.55f, 0.03f);
             m_guiObjects.push_back(m_statistics1);
@@ -132,7 +132,7 @@ namespace MagneticBall3D
             }
         }
 
-        if(m_showStatistics && Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
+        if(m_statisticsShow && Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
         {
             std::stringstream stream;
             stream << std::fixed << std::setprecision(1);

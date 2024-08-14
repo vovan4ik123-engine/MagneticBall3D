@@ -6,7 +6,6 @@ namespace EnumsAndVars
     struct FontsPath
     {
         static const inline std::string roboto = "fonts/roboto.ttf";
-        static const inline std::string creamy = "fonts/creamy.ttf";
         static const inline std::string cousine = "fonts/cousine.ttf";
     };
 
@@ -31,7 +30,7 @@ namespace EnumsAndVars
     struct CurrencyBalance
     {
         // Stored in DB.
-        static inline int crystals = 115;
+        static inline int crystals = 115; // 105 after add daily reward.
         // Not stored in DB.
         // ...
     };
@@ -39,7 +38,7 @@ namespace EnumsAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 3; // Index of selected map on start screen.
+        static inline int currentMapIndex = 0; // Index of selected map on start screen.
         static inline int lastOpenedMapIndex = 3; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 3; // Last possible map index (opened or not). Must be hardcoded before release.
@@ -199,7 +198,7 @@ namespace EnumsAndVars
     inline float playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
     constexpr inline float playerXPMultiplierDefault = 1.0f;
     inline float playerXPMultiplier = playerXPMultiplierDefault;
-    constexpr inline float playerStartHPDefault = 5.0f;
+    constexpr inline float playerStartHPDefault = 500.0f;
     inline float playerStartHP = playerStartHPDefault;
     constexpr inline int playerResurrectionAttemptsDefault = 1;
     inline int playerResurrectionAttempts = playerResurrectionAttemptsDefault;

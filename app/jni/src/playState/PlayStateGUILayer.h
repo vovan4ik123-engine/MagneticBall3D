@@ -40,7 +40,7 @@ namespace MagneticBall3D
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        bool m_showStatistics = true;
+        bool m_statisticsShow = false;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
@@ -68,7 +68,7 @@ namespace MagneticBall3D
         static const std::string m_mapPlayTimerID;
         std::string m_mapPlayTimerText;
         ImFont* m_mapPlayTimerFont;
-        bool m_mapPlayTimerShow = false;
+        bool m_mapPlayTimerShow = true;
 
         // Smashed count.
         static const std::string m_smashedCountTextureID;
