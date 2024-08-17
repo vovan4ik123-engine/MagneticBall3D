@@ -200,35 +200,29 @@ namespace MagneticBall3D
             if(f.downEvent && m_fingerDownID == -1)
             {
                 m_fingerDownID = f.ID;
-                m_fingerDownPos = f.SDL2ScreenPos;
+                m_fingerLastPos = f.SDL2ScreenPos;
             }
 
             if(f.ID == m_fingerDownID)
             {
                 fingerStillOnScreen = true;
                 //BR_INFO("%s", "fingerStillOnScreen = true");
-                m_fingerUpPos = f.SDL2ScreenPos;
+                m_fingerCurrentPos = f.SDL2ScreenPos;
                 break;
             }
         }
 
         if(!fingerStillOnScreen && m_fingerDownID != -1)
         {
-            m_fingerDownID = -1;
-
-            if(glm::distance(m_fingerUpPos, m_fingerDownPos) < 10.0f)
-                return;
-
             ++EnumsAndVars::mapSwipeCount;
-
-            glm::vec2 screenSwipe = (m_fingerUpPos - m_fingerDownPos);
+            m_fingerDownID = -1;
+        }
+        else if(fingerStillOnScreen && glm::distance(m_fingerCurrentPos, m_fingerLastPos) > 0.01f)
+        {
+            const glm::vec2 screenSwipe = (m_fingerCurrentPos - m_fingerLastPos);
+            m_fingerLastPos = m_fingerCurrentPos;
             m_screenSwipe3D = glm::vec3{-screenSwipe.y, 0.0f, screenSwipe.x};
-            float screenSwipeLength = glm::length(m_screenSwipe3D);
-            if(screenSwipeLength > 500.0f)
-            {
-                screenSwipeLength = 500.0f;
-                m_screenSwipe3D = glm::normalize(m_screenSwipe3D) * screenSwipeLength;
-            }
+            const float screenSwipeLength = glm::length(m_screenSwipe3D);
 
             glm::qua cameraRotFromStartDir = glm::normalize(glm::rotation(m_startDir, Beryll::Camera::getCameraFrontDirectionXZ()));
             m_screenSwipe3D = glm::normalize(cameraRotFromStartDir * glm::normalize(m_screenSwipe3D));
@@ -265,14 +259,6 @@ namespace MagneticBall3D
                 powerForTorque += powerForTorque * swipeFactorBasedOnAngleAndSpeed;
 
                 powerForTorque *= radiusForTorqueMultiplier;
-
-                if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
-                {
-                    // Help to player move faster on flat surface when speed is low.
-                    const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.011f;
-                    powerForImpulse += powerForImpulse * powerToHelpPlayer;
-                    powerForTorque += powerForTorque * powerToHelpPlayer;
-                }
             }
             else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec)
             {
@@ -286,20 +272,10 @@ namespace MagneticBall3D
                 powerForImpulse = m_screenSwipe3D * (EnumsAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor);
                 powerForTorque = m_screenSwipe3D * (EnumsAndVars::playerTorqueFactorOnBuildingRoof + torqueDiff * angleFactor);
 
-                //BR_INFO("imp %f", (EnumsAndVars::playerImpulseFactorOnBuildingRoof + impulseDiff * angleFactor));
-
                 powerForTorque *= radiusForTorqueMultiplier;
 
                 powerForImpulse += powerForImpulse * (swipeFactorBasedOnAngleAndSpeed * (1.0f - angleFactor));
                 powerForTorque += powerForTorque * (swipeFactorBasedOnAngleAndSpeed * (1.0f - angleFactor));
-
-                if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
-                {
-                    // Help to player move faster on flat surface when speed is low.
-                    const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeed()) * 0.01f;
-                    powerForImpulse += powerForImpulse * (powerToHelpPlayer * (1.0f - angleFactor));
-                    powerForTorque += powerForTorque * (powerToHelpPlayer * (1.0f - angleFactor));
-                }
             }
             else // if(m_player->getIsOnAir())
             {
@@ -307,33 +283,55 @@ namespace MagneticBall3D
                 powerForTorque = m_screenSwipe3D * EnumsAndVars::playerTorqueFactorOnAir;
             }
 
+            // Help to player move faster on flat surface when speed is low.
+            if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
+            {
+                const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeedXZ()) * 0.01f;
+
+                if(m_player->getLastTimeOnGround() + 0.5f > EnumsAndVars::mapPlayTimeSec ||
+                   m_player->getLastTimeOnJumpPad() + 0.5f > EnumsAndVars::mapPlayTimeSec)
+                {
+                    powerForImpulse += powerForImpulse * powerToHelpPlayer;
+                    powerForTorque += powerForTorque * powerToHelpPlayer;
+                }
+                else if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec)
+                {
+                    const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
+                    powerForImpulse += powerForImpulse * (powerToHelpPlayer * (1.0f - angleFactor));
+                    powerForTorque += powerForTorque * (powerToHelpPlayer * (1.0f - angleFactor));
+                }
+            }
+
             // If max allowed speed exceeded not all impulse power will applied.
             // In this case applyImpulseFactor shows how much was applied in range 0...1.
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
 
-            if(m_player->getIsOnGround() ||
-               (m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)) // Less than 10 degrees. Assume we are on flat roof.
+            glm::vec3 garbageImpulse{0.0f};
+
+            if(m_player->getIsOnGround())
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
-                glm::vec3 garbageImpulse = (powerForImpulse * 0.000065f) * applyImpulseFactor;
+                garbageImpulse = (powerForImpulse * 0.00009f) * applyImpulseFactor;
                 if(applyImpulseFactor == 1.0f)
-                    garbageImpulse += powerForTorque * 0.000021f;
-
-                for(const auto& wrapper : m_allGarbage)
-                {
-                    if(wrapper.isMagnetized)
-                        wrapper.obj->applyCentralImpulse(garbageImpulse);
-                }
+                    garbageImpulse += powerForTorque * 0.00002f;
             }
-            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f) // On wall.
+            else if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 1.3f)
             {
-                const float helpOnBuilding = 60.0f * (m_player->getBuildingNormalAngle() / glm::half_pi<float>());
-                //BR_INFO("helpOnBuilding %f", helpOnBuilding);
-                const glm::vec3 playerImpulse = BeryllConstants::worldUp * helpOnBuilding;
-                const glm::vec3 garbageImpulse = playerImpulse * EnumsAndVars::playerMassToGarbageMassRatio * 2.5f;
+                // Same as inside m_player->handleScreenSwipe(impulse, torque).
+                garbageImpulse = (powerForImpulse * 0.00009f) * applyImpulseFactor;
+                if(applyImpulseFactor == 1.0f)
+                    garbageImpulse += powerForTorque * 0.00002f;
 
-                m_player->getObj()->applyCentralImpulse(playerImpulse);
+                const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
+                garbageImpulse *= (1.0f - angleFactor);
+            }
+            else if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f) // On wall.
+            {
+                garbageImpulse = BeryllConstants::worldUp * screenSwipeLength * (m_player->getBuildingNormalAngle() / glm::half_pi<float>()) * 0.00002f;
+            }
 
+            if(!glm::any(glm::isnan(garbageImpulse)) && garbageImpulse != glm::vec3{0.0f})
+            {
                 for(const auto& wrapper : m_allGarbage)
                 {
                     if(wrapper.isMagnetized)
@@ -367,7 +365,7 @@ namespace MagneticBall3D
         // Update gravity. And check for more garbage if we have limit for that.
         float gravPower = EnumsAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed);
 
-        float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+        const float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
 
         for(auto& wrapper : m_allGarbage)
         {
@@ -377,15 +375,18 @@ namespace MagneticBall3D
                 glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
                 wrapper.obj->setGravity(gravDir * gravPower, false, false);
 
-                // Stop garbage if it stats rotating around player too fast.
-                const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
-                const glm::vec3 objMoveDir = glm::normalize(linVelocity);
-                const float objSpeed = glm::length(linVelocity);
-                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
-
-                if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
+                if(m_player->getMoveSpeed() > 7.0f)
                 {
-                    wrapper.obj->setLinearVelocity(objToPlayerDir * 15.0f);
+                    // Stop garbage if it stats rotating around player too fast.
+                    const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
+                    const glm::vec3 objMoveDir = glm::normalize(linVelocity);
+                    const float objSpeed = glm::length(linVelocity);
+                    const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+
+                    if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
+                    {
+                        wrapper.obj->setLinearVelocity(objToPlayerDir * 16.0f);
+                    }
                 }
             }
             else if(wrapper.getIsEnabled())
@@ -401,6 +402,8 @@ namespace MagneticBall3D
                 ++EnumsAndVars::garbageCountMagnetized;
                 wrapper.isMagnetized = true;
                 wrapper.obj->activate();
+                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+                wrapper.obj->setLinearVelocity(objToPlayerDir * 16.0f);
             }
         }
 
@@ -692,39 +695,47 @@ namespace MagneticBall3D
     {
         const glm::vec3& cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
+        float cameraRotationSpeedFactor = 1.0f;
 
         if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec &&
-           m_player->getBuildingNormalAngle() > 0.78f) // > 45 degrees. Assume player on vertical surface.
+           m_player->getMoveSpeedXZ() < 5.0f && m_player->getBuildingNormalAngle() > 1.3f)
         {
-            if(glm::length(m_screenSwipe3D) > 180.0f * EnumsAndVars::swipePowerMultiplier)
-                desiredCameraBackXZ = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
+            desiredCameraBackXZ = glm::normalize(glm::vec3(m_player->getBuildingCollisionNormal().x, 0.0f, m_player->getBuildingCollisionNormal().z));
         }
         else if(m_player->getMoveSpeedXZ() > EnumsAndVars::minPlayerSpeedToCameraFollow)
         {
             desiredCameraBackXZ = -m_player->getMoveDirXZ();
+            cameraRotationSpeedFactor *= m_player->getMoveSpeedXZ() / EnumsAndVars::playerMaxSpeedXZDefault;
+
+            if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec)
+            {
+                const glm::vec3 swipeBackDir = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
+                // On vertical wall angleFactor = 1. On horizontal roof angleFactor = 0.
+                const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
+                cameraRotationSpeedFactor = glm::mix(0.9f, 0.3f, angleFactor);
+                desiredCameraBackXZ = glm::normalize(glm::mix(-m_player->getMoveDirXZ(), swipeBackDir, angleFactor));
+                cameraRotationSpeedFactor *= m_player->getMoveSpeedXZ() / EnumsAndVars::playerMaxSpeedXZDefault;
+            }
         }
 
         //BR_ASSERT((!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ))), "%s", "Camera back dir in nan.");
 
-        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)))
+        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)) &&
+           cameraBackXZ != desiredCameraBackXZ)
         {
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);
-            if(angleDifference > 0.036f) // More than 2 degrees.
+            if(angleDifference > 0.001f)
             {
-                float angleRotate = angleDifference * 0.05f + 0.025f; // Default and fastest camera rotation speed.
-                float currentFPS = Beryll::GameLoop::getFPS();
+                float angleRotate = angleDifference * 0.02f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
+                angleRotate *= Beryll::TimeStep::getTimeStepSec() / 0.01667f; // Make a correction if FPS != 60(0.01667 sec frametime).
+                angleRotate *= cameraRotationSpeedFactor;
 
-                if(currentFPS > EnumsAndVars::minFPSForCameraRotation)
-                {
-                    // Reduce camera rotation speed if FPS is high. Camera will more smooth.
-                    const float currentFPSToMinFPSRatio = currentFPS / EnumsAndVars::minFPSForCameraRotation;
-                    angleRotate = angleRotate / currentFPSToMinFPSRatio;
-                }
+                if(angleRotate > angleDifference)
+                    angleRotate = angleDifference;
 
                 const glm::mat4 matr = glm::rotate(glm::mat4{1.0f}, angleRotate, glm::normalize(glm::axis(rotation)));
-
                 m_cameraAngleOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
             }
         }

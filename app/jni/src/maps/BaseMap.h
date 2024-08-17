@@ -112,8 +112,8 @@ namespace MagneticBall3D
 
         // Screen swipe.
         int m_fingerDownID = -1;
-        glm::vec2 m_fingerDownPos{0.0f};
-        glm::vec2 m_fingerUpPos{0.0f};
+        glm::vec2 m_fingerLastPos{0.0f};
+        glm::vec2 m_fingerCurrentPos{0.0f};
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
         glm::vec3 m_screenSwipe3D{0.0f};
 

@@ -58,7 +58,7 @@ namespace MagneticBall3D
                 if(m_buildingNormalAngle > glm::half_pi<float>())
                     m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
 
-                if(m_buildingNormalAngle > 1.396f) // > 80 degrees. Consider it like vertical surface (wall).
+                if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f) // > 75 && < 105 degrees. Consider it like vertical wall.
                     // Keep normal of vertical surface (wall) if we have. They have more priority among all surfaces.
                     break;
             }
@@ -72,13 +72,13 @@ namespace MagneticBall3D
             m_obj->setGravity(newGravity);
             m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
 
-            if(m_buildingNormalAngle > 1.48f && m_buildingNormalAngle < 1.658f && // > 85 && < 95 degrees.
+            if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f && // > 75 && < 105 degrees.
                m_lastTimeOnGround + 1.0f < EnumsAndVars::mapPlayTimeSec &&
                m_lastTimeOnBuilding + 1.0f < EnumsAndVars::mapPlayTimeSec) // Collision with wall after being in air for 1.0 sec.
             {
                 BR_INFO(" %s", "Player resetVelocities()");
                 m_obj->resetVelocities();
-                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 80.0f);
+                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
             }
 
             m_isOnBuilding = true;
@@ -207,7 +207,7 @@ namespace MagneticBall3D
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
         float applyImpulseFactor = 1.0f;
-        const float speedLimitXZ = EnumsAndVars::playerMaxSpeedXZ + 1.0f;
+        const float speedLimitXZ = EnumsAndVars::playerMaxSpeedXZ + 0.4f;
         if(newPlayerSpeedXZ > speedLimitXZ)
         {
             // Apply less impulse because speed limit was exceeded.

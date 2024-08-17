@@ -38,7 +38,7 @@ namespace EnumsAndVars
     struct MapsProgress
     {
         // Stored in DB.
-        static inline int currentMapIndex = 0; // Index of selected map on start screen.
+        static inline int currentMapIndex = 1; // Index of selected map on start screen.
         static inline int lastOpenedMapIndex = 3; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 3; // Last possible map index (opened or not). Must be hardcoded before release.
@@ -156,10 +156,9 @@ namespace EnumsAndVars
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
     constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 10.0f;
-    constexpr inline float minFPSForCameraRotation = 20.0f; // Camera rotation speed calculated based on this.
 
     // Swipe.
-    constexpr inline float swipePowerMultiplier = 2.1f;
+    constexpr inline float swipePowerMultiplier = 3.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
@@ -172,13 +171,13 @@ namespace EnumsAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.12f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.1f;
     constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.34f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
-    constexpr inline float playerLinearDamping = 0.08f;
-    constexpr inline float playerAngularDamping = 0.08f;
+    constexpr inline float playerLinearDamping = 0.05f;
+    constexpr inline float playerAngularDamping = 0.05f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
@@ -212,7 +211,7 @@ namespace EnumsAndVars
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.2f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.4f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;

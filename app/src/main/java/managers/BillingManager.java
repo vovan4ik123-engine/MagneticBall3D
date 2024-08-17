@@ -85,31 +85,36 @@ public class BillingManager implements PurchasesUpdatedListener, ProductDetailsR
     public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> productDetailsList) {
         Log.v("BillingManager", "testBillingLogs onProductDetailsResponse() ThreadID: " + Thread.currentThread().getId());
 
-        List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<BillingFlowParams.ProductDetailsParams>();
+        try {
+            List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<BillingFlowParams.ProductDetailsParams>();
 
-        // For loop for iterating over the List.
-        for(int i = 0; i < productDetailsList.size(); ++i) {
+            // For loop for iterating over the List.
+            for(int i = 0; i < productDetailsList.size(); ++i) {
 
-            BillingFlowParams.ProductDetailsParams param = BillingFlowParams.ProductDetailsParams.newBuilder()
-                    .setProductDetails(productDetailsList.get(i))
+                BillingFlowParams.ProductDetailsParams param = BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetailsList.get(i))
+                        .build();
+
+                productDetailsParamsList.add(param);
+            }
+
+            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                    .setProductDetailsParamsList(productDetailsParamsList)
                     .build();
 
-            productDetailsParamsList.add(param);
+            // Launch the billing flow.
+            BillingResult billingResult2 = billingClient.launchBillingFlow(SDLActivity.getSDLActivity(), billingFlowParams);
+            if(billingResult2.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
+                // Result of success call should be call: MyPurchasesUpdatedListener::onPurchasesUpdated().
+                // And open Google Play purchase screen on android device.
+                Log.v("BillingManager", "testBillingLogs launchBillingFlow() success ThreadID: " + Thread.currentThread().getId());
+            }
+            else {
+                Log.v("BillingManager", "testBillingLogs launchBillingFlow() error ThreadID: " + Thread.currentThread().getId());
+            }
         }
-
-        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(productDetailsParamsList)
-                .build();
-
-        // Launch the billing flow.
-        BillingResult billingResult2 = billingClient.launchBillingFlow(SDLActivity.getSDLActivity(), billingFlowParams);
-        if(billingResult2.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
-            // Result of success call should be call: MyPurchasesUpdatedListener::onPurchasesUpdated().
-            // And open Google Play purchase screen on android device.
-            Log.v("BillingManager", "testBillingLogs launchBillingFlow() success ThreadID: " + Thread.currentThread().getId());
-        }
-        else {
-            Log.v("BillingManager", "testBillingLogs launchBillingFlow() error ThreadID: " + Thread.currentThread().getId());
+        catch(Exception e) {
+            billingSystemErrorCallback();
         }
     }
 

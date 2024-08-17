@@ -72,12 +72,6 @@ namespace MagneticBall3D
             EnumsAndVars::playerMagneticRadius = 50.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 0.38f)
-            EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.38f;
 
         EnumsAndVars::garbageCommonSpawnCount = 3;
 

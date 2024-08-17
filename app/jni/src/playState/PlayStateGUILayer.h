@@ -25,7 +25,7 @@ namespace MagneticBall3D
         // Menus before specific bosses.
         void showMenuBossTankWithCommander();
 
-        std::shared_ptr<Beryll::SliderHorizontal> sliderAmbient;
+        std::shared_ptr<Beryll::SliderHorizontal> slider1;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSunPower;
         std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;
 
@@ -34,13 +34,12 @@ namespace MagneticBall3D
 
         bool resurrectPlayer = false;
         bool tutorialSwipeEnabled = false;
-        bool tutorialHowToSwipeEnabled = false;
         bool tutorialSwipeOnWallEnabled = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        bool m_statisticsShow = false;
+        bool m_statisticsShow = true;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_swipeCount;
@@ -68,7 +67,7 @@ namespace MagneticBall3D
         static const std::string m_mapPlayTimerID;
         std::string m_mapPlayTimerText;
         ImFont* m_mapPlayTimerFont;
-        bool m_mapPlayTimerShow = true;
+        bool m_mapPlayTimerShow = false;
 
         // Smashed count.
         static const std::string m_smashedCountTextureID;
@@ -104,10 +103,6 @@ namespace MagneticBall3D
         // Map0Tutorial.
         static const std::string m_tutorialSwipeID;
         std::unique_ptr<Beryll::Texture> m_tutorialSwipeTexture;
-
-        static const std::string m_tutorialHowToSwipeID;
-        std::unique_ptr<Beryll::Texture> m_tutorialHowToSwipeTexture;
-
         static const std::string m_tutorialSwipeOnWallID;
         std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnWallTexture;
 

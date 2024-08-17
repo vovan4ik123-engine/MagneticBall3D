@@ -32,6 +32,7 @@ namespace MagneticBall3D
             return m_playerMoveDirXZ;
         }
         bool getIsOnGround() { return m_isOnGround; }
+        float getLastTimeOnGround() { return m_lastTimeOnGround; }
         bool getIsOnBuilding() { return m_isOnBuilding; }
         float getLastTimeOnBuilding() { return m_lastTimeOnBuilding; }
         int getBuildingCollisionID() { return m_buildingCollisionID; }
@@ -39,6 +40,7 @@ namespace MagneticBall3D
         float getBuildingNormalAngle() { return m_buildingNormalAngle; }
         bool getIsOnAir() { return m_isOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
+        float getLastTimeOnJumpPad() { return m_lastTimeOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
         bool getIsFalling() { return m_falling; }
         bool getIsTouchGroundAfterFall() { return m_touchGroundAfterFall; }
@@ -80,9 +82,9 @@ namespace MagneticBall3D
         glm::vec3 m_playerLinearVelocityXZ{0.0f};
 
         // Gravity.
-        float m_lastTimeOnBuilding = 0.0f; // Sec.
-        float m_lastTimeOnGround = 0.0f; // Sec.
-        float m_lastTimeOnJumpPad = 0.0f; // Sec.
+        float m_lastTimeOnBuilding = -9999.0f; // Sec.
+        float m_lastTimeOnGround = -9999.0f; // Sec.
+        float m_lastTimeOnJumpPad = -9999.0f; // Sec.
         const float m_applyAirGravityDelay = 0.7f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;

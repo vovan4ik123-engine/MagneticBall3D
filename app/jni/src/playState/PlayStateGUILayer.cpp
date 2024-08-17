@@ -18,7 +18,6 @@ namespace MagneticBall3D
     const std::string PlayStateGUILayer::m_resumeButtonID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_exitButtonID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_tutorialSwipeID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayStateGUILayer::m_tutorialHowToSwipeID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_tutorialSwipeOnWallID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_resurrectMenuID = std::to_string(BeryllUtils::Common::generateID());
     const std::string PlayStateGUILayer::m_resurrectByCrystalsButtonID = std::to_string(BeryllUtils::Common::generateID());
@@ -56,13 +55,13 @@ namespace MagneticBall3D
             m_guiObjects.push_back(m_swipeCount);
         }
 
-//        sliderAmbient = std::make_shared<Beryll::SliderHorizontal>("ambient", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0, 1);
-//        m_guiObjects.push_back(sliderAmbient);
-//        sliderAmbient->setValue(0.7f);
+//        slider1 = std::make_shared<Beryll::SliderHorizontal>("rotation on wall", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0.1f, 0.5f);
+//        m_guiObjects.push_back(slider1);
+//        slider1->setValue(0.2f);
 
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0, 1);
+//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0.01f, 0.2f);
 //        m_guiObjects.push_back(sliderSunPower);
-//        sliderSunPower->setValue(0.25f);
+//        sliderSunPower->setValue(0.1f);
 
 //        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2.0f);
 //        m_guiObjects.push_back(sliderSpecularPower);
@@ -79,7 +78,6 @@ namespace MagneticBall3D
         m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_exitButtonTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeToMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialHowToSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialHowToSwipe.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialSwipeOnWallTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeOnWall.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -420,16 +418,6 @@ namespace MagneticBall3D
             ImGui::Begin(m_tutorialSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeTexture->getID()),
                          ImVec2(0.8f * GUIWidth, 0.435f * GUIHeight));
-            ImGui::End();
-        }
-
-        if(tutorialHowToSwipeEnabled)
-        {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * GUIWidth, 0.07f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin(m_tutorialHowToSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialHowToSwipeTexture->getID()),
-                         ImVec2(0.76f * GUIWidth, 0.14f * GUIHeight));
             ImGui::End();
         }
 
