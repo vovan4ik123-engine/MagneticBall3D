@@ -208,7 +208,7 @@ namespace MagneticBall3D
 
             auto txt = std::make_shared<Beryll::Text>("00/00", EnumsAndVars::FontsPath::roboto, m_progressHeight,
                                                       m_leftDefault, m_progressTop, 0.2f, 0.055f, false, true);
-            txt->setFontColor(0.62f, 0.0f, 0.77f, 1.0f);
+            txt->setFontColor(1.0f, 1.0f, 1.0f, 1.0f);
 
             ImprovementGUIBlock guiBlock(info, b, st, txt);
             m_allAvailableGUIBlocks.push_back(guiBlock);

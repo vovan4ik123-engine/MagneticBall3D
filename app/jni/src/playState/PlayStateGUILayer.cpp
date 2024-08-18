@@ -55,17 +55,17 @@ namespace MagneticBall3D
             m_guiObjects.push_back(m_swipeCount);
         }
 
-//        slider1 = std::make_shared<Beryll::SliderHorizontal>("rotation on wall", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0.1f, 0.5f);
+//        slider1 = std::make_shared<Beryll::SliderHorizontal>("swipe power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 2, 3);
 //        m_guiObjects.push_back(slider1);
-//        slider1->setValue(0.2f);
+//        slider1->setValue(2.5f);
+//
+//        slider2 = std::make_shared<Beryll::SliderHorizontal>("turn power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0.01f, 0.02f);
+//        m_guiObjects.push_back(slider2);
+//        slider2->setValue(0.02f);
 
-//        sliderSunPower = std::make_shared<Beryll::SliderHorizontal>("sun power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0.01f, 0.2f);
-//        m_guiObjects.push_back(sliderSunPower);
-//        sliderSunPower->setValue(0.1f);
-
-//        sliderSpecularPower = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2.0f);
-//        m_guiObjects.push_back(sliderSpecularPower);
-//        sliderSpecularPower->setValue(1.0f);
+//        slider3 = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2.0f);
+//        m_guiObjects.push_back(slider3);
+//        slider3->setValue(1.0f);
 
 
         m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
@@ -413,11 +413,11 @@ namespace MagneticBall3D
         // Map0Tutorial.
         if(tutorialSwipeEnabled)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.093f * GUIWidth, 0.48f * GUIHeight));
+            ImGui::SetNextWindowPos(ImVec2(0.093f * GUIWidth, 0.547f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin(m_tutorialSwipeID.c_str(), nullptr, m_noBackgroundNoFrame);
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeTexture->getID()),
-                         ImVec2(0.8f * GUIWidth, 0.435f * GUIHeight));
+                         ImVec2(0.8f * GUIWidth, 0.367f * GUIHeight));
             ImGui::End();
         }
 

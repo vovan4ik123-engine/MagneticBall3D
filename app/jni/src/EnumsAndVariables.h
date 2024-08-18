@@ -137,7 +137,7 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline uint64_t rewardedAdTime = 0; // Time in sec since epoch (1.1.1970) of last rewarded ad shown.
         // Not stored in DB.
-        static constexpr inline int rewardedAdTimeDelay = 240; // 240 sec between rewarded ads.
+        static constexpr inline int rewardedAdTimeDelay = 0; // Time in sec between rewarded ads.
     };
 
     struct DailyReward
@@ -155,10 +155,10 @@ namespace EnumsAndVars
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
     constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 10.0f;
+    constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Swipe.
-    constexpr inline float swipePowerMultiplier = 3.0f;
+    constexpr inline float swipePowerMultiplier = 2.5f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
@@ -209,7 +209,7 @@ namespace EnumsAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 10.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMinGravityPower = 15.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.4f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};

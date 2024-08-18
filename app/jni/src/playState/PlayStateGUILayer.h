@@ -26,8 +26,8 @@ namespace MagneticBall3D
         void showMenuBossTankWithCommander();
 
         std::shared_ptr<Beryll::SliderHorizontal> slider1;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderSunPower;
-        std::shared_ptr<Beryll::SliderHorizontal> sliderSpecularPower;
+        std::shared_ptr<Beryll::SliderHorizontal> slider2;
+        std::shared_ptr<Beryll::SliderHorizontal> slider3;
 
         float progressBarHP = 1.0f;
         float progressBarXP = 0.0f;
