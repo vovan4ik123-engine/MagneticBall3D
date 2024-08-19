@@ -172,7 +172,7 @@ namespace EnumsAndVars
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.1f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.34f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.38f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
@@ -180,10 +180,10 @@ namespace EnumsAndVars
     constexpr inline float playerAngularDamping = 0.05f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
-    constexpr inline glm::vec3 playerGravityOnAir{0.0f, -70.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnGround{0.0f, -30.0f, 0.0f};
     constexpr inline glm::vec3 playerGravityOnBuildingRoof{0.0f, -30.0f, 0.0f};
-    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -9.0f, 0.0f};
+    constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -8.0f, 0.0f};
     constexpr inline float playerMaxSpeedXZDefault = 80.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline int playerCurrentSpeed = 0;
@@ -209,7 +209,7 @@ namespace EnumsAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 15.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMinGravityPower = 20.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.4f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};

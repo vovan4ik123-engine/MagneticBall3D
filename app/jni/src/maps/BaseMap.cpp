@@ -311,23 +311,21 @@ namespace MagneticBall3D
             if(m_player->getIsOnGround())
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
-                garbageImpulse = (powerForImpulse * 0.00009f) * applyImpulseFactor;
+                garbageImpulse = (powerForImpulse * 0.00007f) * applyImpulseFactor;
                 if(applyImpulseFactor == 1.0f)
                     garbageImpulse += powerForTorque * 0.00002f;
             }
-            else if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 1.3f)
+            else if(m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec)
             {
                 // Same as inside m_player->handleScreenSwipe(impulse, torque).
-                garbageImpulse = (powerForImpulse * 0.00009f) * applyImpulseFactor;
+                glm::vec3 garbageImpulseOnRoof = (powerForImpulse * 0.00006f) * applyImpulseFactor;
                 if(applyImpulseFactor == 1.0f)
-                    garbageImpulse += powerForTorque * 0.00002f;
+                    garbageImpulseOnRoof += powerForTorque * 0.00001f;
+
+                const glm::vec3 garbageImpulseOnWall = BeryllConstants::worldUp * screenSwipeLength * 0.000016f;
 
                 const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
-                garbageImpulse *= (1.0f - angleFactor);
-            }
-            else if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f) // On wall.
-            {
-                garbageImpulse = BeryllConstants::worldUp * screenSwipeLength * (m_player->getBuildingNormalAngle() / glm::half_pi<float>()) * 0.00002f;
+                garbageImpulse = glm::mix(garbageImpulseOnRoof, garbageImpulseOnWall, angleFactor);
             }
 
             if(!glm::any(glm::isnan(garbageImpulse)) && garbageImpulse != glm::vec3{0.0f})
@@ -726,15 +724,13 @@ namespace MagneticBall3D
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);
-            if(angleDifference > 0.001f)
+            float angleRotate = angleDifference * 0.02f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
+            angleRotate *= Beryll::TimeStep::getTimeStepSec() / 0.01667f; // Make a correction if FPS != 60(0.01667 sec frametime).
+            angleRotate *= cameraRotationSpeedFactor;
+            if(angleRotate > angleDifference)
+                angleRotate = angleDifference;
+            if(angleRotate > 0.001f)
             {
-                float angleRotate = angleDifference * 0.02f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
-                angleRotate *= Beryll::TimeStep::getTimeStepSec() / 0.01667f; // Make a correction if FPS != 60(0.01667 sec frametime).
-                angleRotate *= cameraRotationSpeedFactor;
-
-                if(angleRotate > angleDifference)
-                    angleRotate = angleDifference;
-
                 const glm::mat4 matr = glm::rotate(glm::mat4{1.0f}, angleRotate, glm::normalize(glm::axis(rotation)));
                 m_cameraAngleOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
             }

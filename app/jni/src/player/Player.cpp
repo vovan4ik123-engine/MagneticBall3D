@@ -52,7 +52,17 @@ namespace MagneticBall3D
             for(const std::pair<glm::vec3, glm::vec3>& point : allCollisionPoints)
             {
                 // First store any normal.
-                m_buildingCollisionNormal = point.second;
+                //m_buildingCollisionNormal = point.second; it has bug and sometime returns wrong direction. Find normal by ray.
+                Beryll::RayClosestHit rayBuilding = Beryll::Physics::castRayClosestHit(m_obj->getOrigin(),
+                                                                                       m_obj->getOrigin() + (point.first - m_obj->getOrigin()) * 1.2f,
+                                                                                       Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
+                                                                                       Beryll::CollisionGroups::BUILDING);
+
+                if(rayBuilding)
+                    m_buildingCollisionNormal = rayBuilding.hitNormal;
+                else
+                    continue;
+
                 // Next check if that normal of vertical surface.
                 m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, BeryllConstants::worldUp);
                 if(m_buildingNormalAngle > glm::half_pi<float>())
@@ -78,7 +88,7 @@ namespace MagneticBall3D
             {
                 BR_INFO(" %s", "Player resetVelocities()");
                 m_obj->resetVelocities();
-                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 150.0f);
+                m_obj->applyCentralImpulse(BeryllConstants::worldUp * 100.0f);
             }
 
             m_isOnBuilding = true;

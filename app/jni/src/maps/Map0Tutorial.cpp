@@ -19,7 +19,7 @@ namespace MagneticBall3D
 
         // Specific for this map only.
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(10.0f, 2.0f,0.0f));
+        m_player->getObj()->setOrigin(glm::vec3(95.0f, 2.0f,0.0f));
         m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
@@ -38,10 +38,16 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
 
-        if(EnumsAndVars::playerMagneticRadius < 50)
-            EnumsAndVars::playerMagneticRadius = 50.0f;
+        if(EnumsAndVars::playerMagneticRadius < 55)
+            EnumsAndVars::playerMagneticRadius = 55.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
+
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
 
         m_gui->disableMapPlayTimer();
 
@@ -260,7 +266,7 @@ namespace MagneticBall3D
                                                                                        Beryll::CollisionFlags::STATIC,
                                                                                        Beryll::CollisionGroups::BUILDING,
                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::CAMERA,
+                                                                                       Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT | Beryll::CollisionGroups::CAMERA,
                                                                                        Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : walls)

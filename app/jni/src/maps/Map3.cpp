@@ -72,6 +72,12 @@ namespace MagneticBall3D
             EnumsAndVars::playerMagneticRadius = 50.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
+
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
 
         EnumsAndVars::garbageCommonSpawnCount = 3;
 
@@ -201,13 +207,6 @@ namespace MagneticBall3D
         m_objWithNormalMap.push_back(mainGround);
         mainGround->setFriction(EnumsAndVars::staticEnvFriction);
 
-        const auto envNoCollidersNormalMap = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map3/EnvNoCollidersNormalMap.fbx", Beryll::SceneObjectGroups::BUILDING);
-
-        for(const auto& obj : envNoCollidersNormalMap)
-        {
-            m_objWithNormalMap.push_back(obj);
-        }
-
         const auto buildings = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map3/Buildings.fbx",
                                                                                         0.0f,
                                                                                         false,
@@ -243,6 +242,13 @@ namespace MagneticBall3D
         {
             m_staticEnv.push_back(obj);
             m_simpleObjForShadowMap.push_back(obj);
+        }
+
+        const auto envNoCollidersNormalMap = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map3/EnvNoCollidersNormalMap.fbx", Beryll::SceneObjectGroups::BUILDING);
+
+        for(const auto& obj : envNoCollidersNormalMap)
+        {
+            m_objWithNormalMap.push_back(obj);
         }
     }
 
