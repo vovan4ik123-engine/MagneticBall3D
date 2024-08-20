@@ -68,24 +68,6 @@ namespace MagneticBall3D
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
-//        m_pathFinderBoss = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 40);
-//        std::vector<glm::vec3> wallsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossWalls.fbx");
-//        for(const auto& wall : wallsBoss)
-//        {
-//            m_pathFinderBoss.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-//        }
-//
-//        BR_INFO("Map2 pathfinder wallsBoss: %d", wallsBoss.size());
-//
-//        std::vector<glm::vec3> allowedPointsBoss = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map1/PathBossAllowedPositions.fbx");
-//        m_pathAllowedPositionsXZBoss.reserve(allowedPointsBoss.size());
-//        for(const auto& point : allowedPointsBoss)
-//        {
-//            m_pathAllowedPositionsXZBoss.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
-//        }
-//
-//        BR_INFO("Map2 pathfinder allowed points boss: %d", m_pathAllowedPositionsXZBoss.size());
-
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 1.7f, 1.0f));
         m_sunLightDir = -m_dirToSun;
 

@@ -33,7 +33,7 @@ namespace MagneticBall3D
         loadShaders();
         handleCamera();
 
-        m_dirToSun = glm::normalize(glm::vec3(-0.5f, 3.5f, -1.0f));
+        m_dirToSun = glm::normalize(glm::vec3(-0.5f, 2.0f, 0.4f));
         m_sunLightDir = -m_dirToSun;
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
@@ -78,20 +78,20 @@ namespace MagneticBall3D
 
         handleScreenSwipe();
 
-        if(m_player->getObj()->getOrigin().x < -28.0f)
+        if(m_player->getObj()->getOrigin().x < 85.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 0.0f, 0.0f) * 100.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 0.0f, 0.0f) * 300.0f);
         }
         else if(m_player->getObj()->getOrigin().z > 58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.55f, 1.0f, -1.0f) * 70.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 1.0f, -0.8f) * 150.0f);
         }
         else if(m_player->getObj()->getOrigin().z < -58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(0.55f, 1.0f, 1.0f) * 70.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 1.0f, 0.8f) * 150.0f);
         }
     }
 
@@ -120,7 +120,7 @@ namespace MagneticBall3D
             EnumsAndVars::mapPlayerWin = true;
         else if(m_player->getObj()->getOrigin().x > 1200.0f)
             SendStatisticsHelper::sendMap0_1200mPassed();
-        else if(m_player->getObj()->getOrigin().x > 1030.0f)
+        else if(m_player->getObj()->getOrigin().x > 1050.0f)
             SendStatisticsHelper::sendMap0_onBuilding();
         else if(m_player->getObj()->getOrigin().x > 800.0f)
             SendStatisticsHelper::sendMap0_800mPassed();
@@ -260,7 +260,7 @@ namespace MagneticBall3D
         m_objWithNormalMap.push_back(ground);
         ground->setFriction(EnumsAndVars::staticEnvFriction);
 
-        const auto walls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Walls.fbx",
+        const auto walls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Buildings.fbx",
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
@@ -315,21 +315,45 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 15; ++i) // 15 * 4 = 60
+        for(int i = 0; i < 8; ++i) // 8 * 4 = 32
         {
-            const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCopPistol_4items.fbx",
-                                                                                                   EnumsAndVars::garbageMass,
-                                                                                                   false,
-                                                                                                   Beryll::CollisionFlags::DYNAMIC,
-                                                                                                   Beryll::CollisionGroups::GARBAGE,
-                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageEnemyJanitorRake_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
 
-            for(const auto& obj : garbageCopPistol)
+            for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_MELEE, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 7; ++i) // 7 * 4 = 28
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageEnemyGunShield_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -344,43 +368,82 @@ namespace MagneticBall3D
 
     void Map0Tutorial::loadEnemies()
     {
-        for(int i = 0; i < 100; ++i)
+        for(int i = 0; i < 70; ++i)
         {
-            auto cop = std::make_shared<StaticEnemy>("models3D/enemies/CopWithPistol.fbx",
-                                                        0.0f,
-                                                        false,
-                                                        Beryll::CollisionFlags::STATIC,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY);
+            auto janitorRake = std::make_shared<StaticEnemy>("models3D/enemies/JanitorRake.fbx",
+                                                             0.0f,
+                                                             false,
+                                                             Beryll::CollisionFlags::STATIC,
+                                                             Beryll::CollisionGroups::NONE,
+                                                             Beryll::CollisionGroups::NONE,
+                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            cop->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
-            cop->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            cop->unitType = UnitType::ENEMY_GUN;
-            cop->attackType = AttackType::RANGE_DAMAGE_ONE;
-            cop->attackSound = SoundType::PISTOL_SHOT;
-            cop->attackHitSound = SoundType::PISTOL_HIT;
-            cop->dieSound = SoundType::POP;
-            cop->dieGarbageType = GarbageType::ENEMY_GUN;
+            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            janitorRake->unitType = UnitType::ENEMY_MELEE;
+            janitorRake->attackType = AttackType::MELEE_DAMAGE_ONE;
+            janitorRake->attackSound = SoundType::NONE;
+            janitorRake->attackHitSound = SoundType::STICK_HIT;
+            janitorRake->dieSound = SoundType::POP;
+            janitorRake->dieGarbageType = GarbageType::ENEMY_MELEE;
 
-            cop->damage = 0.0f;
-            cop->attackDistance = 100.0f;
-            cop->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 2.0f;
+            janitorRake->damage = 0.0f;
+            janitorRake->attackDistance = 50.0f;
+            janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            cop->garbageAmountToDie = 10;
-            cop->reducePlayerSpeedWhenDie = 0.0f;
-            cop->experienceWhenDie = 0;
+            janitorRake->garbageAmountToDie = 10;
+            janitorRake->reducePlayerSpeedWhenDie = 0.0f;
+            janitorRake->experienceWhenDie = 0;
 
-            m_animatedOrDynamicObjects.push_back(cop);
-            m_allAnimatedEnemies.push_back(cop);
-            m_animatedObjForShadowMap.push_back(cop);
+            m_animatedOrDynamicObjects.push_back(janitorRake);
+            m_allAnimatedEnemies.push_back(janitorRake);
+            m_animatedObjForShadowMap.push_back(janitorRake);
 
-            cop->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(250) + 600,
-                                     cop->getFromOriginToBottom(),
-                                     Beryll::RandomGenerator::getInt(100) - 50));
+            janitorRake->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(200) + 550,
+                                             janitorRake->getFromOriginToBottom(),
+                                             Beryll::RandomGenerator::getInt(100) - 50));
 
-            cop->enableEnemy();
-            cop->rotateToDirection(glm::vec3(-1.0f, 0.0f, 0.0f), true);
+            janitorRake->enableEnemy();
+            janitorRake->rotateToDirection(glm::vec3(-1.0f, 0.0f, 0.0f), true);
+        }
+
+        for(int i = 0; i < 30; ++i)
+        {
+            auto copShield = std::make_shared<StaticEnemy>("models3D/enemies/CopWithPistolShield.fbx",
+                                                            0.0f,
+                                                            false,
+                                                            Beryll::CollisionFlags::STATIC,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::CollisionGroups::NONE,
+                                                            Beryll::SceneObjectGroups::ENEMY);
+
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
+            copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
+            copShield->attackSound = SoundType::PISTOL_SHOT;
+            copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->dieSound = SoundType::POP;
+            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
+
+            copShield->damage = 0.0f;
+            copShield->attackDistance = 80.0f;
+            copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
+
+            copShield->garbageAmountToDie = 10;
+            copShield->reducePlayerSpeedWhenDie = 0.0f;
+            copShield->experienceWhenDie = 0;
+
+            m_animatedOrDynamicObjects.push_back(copShield);
+            m_allAnimatedEnemies.push_back(copShield);
+            m_animatedObjForShadowMap.push_back(copShield);
+
+            copShield->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(150) + 750,
+                                           copShield->getFromOriginToBottom(),
+                                           Beryll::RandomGenerator::getInt(100) - 50));
+
+            copShield->enableEnemy();
+            copShield->rotateToDirection(glm::vec3(-1.0f, 0.0f, 0.0f), true);
         }
     }
 }
