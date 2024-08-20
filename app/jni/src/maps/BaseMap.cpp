@@ -201,6 +201,13 @@ namespace MagneticBall3D
             {
                 m_fingerDownID = f.ID;
                 m_fingerLastPos = f.SDL2ScreenPos;
+                glm::vec3 touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 30.0f; // impulse 10 = +1 speed.
+                if(m_firstTouch)
+                {
+                    m_firstTouch = false;
+                    touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 500.0f;
+                }
+                m_player->handleScreenSwipe(touchImpulse, touchImpulse);
             }
 
             if(f.ID == m_fingerDownID)
@@ -305,6 +312,7 @@ namespace MagneticBall3D
             // If max allowed speed exceeded not all impulse power will applied.
             // In this case applyImpulseFactor shows how much was applied in range 0...1.
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
+            BR_INFO("length %f", glm::length(powerForImpulse));
 
             glm::vec3 garbageImpulse{0.0f};
 

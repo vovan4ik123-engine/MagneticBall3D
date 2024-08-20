@@ -116,6 +116,7 @@ namespace MagneticBall3D
         glm::vec2 m_fingerCurrentPos{0.0f};
         const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
         glm::vec3 m_screenSwipe3D{0.0f};
+        bool m_firstTouch = true;
 
         // Pathfinding for enemies.
         AStar m_pathFinderEnemies; // Assign new object with map size in constructor of specific map.

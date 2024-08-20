@@ -217,7 +217,7 @@ namespace MagneticBall3D
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
         float applyImpulseFactor = 1.0f;
-        const float speedLimitXZ = EnumsAndVars::playerMaxSpeedXZ + 0.4f;
+        const float speedLimitXZ = std::roundf(EnumsAndVars::playerMaxSpeedXZ) + 0.4f;
         if(newPlayerSpeedXZ > speedLimitXZ)
         {
             // Apply less impulse because speed limit was exceeded.

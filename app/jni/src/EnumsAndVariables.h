@@ -186,9 +186,9 @@ namespace EnumsAndVars
     constexpr inline glm::vec3 playerGravityOnBuildingWall{0.0f, -8.0f, 0.0f};
     constexpr inline float playerMaxSpeedXZDefault = 80.0f;
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
-    inline int playerCurrentSpeed = 0;
+    inline float playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 90.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.02f;
+    constexpr inline float playerLeftRightTurnPower = 0.021f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;

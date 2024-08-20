@@ -375,7 +375,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin(m_speedTextID.c_str(), nullptr, m_noBackgroundNoFrame);
         ImGui::PushFont(m_speedFont);
-        ImGui::Text("%d/%d", EnumsAndVars::playerCurrentSpeed, int(EnumsAndVars::playerMaxSpeedXZ));
+        ImGui::Text("%d/%d", int(std::roundf(EnumsAndVars::playerCurrentSpeed)), int(std::roundf(EnumsAndVars::playerMaxSpeedXZ)));
         ImGui::PopFont();
         ImGui::End();
         ImGui::PopStyleColor(1);
