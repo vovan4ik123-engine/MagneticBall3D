@@ -39,9 +39,9 @@ namespace EnumsAndVars
     {
         // Stored in DB.
         static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 3; // Last index of map available for select and play.
+        static inline int lastOpenedMapIndex = 4; // Last index of map available for select and play.
         // Not stored in DB.
-        static constexpr inline int maxMapIndex = 3; // Last possible map index (opened or not). Must be hardcoded before release.
+        static constexpr inline int maxMapIndex = 4; // Last possible map index (opened or not). Must be hardcoded before release.
     };
 
     struct EnergySystem
@@ -209,7 +209,7 @@ namespace EnumsAndVars
     constexpr inline float garbageLinearDamping = 0.1f;
     constexpr inline float garbageAngularDamping = 0.2f;
     constexpr inline float garbageMass = 0.001f;
-    constexpr inline float garbageMinGravityPower = 20.0f; // Magnetic power when player speed = 0.0f.
+    constexpr inline float garbageMinGravityPower = 15.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
     constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.4f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
@@ -223,8 +223,8 @@ namespace EnumsAndVars
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     constexpr inline float garbageCommonSpawnTimeDefault = -9999.0f; // Sec.
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
-    constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
-    constexpr inline int garbageCommonSpawnCountDefault = 2.0f;
+    constexpr inline float garbageCommonSpawnDelay = 2.0f; // Sec.
+    constexpr inline int garbageCommonSpawnCountDefault = 3;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
     constexpr inline int garbageCommonMaxCountOnMapDefault = 130.0f;
     inline int garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;

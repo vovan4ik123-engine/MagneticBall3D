@@ -1,25 +1,12 @@
 #include "Map3.h"
 #include "EnumsAndVariables.h"
 #include "enemies/MovableEnemy.h"
-#include "enemies/StaticEnemy.h"
 #include "Sounds.h"
 
 namespace MagneticBall3D
 {
     Map3::Map3(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
-        Beryll::LoadingScreen::showProgress(10.0f);
-
-        // Allocate enough spase for all vectors to avoid vector reallocation.
-        const int maxGarbageCount = 400;
-        m_allGarbage.reserve(maxGarbageCount);
-        m_allAnimatedEnemies.reserve(500);
-        m_animatedOrDynamicObjects.reserve(500 + maxGarbageCount);
-        m_staticEnv.reserve(300);
-        m_simpleObjForShadowMap.reserve(300 + maxGarbageCount);
-        m_animatedObjForShadowMap.reserve(400);
-
-        // Specific for this map only.
         loadPlayer();
         m_player->getObj()->setOrigin(glm::vec3(-490.0f, 2.0f,-633.0f));
         m_improvements.setPlayer(m_player);
@@ -27,7 +14,7 @@ namespace MagneticBall3D
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
-        BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
+        BR_ASSERT((m_allGarbage.size() < m_maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
@@ -66,7 +53,7 @@ namespace MagneticBall3D
         m_dirToSun = glm::normalize(glm::vec3(-1.0f, 3.0f, -1.0f));
         m_sunLightDir = -m_dirToSun;
 
-        m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
+        m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
         if(EnumsAndVars::playerMagneticRadius < 50)
             EnumsAndVars::playerMagneticRadius = 50.0f;
@@ -78,8 +65,6 @@ namespace MagneticBall3D
             EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
 
         EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
-
-        EnumsAndVars::garbageCommonSpawnCount = 3;
 
         SendStatisticsHelper::sendMapStart();
 
@@ -377,7 +362,7 @@ namespace MagneticBall3D
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             janitorRake->garbageAmountToDie = 10;
-            janitorRake->reducePlayerSpeedWhenDie = 0.5f;
+            janitorRake->reducePlayerSpeedWhenDie = 0.0f;
             janitorRake->experienceWhenDie = 25;
             janitorRake->getController().moveSpeed = 40.0f;
 
@@ -411,7 +396,7 @@ namespace MagneticBall3D
             janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             janitorBroom->garbageAmountToDie = 10;
-            janitorBroom->reducePlayerSpeedWhenDie = 0.5f;
+            janitorBroom->reducePlayerSpeedWhenDie = 0.0f;
             janitorBroom->experienceWhenDie = 25;
             janitorBroom->getController().moveSpeed = 35.0f;
 
@@ -444,7 +429,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->garbageAmountToDie = 10;
-            copShield->reducePlayerSpeedWhenDie = 0.5f;
+            copShield->reducePlayerSpeedWhenDie = 0.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 30.0f;
 

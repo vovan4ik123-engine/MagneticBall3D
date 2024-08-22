@@ -4,9 +4,17 @@
 
 namespace MagneticBall3D
 {
-    BaseMap::BaseMap(std::shared_ptr<PlayStateGUILayer> gui)
+    BaseMap::BaseMap(std::shared_ptr<PlayStateGUILayer> gui) : m_gui(std::move(gui))
     {
-        m_gui = std::move(gui);
+        Beryll::LoadingScreen::showProgress(10.0f);
+
+        // Allocate enough spase for all vectors to avoid vector reallocation.
+        m_allGarbage.reserve(m_maxGarbageCount);
+        m_allAnimatedEnemies.reserve(m_maxEnemiesCount);
+        m_animatedOrDynamicObjects.reserve(m_maxEnemiesCount + m_maxGarbageCount);
+        m_staticEnv.reserve(m_maxEnvCount);
+        m_simpleObjForShadowMap.reserve(m_maxEnvCount + m_maxGarbageCount);
+        m_animatedObjForShadowMap.reserve(m_maxEnemiesCount);
     }
 
     BaseMap::~BaseMap()
@@ -238,12 +246,12 @@ namespace MagneticBall3D
             glm::vec3 powerForImpulse{0.0f};
             glm::vec3 powerForTorque{0.0f};
             float swipeFactorBasedOnAngleAndSpeed = 0.0f;
-            if(m_player->getMoveSpeed() > 0.001f)
+            if(m_player->getMoveSpeedXZ() > 0.001f)
             {
                 if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
                 {
                     float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
-                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeed() * EnumsAndVars::playerLeftRightTurnPower;
+                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeedXZ() * EnumsAndVars::playerLeftRightTurnPower;
 
                     // For turn back.
                     if(moveToSwipeAngle > 2.6f) // > 150 degrees.
@@ -312,7 +320,6 @@ namespace MagneticBall3D
             // If max allowed speed exceeded not all impulse power will applied.
             // In this case applyImpulseFactor shows how much was applied in range 0...1.
             float applyImpulseFactor = m_player->handleScreenSwipe(powerForImpulse, powerForTorque);
-            BR_INFO("length %f", glm::length(powerForImpulse));
 
             glm::vec3 garbageImpulse{0.0f};
 
@@ -666,7 +673,7 @@ namespace MagneticBall3D
 
     void BaseMap::killEnemies()
     {
-        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.11f;
+        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.1f;
 
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
@@ -778,7 +785,7 @@ namespace MagneticBall3D
 
         float maxCameraDistance = m_startCameraDistance +
                                   m_player->getMoveSpeedXZ() +
-                                  (EnumsAndVars::garbageCountMagnetized * 1.0f) +
+                                  (EnumsAndVars::garbageCountMagnetized * 0.6f) +
                                   (m_player->getObj()->getOrigin().y * 0.3f);
 
         glm::vec3 cameraPosForRay = m_cameraFront + m_cameraAngleOffset * maxCameraDistance;

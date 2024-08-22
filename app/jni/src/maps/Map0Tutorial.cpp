@@ -6,18 +6,6 @@ namespace MagneticBall3D
 {
     Map0Tutorial::Map0Tutorial(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
-        Beryll::LoadingScreen::showProgress(10.0f);
-
-        // Allocate enough spase for all vectors to avoid vector reallocation.
-        const int maxGarbageCount = 200;
-        m_allGarbage.reserve(maxGarbageCount);
-        m_allAnimatedEnemies.reserve(100);
-        m_animatedOrDynamicObjects.reserve(100 + maxGarbageCount);
-        m_staticEnv.reserve(100);
-        m_simpleObjForShadowMap.reserve(100 + maxGarbageCount);
-        m_animatedObjForShadowMap.reserve(100);
-
-        // Specific for this map only.
         loadPlayer();
         m_player->getObj()->setOrigin(glm::vec3(95.0f, 2.0f,0.0f));
         m_improvements.setPlayer(m_player);
@@ -25,7 +13,7 @@ namespace MagneticBall3D
         loadEnv();
         Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
-        BR_ASSERT((m_allGarbage.size() < maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
+        BR_ASSERT((m_allGarbage.size() < m_maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
@@ -36,7 +24,7 @@ namespace MagneticBall3D
         m_dirToSun = glm::normalize(glm::vec3(-0.5f, 2.0f, 0.4f));
         m_sunLightDir = -m_dirToSun;
 
-        m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/map1");
+        m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
         if(EnumsAndVars::playerMagneticRadius < 55)
             EnumsAndVars::playerMagneticRadius = 55.0f;

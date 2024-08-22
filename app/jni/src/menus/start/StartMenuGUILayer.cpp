@@ -21,6 +21,7 @@ namespace MagneticBall3D
 
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map0Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map3Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map4Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 

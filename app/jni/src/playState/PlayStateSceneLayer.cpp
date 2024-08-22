@@ -4,6 +4,7 @@
 #include "maps/Map1.h"
 #include "maps/Map2.h"
 #include "maps/Map3.h"
+#include "maps/Map4.h"
 
 namespace MagneticBall3D
 {
@@ -20,8 +21,10 @@ namespace MagneticBall3D
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 1)
             m_map = std::make_shared<Map3>(gui);
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 2)
-            m_map = std::make_shared<Map2>(gui);
+            m_map = std::make_shared<Map4>(gui);
         else if(EnumsAndVars::MapsProgress::currentMapIndex == 3)
+            m_map = std::make_shared<Map2>(gui);
+        else if(EnumsAndVars::MapsProgress::currentMapIndex == 4)
             m_map = std::make_shared<Map1>(gui);
         else
         {

@@ -62,6 +62,9 @@ namespace MagneticBall3D
     protected:
         std::shared_ptr<PlayStateGUILayer> m_gui;
 
+        const int m_maxEnvCount = 300;
+        const int m_maxGarbageCount = 400;
+        const int m_maxEnemiesCount = 450;
         std::shared_ptr<Player> m_player;
         std::vector<Garbage> m_allGarbage; // Common garbage spawned on map + garbage after kill enemies.
         std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;

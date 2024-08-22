@@ -88,6 +88,7 @@ namespace MagneticBall3D
             {
                 BR_INFO(" %s", "Player resetVelocities()");
                 m_obj->resetVelocities();
+                updateSpeed();
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 100.0f);
             }
 
