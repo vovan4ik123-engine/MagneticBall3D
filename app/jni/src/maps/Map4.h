@@ -16,11 +16,10 @@ namespace MagneticBall3D
         void loadEnv();
         void loadGarbage();
         void loadEnemies();
-        void loadBoss();
 
         void spawnEnemies() override;
-        void startBossPhase() override;
-        void handlePossPhase() override;
+        void startBossPhase() override {};
+        void handlePossPhase() override {};
 
         // Enemies waves.
         bool m_prepareWave1 = true;

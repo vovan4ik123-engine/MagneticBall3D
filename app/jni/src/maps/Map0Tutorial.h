@@ -14,13 +14,13 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        void spawnEnemies() override {};
-        void startBossPhase() override {};
-        void handlePossPhase() override {};
-
     private:
         void loadEnv();
         void loadGarbage();
         void loadEnemies();
+
+        void spawnEnemies() override {};
+        void startBossPhase() override {};
+        void handlePossPhase() override {};
     };
 }

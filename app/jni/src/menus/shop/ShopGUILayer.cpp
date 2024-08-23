@@ -46,43 +46,14 @@ namespace MagneticBall3D
         m_errorTexture = Beryll::Renderer::createTexture("GUI/menus/shop/PurchaseError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_errorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        // These callbacks can be called from different thread.
-        m_buyItem1SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem1SuccessCallback called");
-            ShopGUILayer::m_item1Bought = true;
-        };
-        m_buyItem2SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem2SuccessCallback called");
-            ShopGUILayer::m_item2Bought = true;
-        };
-        m_buyItem3SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem3SuccessCallback called");
-            ShopGUILayer::m_item3Bought = true;
-        };
-        m_buyItem4SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem4SuccessCallback called");
-            ShopGUILayer::m_item4Bought = true;
-        };
-        m_buyItem5SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem5SuccessCallback called");
-            ShopGUILayer::m_item5Bought = true;
-        };
-        m_buyItem6SuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_buyItem6SuccessCallback called");
-            ShopGUILayer::m_item6Bought = true;
-        };
-
-        m_commonErrorCallback = []() -> void
-        {
-            BR_INFO("%s", "testBillingLogs m_commonErrorCallback called");
-            ShopGUILayer::m_buyError = true;
-        };
+        // These callbacks are called from different thread.
+        m_buyItem1SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem1SuccessCallback()"); ShopGUILayer::m_item1Bought = true; };
+        m_buyItem2SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem2SuccessCallback()"); ShopGUILayer::m_item2Bought = true; };
+        m_buyItem3SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem3SuccessCallback()"); ShopGUILayer::m_item3Bought = true; };
+        m_buyItem4SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem4SuccessCallback()"); ShopGUILayer::m_item4Bought = true; };
+        m_buyItem5SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem5SuccessCallback()"); ShopGUILayer::m_item5Bought = true; };
+        m_buyItem6SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem6SuccessCallback()"); ShopGUILayer::m_item6Bought = true; };
+        m_commonErrorCallback = []() -> void { BR_INFO("%s", "m_commonErrorCallback()"); ShopGUILayer::m_buyError = true; };
     }
 
     ShopGUILayer::~ShopGUILayer()

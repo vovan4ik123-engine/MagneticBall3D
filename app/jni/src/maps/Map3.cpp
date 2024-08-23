@@ -18,8 +18,6 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
-        loadBoss();
-        Beryll::LoadingScreen::showProgress(90.0f);
 
         loadShaders();
         m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
@@ -359,7 +357,7 @@ namespace MagneticBall3D
 
             janitorRake->damage = 0.5f;
             janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 5.0f;
-            janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorRake->garbageAmountToDie = 10;
             janitorRake->reducePlayerSpeedWhenDie = 0.0f;
@@ -393,7 +391,7 @@ namespace MagneticBall3D
 
             janitorBroom->damage = 0.5f;
             janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
-            janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorBroom->garbageAmountToDie = 10;
             janitorBroom->reducePlayerSpeedWhenDie = 0.0f;
@@ -425,8 +423,8 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
 
             copShield->damage = 0.5f;
-            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
-            copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             copShield->garbageAmountToDie = 10;
             copShield->reducePlayerSpeedWhenDie = 0.0f;
@@ -437,11 +435,6 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(copShield);
             m_animatedObjForShadowMap.push_back(copShield);
         }
-    }
-
-    void Map3::loadBoss()
-    {
-
     }
 
     void Map3::spawnEnemies()
@@ -738,15 +731,5 @@ namespace MagneticBall3D
         }
 
         //BR_INFO("BaseEnemy::getActiveCount(): %d", BaseEnemy::getActiveCount());
-    }
-
-    void Map3::startBossPhase()
-    {
-
-    }
-
-    void Map3::handlePossPhase()
-    {
-
     }
 }

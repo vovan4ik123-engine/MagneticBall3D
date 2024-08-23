@@ -18,8 +18,6 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
         Beryll::LoadingScreen::showProgress(80.0f);
-        loadBoss();
-        Beryll::LoadingScreen::showProgress(90.0f);
 
         loadShaders();
         m_cameraAngleOffset = glm::normalize(glm::vec3(-0.1f, 0.0f, -1.0f));
@@ -272,8 +270,8 @@ namespace MagneticBall3D
             enemy1->dieGarbageType = GarbageType::ENEMY_GUN;
 
             enemy1->damage = 1.0f;
-            enemy1->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
-            enemy1->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            enemy1->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            enemy1->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             enemy1->garbageAmountToDie = 10;
             enemy1->reducePlayerSpeedWhenDie = 0.5f;
@@ -284,11 +282,6 @@ namespace MagneticBall3D
             m_allAnimatedEnemies.push_back(enemy1);
             m_animatedObjForShadowMap.push_back(enemy1);
         }
-    }
-
-    void Map4::loadBoss()
-    {
-
     }
 
     void Map4::spawnEnemies()
@@ -354,15 +347,5 @@ namespace MagneticBall3D
         }
 
         //BR_INFO("BaseEnemy::getActiveCount(): %d", BaseEnemy::getActiveCount());
-    }
-
-    void Map4::startBossPhase()
-    {
-
-    }
-
-    void Map4::handlePossPhase()
-    {
-
     }
 }

@@ -209,7 +209,7 @@ namespace MagneticBall3D
             {
                 m_fingerDownID = f.ID;
                 m_fingerLastPos = f.SDL2ScreenPos;
-                glm::vec3 touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 30.0f; // impulse 10 = +1 speed.
+                glm::vec3 touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 35.0f; // impulse 10 = +1 speed.
                 if(m_firstTouch)
                 {
                     m_firstTouch = false;
@@ -710,7 +710,7 @@ namespace MagneticBall3D
         glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
         float cameraRotationSpeedFactor = 1.0f;
 
-        if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec &&
+        if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec &&
            m_player->getMoveSpeedXZ() < 5.0f && m_player->getBuildingNormalAngle() > 1.3f)
         {
             desiredCameraBackXZ = glm::normalize(glm::vec3(m_player->getBuildingCollisionNormal().x, 0.0f, m_player->getBuildingCollisionNormal().z));
@@ -720,7 +720,7 @@ namespace MagneticBall3D
             desiredCameraBackXZ = -m_player->getMoveDirXZ();
             cameraRotationSpeedFactor *= m_player->getMoveSpeedXZ() / EnumsAndVars::playerMaxSpeedXZDefault;
 
-            if(m_player->getLastTimeOnBuilding() + 0.7f > EnumsAndVars::mapPlayTimeSec)
+            if(m_player->getLastTimeOnBuilding() + 0.6f > EnumsAndVars::mapPlayTimeSec)
             {
                 const glm::vec3 swipeBackDir = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
                 // On vertical wall angleFactor = 1. On horizontal roof angleFactor = 0.

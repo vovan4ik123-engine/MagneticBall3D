@@ -65,17 +65,9 @@ namespace MagneticBall3D
 
         selectTalent(m_selectedIndex);
 
-        // These callbacks can be called from different thread.
-        m_rewardedAdSuccessCallback = []() -> void
-        {
-            BR_INFO("%s", "m_rewardedAdSuccessCallback called");
-            PlayerTalentsGUILayer::m_rewardedAdSuccess = true;
-        };
-        m_rewardedAdErrorCallback = []() -> void
-        {
-            BR_INFO("%s", "m_rewardedAdErrorCallback called");
-            PlayerTalentsGUILayer::m_rewardedAdError = true;
-        };
+        // These callbacks are called from different thread.
+        m_rewardedAdSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayerTalentsGUILayer::m_rewardedAdSuccess = true; };
+        m_rewardedAdErrorCallback = []() -> void { BR_INFO("%s", "m_rewardedAdErrorCallback()"); PlayerTalentsGUILayer::m_rewardedAdError = true; };
     }
 
     PlayerTalentsGUILayer::~PlayerTalentsGUILayer()

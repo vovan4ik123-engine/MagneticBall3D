@@ -125,12 +125,6 @@ namespace MagneticBall3D
         bool m_noCrystalsButtonOkClicked = false;
         bool m_noCrystalsMenuShow = false;
 
-        // Ad callbacks. Can be called from different thread.
-        std::function<void()> m_rewardedAdSuccessCallback;
-        std::function<void()> m_rewardedAdErrorCallback;
-        // Can be assigned from different thread.
-        static std::atomic<bool> m_rewardedAdSuccess;
-        static std::atomic<bool> m_rewardedAdError;
         // Ad loading.
         static const std::string m_adLoadingMenuID;
         std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
@@ -159,12 +153,27 @@ namespace MagneticBall3D
         bool m_killAllToSpawnBoss = false;
 
         // Win.
-        static const std::string m_winTextureID;
+        static const std::string m_winMenuID;
         std::unique_ptr<Beryll::Texture> m_winTexture;
-        static const std::string m_winButtonOkID;
-        std::unique_ptr<Beryll::Texture> m_winButtonOkTexture;
+        static const std::string m_winPrize1ButtonID;
+        std::unique_ptr<Beryll::Texture> m_winPrize1ButtonTexture;
+        static const std::string m_winPrize2ButtonID;
+        std::unique_ptr<Beryll::Texture> m_winPrize2ButtonTexture;
         bool m_winMenuShow = false;
-        bool m_winButtonClicked = false;
+        bool m_winPrize1ButtonClicked = false;
+        bool m_winPrize2ButtonClicked = false;
+        // Ad callbacks. Can be called from different thread.
+        std::function<void()> m_resurrectAdSuccessCallback;
+        std::function<void()> m_winPrize1AdSuccessCallback;
+        std::function<void()> m_winPrize2AdSuccessCallback;
+        std::function<void()> m_exitAdSuccessCallback;
+        std::function<void()> m_commonAdErrorCallback;
+        // Can be assigned from different thread.
+        static std::atomic<bool> m_resurrectAdSuccess;
+        static std::atomic<bool> m_winPrize1AdSuccess;
+        static std::atomic<bool> m_winPrize2AdSuccess;
+        static std::atomic<bool> m_exitAdSuccess;
+        static std::atomic<bool> m_commonAdError;
 
         // Menus before specific bosses.
         // Tank with commander.
