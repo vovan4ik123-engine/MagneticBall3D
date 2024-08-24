@@ -34,43 +34,32 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Texture> m_transparentTexture;
 
         // Back.
-        static const std::string m_backButtonID;
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
 
         // Talents header.
-        static const std::string m_talentsHeaderID;
         std::unique_ptr<Beryll::Texture> m_talentsHeaderTexture;
 
-        // All talents.
-        static const std::string m_allTalentsMenuID;
         // Max speed. = 0
-        static const std::string m_maxSpeedButtonID;
         std::shared_ptr<Beryll::Texture> m_maxSpeedButtonTexture;
         bool m_maxSpeedButtonClicked = false;
         // Magnetic radius. = 1
-        static const std::string m_magneticRadiusButtonID;
         std::shared_ptr<Beryll::Texture> m_magneticRadiusButtonTexture;
         bool m_magneticRadiusButtonClicked = false;
         // Amount of magnetized garbage. = 2
-        static const std::string m_amountOfMagnetizedGarbageButtonID;
         std::shared_ptr<Beryll::Texture> m_amountOfMagnetizedGarbageButtonTexture;
         bool m_amountOfMagnetizedGarbageButtonClicked = false;
         // Accelerate faster. = 3
-        static const std::string m_accelerateFasterButtonID;
         std::shared_ptr<Beryll::Texture> m_accelerateFasterButtonTexture;
         bool m_accelerateFasterButtonClicked = false;
         // Ball and garbage protection. = 4
-        static const std::string m_ballAndGarbageProtectionButtonID;
         std::shared_ptr<Beryll::Texture> m_ballAndGarbageProtectionButtonTexture;
         bool m_ballAndGarbageProtectionButtonClicked = false;
         // Resurrection attempts. = 5
-        static const std::string m_resurrectionAttemptsButtonID;
         std::shared_ptr<Beryll::Texture> m_resurrectionAttemptsButtonTexture;
         bool m_resurrectionAttemptsButtonClicked = false;
 
         // Menu selected talent.
-        static const std::string m_selectedTalentMenuID;
         std::shared_ptr<Beryll::Texture> m_selectedTalentTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTimerTexture;
@@ -93,16 +82,11 @@ namespace MagneticBall3D
         void selectTalent(int index);
 
         // Menu with buttons to improve selected talent.
-        static const std::string m_improveTalentMenuID;
-        static const std::string m_improveTalentByAdButtonID;
-        static const std::string m_improveTalentByCrystalsButtonID;
         bool m_improveByAdClicked = false;
         bool m_improveByCrystalsClicked = false;
 
         // Not enough crystals menu.
-        static const std::string m_noCrystalsMenuID;
         std::unique_ptr<Beryll::Texture> m_noCrystalsTexture;
-        static const std::string m_noCrystalsButtonOkID;
         std::unique_ptr<Beryll::Texture> m_noCrystalsButtonOkTexture;
         bool m_noCrystalsButtonOkClicked = false;
         bool m_showNoCrystalsMenu = false;
@@ -114,13 +98,10 @@ namespace MagneticBall3D
         static std::atomic<bool> m_rewardedAdSuccess;
         static std::atomic<bool> m_rewardedAdError;
         // Ad loading.
-        static const std::string m_adLoadingMenuID;
         std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
         bool m_adLoadingMenuShow = false;
         // Ad error.
-        static const std::string m_adErrorMenuID;
         std::unique_ptr<Beryll::Texture> m_adErrorTexture;
-        static const std::string m_adErrorButtonOkID;
         std::unique_ptr<Beryll::Texture> m_adErrorButtonOkTexture;
         bool m_adErrorButtonOkClicked = false;
         bool m_adErrorMenuShow = false;

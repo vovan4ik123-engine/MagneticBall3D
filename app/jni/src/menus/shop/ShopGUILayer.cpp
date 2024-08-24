@@ -5,19 +5,6 @@
 
 namespace MagneticBall3D
 {
-    // All there IDs as strings required by ImGUI.
-    const std::string ShopGUILayer::m_backButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_shopHeaderID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_allItemsMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item1ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item2ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item3ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item4ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item5ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_item6ButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_errorMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string ShopGUILayer::m_errorButtonOkID = std::to_string(BeryllUtils::Common::generateID());
-
     std::atomic<bool> ShopGUILayer::m_item1Bought = false;
     std::atomic<bool> ShopGUILayer::m_item2Bought = false;
     std::atomic<bool> ShopGUILayer::m_item3Bought = false;
@@ -253,8 +240,8 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_backButtonID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
-        m_backButtonClicked = ImGui::ImageButton(m_backButtonID.c_str(), reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
+        ImGui::Begin("backButton", nullptr, m_noBackgroundNoFrameNoFocus);
+        m_backButtonClicked = ImGui::ImageButton("backButton", reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
                                                  ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
         ImGui::End();
 
@@ -262,7 +249,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_shopHeaderID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
+        ImGui::Begin("shopHeader", nullptr, m_noBackgroundNoFrameNoFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_shopHeaderTexture->getID()),
                      ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
         ImGui::End();
@@ -270,60 +257,60 @@ namespace MagneticBall3D
         // Shop all items.
         ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, 0.1f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 0.8f * GUIHeight));
-        ImGui::Begin(m_allItemsMenuID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
+        ImGui::Begin("allShopItems", nullptr, m_noBackgroundNoFrameNoFocus);
 
         // Crystals item1.
         ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.05f * GUIHeight));
         if(EnumsAndVars::Shop::item1FirstBuy)
-            m_item1ButtonClicked = ImGui::ImageButton(m_item1ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item1FirstBuyButtonTexture->getID()),
+            m_item1ButtonClicked = ImGui::ImageButton("item1", reinterpret_cast<ImTextureID>(m_item1FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item1ButtonClicked = ImGui::ImageButton(m_item1ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item1ButtonTexture->getID()),
+            m_item1ButtonClicked = ImGui::ImageButton("item1", reinterpret_cast<ImTextureID>(m_item1ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item2.
         ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.05f * GUIHeight));
         if(EnumsAndVars::Shop::item2FirstBuy)
-            m_item2ButtonClicked = ImGui::ImageButton(m_item2ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item2FirstBuyButtonTexture->getID()),
+            m_item2ButtonClicked = ImGui::ImageButton("item2", reinterpret_cast<ImTextureID>(m_item2FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item2ButtonClicked = ImGui::ImageButton(m_item2ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item2ButtonTexture->getID()),
+            m_item2ButtonClicked = ImGui::ImageButton("item2", reinterpret_cast<ImTextureID>(m_item2ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item3.
         ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.05f * GUIHeight));
         if(EnumsAndVars::Shop::item3FirstBuy)
-            m_item3ButtonClicked = ImGui::ImageButton(m_item3ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item3FirstBuyButtonTexture->getID()),
+            m_item3ButtonClicked = ImGui::ImageButton("item3", reinterpret_cast<ImTextureID>(m_item3FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item3ButtonClicked = ImGui::ImageButton(m_item3ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item3ButtonTexture->getID()),
+            m_item3ButtonClicked = ImGui::ImageButton("item3", reinterpret_cast<ImTextureID>(m_item3ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item4.
         ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.275f * GUIHeight));
         if(EnumsAndVars::Shop::item4FirstBuy)
-            m_item4ButtonClicked = ImGui::ImageButton(m_item4ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item4FirstBuyButtonTexture->getID()),
+            m_item4ButtonClicked = ImGui::ImageButton("item4", reinterpret_cast<ImTextureID>(m_item4FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item4ButtonClicked = ImGui::ImageButton(m_item4ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item4ButtonTexture->getID()),
+            m_item4ButtonClicked = ImGui::ImageButton("item4", reinterpret_cast<ImTextureID>(m_item4ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item5.
         ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.275f * GUIHeight));
         if(EnumsAndVars::Shop::item5FirstBuy)
-            m_item5ButtonClicked = ImGui::ImageButton(m_item5ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item5FirstBuyButtonTexture->getID()),
+            m_item5ButtonClicked = ImGui::ImageButton("item5", reinterpret_cast<ImTextureID>(m_item5FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item5ButtonClicked = ImGui::ImageButton(m_item5ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item5ButtonTexture->getID()),
+            m_item5ButtonClicked = ImGui::ImageButton("item5", reinterpret_cast<ImTextureID>(m_item5ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         // Crystals item6.
         ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.275f * GUIHeight));
         if(EnumsAndVars::Shop::item6FirstBuy)
-            m_item6ButtonClicked = ImGui::ImageButton(m_item6ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item6FirstBuyButtonTexture->getID()),
+            m_item6ButtonClicked = ImGui::ImageButton("item6", reinterpret_cast<ImTextureID>(m_item6FirstBuyButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
         else
-            m_item6ButtonClicked = ImGui::ImageButton(m_item6ButtonID.c_str(), reinterpret_cast<ImTextureID>(m_item6ButtonTexture->getID()),
+            m_item6ButtonClicked = ImGui::ImageButton("item6", reinterpret_cast<ImTextureID>(m_item6ButtonTexture->getID()),
                                                       ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
 
         ImGui::End();
@@ -334,15 +321,15 @@ namespace MagneticBall3D
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
-            ImGui::Begin(m_errorMenuID.c_str(), nullptr, m_noFrame);
+            ImGui::Begin("purchaseErrorMenu", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_errorTexture->getID()),
                          ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
-            m_errorButtonOkClicked = ImGui::ImageButton(m_errorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+            m_errorButtonOkClicked = ImGui::ImageButton("purchaseErrorButton",reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
+                                                        ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }

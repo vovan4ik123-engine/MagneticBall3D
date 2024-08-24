@@ -22,47 +22,32 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoScrollbar;
 
         // Back.
-        static const std::string m_backButtonID;
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
 
         ImFont* m_fontForAllCheckBoxes;
 
         // Settings header.
-        static const std::string m_settingsHeaderID;
         std::unique_ptr<Beryll::Texture> m_settingsHeaderTexture;
 
         // FPS limit.
-        static const std::string m_FPSLimitTextureID;
         std::unique_ptr<Beryll::Texture> m_FPSLimitTexture;
-
-        static const std::string m_30FPSCheckBoxID;
         bool m_30FPSChecked = false;
-        static const std::string m_60FPSCheckBoxID;
         bool m_60FPSChecked = false;
-        static const std::string m_120FPSCheckBoxID;
         bool m_120FPSChecked = false;
-        static const std::string m_250FPSCheckBoxID;
         bool m_250FPSChecked = false;
 
         void resetFPS(int fps);
 
         // FPS tip.
-        static const std::string m_FPSTipTextureID;
         std::unique_ptr<Beryll::Texture> m_FPSTipTexture;
 
         // Background music.
-        static const std::string m_musicTextureID;
         std::unique_ptr<Beryll::Texture> m_musicTexture;
-
-        static const std::string m_musicCheckBoxID;
         bool m_musicCheckBoxChecked;
 
         // Meteor particles.
-        static const std::string m_meteorParticlesTextureID;
         std::unique_ptr<Beryll::Texture> m_meteorParticlesTexture;
-
-        static const std::string m_meteorParticlesCheckBoxID;
         bool m_meteorParticlesCheckBoxChecked;
     };
 }

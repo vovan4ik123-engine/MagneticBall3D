@@ -159,10 +159,15 @@ namespace MagneticBall3D
         }
     }
 
-    void SendStatisticsHelper::sendTalentImproved(std::string name, std::string currencySpent)
+    void SendStatisticsHelper::sendTalentImproved(const std::string name, const std::string currencySpent)
     {
         std::string event = "talent_" + name + "_" + currencySpent;
 
         Beryll::GoogleAnalytics::getInstance()->sendEventEmpty(event);
+    }
+
+    void SendStatisticsHelper::sendCustomMessage(const std::string text)
+    {
+        Beryll::GoogleAnalytics::getInstance()->sendEventEmpty(text);
     }
 }

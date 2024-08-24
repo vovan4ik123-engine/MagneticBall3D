@@ -7,26 +7,6 @@
 namespace MagneticBall3D
 {
     int PlayerTalentsGUILayer::m_selectedIndex = 0;
-
-    const std::string PlayerTalentsGUILayer::m_backButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_talentsHeaderID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_allTalentsMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_maxSpeedButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_magneticRadiusButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_amountOfMagnetizedGarbageButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_accelerateFasterButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_ballAndGarbageProtectionButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_resurrectionAttemptsButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_selectedTalentMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_improveTalentMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_improveTalentByAdButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_improveTalentByCrystalsButtonID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_noCrystalsMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_noCrystalsButtonOkID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_adLoadingMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_adErrorMenuID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string PlayerTalentsGUILayer::m_adErrorButtonOkID = std::to_string(BeryllUtils::Common::generateID());
-
     std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
     std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdError = false;
 
@@ -188,8 +168,8 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_backButtonID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
-        m_backButtonClicked = ImGui::ImageButton(m_backButtonID.c_str(), reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
+        ImGui::Begin("backButton", nullptr, m_noBackgroundNoFrameNoFocus);
+        m_backButtonClicked = ImGui::ImageButton("backButton", reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
                                                  ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
         ImGui::End();
 
@@ -197,7 +177,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
 
-        ImGui::Begin(m_talentsHeaderID.c_str(), nullptr, m_noBackgroundNoFrameNoFocus);
+        ImGui::Begin("talentsHeader", nullptr, m_noBackgroundNoFrameNoFocus);
         ImGui::Image(reinterpret_cast<ImTextureID>(m_talentsHeaderTexture->getID()),
                      ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
         ImGui::End();
@@ -210,30 +190,30 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.0f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.1f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(GUIWidth, 0.7f * GUIHeight));
-        ImGui::Begin(m_allTalentsMenuID.c_str(), nullptr, m_noFrameNoFocus);
+        ImGui::Begin("allTalents", nullptr, m_noFrameNoFocus);
         // Max speed.
         ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, row1TopPos));
-        m_maxSpeedButtonClicked = ImGui::ImageButton(m_maxSpeedButtonID.c_str(), reinterpret_cast<ImTextureID>(m_maxSpeedButtonTexture->getID()),
+        m_maxSpeedButtonClicked = ImGui::ImageButton("maxSpeedButton", reinterpret_cast<ImTextureID>(m_maxSpeedButtonTexture->getID()),
                                                      ImVec2(iconSidePixels, iconSidePixels));
         // Magnetic radius.
         ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, row1TopPos));
-        m_magneticRadiusButtonClicked = ImGui::ImageButton(m_magneticRadiusButtonID.c_str(), reinterpret_cast<ImTextureID>(m_magneticRadiusButtonTexture->getID()),
+        m_magneticRadiusButtonClicked = ImGui::ImageButton("magneticRadiusButton", reinterpret_cast<ImTextureID>(m_magneticRadiusButtonTexture->getID()),
                                                            ImVec2(iconSidePixels, iconSidePixels));
         // Amount of magnetized garbage.
         ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, row1TopPos));
-        m_amountOfMagnetizedGarbageButtonClicked = ImGui::ImageButton(m_amountOfMagnetizedGarbageButtonID.c_str(), reinterpret_cast<ImTextureID>(m_amountOfMagnetizedGarbageButtonTexture->getID()),
+        m_amountOfMagnetizedGarbageButtonClicked = ImGui::ImageButton("amountOfMagnetizedGarbageButton", reinterpret_cast<ImTextureID>(m_amountOfMagnetizedGarbageButtonTexture->getID()),
                                                                       ImVec2(iconSidePixels, iconSidePixels));
         // Accelerate faster.
         ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, row2TopPos));
-        m_accelerateFasterButtonClicked = ImGui::ImageButton(m_accelerateFasterButtonID.c_str(), reinterpret_cast<ImTextureID>(m_accelerateFasterButtonTexture->getID()),
+        m_accelerateFasterButtonClicked = ImGui::ImageButton("accelerateFasterButton", reinterpret_cast<ImTextureID>(m_accelerateFasterButtonTexture->getID()),
                                                              ImVec2(iconSidePixels, iconSidePixels));
         // Ball and garbage protection.
         ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, row2TopPos));
-        m_ballAndGarbageProtectionButtonClicked = ImGui::ImageButton(m_ballAndGarbageProtectionButtonID.c_str(), reinterpret_cast<ImTextureID>(m_ballAndGarbageProtectionButtonTexture->getID()),
+        m_ballAndGarbageProtectionButtonClicked = ImGui::ImageButton("ballAndGarbageProtectionButton", reinterpret_cast<ImTextureID>(m_ballAndGarbageProtectionButtonTexture->getID()),
                                                                      ImVec2(iconSidePixels, iconSidePixels));
         //Resurrection attempts.
         ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, row2TopPos));
-        m_resurrectionAttemptsButtonClicked = ImGui::ImageButton(m_resurrectionAttemptsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_resurrectionAttemptsButtonTexture->getID()),
+        m_resurrectionAttemptsButtonClicked = ImGui::ImageButton("resurrectionAttemptsButton", reinterpret_cast<ImTextureID>(m_resurrectionAttemptsButtonTexture->getID()),
                                                                  ImVec2(iconSidePixels, iconSidePixels));
 
         ImGui::End();
@@ -247,7 +227,7 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.75f, 0.75f, 0.75f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
-        ImGui::Begin(m_selectedTalentMenuID.c_str(), nullptr, m_noFrameNoFocus);
+        ImGui::Begin("selectedTalent", nullptr, m_noFrameNoFocus);
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
         ImGui::PushFont(m_selectedDescriptionFont);
@@ -352,18 +332,18 @@ namespace MagneticBall3D
             ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.5f }); // Clicked.
             ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
-            ImGui::Begin(m_improveTalentMenuID.c_str(), nullptr, m_noBackgroundNoFrame);
+            ImGui::Begin("improveTalent", nullptr, m_noBackgroundNoFrame);
 
             if(m_selectedCanBeImprovedByAds &&
                EnumsAndVars::Ads::rewardedAdTime + EnumsAndVars::Ads::rewardedAdTimeDelay <= Beryll::TimeStep::getSecSinceEpoch())
             {
                 ImGui::SetCursorPos(ImVec2(textureAdLeftPos, 0.0f));
-                m_improveByAdClicked = ImGui::ImageButton(m_improveTalentByAdButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
+                m_improveByAdClicked = ImGui::ImageButton("improveTalentByAdButton", reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
                                                           ImVec2(textureWidth, menuSelectedHeight));
             }
 
             ImGui::SetCursorPos(ImVec2(textureCrystalsLeftPos, 0.0f));
-            m_improveByCrystalsClicked = ImGui::ImageButton(m_improveTalentByCrystalsButtonID.c_str(), reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
+            m_improveByCrystalsClicked = ImGui::ImageButton("improveTalentByCrystalsButton", reinterpret_cast<ImTextureID>(m_transparentTexture->getID()),
                                                       ImVec2(textureWidth, menuSelectedHeight));
 
             ImGui::End();
@@ -377,14 +357,14 @@ namespace MagneticBall3D
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
-            ImGui::Begin(m_noCrystalsMenuID.c_str(), nullptr, m_noFrame);
+            ImGui::Begin("noCrystals", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_noCrystalsTexture->getID()),
                          ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
-            m_noCrystalsButtonOkClicked = ImGui::ImageButton(m_noCrystalsButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_noCrystalsButtonOkTexture->getID()),
+            m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsButton",reinterpret_cast<ImTextureID>(m_noCrystalsButtonOkTexture->getID()),
                                                              ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
@@ -397,7 +377,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
-            ImGui::Begin(m_adLoadingMenuID.c_str(), nullptr, m_noFrame);
+            ImGui::Begin("adLoading", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
@@ -414,14 +394,14 @@ namespace MagneticBall3D
             ImGui::SetNextWindowFocus();
             ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
-            ImGui::Begin(m_adErrorMenuID.c_str(), nullptr, m_noFrame);
+            ImGui::Begin("adError", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
                          ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
-            m_adErrorButtonOkClicked = ImGui::ImageButton(m_adErrorButtonOkID.c_str(),reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
+            m_adErrorButtonOkClicked = ImGui::ImageButton("adErrorButton",reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
                                                           ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);

@@ -53,8 +53,8 @@ namespace MagneticBall3D
     {
         if(EnumsAndVars::gameOnPause)
         {
-            m_gui->tutorialSwipeEnabled = false;
-            m_gui->tutorialSwipeOnWallEnabled = false;
+            m_gui->tutorialSwipeShow = false;
+            m_gui->tutorialSwipeOnWallShow = false;
             return;
         }
 
@@ -121,18 +121,18 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().x > 100.0f)
             SendStatisticsHelper::sendMap0_100mPassed();
 
-        m_gui->tutorialSwipeEnabled = false;
-        m_gui->tutorialSwipeOnWallEnabled = false;
+        m_gui->tutorialSwipeShow = false;
+        m_gui->tutorialSwipeOnWallShow = false;
         // Tutorial tips on screen.
         if(m_player->getMoveSpeed() < 7.0f)
-            m_gui->tutorialSwipeEnabled = true;
+            m_gui->tutorialSwipeShow = true;
         else
-            m_gui->tutorialSwipeEnabled = false;
+            m_gui->tutorialSwipeShow = false;
 
         if(m_player->getObj()->getOrigin().x > 800.0f && m_player->getObj()->getOrigin().x < 1030.0f)
-            m_gui->tutorialSwipeOnWallEnabled = true;
+            m_gui->tutorialSwipeOnWallShow = true;
         else
-            m_gui->tutorialSwipeOnWallEnabled = false;
+            m_gui->tutorialSwipeOnWallShow = false;
     }
 
     void Map0Tutorial::draw()

@@ -423,7 +423,7 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
 
             copShield->damage = 0.5f;
-            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             copShield->garbageAmountToDie = 10;
