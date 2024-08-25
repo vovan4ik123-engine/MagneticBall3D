@@ -248,7 +248,7 @@ namespace MagneticBall3D
         {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.5f, 0.0f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.44f * GUIWidth, 0.03f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.44f * GUIWidth, 0.032f * GUIHeight));
             ImGui::Text("%s", m_selectedValueToAdd.c_str());
             ImGui::PopFont();
             ImGui::PopStyleColor(1);

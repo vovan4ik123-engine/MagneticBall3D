@@ -66,6 +66,7 @@ namespace EnumsAndVars
         static inline bool item4FirstBuy = true;
         static inline bool item5FirstBuy = true;
         static inline bool item6FirstBuy = true;
+        static inline bool adsOnMapsDisabled = false; // Ads in play state (resurrection and after win/lose/exit).
     };
 
     enum class PlayerTalentCurrency
@@ -137,7 +138,7 @@ namespace EnumsAndVars
         // Stored in DB.
         static inline uint64_t rewardedAdTime = 0; // Time in sec since epoch (1.1.1970) of last rewarded ad shown.
         // Not stored in DB.
-        static constexpr inline int rewardedAdTimeDelay = 0; // Time in sec between rewarded ads.
+        static constexpr inline int rewardedAdTimeDelay = 90; // Use it if you need pause between rewarded ads.
     };
 
     struct DailyReward
@@ -158,7 +159,7 @@ namespace EnumsAndVars
     constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Swipe.
-    constexpr inline float swipePowerMultiplier = 2.5f;
+    constexpr inline float swipePowerMultiplier = 2.1f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;

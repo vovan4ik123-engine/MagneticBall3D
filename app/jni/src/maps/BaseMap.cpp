@@ -251,12 +251,12 @@ namespace MagneticBall3D
                 if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D)))
                 {
                     float moveToSwipeAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_screenSwipe3D));
-                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * m_player->getMoveSpeedXZ() * EnumsAndVars::playerLeftRightTurnPower;
+                    swipeFactorBasedOnAngleAndSpeed = moveToSwipeAngle * (m_player->getMoveSpeedXZ() * 0.8f) * EnumsAndVars::playerLeftRightTurnPower;
 
                     // For turn back.
-                    if(moveToSwipeAngle > 2.6f) // > 150 degrees.
+                    if(moveToSwipeAngle > 2.356f) // > 135 degrees.
                     {
-                        swipeFactorBasedOnAngleAndSpeed *= 1.3f;
+                        swipeFactorBasedOnAngleAndSpeed *= 1.8f;
                         // With bigger impulse the turn back become too sharper. Reduce it with impulse grown.
                         swipeFactorBasedOnAngleAndSpeed *= EnumsAndVars::playerImpulseFactorOnGroundDefault / EnumsAndVars::playerImpulseFactorOnGround;
                     }
@@ -301,7 +301,7 @@ namespace MagneticBall3D
             // Help to player move faster on flat surface when speed is low.
             if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
             {
-                const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeedXZ()) * 0.01f;
+                const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeedXZ()) * 0.009f;
 
                 if(m_player->getLastTimeOnGround() + 0.5f > EnumsAndVars::mapPlayTimeSec ||
                    m_player->getLastTimeOnJumpPad() + 0.5f > EnumsAndVars::mapPlayTimeSec)

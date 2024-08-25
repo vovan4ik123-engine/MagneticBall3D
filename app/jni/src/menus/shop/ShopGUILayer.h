@@ -55,6 +55,9 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_item6ButtonTexture;
         std::unique_ptr<Beryll::Texture> m_item6FirstBuyButtonTexture;
         bool m_item6ButtonClicked = false;
+        // Disable ads on maps.
+        std::unique_ptr<Beryll::Texture> m_disableAdsOnMapsButtonTexture;
+        bool m_disableAdsOnMapsButtonClicked = false;
 
         // Purchase error.
         std::unique_ptr<Beryll::Texture> m_errorTexture;
@@ -69,6 +72,7 @@ namespace MagneticBall3D
         std::function<void()> m_buyItem4SuccessCallback;
         std::function<void()> m_buyItem5SuccessCallback;
         std::function<void()> m_buyItem6SuccessCallback;
+        std::function<void()> m_buyDisableAdsOnMapsSuccessCallback;
         std::function<void()> m_commonErrorCallback;
         // Can be assigned from different thread.
         static std::atomic<bool> m_item1Bought;
@@ -77,6 +81,7 @@ namespace MagneticBall3D
         static std::atomic<bool> m_item4Bought;
         static std::atomic<bool> m_item5Bought;
         static std::atomic<bool> m_item6Bought;
+        static std::atomic<bool> m_disableAdsOnMapsBought;
         static std::atomic<bool> m_buyError;
     };
 }

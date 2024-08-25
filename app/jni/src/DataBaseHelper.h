@@ -21,6 +21,7 @@ namespace DataBaseHelper
     //          MeteorParticles     |                       |                       |   LastSecOneEnergyRestored|                       | Item4FirstBuy
     //                                                                                                          |                       | Item5FirstBuy
     //                                                                                                          |                       | Item6FirstBuy
+    //                                                                                                                                  | AdsOnMapsDisabled
 
     // Database schema part 2.
     // Tables:  PlayerTalents   |   Ads             |   DailyReward
@@ -130,7 +131,7 @@ namespace DataBaseHelper
                                                        ");";
 
     const inline std::string insertEnergySystem = "INSERT INTO EnergySystem(ID, CurrentAmount, LastSecUpdated, LastSecOneEnergyRestored) "
-                                                          "VALUES(NULL, NULL, NULL, NULL);";
+                                                  "VALUES(NULL, NULL, NULL, NULL);";
     const inline std::string selectEnergySystemAll = "SELECT * FROM EnergySystem LIMIT 1;";
     const inline std::string updateEnergySystemCurrentAmount = "UPDATE EnergySystem SET CurrentAmount = :::amount;";
     const inline std::string updateEnergySystemLastSecUpdated = "UPDATE EnergySystem SET LastSecUpdated = :::lastSecUpdated;";
@@ -159,11 +160,12 @@ namespace DataBaseHelper
                                                "Item3FirstBuy INTEGER, "
                                                "Item4FirstBuy INTEGER, "
                                                "Item5FirstBuy INTEGER, "
-                                               "Item6FirstBuy INTEGER "
+                                               "Item6FirstBuy INTEGER, "
+                                               "AdsOnMapsDisabled INTEGER "
                                                ");";
 
-    const inline std::string insertShop = "INSERT INTO Shop(ID, Item1FirstBuy, Item2FirstBuy, Item3FirstBuy, Item4FirstBuy, Item5FirstBuy, Item6FirstBuy) "
-                                                  "VALUES(NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+    const inline std::string insertShop = "INSERT INTO Shop(ID, Item1FirstBuy, Item2FirstBuy, Item3FirstBuy, Item4FirstBuy, Item5FirstBuy, Item6FirstBuy, AdsOnMapsDisabled) "
+                                          "VALUES(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
     const inline std::string selectShopAll = "SELECT * FROM Shop LIMIT 1;";
     const inline std::string updateShopItem1FirstBuy = "UPDATE Shop SET Item1FirstBuy = :::item1FirstBuy;";
     const inline std::string updateShopItem2FirstBuy = "UPDATE Shop SET Item2FirstBuy = :::item2FirstBuy;";
@@ -171,6 +173,7 @@ namespace DataBaseHelper
     const inline std::string updateShopItem4FirstBuy = "UPDATE Shop SET Item4FirstBuy = :::item4FirstBuy;";
     const inline std::string updateShopItem5FirstBuy = "UPDATE Shop SET Item5FirstBuy = :::item5FirstBuy;";
     const inline std::string updateShopItem6FirstBuy = "UPDATE Shop SET Item6FirstBuy = :::item6FirstBuy;";
+    const inline std::string updateShopAdsOnMapsDisabled = "UPDATE Shop SET AdsOnMapsDisabled = :::adsOnMapsDisabled;";
 
     void readShop();
     inline void storeShopItem1FirstBuy(long long int value)
@@ -196,6 +199,10 @@ namespace DataBaseHelper
     inline void storeShopItem6FirstBuy(long long int value)
     {
         executeSql(std::regex_replace(updateShopItem6FirstBuy, std::regex(":::item6FirstBuy"), std::to_string(value)));
+    }
+    inline void storeShopAdsOnMapsDisabled(long long int value)
+    {
+        executeSql(std::regex_replace(updateShopAdsOnMapsDisabled, std::regex(":::adsOnMapsDisabled"), std::to_string(value)));
     }
 
     // DatabaseMigrations.

@@ -30,12 +30,16 @@ namespace MagneticBall3D
             EnumsAndVars::playerMagneticRadius = 55.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.125f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.125f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.115f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.115f;
+        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 0.105f)
+            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.105f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.095f)
+            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.095f;
 
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.5f;
 
         m_gui->disableMapPlayTimer();
 

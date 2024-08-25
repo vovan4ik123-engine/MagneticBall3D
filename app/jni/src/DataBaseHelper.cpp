@@ -72,6 +72,7 @@ namespace DataBaseHelper
                 storeShopItem4FirstBuy(1);
                 storeShopItem5FirstBuy(1);
                 storeShopItem6FirstBuy(1);
+                storeShopAdsOnMapsDisabled(0);
 
                 // DatabaseMigrations.
                 executeSql(createTableDatabaseMigrations);
@@ -255,6 +256,11 @@ namespace DataBaseHelper
         if(std::holds_alternative<long long int>(rows[0][6]))
             EnumsAndVars::Shop::item6FirstBuy = std::get<long long int>(rows[0][6]) == 1; // True if column contains 1.
         BR_INFO("Shop::item6FirstBuy after read: %d", int(EnumsAndVars::Shop::item6FirstBuy));
+
+        BR_ASSERT((std::holds_alternative<long long int>(rows[0][7])), "%s", "AdsOnMapsDisabled contains wrong data.");
+        if(std::holds_alternative<long long int>(rows[0][7]))
+            EnumsAndVars::Shop::adsOnMapsDisabled = std::get<long long int>(rows[0][7]) == 1; // True if column contains 1.
+        BR_INFO("Shop::adsOnMapsDisabled after read: %d", int(EnumsAndVars::Shop::adsOnMapsDisabled));
     }
 
     void checkDatabaseMigrations()

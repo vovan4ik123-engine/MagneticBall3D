@@ -158,8 +158,15 @@ namespace MagneticBall3D
             Sounds::stopBackgroundMusic();
             SendStatisticsHelper::sendCustomMessage("click_exit_button");
 
-            m_adLoadingMenuShow = true;
-            Beryll::Ads::getInstance()->showInterstitialAd(m_exitAdSuccessCallback, m_commonAdErrorCallback);
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_exitAdSuccessCallback();
+            }
+            else
+            {
+                m_adLoadingMenuShow = true;
+                Beryll::Ads::getInstance()->showInterstitialAd(m_exitAdSuccessCallback, m_commonAdErrorCallback);
+            }
         }
         else if(m_killAllButtonClicked)
         {
@@ -174,8 +181,15 @@ namespace MagneticBall3D
             m_winPrize1ButtonClicked = false;
             SendStatisticsHelper::sendCustomMessage("click_win_prize_1");
 
-            m_adLoadingMenuShow = true;
-            Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_winPrize1AdSuccessCallback();
+            }
+            else
+            {
+                m_adLoadingMenuShow = true;
+                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
+            }
         }
         else if(m_winPrize2ButtonClicked)
         {
@@ -183,8 +197,15 @@ namespace MagneticBall3D
             m_winPrize2ButtonClicked = false;
             SendStatisticsHelper::sendCustomMessage("click_win_prize_2");
 
-            m_adLoadingMenuShow = true;
-            Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_winPrize2AdSuccessCallback();
+            }
+            else
+            {
+                m_adLoadingMenuShow = true;
+                Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
+            }
         }
         else if(m_tankWithCommanderButtonClicked)
         {
@@ -200,8 +221,15 @@ namespace MagneticBall3D
             SendStatisticsHelper::sendCustomMessage("click_resurrect_ad");
             Sounds::pauseBackgroundMusic();
 
-            m_adLoadingMenuShow = true;
-            Beryll::Ads::getInstance()->showRewardedAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback, true);
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_resurrectAdSuccessCallback();
+            }
+            else
+            {
+                m_adLoadingMenuShow = true;
+                Beryll::Ads::getInstance()->showRewardedAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback, true);
+            }
         }
         else if(m_resurrectByCrystalsButtonClicked)
         {
@@ -261,7 +289,7 @@ namespace MagneticBall3D
             m_adLoadingMenuShow = false;
             m_winMenuShow = false;
 
-            EnumsAndVars::CurrencyBalance::crystals += 50;
+            EnumsAndVars::CurrencyBalance::crystals += 40;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
             GameStateHelper::popState();

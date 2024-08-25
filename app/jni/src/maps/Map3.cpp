@@ -62,7 +62,7 @@ namespace MagneticBall3D
         if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
             EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
 
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.46f;
 
         SendStatisticsHelper::sendMapStart();
 
