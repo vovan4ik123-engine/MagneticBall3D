@@ -535,55 +535,33 @@ namespace MagneticBall3D
 
                 if(rayAttack)
                 {
-                    // Spam particles.
-                    glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
+                    if(enemy->attackType != AttackType::MELEE_DAMAGE_ONE && enemy->attackType != AttackType::MAGNETIZE_GARBAGE)
+                    {
+                        // Spam particles.
+                        glm::vec3 from = enemy->getOrigin(); // Calculate particles start point.
 
-                    if(enemy->unitType == UnitType::ENEMY_GUN ||
-                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD ||
-                       enemy->unitType == UnitType::ENEMY_SNIPER)
-                    {
-                        from.y += enemy->getFromOriginToTop() * 0.75f;
-                        from += enemy->getFaceDirXZ() * 15.0f;
-                    }
-                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
-                    {
-                        from.y += 1.0f;
-                        from += enemy->getFaceDirXZ() * 14.0f;
-                    }
-                    else if(enemy->unitType == UnitType::ENEMY_TANK ||
-                            enemy->unitType == UnitType::ENEMY_ROCKET)
-                    {
-                        from.y += enemy->getFromOriginToTop() * 0.8f;
-                        from += enemy->getFaceDirXZ() * 30.0f;
-                    }
+                        if(enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
+                        {
+                            from.y += 1.0f;
+                            from += enemy->getFaceDirXZ() * 14.0f;
+                        }
+                        else if(enemy->unitType == UnitType::ENEMY_TANK)
+                        {
+                            from.y += enemy->getFromOriginToTop() * 0.8f;
+                            from += enemy->getFaceDirXZ() * 30.0f;
+                        }
+                        else
+                        {
+                            from.y += enemy->getFromOriginToTop() * 0.75f;
+                            from += enemy->getFaceDirXZ() * 15.0f;
+                        }
 
-                    if(enemy->unitType == UnitType::ENEMY_GUN ||
-                       enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                    {
-                        emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
-                                          glm::vec4(0.9f, 0.9f, 0.0f, 1.0f), glm::vec4(0.9f, 0.9f, 0.0f, 0.7f), 0.4f);
-                    }
-                    else if(enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
-                    {
-                        emitParticlesLine(from, rayAttack.hitPoint, 0.5f, 0.5f,
-                                          glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.4f);
+                        emitParticlesLine(from, rayAttack.hitPoint, enemy->attackParticlesSize, enemy->attackParticlesSize * 0.4f,
+                                          glm::vec4(enemy->attackParticlesColor, 1.0f), glm::vec4(enemy->attackParticlesColor, 0.7f), 0.4f);
 
-                        emitParticlesExplosion(rayAttack.hitPoint, 6, 1.5f, 1.5f,
-                                               glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.8f);
-                    }
-                    else if(enemy->unitType == UnitType::ENEMY_SNIPER)
-                    {
-                        emitParticlesLine(from, rayAttack.hitPoint, 0.2f, 0.2f,
-                                          glm::vec4(0.95f, 0.05f, 0.0f, 1.0f), glm::vec4(0.95f, 0.05f, 0.0f, 0.7f), 0.4f);
-                    }
-                    else if(enemy->unitType == UnitType::ENEMY_TANK ||
-                            enemy->unitType == UnitType::ENEMY_ROCKET)
-                    {
-                        emitParticlesLine(from, rayAttack.hitPoint, 1.0f, 1.0f,
-                                          glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 0.6f);
-
-                        emitParticlesExplosion(rayAttack.hitPoint, 6, 3.0f, 3.0f,
-                                               glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), glm::vec4(1.0f, 0.5f, 0.0f, 0.7f), 1.2f);
+                        if(enemy->attackType == AttackType::RANGE_DAMAGE_RADIUS)
+                            emitParticlesExplosion(rayAttack.hitPoint, 6, enemy->attackParticlesSize * 2.5f, enemy->attackParticlesSize,
+                                                   glm::vec4(enemy->attackParticlesColor, 1.0f), glm::vec4(enemy->attackParticlesColor, 0.7f), 1.0f);
                     }
 
                     enemy->attack(m_player->getObj()->getOrigin());
@@ -961,7 +939,7 @@ namespace MagneticBall3D
             EnumsAndVars::garbageCommonSpawnTime = EnumsAndVars::mapPlayTimeSec;
 
             const glm::ivec2 spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
-            glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
+            const glm::vec3 spawnPoint3D{spawnPoint2D.x, 7.0f, spawnPoint2D.y};
 
             spawnGarbage(EnumsAndVars::garbageCommonSpawnCount, GarbageType::COMMON, spawnPoint3D);
             //BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());

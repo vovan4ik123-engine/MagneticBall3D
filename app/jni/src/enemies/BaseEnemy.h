@@ -16,12 +16,12 @@ namespace MagneticBall3D
     {
         NONE,
         ENEMY_MELEE,
-        ENEMY_GUN,
+        ENEMY_GUN1,
+        ENEMY_GUN2,
         ENEMY_GUN_SHIELD,
-        ENEMY_GRENADE_LAUNCHER,
+        ENEMY_SIT_WHEN_SHOOT,
         ENEMY_SNIPER,
         ENEMY_TANK,
-        ENEMY_ROCKET,
         ENEMY_MAGNET
     };
 
@@ -71,6 +71,8 @@ namespace MagneticBall3D
         AttackType attackType = AttackType::NONE;
         SoundType attackSound = SoundType::NONE;
         SoundType attackHitSound = SoundType::NONE;
+        glm::vec3 attackParticlesColor{0.5f};
+        float attackParticlesSize = 0.2f;
         SoundType dieSound = SoundType::NONE;
         GarbageType dieGarbageType = GarbageType::NONE; // Spawn garbage when die.
 

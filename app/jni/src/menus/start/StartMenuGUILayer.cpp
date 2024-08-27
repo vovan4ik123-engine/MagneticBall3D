@@ -106,7 +106,7 @@ namespace MagneticBall3D
         ImGui::Image(reinterpret_cast<ImTextureID>(m_crystalIconTexture->getID()),
                      ImVec2(0.06f * GUIWidth, 0.06f * GUIWidth));
 
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_crystalsFont);
         ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.013f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);

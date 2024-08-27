@@ -275,7 +275,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_MELEE, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE1, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -299,7 +299,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE2, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -323,7 +323,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE3, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -353,7 +353,7 @@ namespace MagneticBall3D
             janitorRake->attackSound = SoundType::NONE;
             janitorRake->attackHitSound = SoundType::STICK_HIT;
             janitorRake->dieSound = SoundType::POP;
-            janitorRake->dieGarbageType = GarbageType::ENEMY_MELEE;
+            janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             janitorRake->damage = 0.5f;
             janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 5.0f;
@@ -382,12 +382,14 @@ namespace MagneticBall3D
 
             janitorBroom->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             janitorBroom->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            janitorBroom->unitType = UnitType::ENEMY_GUN;
+            janitorBroom->unitType = UnitType::ENEMY_GUN1;
             janitorBroom->attackType = AttackType::RANGE_DAMAGE_ONE;
             janitorBroom->attackSound = SoundType::NONE;
             janitorBroom->attackHitSound = SoundType::BROOM_HIT;
+            janitorBroom->attackParticlesColor = glm::vec3{1.0f, 0.6f, 0.0f};
+            janitorBroom->attackParticlesSize = 0.3f;
             janitorBroom->dieSound = SoundType::POP;
-            janitorBroom->dieGarbageType = GarbageType::ENEMY_GUN;
+            janitorBroom->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             janitorBroom->damage = 0.5f;
             janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
@@ -419,8 +421,10 @@ namespace MagneticBall3D
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
             copShield->attackSound = SoundType::PISTOL_SHOT;
             copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
+            copShield->attackParticlesSize = 0.3f;
             copShield->dieSound = SoundType::POP;
-            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
+            copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             copShield->damage = 0.5f;
             copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
@@ -513,7 +517,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 10 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 10 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -541,7 +545,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 30 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 30 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -570,7 +574,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -605,7 +609,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -640,7 +644,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 85 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 85 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -675,7 +679,7 @@ namespace MagneticBall3D
                     ++meleeCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
+                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;

@@ -318,7 +318,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopPistol)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE1, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -342,7 +342,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopShield)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE2, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -366,7 +366,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopGrenade)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GRENADE_LAUNCHER, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE4, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -390,7 +390,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageCopSniper)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_SNIPER, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE3, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -414,7 +414,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageTank)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_TANK, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE5, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -441,12 +441,12 @@ namespace MagneticBall3D
 
             copPistol->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             copPistol->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            copPistol->unitType = UnitType::ENEMY_GUN;
+            copPistol->unitType = UnitType::ENEMY_GUN1;
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
             copPistol->attackSound = SoundType::PISTOL_SHOT;
             copPistol->attackHitSound = SoundType::PISTOL_HIT;
             copPistol->dieSound = SoundType::POP;
-            copPistol->dieGarbageType = GarbageType::ENEMY_GUN;
+            copPistol->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             copPistol->damage = 5.0f;
             copPistol->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
@@ -479,7 +479,7 @@ namespace MagneticBall3D
             copShield->attackSound = SoundType::PISTOL_SHOT;
             copShield->attackHitSound = SoundType::PISTOL_HIT;
             copShield->dieSound = SoundType::POP;
-            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
+            copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             copShield->damage = 5.0f;
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
@@ -512,7 +512,7 @@ namespace MagneticBall3D
             sniper->attackSound = SoundType::RIFLE_SHOT;
             sniper->attackHitSound = SoundType::PISTOL_HIT;
             sniper->dieSound = SoundType::POP;
-            sniper->dieGarbageType = GarbageType::ENEMY_SNIPER;
+            sniper->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             sniper->damage = 15.0f;
             sniper->attackDistance = 2500.0f;
@@ -539,12 +539,12 @@ namespace MagneticBall3D
 
             copGrenade->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
             copGrenade->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            copGrenade->unitType = UnitType::ENEMY_GRENADE_LAUNCHER;
+            copGrenade->unitType = UnitType::ENEMY_SIT_WHEN_SHOOT;
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             copGrenade->attackSound = SoundType::GRENADE_LAUNCHER_SHOT;
             copGrenade->attackHitSound = SoundType::NONE;
             copGrenade->dieSound = SoundType::POP;
-            copGrenade->dieGarbageType = GarbageType::ENEMY_GRENADE_LAUNCHER;
+            copGrenade->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
             copGrenade->damage = 1.0f;
             copGrenade->attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
@@ -578,7 +578,7 @@ namespace MagneticBall3D
             tank->attackSound = SoundType::TANK_SHOT;
             tank->attackHitSound = SoundType::NONE;
             tank->dieSound = SoundType::POP;
-            tank->dieGarbageType = GarbageType::ENEMY_TANK;
+            tank->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
 
             tank->damage = 2.0f;
             tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
@@ -640,7 +640,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 15 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 15 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -661,7 +661,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -683,7 +683,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -711,7 +711,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 60 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 60 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -740,7 +740,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -777,7 +777,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 80 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 80 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -795,7 +795,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 20 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 20 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;
@@ -826,7 +826,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 90 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 90 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -844,7 +844,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 30 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 30 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;
@@ -875,7 +875,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -893,7 +893,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 40 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 40 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;
@@ -924,7 +924,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -942,7 +942,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 50 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 50 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;
@@ -973,7 +973,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -991,7 +991,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 60 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 60 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;
@@ -1022,7 +1022,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gunCount < 110 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
@@ -1040,7 +1040,7 @@ namespace MagneticBall3D
                     ++sniperCount;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
-                else if(grenadeLauncherCount < 70 && enemy->unitType == UnitType::ENEMY_GRENADE_LAUNCHER)
+                else if(grenadeLauncherCount < 70 && enemy->unitType == UnitType::ENEMY_SIT_WHEN_SHOOT)
                 {
                     enemy->isCanBeSpawned = true;
                     ++grenadeLauncherCount;

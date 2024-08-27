@@ -34,7 +34,7 @@ namespace MagneticBall3D
 
         if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
         {
-            if(m_lastTimeOnJumpPad + 1.0f < EnumsAndVars::mapPlayTimeSec)
+            if(m_lastTimeOnJumpPad + 0.2f < EnumsAndVars::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVars::playerGravityOnAir);
                 m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
@@ -54,7 +54,7 @@ namespace MagneticBall3D
                 // First store any normal.
                 //m_buildingCollisionNormal = point.second; it has bug and sometime returns wrong direction. Find normal by ray.
                 Beryll::RayClosestHit rayBuilding = Beryll::Physics::castRayClosestHit(m_obj->getOrigin(),
-                                                                                       m_obj->getOrigin() + (point.first - m_obj->getOrigin()) * 1.2f,
+                                                                                       m_obj->getOrigin() + (point.first - m_obj->getOrigin()) * 2.0f,
                                                                                        Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
                                                                                        Beryll::CollisionGroups::BUILDING);
 
@@ -65,9 +65,6 @@ namespace MagneticBall3D
 
                 // Next check if that normal of vertical surface.
                 m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, BeryllConstants::worldUp);
-                if(m_buildingNormalAngle > glm::half_pi<float>())
-                    m_buildingNormalAngle = BeryllUtils::Common::getAngleInRadians(m_buildingCollisionNormal, -BeryllConstants::worldUp);
-
                 if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f) // > 75 && < 105 degrees. Consider it like vertical wall.
                     // Keep normal of vertical surface (wall) if we have. They have more priority among all surfaces.
                     break;

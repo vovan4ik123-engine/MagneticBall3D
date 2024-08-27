@@ -229,7 +229,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
         ImGui::Begin("selectedTalent", nullptr, m_noFrameNoFocus);
 
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_selectedDescriptionFont);
         ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, text1TopPos));
         ImGui::Text("%s", m_selectedDescription.c_str());
@@ -294,7 +294,7 @@ namespace MagneticBall3D
 
                     m_adTimerText += std::to_string(sec);
 
-                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
                     ImGui::PushFont(m_adTimerFont);
                     ImGui::SetCursorPos(ImVec2(0.565f * GUIWidth, 0.029f * GUIHeight));
                     ImGui::Text("%s", m_adTimerText.c_str());
@@ -307,7 +307,7 @@ namespace MagneticBall3D
             ImGui::Image(reinterpret_cast<ImTextureID>(m_improveByCrystalsTexture->getID()),
                          ImVec2(textureWidth, menuSelectedHeight));
 
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
             ImGui::PushFont(m_valueToAddFont);
             ImGui::SetCursorPos(ImVec2(0.875f * GUIWidth, 0.055f * GUIHeight));
             ImGui::Text("%d", m_selectedPriceCrystals);

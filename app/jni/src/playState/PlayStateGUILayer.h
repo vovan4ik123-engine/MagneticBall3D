@@ -125,17 +125,20 @@ namespace MagneticBall3D
         bool m_winMenuShow = false;
         bool m_winPrize1ButtonClicked = false;
         bool m_winPrize2ButtonClicked = false;
+
         // Ad callbacks. Can be called from different thread.
         std::function<void()> m_resurrectAdSuccessCallback;
         std::function<void()> m_winPrize1AdSuccessCallback;
         std::function<void()> m_winPrize2AdSuccessCallback;
         std::function<void()> m_exitAdSuccessCallback;
+        std::function<void()> m_killAllAdSuccessCallback;
         std::function<void()> m_commonAdErrorCallback;
         // Can be assigned from different thread.
         static std::atomic<bool> m_resurrectAdSuccess;
         static std::atomic<bool> m_winPrize1AdSuccess;
         static std::atomic<bool> m_winPrize2AdSuccess;
         static std::atomic<bool> m_exitAdSuccess;
+        static std::atomic<bool> m_killAllAdSuccess;
         static std::atomic<bool> m_commonAdError;
 
         // Menus before specific bosses.

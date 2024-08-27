@@ -26,19 +26,12 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        if(EnumsAndVars::playerMagneticRadius < 55)
-            EnumsAndVars::playerMagneticRadius = 55.0f;
-        if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
-            EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.125f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.125f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.115f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.115f;
-        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 0.105f)
-            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.105f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.095f)
-            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.095f;
-
+        EnumsAndVars::playerMagneticRadius = 60.0f;
+        EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
+        EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
+        EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
+        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.12f;
+        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.12f;
         EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.5f;
 
         m_gui->disableMapPlayTimer();
@@ -321,7 +314,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_MELEE, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE1, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -345,7 +338,7 @@ namespace MagneticBall3D
 
             for(const auto& obj : garbageEnemy)
             {
-                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GUN_SHIELD, EnumsAndVars::garbageStartHP);
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE2, EnumsAndVars::garbageStartHP);
 
                 m_animatedOrDynamicObjects.push_back(obj);
                 m_simpleObjForShadowMap.push_back(obj);
@@ -377,7 +370,7 @@ namespace MagneticBall3D
             janitorRake->attackSound = SoundType::NONE;
             janitorRake->attackHitSound = SoundType::STICK_HIT;
             janitorRake->dieSound = SoundType::POP;
-            janitorRake->dieGarbageType = GarbageType::ENEMY_MELEE;
+            janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             janitorRake->damage = 0.0f;
             janitorRake->attackDistance = 50.0f;
@@ -415,8 +408,10 @@ namespace MagneticBall3D
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
             copShield->attackSound = SoundType::PISTOL_SHOT;
             copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
+            copShield->attackParticlesSize = 0.3f;
             copShield->dieSound = SoundType::POP;
-            copShield->dieGarbageType = GarbageType::ENEMY_GUN_SHIELD;
+            copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             copShield->damage = 0.0f;
             copShield->attackDistance = 80.0f;

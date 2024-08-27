@@ -8,7 +8,7 @@ namespace MagneticBall3D
     Map4::Map4(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(gui)
     {
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-20.0f, 2.0f,-300.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-470.0f, 2.0f,-40.0f));
         m_improvements.setPlayer(m_player);
         Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
@@ -20,7 +20,7 @@ namespace MagneticBall3D
         Beryll::LoadingScreen::showProgress(80.0f);
 
         loadShaders();
-        m_cameraAngleOffset = glm::normalize(glm::vec3(-0.1f, 0.0f, -1.0f));
+        //m_cameraAngleOffset = glm::normalize(glm::vec3(-0.1f, 0.0f, -1.0f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -29,22 +29,22 @@ namespace MagneticBall3D
         m_maxZ = 800.0f;
 
         m_pathFinderEnemies = AStar(m_minX, m_maxX, m_minZ, m_maxZ, 20);
-//        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map3/PathEnemiesWalls.fbx");
-//        for(const auto& wall : walls)
-//        {
-//            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
-//        }
-//
-//        BR_INFO("Map3 pathfinder walls: %d", walls.size());
+        std::vector<glm::vec3> walls = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map4/PathEnemiesWalls.fbx");
+        for(const auto& wall : walls)
+        {
+            m_pathFinderEnemies.addWallPosition({(int)std::roundf(wall.x), (int)std::roundf(wall.z)});
+        }
 
-        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map3/PathEnemiesAllowedPositions.fbx");
+        BR_INFO("Map4 pathfinder walls: %d", walls.size());
+
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map4/PathEnemiesAllowedPositions.fbx");
         m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
         for(const auto& point : allowedPoints)
         {
             m_pathAllowedPositionsXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
         }
 
-        BR_INFO("Map3 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
+        BR_INFO("Map4 pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
         m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
 
@@ -55,12 +55,12 @@ namespace MagneticBall3D
 
         if(EnumsAndVars::playerMagneticRadius < 45)
             EnumsAndVars::playerMagneticRadius = 45.0f;
-        if(EnumsAndVars::garbageMaxCountMagnetized < 75.0f)
-            EnumsAndVars::garbageMaxCountMagnetized = 75.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.115f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.115f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.105f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.105f;
+        if(EnumsAndVars::garbageMaxCountMagnetized < 70.0f)
+            EnumsAndVars::garbageMaxCountMagnetized = 70.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.11f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.11f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.1f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.1f;
 
         EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.42f;
 
@@ -245,14 +245,36 @@ namespace MagneticBall3D
 
     void Map4::loadGarbage()
     {
+        for(int i = 0; i < 6; ++i) // 6 * 32 = 192
+        {
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageCommon_32items.fbx",
+                                                                                                EnumsAndVars::garbageMass,
+                                                                                                false,
+                                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                                Beryll::CollisionGroups::GARBAGE,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::SceneObjectGroups::GARBAGE);
 
+            for(const auto& obj : garbageCommon)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map4::loadEnemies()
     {
-        for(int i = 0; i < 110; ++i)
+        for(int i = 0; i < 160; ++i)
         {
-            auto enemy1 = std::make_shared<MovableEnemy>("models3D/enemies/Mummy.fbx",
+            auto mummy = std::make_shared<MovableEnemy>("models3D/enemies/Mummy.fbx",
                                                             0.0f,
                                                             false,
                                                             Beryll::CollisionFlags::STATIC,
@@ -260,27 +282,66 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            enemy1->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
-            enemy1->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
-            enemy1->unitType = UnitType::ENEMY_GUN;
-            enemy1->attackType = AttackType::RANGE_DAMAGE_ONE;
-            enemy1->attackSound = SoundType::PISTOL_SHOT;
-            enemy1->attackHitSound = SoundType::PISTOL_HIT;
-            enemy1->dieSound = SoundType::POP;
-            enemy1->dieGarbageType = GarbageType::ENEMY_GUN;
+            mummy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            mummy->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            mummy->unitType = UnitType::ENEMY_GUN1;
+            mummy->attackType = AttackType::RANGE_DAMAGE_ONE;
+            mummy->attackSound = SoundType::PISTOL_SHOT;
+            mummy->attackHitSound = SoundType::PISTOL_HIT;
+            mummy->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
+            mummy->attackParticlesSize = 0.3f;
+            mummy->dieSound = SoundType::POP;
+            mummy->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
-            enemy1->damage = 1.0f;
-            enemy1->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
-            enemy1->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
+            mummy->damage = 1.0f;
+            mummy->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            mummy->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            enemy1->garbageAmountToDie = 10;
-            enemy1->reducePlayerSpeedWhenDie = 0.5f;
-            enemy1->experienceWhenDie = 25;
-            enemy1->getController().moveSpeed = 25.0f;
+            mummy->garbageAmountToDie = 10;
+            mummy->reducePlayerSpeedWhenDie = 0.5f;
+            mummy->experienceWhenDie = 25;
+            mummy->getController().moveSpeed = 25.0f;
 
-            m_animatedOrDynamicObjects.push_back(enemy1);
-            m_allAnimatedEnemies.push_back(enemy1);
-            m_animatedObjForShadowMap.push_back(enemy1);
+            m_animatedOrDynamicObjects.push_back(mummy);
+            m_allAnimatedEnemies.push_back(mummy);
+            m_animatedObjForShadowMap.push_back(mummy);
+        }
+
+        // camel
+
+        for(int i = 0; i < 60; ++i)
+        {
+            auto chariotJavelin = std::make_shared<MovableEnemy>("models3D/enemies/ChariotJavelin.fbx",
+                                                         0.0f,
+                                                         false,
+                                                         Beryll::CollisionFlags::STATIC,
+                                                         Beryll::CollisionGroups::NONE,
+                                                         Beryll::CollisionGroups::NONE,
+                                                         Beryll::SceneObjectGroups::ENEMY);
+
+            chariotJavelin->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            chariotJavelin->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            chariotJavelin->unitType = UnitType::ENEMY_GUN2;
+            chariotJavelin->attackType = AttackType::RANGE_DAMAGE_ONE;
+            chariotJavelin->attackSound = SoundType::NONE;
+            chariotJavelin->attackHitSound = SoundType::STICK_HIT;
+            chariotJavelin->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
+            chariotJavelin->attackParticlesSize = 0.3f;
+            chariotJavelin->dieSound = SoundType::POP;
+            chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
+
+            chariotJavelin->damage = 1.0f;
+            chariotJavelin->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            chariotJavelin->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
+
+            chariotJavelin->garbageAmountToDie = 20;
+            chariotJavelin->reducePlayerSpeedWhenDie = 1.0f;
+            chariotJavelin->experienceWhenDie = 50;
+            chariotJavelin->getController().moveSpeed = 50.0f;
+
+            m_animatedOrDynamicObjects.push_back(chariotJavelin);
+            m_allAnimatedEnemies.push_back(chariotJavelin);
+            m_animatedObjForShadowMap.push_back(chariotJavelin);
         }
     }
 
@@ -306,20 +367,259 @@ namespace MagneticBall3D
 
             EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
-            int gunCount = 0;
+            int gun1Count = 0;
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN)
+                if(gun1Count < 20 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
-                    ++gunCount;
+                    ++gun1Count;
                     ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
             BR_INFO("Prepare wave 2. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave3 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave3Time)
+        {
+            m_prepareWave3 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 40 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 3. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave4 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave4Time)
+        {
+            m_prepareWave4 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 20 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 4. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave5 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave5Time)
+        {
+            m_prepareWave5 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            int gun2Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 20 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(gun2Count < 30 && enemy->unitType == UnitType::ENEMY_GUN2)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun2Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 5. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave6 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave6Time)
+        {
+            m_prepareWave6 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            int gun2Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 40 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(gun2Count < 30 && enemy->unitType == UnitType::ENEMY_GUN2)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun2Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 6. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave7 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave7Time)
+        {
+            m_prepareWave7 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            int gun2Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 50 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(gun2Count < 40 && enemy->unitType == UnitType::ENEMY_GUN2)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun2Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 7. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave8 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave8Time)
+        {
+            m_prepareWave8 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            int gun2Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 130 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 65 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(gun2Count < 55 && enemy->unitType == UnitType::ENEMY_GUN2)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun2Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 8. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareWave9 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave9Time)
+        {
+            m_prepareWave9 = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            int gun1Count = 0;
+            int tankCount = 0;
+            int gun2Count = 0;
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+
+                if(gun1Count < 160 && enemy->unitType == UnitType::ENEMY_GUN1)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun1Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(tankCount < 90 && enemy->unitType == UnitType::ENEMY_TANK)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++tankCount;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+                else if(gun2Count < 60 && enemy->unitType == UnitType::ENEMY_GUN2)
+                {
+                    enemy->isCanBeSpawned = true;
+                    ++gun2Count;
+                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
+                }
+            }
+
+            BR_INFO("Prepare wave 9. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+        }
+        else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
+        {
+            m_prepareLastWave = false;
+
+            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
+
+            for(auto& enemy : m_allAnimatedEnemies)
+            {
+                enemy->isCanBeSpawned = false;
+            }
+
+            BR_INFO("enemiesLastWavePhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+
+            lastWaveToWinPhase();
         }
 
 

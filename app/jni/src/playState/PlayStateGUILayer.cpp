@@ -11,6 +11,7 @@ namespace MagneticBall3D
     std::atomic<bool> PlayStateGUILayer::m_winPrize1AdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_winPrize2AdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_exitAdSuccess = false;
+    std::atomic<bool> PlayStateGUILayer::m_killAllAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_commonAdError = false;
 
     PlayStateGUILayer::PlayStateGUILayer()
@@ -76,6 +77,7 @@ namespace MagneticBall3D
         PlayStateGUILayer::m_winPrize1AdSuccess = false;
         PlayStateGUILayer::m_winPrize2AdSuccess = false;
         PlayStateGUILayer::m_exitAdSuccess = false;
+        PlayStateGUILayer::m_killAllAdSuccess = false;
         PlayStateGUILayer::m_commonAdError = false;
 
         // These callbacks are called from different thread.
@@ -83,6 +85,7 @@ namespace MagneticBall3D
         m_winPrize1AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize1AdSuccessCallback()"); PlayStateGUILayer::m_winPrize1AdSuccess = true; };
         m_winPrize2AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize2AdSuccessCallback()"); PlayStateGUILayer::m_winPrize2AdSuccess = true; };
         m_exitAdSuccessCallback = []() -> void { BR_INFO("%s", "m_exitAdSuccessCallback()"); PlayStateGUILayer::m_exitAdSuccess = true; };
+        m_killAllAdSuccessCallback = []() -> void { BR_INFO("%s", "m_killAllAdSuccessCallback()"); PlayStateGUILayer::m_killAllAdSuccess = true; };
         m_commonAdErrorCallback = []() -> void { BR_INFO("%s", "m_commonAdErrorCallback()"); PlayStateGUILayer::m_commonAdError = true; };
     }
 
@@ -171,9 +174,18 @@ namespace MagneticBall3D
         else if(m_killAllButtonClicked)
         {
             m_killAllButtonClicked = false;
-            m_killAllMenuShow = false;
+            Sounds::pauseBackgroundMusic();
+            SendStatisticsHelper::sendCustomMessage("click_kill_all_button");
 
-            GameStateHelper::resumeGame();
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_killAllAdSuccessCallback();
+            }
+            else
+            {
+                m_adLoadingMenuShow = true;
+                Beryll::Ads::getInstance()->showInterstitialAd(m_killAllAdSuccessCallback, m_commonAdErrorCallback);
+            }
         }
         else if(m_winPrize1ButtonClicked)
         {
@@ -306,6 +318,15 @@ namespace MagneticBall3D
             return;
         }
 
+        if(PlayStateGUILayer::m_killAllAdSuccess)
+        {
+            PlayStateGUILayer::m_killAllAdSuccess = false;
+            m_killAllMenuShow = false;
+            m_adLoadingMenuShow = false;
+            Sounds::resumeBackgroundMusic();
+            GameStateHelper::resumeGame();
+        }
+
         if(PlayStateGUILayer::m_commonAdError)
         {
             PlayStateGUILayer::m_commonAdError = false;
@@ -345,14 +366,14 @@ namespace MagneticBall3D
         ImGui::Begin("HPXP", nullptr, m_noBackgroundNoFrame);
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 1.0f, 0.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{1.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.6289f, 1.0f, 0.3086f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.8516f, 0.0859f, 0.1641f, 1.0f});
         ImGui::ProgressBar(progressBarHP, ImVec2(1.02f * GUIWidth, 0.02f * GUIHeight));
         ImGui::PopStyleColor(3);
         ImGui::SetCursorPos(ImVec2(0.0f, 0.02f * GUIHeight));
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.0f, 0.0f, 1.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.1367f, 0.6016f, 0.953f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.1953f, 0.1953f, 0.2422f, 1.0f});
         ImGui::ProgressBar(progressBarXP, ImVec2(1.02f * GUIWidth, 0.04f * GUIHeight));
         ImGui::PopStyleColor(3);
         ImGui::End();
@@ -374,7 +395,7 @@ namespace MagneticBall3D
 
             m_mapPlayTimerText += std::to_string(sec);
 
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
             ImGui::SetNextWindowPos(ImVec2(0.42f * GUIWidth, -0.005f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin("mapPlayTimer", nullptr, m_noBackgroundNoFrame);
@@ -398,7 +419,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.84f * GUIWidth, 0.006f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin("smashedSpeedTexts", nullptr, m_noBackgroundNoFrame);
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_smashedSpeedFont);
         ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, 0.001f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
