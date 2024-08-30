@@ -356,7 +356,7 @@ namespace MagneticBall3D
             janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             janitorRake->damage = 0.5f;
-            janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 5.0f;
+            janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorRake->garbageAmountToDie = 10;
@@ -392,7 +392,7 @@ namespace MagneticBall3D
             janitorBroom->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             janitorBroom->damage = 0.5f;
-            janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
+            janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorBroom->garbageAmountToDie = 10;
@@ -427,7 +427,7 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             copShield->damage = 0.5f;
-            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             copShield->garbageAmountToDie = 10;

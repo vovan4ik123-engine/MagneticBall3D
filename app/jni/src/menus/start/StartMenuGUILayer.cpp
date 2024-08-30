@@ -16,7 +16,7 @@ namespace MagneticBall3D
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 
-        m_crystalIconTexture = Beryll::Renderer::createTexture("GUI/CrystalIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_crystalIconTexture = Beryll::Renderer::createTexture("GUI/menus/start/CrystalIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_playButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -102,13 +102,13 @@ namespace MagneticBall3D
         ImGui::SetNextWindowSize(ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
         ImGui::Begin("mainMenu", nullptr, m_noFrameNoFocus);
         // Crystals.
-        ImGui::SetCursorPos(ImVec2(0.79f * GUIWidth, 0.01f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.78f * GUIWidth, 0.01f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_crystalIconTexture->getID()),
-                     ImVec2(0.06f * GUIWidth, 0.06f * GUIWidth));
+                     ImVec2(0.25f * GUIWidth, 0.0276f * GUIHeight));
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_crystalsFont);
-        ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.013f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.012f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
         ImGui::PopStyleColor(1);

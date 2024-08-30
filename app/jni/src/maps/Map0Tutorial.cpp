@@ -30,9 +30,9 @@ namespace MagneticBall3D
         EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
         EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
         EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
-        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.12f;
-        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.12f;
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.5f;
+        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.25f;
+        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.25f;
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
 
         m_gui->disableMapPlayTimer();
 
@@ -274,7 +274,7 @@ namespace MagneticBall3D
     {
         for(int i = 0; i < 2; ++i) // 2 * 32 = 64
         {
-            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCommon.fbx",
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/GarbageCommon_32items.fbx",
                                                                                                 EnumsAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
@@ -414,7 +414,7 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             copShield->damage = 0.0f;
-            copShield->attackDistance = 80.0f;
+            copShield->attackDistance = 100.0f;
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->garbageAmountToDie = 10;

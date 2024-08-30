@@ -17,6 +17,9 @@ namespace MagneticBall3D
         BROOM_HIT,
         BIG_ROCKET_LAUNCH,
         FELL_ON_GROUND,
+        JUMPPAD,
+        STONE_HIT,
+        SPIT, // plewok
 
         BACKGROUND_MUSIC_1,
         BACKGROUND_MUSIC_2
@@ -51,6 +54,7 @@ namespace MagneticBall3D
         static std::string m_pop6;
         static std::string m_pop7;
         static std::string m_pop8;
+        static std::string m_jumppad;
         static std::string m_pistolShot1;
         static std::string m_pistolShot2;
         static std::string m_pistolShot3;
@@ -79,6 +83,11 @@ namespace MagneticBall3D
         static std::string m_bigRocketLaunch1;
         static float m_bigRocketLaunchTime;
         static float m_bigRocketLaunchDelay;
+        static std::string m_spit1;
+        static std::string m_spit2;
+        static std::string m_stoneHit1;
+        static std::string m_stoneHit2;
+        static std::string m_stoneHit3;
 
         // Music.
         static std::string m_backgroundMusic1;

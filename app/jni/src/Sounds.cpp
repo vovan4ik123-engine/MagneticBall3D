@@ -15,6 +15,7 @@ namespace MagneticBall3D
     std::string Sounds::m_pop6 = "sounds/Pop6.wav";
     std::string Sounds::m_pop7 = "sounds/Pop7.wav";
     std::string Sounds::m_pop8 = "sounds/Pop8.wav";
+    std::string Sounds::m_jumppad = "sounds/Jumppad.wav";
     std::string Sounds::m_pistolShot1 = "sounds/PistolShot1.wav";
     std::string Sounds::m_pistolShot2 = "sounds/PistolShot2.wav";
     std::string Sounds::m_pistolShot3 = "sounds/PistolShot3.wav";
@@ -43,6 +44,11 @@ namespace MagneticBall3D
     std::string Sounds::m_bigRocketLaunch1 = "sounds/BigRocketLaunch1.wav";
     float Sounds::m_bigRocketLaunchTime = 0.0f;
     float Sounds::m_bigRocketLaunchDelay = 0.5f;
+    std::string Sounds::m_spit1 = "sounds/Spit1.wav";
+    std::string Sounds::m_spit2 = "sounds/Spit2.wav";
+    std::string Sounds::m_stoneHit1 = "sounds/StoneHit1.wav";
+    std::string Sounds::m_stoneHit2 = "sounds/StoneHit2.wav";
+    std::string Sounds::m_stoneHit3 = "sounds/StoneHit3.wav";
 
     // Music.
     std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
@@ -83,14 +89,20 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_pop6, 80);
         Beryll::SoundsManager::loadWAV(m_pop7, 80);
         Beryll::SoundsManager::loadWAV(m_pop8, 80);
+        Beryll::SoundsManager::loadWAV(m_jumppad, 80);
         Beryll::SoundsManager::loadWAV(m_stickHit1, 40);
         Beryll::SoundsManager::loadWAV(m_stickHit2, 40);
         Beryll::SoundsManager::loadWAV(m_broomHit1, 40);
         Beryll::SoundsManager::loadWAV(m_fellOnGround1, 80);
         Beryll::SoundsManager::loadWAV(m_bigRocketLaunch1, 40);
+        Beryll::SoundsManager::loadWAV(m_spit1, 30);
+        Beryll::SoundsManager::loadWAV(m_spit2, 30);
+        Beryll::SoundsManager::loadWAV(m_stoneHit1, 30);
+        Beryll::SoundsManager::loadWAV(m_stoneHit2, 30);
+        Beryll::SoundsManager::loadWAV(m_stoneHit3, 30);
 
-        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 11);
-        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 11);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 15);
+        Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 15);
 
         m_loaded = true;
     }
@@ -136,6 +148,10 @@ namespace MagneticBall3D
                 Beryll::SoundsManager::playWAV(m_pop8);
 
             return;
+        }
+        else if(type == SoundType::JUMPPAD)
+        {
+            Beryll::SoundsManager::playWAV(m_jumppad);
         }
 
         if(m_numberOfCurrentlyPlayingWAV >= 4)
@@ -214,6 +230,24 @@ namespace MagneticBall3D
                 m_bigRocketLaunchTime = EnumsAndVars::mapPlayTimeSec;
                 Beryll::SoundsManager::playWAV(m_bigRocketLaunch1);
             }
+        }
+        else if(type == SoundType::SPIT)
+        {
+            float randomValue = Beryll::RandomGenerator::getFloat();
+            if(randomValue < 0.5f)
+                Beryll::SoundsManager::playWAV(m_spit1);
+            else
+                Beryll::SoundsManager::playWAV(m_spit2);
+        }
+        else if(type == SoundType::STONE_HIT)
+        {
+            float randomValue = Beryll::RandomGenerator::getFloat();
+            if(randomValue < 0.45f)
+                Beryll::SoundsManager::playWAV(m_stoneHit1);
+            else if(randomValue < 0.9f)
+                Beryll::SoundsManager::playWAV(m_stoneHit2);
+            else
+                Beryll::SoundsManager::playWAV(m_stoneHit3);
         }
     }
 

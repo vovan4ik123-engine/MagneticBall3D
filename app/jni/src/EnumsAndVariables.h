@@ -21,7 +21,7 @@ namespace EnumsAndVars
     {
         // Stored in DB.
         static inline int FPSLimit = 60;
-        static inline bool backgroundMusic = false;
+        static inline bool backgroundMusic = true;
         static inline bool meteorParticles = false;
         // Not stored in DB.
         // ...
@@ -30,7 +30,7 @@ namespace EnumsAndVars
     struct CurrencyBalance
     {
         // Stored in DB.
-        static inline int crystals = 75;
+        static inline int crystals = 35;
         // Not stored in DB.
         // ...
     };
@@ -189,7 +189,7 @@ namespace EnumsAndVars
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline float playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 90.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.021f;
+    constexpr inline float playerLeftRightTurnPower = 0.022f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;

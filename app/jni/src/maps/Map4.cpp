@@ -286,8 +286,8 @@ namespace MagneticBall3D
             mummy->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             mummy->unitType = UnitType::ENEMY_GUN1;
             mummy->attackType = AttackType::RANGE_DAMAGE_ONE;
-            mummy->attackSound = SoundType::PISTOL_SHOT;
-            mummy->attackHitSound = SoundType::PISTOL_HIT;
+            mummy->attackSound = SoundType::NONE;
+            mummy->attackHitSound = SoundType::STONE_HIT;
             mummy->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
             mummy->attackParticlesSize = 0.3f;
             mummy->dieSound = SoundType::POP;
@@ -331,7 +331,7 @@ namespace MagneticBall3D
             chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             chariotJavelin->damage = 1.0f;
-            chariotJavelin->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            chariotJavelin->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             chariotJavelin->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             chariotJavelin->garbageAmountToDie = 20;

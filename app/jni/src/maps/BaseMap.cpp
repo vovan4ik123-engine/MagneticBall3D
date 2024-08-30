@@ -209,7 +209,7 @@ namespace MagneticBall3D
             {
                 m_fingerDownID = f.ID;
                 m_fingerLastPos = f.SDL2ScreenPos;
-                glm::vec3 touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 35.0f; // impulse 10 = +1 speed.
+                glm::vec3 touchImpulse = Beryll::Camera::getCameraFrontDirectionXZ() * 40.0f; // impulse 10 = +1 speed.
                 if(m_firstTouch)
                 {
                     m_firstTouch = false;
@@ -275,7 +275,7 @@ namespace MagneticBall3D
 
                 powerForTorque *= radiusForTorqueMultiplier;
             }
-            else if(m_player->getLastTimeOnBuilding() + 1.0f > EnumsAndVars::mapPlayTimeSec)
+            else if(m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec)
             {
                 // buildingNormalAngle = glm::half_pi<float>() if player on vertical wall. angleFactor will = 1.
                 // buildingNormalAngle = 0 if player on horizontal roof. angleFactor will = 0.
@@ -303,13 +303,13 @@ namespace MagneticBall3D
             {
                 const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeedXZ()) * 0.009f;
 
-                if(m_player->getLastTimeOnGround() + 0.5f > EnumsAndVars::mapPlayTimeSec ||
-                   m_player->getLastTimeOnJumpPad() + 0.5f > EnumsAndVars::mapPlayTimeSec)
+                if(m_player->getLastTimeOnGround() + 0.1f > EnumsAndVars::mapPlayTimeSec ||
+                   m_player->getLastTimeOnJumpPad() + 0.1f > EnumsAndVars::mapPlayTimeSec)
                 {
                     powerForImpulse += powerForImpulse * powerToHelpPlayer;
                     powerForTorque += powerForTorque * powerToHelpPlayer;
                 }
-                else if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec)
+                else if(m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec)
                 {
                     const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
                     powerForImpulse += powerForImpulse * (powerToHelpPlayer * (1.0f - angleFactor));
@@ -698,7 +698,7 @@ namespace MagneticBall3D
             desiredCameraBackXZ = -m_player->getMoveDirXZ();
             cameraRotationSpeedFactor *= m_player->getMoveSpeedXZ() / EnumsAndVars::playerMaxSpeedXZDefault;
 
-            if(m_player->getLastTimeOnBuilding() + 0.6f > EnumsAndVars::mapPlayTimeSec)
+            if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec)
             {
                 const glm::vec3 swipeBackDir = -glm::normalize(glm::vec3(m_screenSwipe3D.x, 0.0f, m_screenSwipe3D.z));
                 // On vertical wall angleFactor = 1. On horizontal roof angleFactor = 0.

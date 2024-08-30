@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Sounds.h"
 
 namespace MagneticBall3D
 {
@@ -39,6 +40,7 @@ namespace MagneticBall3D
                 m_obj->setGravity(EnumsAndVars::playerGravityOnAir);
                 m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
                 m_isOnJumpPad = true;
+                Sounds::playSoundEffect(SoundType::JUMPPAD);
             }
 
             m_lastTimeOnJumpPad = EnumsAndVars::mapPlayTimeSec;

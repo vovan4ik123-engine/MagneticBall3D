@@ -187,7 +187,7 @@ namespace MagneticBall3D
         float row1TopPos = 0.05f * GUIHeight;
         float row2TopPos = row1TopPos + iconSidePixels + (0.02f * GUIHeight);
 
-        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.5f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.05f, 0.5f, 0.0f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.1f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(GUIWidth, 0.7f * GUIHeight));
         ImGui::Begin("allTalents", nullptr, m_noFrameNoFocus);
