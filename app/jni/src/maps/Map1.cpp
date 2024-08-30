@@ -547,8 +547,8 @@ namespace MagneticBall3D
             copGrenade->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
             copGrenade->damage = 1.0f;
+            copGrenade->damageRadius = 4.0f;
             copGrenade->attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
-            copGrenade->damageRadius = 3.0f;
             copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copGrenade->garbageAmountToDie = 10;
@@ -581,9 +581,9 @@ namespace MagneticBall3D
             tank->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
 
             tank->damage = 2.0f;
-            tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
             tank->damageRadius = 6.0f;
-            tank->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            tank->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
+            tank->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             tank->garbageAmountToDie = 25;
             tank->reducePlayerSpeedWhenDie = 20.0f;

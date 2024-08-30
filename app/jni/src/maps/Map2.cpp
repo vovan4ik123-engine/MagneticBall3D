@@ -568,9 +568,9 @@ namespace MagneticBall3D
             junkyardBusRocket->castRayToFindYPos = true;
 
             junkyardBusRocket->damage = 2.0f;
-            junkyardBusRocket->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
             junkyardBusRocket->damageRadius = 6.0f;
-            junkyardBusRocket->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
+            junkyardBusRocket->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 300.0f;
+            junkyardBusRocket->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             junkyardBusRocket->garbageAmountToDie = 25;
             junkyardBusRocket->reducePlayerSpeedWhenDie = 20.0f;

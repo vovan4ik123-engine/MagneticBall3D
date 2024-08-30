@@ -307,7 +307,41 @@ namespace MagneticBall3D
             m_animatedObjForShadowMap.push_back(mummy);
         }
 
-        // camel
+        for(int i = 0; i < 90; ++i)
+        {
+            auto camel = std::make_shared<MovableEnemy>("models3D/enemies/Camel.fbx",
+                                                        0.0f,
+                                                        false,
+                                                        Beryll::CollisionFlags::STATIC,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::CollisionGroups::NONE,
+                                                        Beryll::SceneObjectGroups::ENEMY);
+
+            camel->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            camel->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            camel->unitType = UnitType::ENEMY_TANK;
+            camel->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            camel->attackSound = SoundType::NONE;
+            camel->attackHitSound = SoundType::SPIT;
+            camel->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
+            camel->attackParticlesSize = 0.6f;
+            camel->dieSound = SoundType::POP;
+            camel->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
+
+            camel->damage = 0.5f;
+            camel->damageRadius = 10.0f;
+            camel->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 250.0f;
+            camel->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
+
+            camel->garbageAmountToDie = 20;
+            camel->reducePlayerSpeedWhenDie = 0.5f;
+            camel->experienceWhenDie = 35;
+            camel->getController().moveSpeed = 35.0f;
+
+            m_animatedOrDynamicObjects.push_back(camel);
+            m_allAnimatedEnemies.push_back(camel);
+            m_animatedObjForShadowMap.push_back(camel);
+        }
 
         for(int i = 0; i < 60; ++i)
         {
@@ -328,14 +362,14 @@ namespace MagneticBall3D
             chariotJavelin->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
             chariotJavelin->attackParticlesSize = 0.3f;
             chariotJavelin->dieSound = SoundType::POP;
-            chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
+            chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             chariotJavelin->damage = 1.0f;
             chariotJavelin->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             chariotJavelin->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             chariotJavelin->garbageAmountToDie = 20;
-            chariotJavelin->reducePlayerSpeedWhenDie = 1.0f;
+            chariotJavelin->reducePlayerSpeedWhenDie = 0.5f;
             chariotJavelin->experienceWhenDie = 50;
             chariotJavelin->getController().moveSpeed = 50.0f;
 
