@@ -386,7 +386,7 @@ namespace MagneticBall3D
             janitorBroom->attackType = AttackType::RANGE_DAMAGE_ONE;
             janitorBroom->attackSound = SoundType::NONE;
             janitorBroom->attackHitSound = SoundType::BROOM_HIT;
-            janitorBroom->attackParticlesColor = glm::vec3{1.0f, 0.6f, 0.0f};
+            janitorBroom->attackParticlesColor = glm::vec3{0.4258f, 0.84f, 0.68f};
             janitorBroom->attackParticlesSize = 0.3f;
             janitorBroom->dieSound = SoundType::POP;
             janitorBroom->dieGarbageType = GarbageType::ENEMY_GARBAGE2;

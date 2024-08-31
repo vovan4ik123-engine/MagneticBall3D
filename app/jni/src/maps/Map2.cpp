@@ -289,7 +289,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyGun_4items.fbx",
                                                                                                    EnumsAndVars::garbageMass,
@@ -313,7 +313,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyGunShield_4items.fbx",
                                                                                                   EnumsAndVars::garbageMass,
@@ -361,7 +361,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 7; ++i) // 7 * 3 = 21
+        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map2/GarbageEnemyMagnet_3items.fbx",
                                                                                                EnumsAndVars::garbageMass,
@@ -408,8 +408,6 @@ namespace MagneticBall3D
                 obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
-
-        BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
     }
 
     void Map2::loadEnemies()
@@ -463,6 +461,8 @@ namespace MagneticBall3D
             guard->attackType = AttackType::RANGE_DAMAGE_ONE;
             guard->attackSound = SoundType::PISTOL_SHOT;
             guard->attackHitSound = SoundType::PISTOL_HIT;
+            guard->attackParticlesColor = glm::vec3{0.945f, 0.82f, 0.48f};
+            guard->attackParticlesSize = 0.3f;
             guard->dieSound = SoundType::POP;
             guard->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
             guard->castRayToFindYPos = true;
@@ -497,6 +497,8 @@ namespace MagneticBall3D
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
             copShield->attackSound = SoundType::PISTOL_SHOT;
             copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
+            copShield->attackParticlesSize = 0.3f;
             copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
             copShield->castRayToFindYPos = true;
@@ -531,6 +533,8 @@ namespace MagneticBall3D
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
             sniper->attackSound = SoundType::RIFLE_SHOT;
             sniper->attackHitSound = SoundType::PISTOL_HIT;
+            sniper->attackParticlesColor = glm::vec3{0.8476f, 0.195f, 0.305f};
+            sniper->attackParticlesSize = 0.2f;
             sniper->dieSound = SoundType::POP;
             sniper->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
@@ -563,6 +567,8 @@ namespace MagneticBall3D
             junkyardBusRocket->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             junkyardBusRocket->attackSound = SoundType::BIG_ROCKET_LAUNCH;
             junkyardBusRocket->attackHitSound = SoundType::NONE;
+            junkyardBusRocket->attackParticlesColor = glm::vec3{0.9f, 0.578f, 0.0f};
+            junkyardBusRocket->attackParticlesSize = 0.6f;
             junkyardBusRocket->dieSound = SoundType::POP;
             junkyardBusRocket->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
             junkyardBusRocket->castRayToFindYPos = true;

@@ -268,6 +268,78 @@ namespace MagneticBall3D
                 obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
+
+        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyMummy_3items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE1, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 8; ++i) // 8 * 2 = 16
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyCamel_2items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE2, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 3; ++i) // 3 * 5 = 15
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyChariot_5items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE3, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map4::loadEnemies()
@@ -288,8 +360,8 @@ namespace MagneticBall3D
             mummy->attackType = AttackType::RANGE_DAMAGE_ONE;
             mummy->attackSound = SoundType::NONE;
             mummy->attackHitSound = SoundType::STONE_HIT;
-            mummy->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
-            mummy->attackParticlesSize = 0.3f;
+            mummy->attackParticlesColor = glm::vec3{0.347f, 0.379f, 0.5586f};
+            mummy->attackParticlesSize = 0.2f;
             mummy->dieSound = SoundType::POP;
             mummy->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
@@ -323,7 +395,7 @@ namespace MagneticBall3D
             camel->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             camel->attackSound = SoundType::NONE;
             camel->attackHitSound = SoundType::SPIT;
-            camel->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
+            camel->attackParticlesColor = glm::vec3{0.59f, 0.828f, 0.555f};
             camel->attackParticlesSize = 0.6f;
             camel->dieSound = SoundType::POP;
             camel->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
@@ -359,7 +431,7 @@ namespace MagneticBall3D
             chariotJavelin->attackType = AttackType::RANGE_DAMAGE_ONE;
             chariotJavelin->attackSound = SoundType::NONE;
             chariotJavelin->attackHitSound = SoundType::STICK_HIT;
-            chariotJavelin->attackParticlesColor = glm::vec3{0.5f, 0.5f, 0.5f};
+            chariotJavelin->attackParticlesColor = glm::vec3{0.633f, 0.7967f, 0.789f};
             chariotJavelin->attackParticlesSize = 0.3f;
             chariotJavelin->dieSound = SoundType::POP;
             chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE3;

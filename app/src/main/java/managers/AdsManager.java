@@ -43,7 +43,7 @@ public class AdsManager {
                 Log.v("AdsManager", "loadRewarded()");
                 AdsManager.m_rewardedAd = null;
                 AdRequest adRequest = new AdRequest.Builder().build(); // Test rewarded ad id: ca-app-pub-3940256099942544/5224354917
-                RewardedAd.load(AdsManager.m_activity, "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
+                RewardedAd.load(AdsManager.m_activity, "ca-app-pub-3708397169930305/6036238070", adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.v("AdsManager", "loadRewarded() error: " + loadAdError.toString());
@@ -102,7 +102,7 @@ public class AdsManager {
                 Log.v("AdsManager", "loadInter()");
                 AdsManager.m_interstitialAd = null;
                 AdRequest adRequest = new AdRequest.Builder().build(); // Test interstitial ad id: ca-app-pub-3940256099942544/1033173712
-                InterstitialAd.load(AdsManager.m_activity,"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+                InterstitialAd.load(AdsManager.m_activity,"ca-app-pub-3708397169930305/4440675679", adRequest, new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.v("AdsManager", "loadInter() error: " + loadAdError.toString());

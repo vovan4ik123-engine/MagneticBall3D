@@ -304,7 +304,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 5; ++i) // 5 * 4 = 20
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
         {
             const auto garbageCopPistol = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopPistol_4items.fbx",
                                                                                                    EnumsAndVars::garbageMass,
@@ -352,7 +352,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 7; ++i) // 7 * 3 = 21
+        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
         {
             const auto garbageCopGrenade = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCopGrenade_3items.fbx",
                                                                                                     EnumsAndVars::garbageMass,
@@ -407,9 +407,9 @@ namespace MagneticBall3D
                                                                                               false,
                                                                                               Beryll::CollisionFlags::DYNAMIC,
                                                                                               Beryll::CollisionGroups::GARBAGE,
-                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                              Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                              Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                              Beryll::CollisionGroups::ENEMY_ATTACK,
                                                                                               Beryll::SceneObjectGroups::GARBAGE);
 
             for(const auto& obj : garbageTank)
@@ -423,8 +423,6 @@ namespace MagneticBall3D
                 obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
-
-        BR_INFO("Garbage::getCommonActiveCount() %d", Garbage::getCommonActiveCount());
     }
 
     void Map1::loadEnemies()
@@ -445,6 +443,8 @@ namespace MagneticBall3D
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
             copPistol->attackSound = SoundType::PISTOL_SHOT;
             copPistol->attackHitSound = SoundType::PISTOL_HIT;
+            copPistol->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
+            copPistol->attackParticlesSize = 0.3f;
             copPistol->dieSound = SoundType::POP;
             copPistol->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
@@ -478,6 +478,8 @@ namespace MagneticBall3D
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
             copShield->attackSound = SoundType::PISTOL_SHOT;
             copShield->attackHitSound = SoundType::PISTOL_HIT;
+            copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
+            copShield->attackParticlesSize = 0.3f;
             copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
@@ -511,6 +513,8 @@ namespace MagneticBall3D
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
             sniper->attackSound = SoundType::RIFLE_SHOT;
             sniper->attackHitSound = SoundType::PISTOL_HIT;
+            sniper->attackParticlesColor = glm::vec3{0.8476f, 0.195f, 0.305f};
+            sniper->attackParticlesSize = 0.2f;
             sniper->dieSound = SoundType::POP;
             sniper->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
@@ -543,6 +547,8 @@ namespace MagneticBall3D
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             copGrenade->attackSound = SoundType::GRENADE_LAUNCHER_SHOT;
             copGrenade->attackHitSound = SoundType::NONE;
+            copGrenade->attackParticlesColor = glm::vec3{0.656f, 0.43f, 0.008f};
+            copGrenade->attackParticlesSize = 0.4f;
             copGrenade->dieSound = SoundType::POP;
             copGrenade->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
@@ -577,6 +583,8 @@ namespace MagneticBall3D
             tank->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             tank->attackSound = SoundType::TANK_SHOT;
             tank->attackHitSound = SoundType::NONE;
+            tank->attackParticlesColor = glm::vec3{0.9f, 0.578f, 0.0f};
+            tank->attackParticlesSize = 0.6f;
             tank->dieSound = SoundType::POP;
             tank->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
 
