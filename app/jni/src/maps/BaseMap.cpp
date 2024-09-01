@@ -379,6 +379,9 @@ namespace MagneticBall3D
         float gravPower = EnumsAndVars::garbageMinGravityPower + (m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed);
 
         const float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+        const bool stopGarbage = m_player->getMoveSpeed() > 7.0f ||
+                                 (m_player->getLastTimeOnGround() + 0.5f < EnumsAndVars::mapPlayTimeSec &&
+                                  m_player->getLastTimeOnBuilding() + 0.5f < EnumsAndVars::mapPlayTimeSec);
 
         for(auto& wrapper : m_allGarbage)
         {
@@ -388,7 +391,7 @@ namespace MagneticBall3D
                 glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
                 wrapper.obj->setGravity(gravDir * gravPower, false, false);
 
-                if(m_player->getMoveSpeed() > 7.0f)
+                if(stopGarbage)
                 {
                     // Stop garbage if it stats rotating around player too fast.
                     const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
@@ -962,7 +965,7 @@ namespace MagneticBall3D
         if(playerOutOfMap)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::normalize(-playerOrig) * 100.0f);
+            m_player->getObj()->applyCentralImpulse(glm::normalize(-playerOrig) * 140.0f);
         }
     }
 
