@@ -16,7 +16,8 @@ uniform float ambientLight;
 void main()
 {
     // diffuse
-    float diffuse = max(dot(normal, -sunLightDir), 0.0f);
+    vec3 norm = normalize(normal);
+    float diffuse = max(dot(norm, -sunLightDir), 0.0f);
 
     vec3 textureCollor = texture(diffuseTexture, textureCoords).rgb;
     outColor = vec4((ambientLight + diffuse) * textureCollor, 1.0f);

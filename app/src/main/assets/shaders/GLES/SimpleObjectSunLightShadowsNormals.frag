@@ -24,11 +24,12 @@ void main()
     normal = normalize(normal);
 
     // diffuse
-    float diffuse = max(dot(normal, -sunLightDirTangentSpace), 0.0f);
+    vec3 sunTangentNorm = normalize(sunLightDirTangentSpace);
+    float diffuse = max(dot(normal, -sunTangentNorm), 0.0f);
 
     // specular
     vec3 fragToCameraDir = normalize(cameraPosTangentSpace - fragPosTangentSpace);
-    vec3 reflectDir = reflect(sunLightDirTangentSpace, normal); // reflect(fromLightPosToFragPos, normal);
+    vec3 reflectDir = reflect(sunTangentNorm, normal); // reflect(fromLightPosToFragPos, normal);
     float specular = pow(max(dot(fragToCameraDir, reflectDir), 0.0f), 64.0f) * specularLightStrength; // 64.0f <- bigger number = smaller light dot
 
     // shadow

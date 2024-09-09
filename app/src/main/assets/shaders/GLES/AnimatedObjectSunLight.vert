@@ -40,7 +40,7 @@ void main()
     boneTransf[3][3] = bonesMatrices[inBoneIDs[0]][3][3] * inWeights[0];
 
     textureCoords = inTextureCoords;
-    normal = normalize(normalMatrix * mat3(boneTransf) * inNormal);
+    normal = normalMatrix * mat3(boneTransf) * inNormal;
 
     gl_Position = MVPMatrix * boneTransf * vec4(inPosition, 1.0f);
 }

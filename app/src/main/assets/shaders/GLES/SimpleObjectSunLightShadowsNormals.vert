@@ -38,9 +38,9 @@ void main()
     vec3 B = cross(N, T); // dont need normalize. sin 90 degrees = 1 = vec length
     mat3 TBN = transpose(mat3(T, B, N)); // matrix to move vector in tangent psace
 
-    // move vectors for light calculation to tangent space
+    // move vectors for light calculations to tangent space
     fragPosTangentSpace = TBN * fragPos;
-    sunLightDirTangentSpace = normalize(TBN * sunLightDir);
+    sunLightDirTangentSpace = TBN * sunLightDir;
     cameraPosTangentSpace = TBN * cameraPos;
 
     gl_Position = MVPMatrix * inPosVec4;
