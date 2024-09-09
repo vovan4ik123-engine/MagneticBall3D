@@ -10,14 +10,10 @@ namespace MagneticBall3D
         loadPlayer();
         m_player->getObj()->setOrigin(glm::vec3(-470.0f, 2.0f,-40.0f));
         m_improvements.setPlayer(m_player);
-        Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
-        Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < m_maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
-        Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
-        Beryll::LoadingScreen::showProgress(80.0f);
 
         loadShaders();
         //m_cameraAngleOffset = glm::normalize(glm::vec3(-0.1f, 0.0f, -1.0f));
@@ -65,8 +61,6 @@ namespace MagneticBall3D
         EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.42f;
 
         SendStatisticsHelper::sendMapStart();
-
-        Beryll::LoadingScreen::showProgress(100.0f);
 
         Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);
 
@@ -271,7 +265,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 6; ++i) // 6 * 3 = 18
+        for(int i = 0; i < 4; ++i) // 4 * 3 = 12
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyMummy_3items.fbx",
                                                                                                EnumsAndVars::garbageMass,
@@ -295,7 +289,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 8; ++i) // 8 * 2 = 16
+        for(int i = 0; i < 3; ++i) // 3 * 2 = 6
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyCamel_2items.fbx",
                                                                                                EnumsAndVars::garbageMass,
@@ -319,7 +313,7 @@ namespace MagneticBall3D
             }
         }
 
-        for(int i = 0; i < 3; ++i) // 3 * 5 = 15
+        for(int i = 0; i < 2; ++i) // 2 * 5 = 10
         {
             const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map4/GarbageEnemyChariot_5items.fbx",
                                                                                                EnumsAndVars::garbageMass,

@@ -39,9 +39,9 @@ namespace EnumsAndVars
     {
         // Stored in DB.
         static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 4; // Last index of map available for select and play.
+        static inline int lastOpenedMapIndex = 5; // Last index of map available for select and play.
         // Not stored in DB.
-        static constexpr inline int maxMapIndex = 4; // Last possible map index (opened or not). Must be hardcoded before release.
+        static constexpr inline int maxMapIndex = 5; // Last possible map index (opened or not). Must be hardcoded before release.
     };
 
     struct EnergySystem

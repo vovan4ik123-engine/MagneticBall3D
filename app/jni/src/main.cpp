@@ -25,11 +25,7 @@ int main(int argc, char* argv[])
     //Beryll::Physics::setResolution(1);
     //Beryll::Physics::setMinAcceptableFPS(20.0f);
 
-    Beryll::LoadingScreen::setTextures({"loadingScreen/Map0Screen.jpg",
-                                        "loadingScreen/Map3Screen.jpg",
-                                        "loadingScreen/Map4Screen.jpg",
-                                        "loadingScreen/Map2Screen.jpg",
-                                        "loadingScreen/Map1Screen.jpg"});
+    Beryll::LoadingScreen::setTextures({"GUI/LoadingScreen1.jpg"});
 
     Beryll::Renderer::enableFaceCulling();
 

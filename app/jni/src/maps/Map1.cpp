@@ -12,16 +12,11 @@ namespace MagneticBall3D
         loadPlayer();
         m_player->getObj()->setOrigin(glm::vec3(-770.0f, 2.0f,0.0f));
         m_improvements.setPlayer(m_player);
-        Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
-        Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < m_maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
-        Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
-        Beryll::LoadingScreen::showProgress(80.0f);
         loadBoss();
-        Beryll::LoadingScreen::showProgress(90.0f);
 
         StaticEnemy::staticPositions = std::vector<StaticPosition>{{glm::vec3(65.0f, 252.0f, -445.0f)},
                                                                    {glm::vec3(65.0f, 214.0f, -264.0f)},
@@ -89,8 +84,6 @@ namespace MagneticBall3D
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
         SendStatisticsHelper::sendMapStart();
-
-        Beryll::LoadingScreen::showProgress(100.0f);
 
         Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);
 

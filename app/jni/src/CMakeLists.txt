@@ -28,6 +28,7 @@ add_library(main SHARED main.cpp
                         maps/Map2.cpp
                         maps/Map3.cpp
                         maps/Map4.cpp
+                        maps/Map5.cpp
 
                         # Play state.
                         playState/PlayStateGUILayer.cpp

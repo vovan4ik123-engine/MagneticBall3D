@@ -10,11 +10,12 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::START_SCREEN_GUI;
 
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map0Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map3Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map4Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map2Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("loadingScreen/Map1Screen.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map0Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map3Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map4Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map5Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map2Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map1Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 
         m_crystalIconTexture = Beryll::Renderer::createTexture("GUI/menus/start/CrystalIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);

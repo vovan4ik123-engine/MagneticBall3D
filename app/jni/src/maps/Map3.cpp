@@ -10,14 +10,10 @@ namespace MagneticBall3D
         loadPlayer();
         m_player->getObj()->setOrigin(glm::vec3(-490.0f, 2.0f,-633.0f));
         m_improvements.setPlayer(m_player);
-        Beryll::LoadingScreen::showProgress(20.0f);
         loadEnv();
-        Beryll::LoadingScreen::showProgress(40.0f);
         loadGarbage();
         BR_ASSERT((m_allGarbage.size() < m_maxGarbageCount), "%s", "m_allGarbage reallocation happened. Increase maxGarbageCount.");
-        Beryll::LoadingScreen::showProgress(60.0f);
         loadEnemies();
-        Beryll::LoadingScreen::showProgress(80.0f);
 
         loadShaders();
         m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
@@ -65,8 +61,6 @@ namespace MagneticBall3D
         EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.46f;
 
         SendStatisticsHelper::sendMapStart();
-
-        Beryll::LoadingScreen::showProgress(100.0f);
 
         Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
 
