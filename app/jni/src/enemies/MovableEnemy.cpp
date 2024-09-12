@@ -89,7 +89,7 @@ namespace MagneticBall3D
 
         setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
 
-        getController().moveToPosition(m_currentPointToMove3DFloats, true, true, true);
+        getController().moveToPosition(m_currentPointToMove3DFloats, true, true);
 
         if(!getController().getIsMoving())
         {

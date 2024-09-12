@@ -109,7 +109,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->set3Float("cameraPos", Beryll::Camera::getCameraPos());
         m_simpleObjSunLightShadows->set1Float("ambientLight", m_ambientLight);
         m_simpleObjSunLightShadows->set1Float("sunLightStrength", 0.25f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.1f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
         m_simpleObjSunLightShadows->set1Float("alphaTransparency", 1.0f);
 
         modelMatrix = m_player->getObj()->getModelMatrix();
@@ -119,7 +119,7 @@ namespace MagneticBall3D
         Beryll::Renderer::drawObject(m_player->getObj(), modelMatrix, m_simpleObjSunLightShadows);
 
         m_simpleObjSunLightShadows->set1Float("sunLightStrength", 1.0f);
-        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.1f);
+        m_simpleObjSunLightShadows->set1Float("specularLightStrength", 1.0f);
         for(const auto& wrapper : m_allGarbage)
         {
             if(wrapper.obj->getIsEnabledDraw())
@@ -247,7 +247,29 @@ namespace MagneticBall3D
 
     void Map5::loadGarbage()
     {
+        for(int i = 0; i < 6; ++i) // 6 * 31 = 186
+        {
+            const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map5/GarbageCommon_31items.fbx",
+                                                                                                EnumsAndVars::garbageMass,
+                                                                                                false,
+                                                                                                Beryll::CollisionFlags::DYNAMIC,
+                                                                                                Beryll::CollisionGroups::GARBAGE,
+                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                                Beryll::SceneObjectGroups::GARBAGE);
 
+            for(const auto& obj : garbageCommon)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::COMMON, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map5::loadEnemies()
