@@ -44,7 +44,7 @@ namespace MagneticBall3D
             for(const auto& enemy : m_allAnimatedEnemies)
             {
                 if(enemy->getIsEnabledUpdate())
-                    enemy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+                    enemy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             }
 
             EnumsAndVars::enemiesPauseAllActionsTime = EnumsAndVars::mapPlayTimeSec;

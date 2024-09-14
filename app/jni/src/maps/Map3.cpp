@@ -340,7 +340,7 @@ namespace MagneticBall3D
                                                                Beryll::CollisionGroups::NONE,
                                                                Beryll::SceneObjectGroups::ENEMY);
 
-            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             janitorRake->unitType = UnitType::ENEMY_MELEE;
             janitorRake->attackType = AttackType::MELEE_DAMAGE_ONE;
@@ -363,7 +363,6 @@ namespace MagneticBall3D
             m_animatedObjForShadowMap.push_back(janitorRake);
         }
 
-
         for(int i = 0; i < 100; ++i)
         {
             auto janitorBroom = std::make_shared<MovableEnemy>("models3D/enemies/JanitorBroom.fbx",
@@ -374,7 +373,7 @@ namespace MagneticBall3D
                                                                Beryll::CollisionGroups::NONE,
                                                                Beryll::SceneObjectGroups::ENEMY);
 
-            janitorBroom->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            janitorBroom->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             janitorBroom->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             janitorBroom->unitType = UnitType::ENEMY_GUN1;
             janitorBroom->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -409,7 +408,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;

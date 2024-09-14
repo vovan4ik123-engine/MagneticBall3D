@@ -41,7 +41,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "BaseBoss DelayBeforeFirstAttack");
             bossState = BossState::STAND_AIMING;
-            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > attackDistance)

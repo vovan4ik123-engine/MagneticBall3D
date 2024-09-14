@@ -36,7 +36,7 @@ namespace MagneticBall3D
         {
             //BR_INFO("%s", "MovableEnemy DelayBeforeFirstAttack");
             unitState = UnitState::STAND_AIMING;
-            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             rotateToPoint(playerOrigin, true);
         }
         else if(glm::distance(m_origin, playerOrigin) > attackDistance)

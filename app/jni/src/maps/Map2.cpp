@@ -415,7 +415,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            rat->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            rat->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             rat->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             rat->unitType = UnitType::ENEMY_MAGNET;
             rat->attackType = AttackType::MAGNETIZE_GARBAGE;
@@ -448,7 +448,7 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            guard->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            guard->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             guard->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             guard->unitType = UnitType::ENEMY_GUN1;
             guard->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -484,7 +484,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -520,7 +520,7 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             sniper->unitType = UnitType::ENEMY_SNIPER;
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -554,7 +554,7 @@ namespace MagneticBall3D
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::SceneObjectGroups::ENEMY);
 
-            junkyardBusRocket->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            junkyardBusRocket->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             junkyardBusRocket->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             junkyardBusRocket->unitType = UnitType::ENEMY_TANK;
             junkyardBusRocket->attackType = AttackType::RANGE_DAMAGE_RADIUS;
@@ -1151,7 +1151,7 @@ namespace MagneticBall3D
             const glm::ivec2 spawnPoint2D = m_pointsToSpawnCommonGarbage[Beryll::RandomGenerator::getInt(m_pointsToSpawnCommonGarbage.size() - 1)];
             glm::vec3 spawnPoint3D{spawnPoint2D.x, 10.0f, spawnPoint2D.y};
 
-            Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(glm::vec3{spawnPoint2D.x, 70.0f, spawnPoint2D.y},
+            Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(glm::vec3{spawnPoint2D.x, 100.0f, spawnPoint2D.y},
                                                                               glm::vec3{spawnPoint2D.x, -10.0f, spawnPoint2D.y},
                                                                               Beryll::CollisionGroups::GARBAGE,
                                                                               Beryll::CollisionGroups::GROUND);

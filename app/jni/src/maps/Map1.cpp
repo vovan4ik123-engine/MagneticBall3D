@@ -430,7 +430,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            copPistol->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copPistol->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copPistol->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copPistol->unitType = UnitType::ENEMY_GUN1;
             copPistol->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -465,7 +465,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -500,7 +500,7 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             sniper->unitType = UnitType::ENEMY_SNIPER;
             sniper->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -534,7 +534,7 @@ namespace MagneticBall3D
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::SceneObjectGroups::ENEMY);
 
-            copGrenade->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copGrenade->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copGrenade->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copGrenade->unitType = UnitType::ENEMY_SIT_WHEN_SHOOT;
             copGrenade->attackType = AttackType::RANGE_DAMAGE_RADIUS;
@@ -570,7 +570,7 @@ namespace MagneticBall3D
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::SceneObjectGroups::ENEMY);
 
-            tank->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            tank->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             tank->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             tank->unitType = UnitType::ENEMY_TANK;
             tank->attackType = AttackType::RANGE_DAMAGE_RADIUS;
@@ -608,7 +608,7 @@ namespace MagneticBall3D
                                                      Beryll::SceneObjectGroups::BOSS,
                                                      100.0f);
 
-        m_boss->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+        m_boss->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
         m_boss->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
 
         m_animatedOrDynamicObjects.push_back(m_boss);

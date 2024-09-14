@@ -357,7 +357,7 @@ namespace MagneticBall3D
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::SceneObjectGroups::ENEMY);
 
-            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false);
+            janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             janitorRake->unitType = UnitType::ENEMY_MELEE;
             janitorRake->attackType = AttackType::MELEE_DAMAGE_ONE;
@@ -396,7 +396,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             copShield->unitType = UnitType::ENEMY_GUN_SHIELD;
             copShield->attackType = AttackType::RANGE_DAMAGE_ONE;

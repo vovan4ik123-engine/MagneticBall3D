@@ -350,7 +350,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY);
 
-            mummy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            mummy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             mummy->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             mummy->unitType = UnitType::ENEMY_GUN1;
             mummy->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -385,7 +385,7 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY);
 
-            camel->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            camel->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             camel->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             camel->unitType = UnitType::ENEMY_TANK;
             camel->attackType = AttackType::RANGE_DAMAGE_RADIUS;
@@ -421,7 +421,7 @@ namespace MagneticBall3D
                                                          Beryll::CollisionGroups::NONE,
                                                          Beryll::SceneObjectGroups::ENEMY);
 
-            chariotJavelin->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false);
+            chariotJavelin->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             chariotJavelin->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
             chariotJavelin->unitType = UnitType::ENEMY_GUN2;
             chariotJavelin->attackType = AttackType::RANGE_DAMAGE_ONE;
@@ -723,7 +723,6 @@ namespace MagneticBall3D
 
             lastWaveToWinPhase();
         }
-
 
         // Spawn enemies.
         if(!m_pointsToSpawnEnemies.empty())
