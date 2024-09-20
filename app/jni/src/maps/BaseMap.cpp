@@ -497,9 +497,7 @@ namespace MagneticBall3D
                 if(m_allAnimatedEnemies[i]->getIsEnabledUpdate() && m_allAnimatedEnemies[i]->getIsCanMove())
                 {
                     m_allAnimatedEnemies[i]->setPathArray(m_pathFinderEnemies.findPath(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt(), m_playerClosestAllowedPos, 7), 0);
-
                     m_pathFinderEnemies.addBlockedPosition(m_allAnimatedEnemies[i]->getCurrentPointToMove2DInt());
-
                     ++enemiesUpdated;
                 }
             }
@@ -511,7 +509,6 @@ namespace MagneticBall3D
                 EnumsAndVars::enemiesCurrentPathfindingIndex = 0;
                 m_pathFindingIteration = 0; // Start from start again in next frame.
             }
-
         }
     }
 

@@ -441,20 +441,16 @@ namespace MagneticBall3D
         {
             m_prepareWave1 = false;
 
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
-
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
             }
 
-            BR_INFO("Prepare wave 1. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 1. Max enemies: %d", 0);
         }
         else if(m_prepareWave2 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave2Time)
         {
             m_prepareWave2 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
@@ -465,17 +461,14 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 2. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 2. Max enemies: %d", meleeCount);
         }
         else if(m_prepareWave3 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave3Time)
         {
             m_prepareWave3 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             for(auto& enemy : m_allAnimatedEnemies)
@@ -486,17 +479,14 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 3. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 3. Max enemies: %d", meleeCount);
         }
         else if(m_prepareWave4 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave4Time)
         {
             m_prepareWave4 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -508,23 +498,19 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 10 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 4. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 4. Max enemies: %d", meleeCount + gunCount);
         }
         else if(m_prepareWave5 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave5Time)
         {
             m_prepareWave5 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -536,23 +522,19 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 30 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 5. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 5. Max enemies: %d", meleeCount + gunCount);
         }
         else if(m_prepareWave6 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave6Time)
         {
             m_prepareWave6 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -565,29 +547,24 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunShieldCount < 10 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 6. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 6. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
         }
         else if(m_prepareWave7 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave7Time)
         {
             m_prepareWave7 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -600,29 +577,24 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunShieldCount < 40 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 7. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 7. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
         }
         else if(m_prepareWave8 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave8Time)
         {
             m_prepareWave8 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -635,29 +607,24 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 85 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunShieldCount < 70 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 8. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 8. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
         }
         else if(m_prepareWave9 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave9Time)
         {
             m_prepareWave9 = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             int meleeCount = 0;
             int gunCount = 0;
@@ -670,63 +637,55 @@ namespace MagneticBall3D
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
                 else if(gunShieldCount < 90 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
-                    ++EnumsAndVars::enemiesMaxActiveCountOnGround;
                 }
             }
 
-            BR_INFO("Prepare wave 9. Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("Prepare wave 9. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
         }
         else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {
             m_prepareLastWave = false;
-
-            EnumsAndVars::enemiesMaxActiveCountOnGround = 0;
 
             for(auto& enemy : m_allAnimatedEnemies)
             {
                 enemy->isCanBeSpawned = false;
             }
 
-            BR_INFO("enemiesLastWavePhase(). Max enemies: %d", EnumsAndVars::enemiesMaxActiveCountOnGround);
+            BR_INFO("enemiesLastWavePhase(). Max enemies: %d", 0);
 
             lastWaveToWinPhase();
         }
 
         // Spawn enemies.
+        int reSpawnedCount = 0;
         if(!m_pointsToSpawnEnemies.empty())
         {
             for(const auto& enemy : m_allAnimatedEnemies)
             {
-                if(BaseEnemy::getActiveCount() >= EnumsAndVars::enemiesMaxActiveCountOnGround)
-                    break;
+                if((enemy->getIsEnabled() && glm::distance(m_player->getObj()->getOriginXZ(), enemy->getOriginXZ()) > EnumsAndVars::enemiesDisableDistance) ||
+                   (!enemy->getIsEnabledUpdate() && enemy->isCanBeSpawned))
+                {
+                    ++reSpawnedCount;
+                    enemy->enableEnemy();
+                    enemy->disableDraw();
 
-                // Enemy already spawned or can not be spawned.
-                if(enemy->getIsEnabledUpdate() || !enemy->isCanBeSpawned)
-                    continue;
-
-                enemy->enableEnemy();
-                enemy->disableDraw();
-
-                const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
-
-                enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
-
-                enemy->setOrigin(enemy->getStartPointMoveFrom());
+                    const glm::ivec2 spawnPoint2D = m_pointsToSpawnEnemies[Beryll::RandomGenerator::getInt(m_pointsToSpawnEnemies.size() - 1)];
+                    enemy->setPathArray(m_pathFinderEnemies.findPath(spawnPoint2D, m_playerClosestAllowedPos, 6), 1);
+                    m_pathFinderEnemies.addBlockedPosition(enemy->getCurrentPointToMove2DInt());
+                    enemy->setOrigin(enemy->getStartPointMoveFrom());
+                }
             }
         }
-
-        //BR_INFO("BaseEnemy::getActiveCount(): %d", BaseEnemy::getActiveCount());
+        BR_INFO("BaseEnemy::getActiveCount(): %d reSpawnedCount %d", BaseEnemy::getActiveCount(), reSpawnedCount);
     }
 }

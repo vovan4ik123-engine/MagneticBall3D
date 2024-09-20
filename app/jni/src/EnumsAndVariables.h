@@ -236,13 +236,12 @@ namespace EnumsAndVars
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
     // Enemies.
-    constexpr inline int enemiesMaxActiveCountOnGroundDefault = 0;
-    inline int enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
-    constexpr inline int enemiesMaxPathfindingInOneFrame = 8;
+    constexpr inline int enemiesMaxPathfindingInOneFrame = 10;
     constexpr inline int enemiesCurrentPathfindingIndexDefault = 0;
     inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
-    constexpr inline float enemiesMaxDistanceToSpawn = 400.0f;
+    constexpr inline float enemiesMaxDistanceToSpawn = 450.0f;
+    constexpr inline float enemiesDisableDistance = 451.0f;
     inline int enemiesKilledCount = 0;
     inline float enemiesPauseAllActionsTime = -9999.0f; // After player resurrection pause enemies for some sec
     inline float enemiesPauseAllActionsDelay = 0.0f;    // to give player time to collect garbage and prepare to fight.
@@ -295,7 +294,6 @@ namespace EnumsAndVars
         garbageStartHP = garbageStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
 
         // Enemies.
-        enemiesMaxActiveCountOnGround = enemiesMaxActiveCountOnGroundDefault;
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
         enemiesKilledCount = 0;
         enemiesPauseAllActionsTime = -9999.0f;

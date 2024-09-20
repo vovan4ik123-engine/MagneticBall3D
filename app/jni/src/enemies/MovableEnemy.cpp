@@ -130,19 +130,15 @@ namespace MagneticBall3D
     {
         if(pathArray.empty() || indexToMove < 0)
         {
-            BR_ASSERT(false, "%s", "pathArray.empty() or pathArrayIndexToMove < 0");
+            BR_ASSERT(false, "%s", "pathArray.empty() or indexToMove < 0");
         }
 
         m_pathArray = std::move(pathArray);
 
         if(indexToMove >= m_pathArray.size())
-        {
             m_pathArrayIndexToMove = m_pathArray.size() - 1;
-        }
         else
-        {
             m_pathArrayIndexToMove = indexToMove;
-        }
 
         m_currentPointToMove2DIntegers = m_pathArray[m_pathArrayIndexToMove];
         m_currentPointToMove3DFloats = glm::vec3(m_currentPointToMove2DIntegers.x,

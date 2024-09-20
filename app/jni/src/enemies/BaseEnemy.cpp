@@ -34,8 +34,11 @@ namespace MagneticBall3D
         enableUpdate();
         enableCollisionMesh();
 
-        ++BaseEnemy::m_activeEnemiesCount;
-        m_isEnabled = true;
+        if(!m_isEnabled)
+        {
+            ++BaseEnemy::m_activeEnemiesCount;
+            m_isEnabled = true;
+        }
     }
 
     void BaseEnemy::disableEnemy()
@@ -44,13 +47,15 @@ namespace MagneticBall3D
         disableUpdate();
         disableCollisionMesh();
 
-        if(BaseEnemy::m_activeEnemiesCount > 0)
-            --BaseEnemy::m_activeEnemiesCount;
-
-        m_isEnabled = false;
         m_lastAttackTime = -9999.0f;
         m_prepareToFirstAttackStartTime = -9999.0f;
         m_prepareToFirstAttack = true;
+
+        if(m_isEnabled)
+        {
+            --BaseEnemy::m_activeEnemiesCount;
+            m_isEnabled = false;
+        }
     }
 
     void BaseEnemy::attack(const glm::vec3& playerOrigin)
