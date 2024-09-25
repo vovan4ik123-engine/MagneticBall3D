@@ -17,10 +17,10 @@ namespace MagneticBall3D
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map2Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
         m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map1Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
 
-        m_crystalIconTexture = Beryll::Renderer::createTexture("GUI/menus/start/CrystalIcon.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_playButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/start/StartBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_playButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_shopButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_talentsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/PlayerTalents.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_settingsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -99,23 +99,28 @@ namespace MagneticBall3D
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.75f, 0.75f, 0.75f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Clicked.
         ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, -0.01f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
         ImGui::Begin("mainMenu", nullptr, m_noFrameNoFocus);
-        // Crystals.
-        ImGui::SetCursorPos(ImVec2(0.78f * GUIWidth, 0.01f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_crystalIconTexture->getID()),
-                     ImVec2(0.25f * GUIWidth, 0.0276f * GUIHeight));
 
+        // Background.
+        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+                     ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
+
+        // Crystals text.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_crystalsFont);
-        ImGui::SetCursorPos(ImVec2(0.855f * GUIWidth, 0.012f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.0555f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
         ImGui::PopStyleColor(1);
 
         // Play.
-        ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.735f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.74f * GUIHeight));
         m_playButtonClicked = ImGui::ImageButton("playButton", reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
                                                  ImVec2(0.4f * GUIWidth, 0.09f * GUIHeight));
 
@@ -137,26 +142,26 @@ namespace MagneticBall3D
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.335f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.388f * GUIHeight));
             m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
-                                                             ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
+                                                             ImVec2(0.15f * GUIWidth, 0.064f * GUIHeight));
         }
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
-            ImGui::SetCursorPos(ImVec2(0.21f * GUIWidth, 0.11f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.21f * GUIWidth, 0.17f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.55f * GUIHeight));
+                         ImVec2(0.6f * GUIWidth, 0.5f * GUIHeight));
         }
         // Map swipe right.
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.335f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.388f * GUIHeight));
             m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
-                                                              ImVec2(0.15f * GUIWidth, 0.1f * GUIHeight));
+                                                              ImVec2(0.15f * GUIWidth, 0.064f * GUIHeight));
         }
         ImGui::End();
-        ImGui::PopStyleColor(1);
+        ImGui::PopStyleColor(4);
     }
 }

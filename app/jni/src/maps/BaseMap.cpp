@@ -48,7 +48,7 @@ namespace MagneticBall3D
             }
 
             EnumsAndVars::enemiesPauseAllActionsTime = EnumsAndVars::mapPlayTimeSec;
-            EnumsAndVars::enemiesPauseAllActionsDelay = 12.0f;
+            EnumsAndVars::enemiesPauseAllActionsDelay = 15.0f;
         }
 
         if(EnumsAndVars::gameOnPause)

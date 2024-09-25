@@ -27,8 +27,9 @@ namespace MagneticBall3D
         int m_noFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-        // Crystals.
-        std::unique_ptr<Beryll::Texture> m_crystalIconTexture;
+        // Background.
+        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
+        // Crystals text.
         ImFont* m_crystalsFont;
 
         // Play.

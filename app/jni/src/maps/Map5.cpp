@@ -270,6 +270,78 @@ namespace MagneticBall3D
                 obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
         }
+
+        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map5/GarbageEnemySkeleton_3items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE1, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 4; ++i) // 4 * 4 = 16
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map5/GarbageEnemyGunShield_4items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE2, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
+
+        for(int i = 0; i < 5; ++i) // 5 * 3 = 15
+        {
+            const auto garbageEnemy = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map5/GarbageEnemyGhoul_3items.fbx",
+                                                                                               EnumsAndVars::garbageMass,
+                                                                                               false,
+                                                                                               Beryll::CollisionFlags::DYNAMIC,
+                                                                                               Beryll::CollisionGroups::GARBAGE,
+                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
+                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
+                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
+                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+
+            for(const auto& obj : garbageEnemy)
+            {
+                m_allGarbage.emplace_back(obj, GarbageType::ENEMY_GARBAGE3, EnumsAndVars::garbageStartHP);
+
+                m_animatedOrDynamicObjects.push_back(obj);
+                m_simpleObjForShadowMap.push_back(obj);
+
+                obj->setDamping(EnumsAndVars::garbageLinearDamping, EnumsAndVars::garbageAngularDamping);
+                obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+            }
+        }
     }
 
     void Map5::loadEnemies()
@@ -302,7 +374,7 @@ namespace MagneticBall3D
 
             skeleton->garbageAmountToDie = 10;
             skeleton->reducePlayerSpeedWhenDie = 1.0f;
-            skeleton->experienceWhenDie = 25;
+            skeleton->experienceWhenDie = 30;
             skeleton->getController().moveSpeed = 55.0f;
 
             m_animatedOrDynamicObjects.push_back(skeleton);
@@ -339,11 +411,48 @@ namespace MagneticBall3D
             copShield->garbageAmountToDie = 10;
             copShield->reducePlayerSpeedWhenDie = 1.0f;
             copShield->experienceWhenDie = 30;
-            copShield->getController().moveSpeed = 40.0f;
+            copShield->getController().moveSpeed = 45.0f;
 
             m_animatedOrDynamicObjects.push_back(copShield);
             m_allAnimatedEnemies.push_back(copShield);
             m_animatedObjForShadowMap.push_back(copShield);
+        }
+
+        for(int i = 0; i < 100; ++i)
+        {
+            auto ghoul = std::make_shared<MovableEnemy>("models3D/enemies/Ghoul.fbx",
+                                                           0.0f,
+                                                           false,
+                                                           Beryll::CollisionFlags::STATIC,
+                                                           Beryll::CollisionGroups::NONE,
+                                                           Beryll::CollisionGroups::NONE,
+                                                           Beryll::SceneObjectGroups::ENEMY);
+
+            ghoul->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
+            ghoul->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
+            ghoul->unitType = UnitType::ENEMY_TANK;
+            ghoul->attackType = AttackType::RANGE_DAMAGE_RADIUS;
+            ghoul->attackSound = SoundType::NONE;
+            ghoul->attackHitSound = SoundType::STONE_HIT;
+            ghoul->attackParticlesColor = glm::vec3{0.4258f, 0.84f, 0.68f};
+            ghoul->attackParticlesSize = 0.6f;
+            ghoul->dieSound = SoundType::POP;
+            ghoul->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
+            ghoul->castRayToFindYPos = true;
+
+            ghoul->damage = 1.0f;
+            ghoul->damageRadius = 10.0f;
+            ghoul->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
+            ghoul->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
+
+            ghoul->garbageAmountToDie = 20;
+            ghoul->reducePlayerSpeedWhenDie = 1.0f;
+            ghoul->experienceWhenDie = 35;
+            ghoul->getController().moveSpeed = 35.0f;
+
+            m_animatedOrDynamicObjects.push_back(ghoul);
+            m_allAnimatedEnemies.push_back(ghoul);
+            m_animatedObjForShadowMap.push_back(ghoul);
         }
     }
 
