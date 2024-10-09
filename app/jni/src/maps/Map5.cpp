@@ -362,7 +362,7 @@ namespace MagneticBall3D
             skeleton->attackType = AttackType::RANGE_DAMAGE_ONE;
             skeleton->attackSound = SoundType::NONE;
             skeleton->attackHitSound = SoundType::STONE_HIT;
-            skeleton->attackParticlesColor = glm::vec3{0.4258f, 0.84f, 0.68f};
+            skeleton->attackParticlesColor = glm::vec3{0.5f, 0.66f, 0.86f};
             skeleton->attackParticlesSize = 0.3f;
             skeleton->dieSound = SoundType::POP;
             skeleton->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
@@ -434,7 +434,7 @@ namespace MagneticBall3D
             ghoul->attackType = AttackType::RANGE_DAMAGE_RADIUS;
             ghoul->attackSound = SoundType::NONE;
             ghoul->attackHitSound = SoundType::STONE_HIT;
-            ghoul->attackParticlesColor = glm::vec3{0.4258f, 0.84f, 0.68f};
+            ghoul->attackParticlesColor = glm::vec3{0.43f, 0.84f, 0.808f};
             ghoul->attackParticlesSize = 0.6f;
             ghoul->dieSound = SoundType::POP;
             ghoul->dieGarbageType = GarbageType::ENEMY_GARBAGE3;

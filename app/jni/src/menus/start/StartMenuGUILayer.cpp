@@ -142,9 +142,9 @@ namespace MagneticBall3D
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.388f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.055f * GUIWidth, 0.387f * GUIHeight));
             m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
-                                                             ImVec2(0.15f * GUIWidth, 0.064f * GUIHeight));
+                                                             ImVec2(0.155f * GUIWidth, 0.066f * GUIHeight));
         }
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
@@ -157,9 +157,9 @@ namespace MagneticBall3D
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.388f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.387f * GUIHeight));
             m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
-                                                              ImVec2(0.15f * GUIWidth, 0.064f * GUIHeight));
+                                                              ImVec2(0.155f * GUIWidth, 0.066f * GUIHeight));
         }
         ImGui::End();
         ImGui::PopStyleColor(4);
