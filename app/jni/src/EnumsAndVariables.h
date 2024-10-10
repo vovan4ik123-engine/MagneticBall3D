@@ -158,8 +158,8 @@ namespace EnumsAndVars
     constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
-    // Swipe.
-    constexpr inline float swipePowerMultiplier = 2.1f;
+    // Joystick.
+    constexpr inline float joystickPowerInOneSec = 900.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
@@ -172,7 +172,7 @@ namespace EnumsAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.1f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.15f;
     constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.38f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAir = 0.1f;
@@ -189,7 +189,7 @@ namespace EnumsAndVars
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline float playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 90.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.022f;
+    constexpr inline float playerLeftRightTurnPower = 0.09f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;
@@ -212,7 +212,7 @@ namespace EnumsAndVars
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 15.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.4f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.2f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;
@@ -256,7 +256,6 @@ namespace EnumsAndVars
 
     // Map.
     inline float mapPlayTimeSec = 0.0f;
-    inline int mapSwipeCount = 0.0f;
     inline bool mapPlayerWin = false; // true = player win.
 
     // Enemies last wave.
@@ -270,9 +269,9 @@ namespace EnumsAndVars
         // Player.
         playerMagneticRadius = playerMagneticRadiusDefault * (1.0f + allPlayerTalents[1].getPercentsToImprove() / 100.0f);
         playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.
         playerMaxSpeedXZ = playerMaxSpeedXZDefault * (1.0f + allPlayerTalents[0].getPercentsToImprove() / 100.0f);
         playerCurrentSpeed = 0;
@@ -308,7 +307,6 @@ namespace EnumsAndVars
         
         // Map.
         mapPlayTimeSec = 0.0f;
-        mapSwipeCount = 0.0f;
         mapPlayerWin = false;
 
         // Enemies last wave.

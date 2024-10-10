@@ -29,7 +29,7 @@ namespace MagneticBall3D
         // Before physics.
         void handlePlayerDie();
         void handlePlayerWin();
-        void handleScreenSwipe();
+        void handleControls();
         void updatePathfindingAndSpawnEnemies();
         virtual void spawnEnemies() = 0; // In subclass.
         virtual void spawnCommonGarbage();
@@ -113,13 +113,8 @@ namespace MagneticBall3D
         float m_cameraYOffset = m_startCameraYOffset;
         bool m_cameraHit = false;
 
-        // Screen swipe.
-        int m_fingerDownID = -1;
-        glm::vec2 m_fingerLastPos{0.0f};
-        glm::vec2 m_fingerCurrentPos{0.0f};
-        const glm::vec3 m_startDir{1.0f, 0.0f, 0.0f};
-        glm::vec3 m_screenSwipe3D{0.0f};
-        bool m_firstTouch = true;
+        // Joystick.
+        glm::vec3 m_joystickDir3D{0.0f};
 
         // Pathfinding for enemies.
         AStar m_pathFinderEnemies; // Assign new object with map size in constructor of specific map.

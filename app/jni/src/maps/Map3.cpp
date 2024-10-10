@@ -16,7 +16,7 @@ namespace MagneticBall3D
         loadEnemies();
 
         loadShaders();
-        m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
+        //m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -49,16 +49,16 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        if(EnumsAndVars::playerMagneticRadius < 50)
-            EnumsAndVars::playerMagneticRadius = 50.0f;
-        if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
-            EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
-
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.46f;
+//        if(EnumsAndVars::playerMagneticRadius < 50)
+//            EnumsAndVars::playerMagneticRadius = 50.0f;
+//        if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
+//            EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
+//        if(EnumsAndVars::playerImpulseFactorOnGround < 0.12f)
+//            EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
+//        if(EnumsAndVars::playerTorqueFactorOnGround < 0.11f)
+//            EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
+//
+//        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.46f;
 
         SendStatisticsHelper::sendMapStart();
 
@@ -686,6 +686,6 @@ namespace MagneticBall3D
                 }
             }
         }
-        BR_INFO("BaseEnemy::getActiveCount(): %d reSpawnedCount %d", BaseEnemy::getActiveCount(), reSpawnedCount);
+        //BR_INFO("BaseEnemy::getActiveCount(): %d reSpawnedCount %d", BaseEnemy::getActiveCount(), reSpawnedCount);
     }
 }

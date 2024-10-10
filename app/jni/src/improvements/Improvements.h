@@ -120,7 +120,6 @@ namespace MagneticBall3D
         glm::vec3 m_leftPos3BlocksTexts{0.09f, 0.42f, 0.75f};
 
         float m_timeAppearsOnScreen = 0.0f;
-        // Because user can accidentally click when he actively swipe and buttons appears on screen.
         float m_delayBeforeCanBeClicked = 0.6f;
     };
 }

@@ -206,13 +206,13 @@ namespace MagneticBall3D
             m_isMeteor = false;
     }
 
-    float Player::handleScreenSwipe(glm::vec3 swipeForImpulse, glm::vec3 swipeForTorque)
+    float Player::applyPowers(const glm::vec3& impulse, const glm::vec3& torque)
     {
-        //BR_INFO("Speed before swipe %f", m_playerMoveSpeed);
-        // Swipe should control only XZ speed.
+        //BR_INFO("Speed before %f", m_playerMoveSpeed);
+        // Powers should control only XZ speed.
         // Y speed controlled by gravity.
         // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
-        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (swipeForImpulse * m_obj->getLinearFactor() * (1.0f / m_obj->getCollisionMass()));
+        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (impulse * m_obj->getLinearFactor() * (1.0f / m_obj->getCollisionMass()));
         newVelocityXZ.y = 0.0f;
         float newPlayerSpeedXZ = glm::length(newVelocityXZ);
 
@@ -235,14 +235,14 @@ namespace MagneticBall3D
 
         m_obj->setLinearVelocity(newVelocityXZ);
         updateSpeed();
-        //BR_INFO("Speed after swipe %f", m_playerMoveSpeed);
+        //BR_INFO("Speed after %f", m_playerMoveSpeed);
 
         if(applyImpulseFactor == 1.0f)
         {
             // Impulse was not enough to reach max speed. We have limit to apply torque.
             // Torque applied along right/left vector from impulse.
-            glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(swipeForImpulse));
-            impulseLeft = glm::normalize(impulseLeft) * glm::length(swipeForTorque);
+            glm::vec3 impulseLeft = glm::cross(BeryllConstants::worldUp, glm::normalize(impulse));
+            impulseLeft = glm::normalize(impulseLeft) * glm::length(torque);
             m_obj->applyTorqueImpulse(impulseLeft);
         }
 

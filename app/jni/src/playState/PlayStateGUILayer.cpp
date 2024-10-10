@@ -26,13 +26,13 @@ namespace MagneticBall3D
             m_guiObjects.push_back(m_statistics1);
             m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0.025f, 0.75f, 0.03f);
             m_guiObjects.push_back(m_statistics2);
-            m_swipeCount = std::make_shared<Beryll::Text>("Swipe: 0000 Time: 00000", EnumsAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
-            m_guiObjects.push_back(m_swipeCount);
+            m_statistics3 = std::make_shared<Beryll::Text>("Time: 00000", EnumsAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
+            m_guiObjects.push_back(m_statistics3);
         }
 
-//        slider1 = std::make_shared<Beryll::SliderHorizontal>("swipe power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 2, 3);
+//        slider1 = std::make_shared<Beryll::SliderHorizontal>("qwe", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0.1f, 1);
 //        m_guiObjects.push_back(slider1);
-//        slider1->setValue(2.5f);
+//        slider1->setValue(0.5f);
 //
 //        slider2 = std::make_shared<Beryll::SliderHorizontal>("turn power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0.01f, 0.02f);
 //        m_guiObjects.push_back(slider2);
@@ -42,6 +42,10 @@ namespace MagneticBall3D
 //        m_guiObjects.push_back(slider3);
 //        slider3->setValue(1.0f);
 
+        playerJoystick = std::make_shared<Beryll::Joystick>("GUI/playState/Joystick.png","",
+                                                            0.0f, 0.25f, 1.3f, 1.3f / screenAR);
+        m_guiObjects.push_back(playerJoystick);
+        playerJoystick->disable();
 
         m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
         m_smashedSpeedFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
@@ -50,8 +54,8 @@ namespace MagneticBall3D
         m_pauseButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_exitButtonTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialSwipeTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeToMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialSwipeOnWallTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialSwipeOnWall.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialMoveTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialMoveOnWallTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMoveOnWall.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectByCrystalsButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -122,16 +126,15 @@ namespace MagneticBall3D
             m_statistics2->text = stream.str();
 
             stream.str("");
-            stream << "Swipe: " << EnumsAndVars::mapSwipeCount;
-            stream << "  Time: " << int(EnumsAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
-            m_swipeCount->text = stream.str();
+            stream << "Time: " << int(EnumsAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
+            m_statistics3->text = stream.str();
             stream.str("");
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
 
-        // Only for buttons. Make delay to prevent accidental click when user swipe during gameplay.
+        // Only for buttons. Make delay to prevent accidental click when finger on screen.
         if(m_timeAppearsOnScreen + m_delayBeforeCanBeClicked > Beryll::TimeStep::getSecFromStart())
             return;
 
@@ -454,22 +457,22 @@ namespace MagneticBall3D
         }
 
         // Map0Tutorial.
-        if(tutorialSwipeShow)
+        if(tutorialMoveShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.093f * GUIWidth, 0.55f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("tutorialSwipe", nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeTexture->getID()),
+            ImGui::Begin("tutorialMove", nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
                          ImVec2(0.8f * GUIWidth, 0.37f * GUIHeight));
             ImGui::End();
         }
 
-        if(tutorialSwipeOnWallShow)
+        if(tutorialMoveOnWallShow)
         {
             ImGui::SetNextWindowPos(ImVec2(0.12f * GUIWidth, 0.07f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("tutorialSwipeOnWall", nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialSwipeOnWallTexture->getID()),
+            ImGui::Begin("tutorialMoveOnWall", nullptr, m_noBackgroundNoFrame);
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveOnWallTexture->getID()),
                          ImVec2(0.76f * GUIWidth, 0.08f * GUIHeight));
             ImGui::End();
         }

@@ -24,11 +24,11 @@ namespace MagneticBall3D
 
         EnumsAndVars::playerMagneticRadius = 60.0f;
         EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
-        EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
-        EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
-        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.25f;
-        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.25f;
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
+//        EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
+//        EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
+//        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.2f;
+//        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.2f;
+//        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
 
         m_gui->disableMapPlayTimer();
 
@@ -44,8 +44,8 @@ namespace MagneticBall3D
     {
         if(EnumsAndVars::gameOnPause)
         {
-            m_gui->tutorialSwipeShow = false;
-            m_gui->tutorialSwipeOnWallShow = false;
+            m_gui->tutorialMoveShow = false;
+            m_gui->tutorialMoveOnWallShow = false;
             return;
         }
 
@@ -55,7 +55,7 @@ namespace MagneticBall3D
 
         handlePlayerWin();
 
-        handleScreenSwipe();
+        handleControls();
 
         if(m_player->getObj()->getOrigin().x < 85.0f)
         {
@@ -112,18 +112,18 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().x > 100.0f)
             SendStatisticsHelper::sendMap0_100mPassed();
 
-        m_gui->tutorialSwipeShow = false;
-        m_gui->tutorialSwipeOnWallShow = false;
+        m_gui->tutorialMoveShow = false;
+        m_gui->tutorialMoveOnWallShow = false;
         // Tutorial tips on screen.
-        if(m_player->getMoveSpeed() < 7.0f)
-            m_gui->tutorialSwipeShow = true;
+        if(m_player->getMoveSpeed() < 2.0f)
+            m_gui->tutorialMoveShow = true;
         else
-            m_gui->tutorialSwipeShow = false;
+            m_gui->tutorialMoveShow = false;
 
         if(m_player->getObj()->getOrigin().x > 800.0f && m_player->getObj()->getOrigin().x < 1030.0f)
-            m_gui->tutorialSwipeOnWallShow = true;
+            m_gui->tutorialMoveOnWallShow = true;
         else
-            m_gui->tutorialSwipeOnWallShow = false;
+            m_gui->tutorialMoveOnWallShow = false;
     }
 
     void Map0Tutorial::draw()

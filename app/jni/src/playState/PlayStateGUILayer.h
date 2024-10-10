@@ -29,12 +29,14 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::SliderHorizontal> slider2;
         std::shared_ptr<Beryll::SliderHorizontal> slider3;
 
+        std::shared_ptr<Beryll::Joystick> playerJoystick;
+
         float progressBarHP = 1.0f;
         float progressBarXP = 0.0f;
 
         bool resurrectPlayer = false;
-        bool tutorialSwipeShow = false;
-        bool tutorialSwipeOnWallShow = false;
+        bool tutorialMoveShow = false;
+        bool tutorialMoveOnWallShow = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
@@ -42,11 +44,10 @@ namespace MagneticBall3D
         bool m_statisticsShow = true;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
-        std::shared_ptr<Beryll::Text> m_swipeCount;
+        std::shared_ptr<Beryll::Text> m_statistics3;
         uint64_t m_statisticsUpdateTime = 0;
 
         float m_timeAppearsOnScreen = 0.0f;
-        // Because user can accidentally click when he actively swipe and buttons appears on screen.
         float m_delayBeforeCanBeClicked = 0.6f;
 
         // GUI based on raw ImGUI.
@@ -80,8 +81,8 @@ namespace MagneticBall3D
         bool m_exitButtonClicked = false;
 
         // Map0Tutorial.
-        std::unique_ptr<Beryll::Texture> m_tutorialSwipeTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialSwipeOnWallTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialMoveTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialMoveOnWallTexture;
 
         // Resurrect.
         std::unique_ptr<Beryll::Texture> m_resurrectTexture;
