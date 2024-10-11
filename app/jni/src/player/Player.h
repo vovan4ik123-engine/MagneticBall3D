@@ -39,6 +39,7 @@ namespace MagneticBall3D
         const glm::vec3& getBuildingCollisionNormal() { return m_buildingCollisionNormal; }
         float getBuildingNormalAngle() { return m_buildingNormalAngle; }
         bool getIsOnAir() { return m_isOnAir; }
+        float getTimeOnAir() { return m_timeOnAir; }
         bool getIsOnJumpPad() { return m_isOnJumpPad; }
         float getLastTimeOnJumpPad() { return m_lastTimeOnJumpPad; }
         bool getIsMeteor() { return m_isMeteor; }
@@ -66,6 +67,9 @@ namespace MagneticBall3D
         void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnumsAndVars::playerDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
         void resurrect() { m_currentHP = m_maxHP; }
+
+        void checkVelocityOfGarbage() { m_resetVelocityOfGarbageTime = EnumsAndVars::mapPlayTimeSec; }
+        bool getIsNeedCheckGarbageVelocity() { return m_resetVelocityOfGarbageTime + 0.5f > EnumsAndVars::mapPlayTimeSec; }
 
     private:
         void updateSpeed();
@@ -99,6 +103,7 @@ namespace MagneticBall3D
         int m_buildingCollisionID = 0;
         glm::vec3 m_buildingCollisionNormal{0.0f};
         float m_buildingNormalAngle{0.0f}; // With BeryllConstants::worldUp.
+        float m_timeOnAir = 0.0f;
 
         // Meteor.
         bool m_isMeteor = false;
@@ -117,5 +122,7 @@ namespace MagneticBall3D
 
         int m_currentLevelMaxExp = 100;
         bool m_nextLevelAchieved = false;
+
+        float m_resetVelocityOfGarbageTime = 0.0f;
     };
 }

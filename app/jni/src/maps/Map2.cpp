@@ -58,7 +58,7 @@ namespace MagneticBall3D
 
         SendStatisticsHelper::sendMapStart();
 
-        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_1);
+        Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);
 
         //BR_INFO(" %f", );
         //BR_INFO("%s", "");

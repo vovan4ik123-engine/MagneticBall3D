@@ -44,6 +44,7 @@ namespace MagneticBall3D
             }
 
             m_lastTimeOnJumpPad = EnumsAndVars::mapPlayTimeSec;
+            m_timeOnAir = 0.0f;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
         {
@@ -56,7 +57,7 @@ namespace MagneticBall3D
                 // First store any normal.
                 //m_buildingCollisionNormal = point.second; it has bug and sometime returns wrong direction. Find normal by ray.
                 Beryll::RayClosestHit rayBuilding = Beryll::Physics::castRayClosestHit(m_obj->getOrigin(),
-                                                                                       m_obj->getOrigin() + (point.first - m_obj->getOrigin()) * 2.0f,
+                                                                                       m_obj->getOrigin() + ((point.first - m_obj->getOrigin()) * 2.0f),
                                                                                        Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
                                                                                        Beryll::CollisionGroups::BUILDING);
 
@@ -81,9 +82,7 @@ namespace MagneticBall3D
             m_obj->setGravity(newGravity);
             m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
 
-            if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f && // > 75 && < 105 degrees.
-               m_lastTimeOnGround + 1.0f < EnumsAndVars::mapPlayTimeSec &&
-               m_lastTimeOnBuilding + 1.0f < EnumsAndVars::mapPlayTimeSec) // Collision with wall after being in air for 1.0 sec.
+            if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f && m_timeOnAir > 1.0f) // > 75 && < 105 degrees.
             {
                 BR_INFO(" %s", "Player resetVelocities()");
                 m_obj->resetVelocities();
@@ -91,8 +90,14 @@ namespace MagneticBall3D
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 100.0f);
             }
 
+            if(m_buildingNormalAngle > 0.78f && m_buildingNormalAngle < 2.35f && m_playerMoveSpeed > 10.0f) // > 45 && < 135 degrees.
+                checkVelocityOfGarbage();
+            else if(m_buildingNormalAngle < 0.175f && m_playerMoveSpeed > 20.0f) // < 10 degrees.
+                checkVelocityOfGarbage();
+
             m_isOnBuilding = true;
             m_lastTimeOnBuilding = EnumsAndVars::mapPlayTimeSec;
+            m_timeOnAir = 0.0f;
         }
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
@@ -105,8 +110,12 @@ namespace MagneticBall3D
                 m_fallDistance = glm::distance(m_startFallingHeight, m_obj->getOrigin().y - m_obj->getFromOriginToBottom());
             }
 
+            if(m_playerMoveSpeed > 50.0f)
+                checkVelocityOfGarbage();
+
             m_isOnGround = true;
             m_lastTimeOnGround = EnumsAndVars::mapPlayTimeSec;
+            m_timeOnAir = 0.0f;
         }
         else
         {
@@ -114,8 +123,10 @@ namespace MagneticBall3D
                 m_obj->setGravity(EnumsAndVars::playerGravityOnAir);
 
             m_obj->setDamping(EnumsAndVars::playerLinearDamping, 0.5f);
+            checkVelocityOfGarbage();
 
             m_isOnAir = true;
+            m_timeOnAir += Beryll::TimeStep::getTimeStepSec();
         }
 
         if(m_isOnAir && m_previousYPos > m_obj->getOrigin().y) // Ball falling.

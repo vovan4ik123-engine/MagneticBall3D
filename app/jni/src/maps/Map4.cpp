@@ -49,17 +49,6 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        if(EnumsAndVars::playerMagneticRadius < 45)
-            EnumsAndVars::playerMagneticRadius = 45.0f;
-        if(EnumsAndVars::garbageMaxCountMagnetized < 70.0f)
-            EnumsAndVars::garbageMaxCountMagnetized = 70.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.11f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.11f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.1f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.1f;
-
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.42f;
-
         SendStatisticsHelper::sendMapStart();
 
         Sounds::startBackgroundMusic(SoundType::BACKGROUND_MUSIC_2);

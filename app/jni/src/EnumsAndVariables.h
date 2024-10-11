@@ -159,23 +159,24 @@ namespace EnumsAndVars
     constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Joystick.
-    constexpr inline float joystickPowerInOneSec = 900.0f;
+    constexpr inline float joystickPowerInOneSec = 1000.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
-    constexpr inline float playerImpulseFactorOnGroundDefault = 0.1f;
+    constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
-    constexpr inline float playerTorqueFactorOnGroundDefault = 0.09f;
+    constexpr inline float playerTorqueFactorOnGroundDefault = 0.1f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.08f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.09f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.07f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.15f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.38f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.6f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
-    constexpr inline float playerImpulseFactorOnAir = 0.1f;
+    constexpr inline float playerImpulseFactorOnAirDefault = 0.4f;
+    inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
     constexpr inline float playerLinearDamping = 0.05f;
     constexpr inline float playerAngularDamping = 0.05f;
@@ -273,6 +274,7 @@ namespace EnumsAndVars
         playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.
+        playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerMaxSpeedXZ = playerMaxSpeedXZDefault * (1.0f + allPlayerTalents[0].getPercentsToImprove() / 100.0f);
         playerCurrentSpeed = 0;
         playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;

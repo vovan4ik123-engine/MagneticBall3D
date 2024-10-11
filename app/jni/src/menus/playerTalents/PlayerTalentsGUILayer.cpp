@@ -220,13 +220,13 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Menu selected talent.
-        float menuSelectedHeight = 0.2f * GUIWidth;
+        float menuSelectedHeight = 0.092f * GUIHeight;
         float text1TopPos = menuSelectedHeight * 0.05f;
         float text2TopPos = menuSelectedHeight * 0.75f;
 
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.75f, 0.75f, 0.75f, 1.0f });
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.8f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(GUIWidth, menuSelectedHeight));
+        ImGui::SetNextWindowSize(ImVec2(GUIWidth * 1.02f, menuSelectedHeight));
         ImGui::Begin("selectedTalent", nullptr, m_noFrameNoFocus);
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
