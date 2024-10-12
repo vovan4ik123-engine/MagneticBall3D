@@ -41,7 +41,7 @@ namespace MagneticBall3D
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        bool m_statisticsShow = true;
+        bool m_statisticsShow = false;
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
         std::shared_ptr<Beryll::Text> m_statistics3;
@@ -62,7 +62,7 @@ namespace MagneticBall3D
         // Play timer.
         std::string m_mapPlayTimerText;
         ImFont* m_mapPlayTimerFont;
-        bool m_mapPlayTimerShow = false;
+        bool m_mapPlayTimerShow = true;
 
         // Smashed + speed.
         std::unique_ptr<Beryll::Texture> m_smashedSpeedTexture;

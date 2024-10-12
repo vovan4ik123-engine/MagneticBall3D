@@ -50,6 +50,6 @@ namespace MagneticBall3D
 
         // Last wave.
         bool m_prepareLastWave = true;
-        const float m_prepareLastWaveTime = 1360.0f;
+        const float m_prepareLastWaveTime = 360.0f;
     };
 }

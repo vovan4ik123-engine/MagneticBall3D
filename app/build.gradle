@@ -11,8 +11,8 @@ android {
 
         minSdk 29 // Android 10 (2019 year).
         targetSdk 34
-        versionCode 9
-        versionName "2.2.0"
+        versionCode 10
+        versionName "3.0.0"
 
         externalNativeBuild {
             cmake {

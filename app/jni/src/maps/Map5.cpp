@@ -16,7 +16,6 @@ namespace MagneticBall3D
         loadEnemies();
 
         loadShaders();
-        //m_cameraAngleOffset = glm::normalize(glm::vec3(-0.1f, 0.0f, -1.0f));
         handleCamera();
 
         m_minX = -800.0f;

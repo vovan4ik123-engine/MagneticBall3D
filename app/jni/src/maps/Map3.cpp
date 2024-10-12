@@ -8,7 +8,7 @@ namespace MagneticBall3D
     Map3::Map3(std::shared_ptr<PlayStateGUILayer> gui) : BaseMap(std::move(gui))
     {
         loadPlayer();
-        m_player->getObj()->setOrigin(glm::vec3(-490.0f, 2.0f,-633.0f));
+        m_player->getObj()->setOrigin(glm::vec3(-500.0f, 2.0f,-400.0f));
         m_improvements.setPlayer(m_player);
         loadEnv();
         loadGarbage();
@@ -16,7 +16,7 @@ namespace MagneticBall3D
         loadEnemies();
 
         loadShaders();
-        //m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.8f));
+        m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.4f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -48,6 +48,20 @@ namespace MagneticBall3D
         m_sunLightDir = -m_dirToSun;
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
+
+        if(EnumsAndVars::playerMagneticRadius < 50.0f)
+            EnumsAndVars::playerMagneticRadius = 50.0f;
+        if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
+            EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.13f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.12f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
+        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 0.11f)
+            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.11f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.1f)
+            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.1f;
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
 
         SendStatisticsHelper::sendMapStart();
 

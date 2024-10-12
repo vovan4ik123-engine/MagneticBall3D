@@ -22,13 +22,19 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        EnumsAndVars::playerMagneticRadius = 60.0f;
-        EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
-//        EnumsAndVars::playerImpulseFactorOnGround = 0.12f;
-//        EnumsAndVars::playerTorqueFactorOnGround = 0.11f;
-//        EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.2f;
-//        EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.2f;
-//        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.4f;
+        if(EnumsAndVars::playerMagneticRadius < 60.0f)
+            EnumsAndVars::playerMagneticRadius = 60.0f;
+        if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
+            EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 0.13f)
+            EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 0.12f)
+            EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
+        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 0.11f)
+            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.11f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.1f)
+            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.1f;
+        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
 
         m_gui->disableMapPlayTimer();
 

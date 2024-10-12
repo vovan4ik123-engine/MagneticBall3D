@@ -48,7 +48,7 @@ namespace MagneticBall3D
             }
 
             EnumsAndVars::enemiesPauseAllActionsTime = EnumsAndVars::mapPlayTimeSec;
-            EnumsAndVars::enemiesPauseAllActionsDelay = 15.0f;
+            EnumsAndVars::enemiesPauseAllActionsDelay = 20.0f;
         }
 
         if(EnumsAndVars::gameOnPause)
@@ -370,7 +370,7 @@ namespace MagneticBall3D
         float gravPower = EnumsAndVars::garbageMinGravityPower;
         if(m_player->getIsOnAir())
             gravPower *= 3.0f;
-        gravPower += (m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed);
+        gravPower += m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed;
 
         const float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
 
@@ -390,7 +390,6 @@ namespace MagneticBall3D
                     const float objSpeed = glm::length(linVelocity);
                     const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
 
-                    //BR_INFO("objSpeed %f speedToResetVelocity %f angle %f", objSpeed, speedToResetVelocity, BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir));
                     if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                     {
                         wrapper.obj->setLinearVelocity(objToPlayerDir * 16.0f);
@@ -411,7 +410,7 @@ namespace MagneticBall3D
                 wrapper.isMagnetized = true;
                 wrapper.obj->activate();
                 const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
-                wrapper.obj->setLinearVelocity(objToPlayerDir * 20.0f);
+                wrapper.obj->setLinearVelocity(objToPlayerDir * 22.0f);
             }
         }
 
@@ -688,7 +687,7 @@ namespace MagneticBall3D
         else if(m_player->getMoveSpeedXZ() > EnumsAndVars::minPlayerSpeedToCameraFollow)
         {
             desiredCameraBackXZ = -m_player->getMoveDirXZ();
-            cameraRotationSpeedFactor *= std::min(120.0f, m_player->getMoveSpeedXZ()) / EnumsAndVars::playerMaxSpeedXZDefault;
+            cameraRotationSpeedFactor *= std::min(100.0f, m_player->getMoveSpeedXZ()) / EnumsAndVars::playerMaxSpeedXZDefault;
 
             if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec)
             {
@@ -709,7 +708,7 @@ namespace MagneticBall3D
             const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
 
             const float angleDifference = glm::angle(rotation);
-            float angleRotate = angleDifference * 0.018f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
+            float angleRotate = angleDifference * 0.015f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
             angleRotate *= Beryll::TimeStep::getTimeStepSec() / 0.01667f; // Make a correction if FPS != 60(0.01667 sec frametime).
             angleRotate *= cameraRotationSpeedFactor;
             if(angleRotate > angleDifference)
