@@ -32,7 +32,8 @@ namespace MagneticBall3D
             BR_ASSERT(false, "Map index does not handled: %d", EnumsAndVars::MapsProgress::currentMapIndex);
         }
 
-        GameStateHelper::prepareVariablesForPlay();
+        Beryll::Physics::enableSimulation();
+        Beryll::TimeStep::fixateTime();
 
         //BR_INFO(" X:%f Y:%f Z:%f", .x, .y, .z);
         //BR_INFO("%s", "");
@@ -57,8 +58,6 @@ namespace MagneticBall3D
 
     void PlayStateSceneLayer::draw()
     {
-        //BR_INFO("%s", "scene draw call");
-
         m_map->draw();
     }
 }

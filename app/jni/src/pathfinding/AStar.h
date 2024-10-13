@@ -40,8 +40,8 @@ namespace MagneticBall3D
         static constexpr int m_costMoveDiagonal = 14;
 
         int m_nDist = 0; // Distance between current node and left/right/bottom/up neighbor node.
-        std::vector<glm::ivec2> m_directions;
-        int m_directionsSize = 0;
+        std::array<glm::ivec2, 8> m_directions;
+        int m_directionsSize = m_directions.size();
 
         int m_mapLeftX = 0;
         int m_mapRightX = 0;

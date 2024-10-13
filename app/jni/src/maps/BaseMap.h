@@ -64,7 +64,7 @@ namespace MagneticBall3D
 
         const int m_maxEnvCount = 300;
         const int m_maxGarbageCount = 400;
-        const int m_maxEnemiesCount = 450;
+        const int m_maxEnemiesCount = 500;
         std::shared_ptr<Player> m_player;
         std::vector<Garbage> m_allGarbage; // Common garbage spawned on map + garbage after kill enemies.
         std::vector<std::shared_ptr<BaseEnemy>> m_allAnimatedEnemies;

@@ -20,9 +20,14 @@ namespace MagneticBall3D
 
         m_nDist = nodeDistance;
 
-        m_directions = {{0, m_nDist}, {m_nDist, 0}, {0, -m_nDist}, {-m_nDist, 0},
-                        {-m_nDist, -m_nDist}, {m_nDist, m_nDist}, {-m_nDist, m_nDist}, {m_nDist, -m_nDist}};
-        m_directionsSize = m_directions.size();
+        m_directions[0] = glm::ivec2{0, m_nDist};
+        m_directions[1] = glm::ivec2{m_nDist, 0};
+        m_directions[2] = glm::ivec2{0, -m_nDist};
+        m_directions[3] = glm::ivec2{-m_nDist, 0};
+        m_directions[4] = glm::ivec2{-m_nDist, -m_nDist};
+        m_directions[5] = glm::ivec2{m_nDist, m_nDist};
+        m_directions[6] = glm::ivec2{-m_nDist, m_nDist};
+        m_directions[7] = glm::ivec2{m_nDist, -m_nDist};
     }
 
     AStar::~AStar()
@@ -34,7 +39,7 @@ namespace MagneticBall3D
     {
         if(std::find(m_walls.begin(), m_walls.end(), wall) == m_walls.end())
         {
-            m_walls.push_back(wall);
+            m_walls.emplace_back(wall);
         }
     }
 
@@ -42,7 +47,7 @@ namespace MagneticBall3D
     {
         if(std::find(m_blockedPositions.begin(), m_blockedPositions.end(), pos) == m_blockedPositions.end())
         {
-            m_blockedPositions.push_back(pos);
+            m_blockedPositions.emplace_back(pos);
         }
     }
 
@@ -137,7 +142,7 @@ namespace MagneticBall3D
         std::vector<glm::ivec2> path;
         while(current != nullptr)
         {
-            path.push_back(current->coordinates);
+            path.emplace_back(current->coordinates);
             current = current->parent;
         }
 

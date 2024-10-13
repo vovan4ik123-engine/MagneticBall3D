@@ -13,6 +13,7 @@ namespace MagneticBall3D
         m_allAnimatedEnemies.reserve(m_maxEnemiesCount);
         m_animatedOrDynamicObjects.reserve(m_maxEnemiesCount + m_maxGarbageCount);
         m_staticEnv.reserve(m_maxEnvCount);
+        m_objWithNormalMap.reserve(20);
         m_simpleObjForShadowMap.reserve(m_maxEnvCount + m_maxGarbageCount);
         m_animatedObjForShadowMap.reserve(m_maxEnemiesCount);
     }
