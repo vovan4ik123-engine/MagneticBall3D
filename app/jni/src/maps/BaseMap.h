@@ -105,11 +105,16 @@ namespace MagneticBall3D
 
         std::unique_ptr<Beryll::SkyBox> m_skyBox;
 
-        glm::vec3 m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, 0.0f));
+        // Camera.
+        float m_lastFingerMovePosX = 0.0f;
+        float m_lastFingerMovePosY = 0.0f;
+        float m_eyesLookAngleXZ = 0.0f; // Degrees.
+        float m_eyesLookAngleY = -15.0f; // Degrees.
+        glm::vec3 m_cameraAngleOffset{0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 70.0f;
+        const float m_startCameraDistance = 20.0f;
         float m_cameraDistance = m_startCameraDistance;
-        const float m_startCameraYOffset = 10.0f;
+        const float m_startCameraYOffset = 5.0f;
         float m_cameraYOffset = m_startCameraYOffset;
         bool m_cameraHit = false;
 

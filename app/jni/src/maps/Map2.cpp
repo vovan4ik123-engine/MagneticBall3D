@@ -23,7 +23,6 @@ namespace MagneticBall3D
         StaticEnemy::spawnDelay = 40.0f;
 
         loadShaders();
-        m_cameraAngleOffset = glm::normalize(glm::vec3(0.5f, 0.0f, 1.0f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -195,7 +194,7 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionFlags::STATIC,
                                                                                 Beryll::CollisionGroups::GROUND,
                                                                                 Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY,
+                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY | Beryll::CollisionGroups::CAMERA,
                                                                                 Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(mainGround);

@@ -30,20 +30,20 @@ namespace MagneticBall3D
             m_guiObjects.push_back(m_statistics3);
         }
 
-//        slider1 = std::make_shared<Beryll::SliderHorizontal>("qwe", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.07f, 0.4f, 0.02f, 0.1f, 1);
+//        slider1 = std::make_shared<Beryll::SliderHorizontal>("turn", EnumsAndVars::FontsPath::roboto, 0.04f, 0.0f, 0.07f, 0.2f, 0.04f, 0, 1);
 //        m_guiObjects.push_back(slider1);
 //        slider1->setValue(0.5f);
-//
-//        slider2 = std::make_shared<Beryll::SliderHorizontal>("turn power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.13f, 0.4f, 0.02f, 0.01f, 0.02f);
-//        m_guiObjects.push_back(slider2);
-//        slider2->setValue(0.02f);
 
-//        slider3 = std::make_shared<Beryll::SliderHorizontal>("specular power", EnumsAndVars::FontsPath::roboto, 0.02f, 0.02f, 0.1f, 0.4f, 0.02f, 0, 2.0f);
+//        slider2 = std::make_shared<Beryll::SliderHorizontal>("Y offset", EnumsAndVars::FontsPath::roboto, 0.04f, 0.0f, 0.13f, 0.2f, 0.04f, 1, 10);
+//        m_guiObjects.push_back(slider2);
+//        slider2->setValue(5.0f);
+
+//        slider3 = std::make_shared<Beryll::SliderHorizontal>("FOV", EnumsAndVars::FontsPath::roboto, 0.04f, 0.0f, 0.19f, 0.2f, 0.04f, 30, 110);
 //        m_guiObjects.push_back(slider3);
-//        slider3->setValue(1.0f);
+//        slider3->setValue(45);
 
         playerJoystick = std::make_shared<Beryll::Joystick>("GUI/playState/Joystick.png","",
-                                                            0.0f, 0.25f, 1.3f, 1.3f / screenAR);
+                                                            0.0f, 0.25f, 1.2f / screenAR, 1.2f);
         m_guiObjects.push_back(playerJoystick);
         playerJoystick->disable();
 

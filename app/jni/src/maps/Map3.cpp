@@ -16,7 +16,6 @@ namespace MagneticBall3D
         loadEnemies();
 
         loadShaders();
-        m_cameraAngleOffset = glm::normalize(glm::vec3(-1.0f, 0.0f, -0.4f));
         handleCamera();
 
         m_minX = -800.0f;
@@ -61,7 +60,8 @@ namespace MagneticBall3D
             EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.11f;
         if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.1f)
             EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.1f;
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 1.0f)
+            EnumsAndVars::playerTorqueFactorOnBuildingWall = 1.0f;
 
         SendStatisticsHelper::sendMapStart();
 
@@ -181,7 +181,7 @@ namespace MagneticBall3D
                                                                                 false,
                                                                                 Beryll::CollisionFlags::STATIC,
                                                                                 Beryll::CollisionGroups::GROUND,
-                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::CAMERA,
                                                                                 Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(mainGround);

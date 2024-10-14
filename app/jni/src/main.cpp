@@ -10,14 +10,14 @@ int main(int argc, char* argv[])
 {
     BR_INFO("%s", "main() started.");
 
-    Beryll::GameLoop::create(Beryll::ScreenOrientation::MOBILE_PORTRAIT);
+    Beryll::GameLoop::create(Beryll::ScreenOrientation::MOBILE_LANDSCAPE_AND_FLIPPED);
 
     DataBaseHelper::prepareDatabase();
 
     Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
     //Beryll::GameLoop::setFPSLimit(15.0f);
 
-    //Beryll::Camera::setCameraFov(45.0f);
+    Beryll::Camera::setCameraFov(45.0f);
     Beryll::Camera::setProjectionNearClipPlane(5.0f);
     Beryll::Camera::setProjectionFarClipPlane(1800.0f);
     Beryll::Camera::setObjectsViewDistance(1500.0f);

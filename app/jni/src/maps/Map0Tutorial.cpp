@@ -34,7 +34,8 @@ namespace MagneticBall3D
             EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.11f;
         if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.1f)
             EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.1f;
-        EnumsAndVars::playerTorqueFactorOnBuildingWall = 0.8f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 1.0f)
+            EnumsAndVars::playerTorqueFactorOnBuildingWall = 1.0f;
 
         m_gui->disableMapPlayTimer();
 
@@ -239,7 +240,7 @@ namespace MagneticBall3D
                                                                             false,
                                                                             Beryll::CollisionFlags::STATIC,
                                                                             Beryll::CollisionGroups::GROUND,
-                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::CAMERA,
                                                                             Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(ground);

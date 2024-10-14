@@ -24,7 +24,9 @@ namespace EnumsAndVars
         static inline bool backgroundMusic = true;
         static inline bool meteorParticles = false;
         // Not stored in DB.
-        // ...
+        static inline float cameraHorizontalSpeed = 480.0f * 0.9f;
+        static inline float cameraVerticalSpeed = 173.0f * 0.9f;
+        static inline float cameraSpeedThresholdToAccelerate = 50.0f;
     };
 
     struct CurrencyBalance
@@ -173,7 +175,7 @@ namespace EnumsAndVars
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.6f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.8f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAirDefault = 0.4f;
     inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;
@@ -190,7 +192,6 @@ namespace EnumsAndVars
     inline float playerMaxSpeedXZ = playerMaxSpeedXZDefault;
     inline float playerCurrentSpeed = 0;
     constexpr inline float playerSpeedForMeteor = 90.0f;
-    constexpr inline float playerLeftRightTurnPower = 0.09f;
     constexpr inline float playerDamageTakenMultiplierDefault = 1.0f;
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;
@@ -269,8 +270,8 @@ namespace EnumsAndVars
     {
         // Player.
         playerMagneticRadius = playerMagneticRadiusDefault * (1.0f + allPlayerTalents[1].getPercentsToImprove() / 100.0f);
-        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.

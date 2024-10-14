@@ -228,7 +228,7 @@ namespace MagneticBall3D
                                                                             false,
                                                                             Beryll::CollisionFlags::STATIC,
                                                                             Beryll::CollisionGroups::GROUND,
-                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE,
+                                                                            Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::CAMERA,
                                                                             Beryll::SceneObjectGroups::GROUND);
 
         m_staticEnv.push_back(ground);

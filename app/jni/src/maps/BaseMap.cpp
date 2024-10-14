@@ -78,7 +78,10 @@ namespace MagneticBall3D
     void BaseMap::updateAfterPhysics()
     {
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
+        {
+            m_gui->playerJoystick->disable();
             return;
+        }
 
         const float distanceToEnableObjects = m_cameraDistance * 1.1f;
 
@@ -223,7 +226,7 @@ namespace MagneticBall3D
                 if(f.handled)
                     continue;
 
-                //if(f.normalizedPos.x < 0.4f && f.normalizedPos.y > 0.4f)
+                if(f.normalizedPos.x < 0.3f && f.normalizedPos.y > 0.3f)
                 {
                     if(f.downEvent)
                     {
@@ -247,8 +250,8 @@ namespace MagneticBall3D
             if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_joystickDir3D)))
             {
                 playerDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
-                moveFactorBasedOnAngleAndSpeed = playerDirToJoystickDirAngle * (m_player->getMoveSpeedXZ() * 0.4f) * EnumsAndVars::playerLeftRightTurnPower;
-                //BR_INFO("glm::length(m_joystickDir3D) %f moveFactorBasedOnAngleAndSpeed %f", glm::length(m_joystickDir3D), moveFactorBasedOnAngleAndSpeed);
+                moveFactorBasedOnAngleAndSpeed = playerDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
+                //BR_INFO("moveFactorBasedOnAngleAndSpeed %f", moveFactorBasedOnAngleAndSpeed);
             }
         }
 
@@ -676,65 +679,56 @@ namespace MagneticBall3D
 
     void BaseMap::handleCamera()
     {
-        const glm::vec3& cameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
-        glm::vec3 desiredCameraBackXZ = Beryll::Camera::getCameraBackDirectionXZ();
-        float cameraRotationSpeedFactor = 1.0f;
-
-        if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec &&
-           m_player->getMoveSpeedXZ() < 5.0f && m_player->getBuildingNormalAngle() > 1.3f)
+        const std::vector<Beryll::Finger>& fingers = Beryll::EventHandler::getFingers();
+        for(const Beryll::Finger& f : fingers)
         {
-            desiredCameraBackXZ = glm::normalize(glm::vec3(m_player->getBuildingCollisionNormal().x, 0.0f, m_player->getBuildingCollisionNormal().z));
-        }
-        else if(m_player->getMoveSpeedXZ() > EnumsAndVars::minPlayerSpeedToCameraFollow)
-        {
-            desiredCameraBackXZ = -m_player->getMoveDirXZ();
-            cameraRotationSpeedFactor *= std::min(100.0f, m_player->getMoveSpeedXZ()) / EnumsAndVars::playerMaxSpeedXZDefault;
+            if(f.handled || f.normalizedPos.x < 0.5f)
+                continue;
 
-            if(m_player->getLastTimeOnBuilding() + 0.5f > EnumsAndVars::mapPlayTimeSec)
+            if(f.downEvent)
             {
-                const glm::vec3 joystickBackDir = -glm::normalize(glm::vec3(m_joystickDir3D.x, 0.0f, m_joystickDir3D.z));
-                // On vertical wall angleFactor = 1. On horizontal roof angleFactor = 0.
-                const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
-                cameraRotationSpeedFactor = glm::mix(0.9f, 0.3f, angleFactor);
-                desiredCameraBackXZ = glm::normalize(glm::mix(-m_player->getMoveDirXZ(), joystickBackDir, angleFactor));
-                cameraRotationSpeedFactor *= m_player->getMoveSpeedXZ() / EnumsAndVars::playerMaxSpeedXZDefault;
+                m_lastFingerMovePosX = f.normalizedPos.x;
+                m_lastFingerMovePosY = f.normalizedPos.y;
+                break;
+            }
+            else
+            {
+                float deltaX = (f.normalizedPos.x - m_lastFingerMovePosX) * EnumsAndVars::SettingsMenu::cameraHorizontalSpeed;
+                const float deltaXInOneSecAbs = std::fabs(deltaX * (1.0f / Beryll::TimeStep::getTimeStepSec()));
+
+                if(deltaXInOneSecAbs > EnumsAndVars::SettingsMenu::cameraSpeedThresholdToAccelerate)
+                {
+                    const float accelFactor = std::powf((deltaXInOneSecAbs - EnumsAndVars::SettingsMenu::cameraSpeedThresholdToAccelerate), 1.1f) * 0.001f;
+                    deltaX = deltaX + deltaX * accelFactor;
+                }
+
+                float deltaY = (f.normalizedPos.y - m_lastFingerMovePosY) * EnumsAndVars::SettingsMenu::cameraVerticalSpeed;
+
+                m_lastFingerMovePosX = f.normalizedPos.x;
+                m_lastFingerMovePosY = f.normalizedPos.y;
+
+                m_eyesLookAngleXZ += deltaX;
+                m_eyesLookAngleY -= deltaY;
+                if(m_eyesLookAngleY > 40.0f) m_eyesLookAngleY = 40.0f; // Eye up.
+                if(m_eyesLookAngleY < -85.0f) m_eyesLookAngleY = -85.0f; // Eye down.
+                //BR_INFO("m_eyesLookAngleY %f", m_eyesLookAngleY);
+                break;
             }
         }
 
-        //BR_ASSERT((!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ))), "%s", "Camera back dir in nan.");
-
-        if(!glm::any(glm::isnan(cameraBackXZ)) && !glm::any(glm::isnan(desiredCameraBackXZ)) &&
-           cameraBackXZ != desiredCameraBackXZ)
-        {
-            const glm::quat rotation = glm::rotation(cameraBackXZ, desiredCameraBackXZ);
-
-            const float angleDifference = glm::angle(rotation);
-            float angleRotate = angleDifference * 0.015f + 0.01f; // Good rotation speed for 60 FPS (0.01667 sec frametime).
-            angleRotate *= Beryll::TimeStep::getTimeStepSec() / 0.01667f; // Make a correction if FPS != 60(0.01667 sec frametime).
-            angleRotate *= cameraRotationSpeedFactor;
-            if(angleRotate > angleDifference)
-                angleRotate = angleDifference;
-            if(angleRotate > 0.001f)
-            {
-                const glm::mat4 matr = glm::rotate(glm::mat4{1.0f}, angleRotate, glm::normalize(glm::axis(rotation)));
-                m_cameraAngleOffset = matr * glm::vec4(cameraBackXZ, 1.0f);
-            }
-        }
-
-        m_cameraAngleOffset.y = 0.0f;
-        m_cameraAngleOffset = glm::normalize(m_cameraAngleOffset);
-        m_cameraAngleOffset.y = 0.09f +
-                                (EnumsAndVars::garbageCountMagnetized * 0.0015f) +
-                                (m_player->getObj()->getOrigin().y * 0.006f);
-        //m_cameraAngleOffset.y = std::min(1.1f, m_cameraAngleOffset.y);
-        //BR_INFO("m_cameraAngleOffset.y %f", m_cameraAngleOffset.y);
+        // Euler angles.
+        float m_eyesLookAngleXZRadians = glm::radians(m_eyesLookAngleXZ);
+        float m_eyesLookAngleYRadians = glm::radians(m_eyesLookAngleY);
+        m_cameraAngleOffset.x = glm::cos(m_eyesLookAngleXZRadians) * glm::cos(m_eyesLookAngleYRadians);
+        m_cameraAngleOffset.y = glm::sin(m_eyesLookAngleYRadians);
+        m_cameraAngleOffset.z = glm::sin(m_eyesLookAngleXZRadians) * glm::cos(m_eyesLookAngleYRadians);
         m_cameraAngleOffset = glm::normalize(m_cameraAngleOffset);
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
         float maxCameraYOffset = m_startCameraYOffset +
-                                 (EnumsAndVars::garbageCountMagnetized * 0.15f) +
-                                 std::min(30.0f, m_player->getObj()->getOrigin().y * 0.08f + m_player->getMoveSpeedXZ() * 0.15f);
+                                 (EnumsAndVars::garbageCountMagnetized * 0.1f) +
+                                 std::min(30.0f, m_player->getObj()->getOrigin().y * 0.04f + m_player->getMoveSpeedXZ() * 0.1f);
 
         if(!m_cameraHit)
         {
@@ -754,11 +748,11 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (m_player->getMoveSpeedXZ() * 0.9f) +
-                                  (EnumsAndVars::garbageCountMagnetized * 0.6f) +
-                                  (m_player->getObj()->getOrigin().y * 0.3f);
+                                  (m_player->getMoveSpeedXZ() * 0.7f) +
+                                  (EnumsAndVars::garbageCountMagnetized * 0.4f) +
+                                  (m_player->getObj()->getOrigin().y * 0.15f);
 
-        glm::vec3 cameraPosForRay = m_cameraFront + m_cameraAngleOffset * maxCameraDistance;
+        glm::vec3 cameraPosForRay = m_cameraFront - m_cameraAngleOffset * maxCameraDistance;
 
         m_cameraHit = false;
         // Check camera ray collisions.
@@ -796,7 +790,7 @@ namespace MagneticBall3D
         if(glm::isnan(m_cameraDistance) || m_cameraDistance < 1.0f)
             m_cameraDistance = 1.0f;
 
-        Beryll::Camera::setCameraPos(m_cameraFront + m_cameraAngleOffset * m_cameraDistance);
+        Beryll::Camera::setCameraPos(m_cameraFront - m_cameraAngleOffset * m_cameraDistance);
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
     }
 

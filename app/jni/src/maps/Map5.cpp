@@ -168,7 +168,7 @@ namespace MagneticBall3D
                                                                                 Beryll::CollisionFlags::STATIC,
                                                                                 Beryll::CollisionGroups::GROUND,
                                                                                 Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY,
+                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY | Beryll::CollisionGroups::CAMERA,
                                                                                 Beryll::SceneObjectGroups::GROUND);
 
         m_objWithNormalMap.push_back(mainGround);
