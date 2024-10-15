@@ -109,17 +109,18 @@ namespace MagneticBall3D
         float m_lastFingerMovePosX = 0.0f;
         float m_lastFingerMovePosY = 0.0f;
         float m_eyesLookAngleXZ = 0.0f; // Degrees.
-        float m_eyesLookAngleY = -15.0f; // Degrees.
+        float m_eyesLookAngleY = -13.0f; // Degrees.
         glm::vec3 m_cameraAngleOffset{0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 20.0f;
+        const float m_startCameraDistance = 15.0f;
         float m_cameraDistance = m_startCameraDistance;
-        const float m_startCameraYOffset = 5.0f;
+        const float m_startCameraYOffset = 6.0f;
         float m_cameraYOffset = m_startCameraYOffset;
         bool m_cameraHit = false;
 
         // Joystick.
         glm::vec3 m_joystickDir3D{0.0f};
+        float m_joystickEnabledTime = 0.0f;
 
         // Pathfinding for enemies.
         AStar m_pathFinderEnemies; // Assign new object with map size in constructor of specific map.

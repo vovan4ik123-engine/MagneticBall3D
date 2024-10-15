@@ -83,8 +83,6 @@ namespace MagneticBall3D
             return;
         }
 
-        const float distanceToEnableObjects = m_cameraDistance * 1.1f;
-
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
             if(so->getIsEnabledUpdate())
@@ -94,8 +92,7 @@ namespace MagneticBall3D
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
-                    if(glm::distance(m_player->getObj()->getOrigin(), so->getOrigin()) < distanceToEnableObjects ||
-                       Beryll::Camera::getIsSeeObject(so->getOrigin(), 1.1f))
+                    if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.96f))
                         so->enableDraw();
                     else
                         so->disableDraw();
@@ -179,7 +176,7 @@ namespace MagneticBall3D
             item->disableCollisionMesh();
             item->disableUpdate();
             item->disableDraw();
-            item->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
+            item->setDamping(EnumsAndVars::playerDamping, EnumsAndVars::playerDamping);
 
             m_animatedOrDynamicObjects.push_back(item);
             m_simpleObjForShadowMap.push_back(item);
@@ -230,6 +227,7 @@ namespace MagneticBall3D
                 {
                     if(f.downEvent)
                     {
+                        m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
                         m_gui->playerJoystick->enable();
                         m_gui->playerJoystick->setOrigin(f.normalizedPos);
                         f.handled = true;
@@ -245,13 +243,23 @@ namespace MagneticBall3D
         glm::vec3 powerForTorque{0.0f};
         float playerDirToJoystickDirAngle = 0.0f;
         float moveFactorBasedOnAngleAndSpeed = 0.0f;
-        if(m_player->getMoveSpeedXZ() > 0.1f)
+        if(m_player->getMoveSpeedXZ() > 1.0f &&
+           !BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_joystickDir3D)))
         {
-            if(!BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_joystickDir3D)))
+            playerDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
+            moveFactorBasedOnAngleAndSpeed = playerDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
+            //BR_INFO("moveFactorBasedOnAngleAndSpeed %f", moveFactorBasedOnAngleAndSpeed);
+            if(m_player->getIsOnGround() && m_joystickEnabledTime + 0.4f < EnumsAndVars::mapPlayTimeSec)
             {
-                playerDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
-                moveFactorBasedOnAngleAndSpeed = playerDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
-                //BR_INFO("moveFactorBasedOnAngleAndSpeed %f", moveFactorBasedOnAngleAndSpeed);
+                float newDamping = glm::mix(0.0f, 1.0f, playerDirToJoystickDirAngle / glm::pi<float>()) * 1.9f;
+                newDamping = std::min(0.9f, newDamping);
+                BR_INFO("newDamping %f", newDamping);
+                m_player->getObj()->setDamping(newDamping, newDamping);
+
+                moveFactorBasedOnAngleAndSpeed *= (1.0f + (newDamping * 1.1f));
+
+                if(m_player->getMoveSpeedXZ() > 35.0f && newDamping > 0.89f)
+                    m_player->checkVelocityOfGarbage();
             }
         }
 
@@ -709,8 +717,8 @@ namespace MagneticBall3D
 
                 m_eyesLookAngleXZ += deltaX;
                 m_eyesLookAngleY -= deltaY;
-                if(m_eyesLookAngleY > 40.0f) m_eyesLookAngleY = 40.0f; // Eye up.
-                if(m_eyesLookAngleY < -85.0f) m_eyesLookAngleY = -85.0f; // Eye down.
+                if(m_eyesLookAngleY > 45.0f) m_eyesLookAngleY = 45.0f; // Eye up.
+                if(m_eyesLookAngleY < -88.0f) m_eyesLookAngleY = -88.0f; // Eye down.
                 //BR_INFO("m_eyesLookAngleY %f", m_eyesLookAngleY);
                 break;
             }
@@ -728,7 +736,7 @@ namespace MagneticBall3D
 
         float maxCameraYOffset = m_startCameraYOffset +
                                  (EnumsAndVars::garbageCountMagnetized * 0.1f) +
-                                 std::min(30.0f, m_player->getObj()->getOrigin().y * 0.04f + m_player->getMoveSpeedXZ() * 0.1f);
+                                 std::min(30.0f, m_player->getObj()->getOrigin().y * 0.04f + m_player->getMoveSpeedXZ() * 0.12f);
 
         if(!m_cameraHit)
         {
@@ -748,9 +756,12 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (m_player->getMoveSpeedXZ() * 0.7f) +
-                                  (EnumsAndVars::garbageCountMagnetized * 0.4f) +
-                                  (m_player->getObj()->getOrigin().y * 0.15f);
+                                  (m_player->getMoveSpeedXZ() * 0.6f) +
+                                  (EnumsAndVars::garbageCountMagnetized * 0.3f) +
+                                  (m_player->getObj()->getOrigin().y * 0.1f)
+                                  - std::min(0.0f, m_eyesLookAngleY);
+        //if(m_eyesLookAngleY < 0.0f)
+        //    maxCameraDistance += std::abs(m_eyesLookAngleY);
 
         glm::vec3 cameraPosForRay = m_cameraFront - m_cameraAngleOffset * maxCameraDistance;
 

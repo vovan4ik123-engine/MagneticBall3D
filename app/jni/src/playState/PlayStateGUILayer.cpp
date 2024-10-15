@@ -30,7 +30,7 @@ namespace MagneticBall3D
             m_guiObjects.push_back(m_statistics3);
         }
 
-//        slider1 = std::make_shared<Beryll::SliderHorizontal>("turn", EnumsAndVars::FontsPath::roboto, 0.04f, 0.0f, 0.07f, 0.2f, 0.04f, 0, 1);
+//        slider1 = std::make_shared<Beryll::SliderHorizontal>("view", EnumsAndVars::FontsPath::roboto, 0.04f, 0.0f, 0.07f, 0.2f, 0.04f, 0, 1);
 //        m_guiObjects.push_back(slider1);
 //        slider1->setValue(0.5f);
 

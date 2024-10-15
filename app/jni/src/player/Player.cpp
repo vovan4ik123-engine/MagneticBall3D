@@ -38,7 +38,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnJumpPad + 0.2f < EnumsAndVars::mapPlayTimeSec)
             {
                 m_obj->setGravity(EnumsAndVars::playerGravityOnAir);
-                m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
+                m_obj->setDamping(EnumsAndVars::playerDamping, EnumsAndVars::playerDamping);
                 m_isOnJumpPad = true;
                 Sounds::playSoundEffect(SoundType::JUMPPAD);
             }
@@ -80,7 +80,7 @@ namespace MagneticBall3D
             const glm::vec3 gravityDiff = EnumsAndVars::playerGravityOnBuildingRoof - EnumsAndVars::playerGravityOnBuildingWall;
             const glm::vec3 newGravity = EnumsAndVars::playerGravityOnBuildingRoof - (gravityDiff * angleFactor);
             m_obj->setGravity(newGravity);
-            m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
+            m_obj->setDamping(EnumsAndVars::playerDamping, EnumsAndVars::playerDamping);
 
             if(m_buildingNormalAngle > 1.3f && m_buildingNormalAngle < 1.83f && m_timeOnAir > 1.0f) // > 75 && < 105 degrees.
             {
@@ -102,7 +102,7 @@ namespace MagneticBall3D
         else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
         {
             m_obj->setGravity(EnumsAndVars::playerGravityOnGround);
-            m_obj->setDamping(EnumsAndVars::playerLinearDamping, EnumsAndVars::playerAngularDamping);
+            m_obj->setDamping(EnumsAndVars::playerDamping, EnumsAndVars::playerDamping);
 
             if(m_falling)
             {
@@ -122,7 +122,7 @@ namespace MagneticBall3D
             if(m_lastTimeOnBuilding + m_applyAirGravityDelay < EnumsAndVars::mapPlayTimeSec)
                 m_obj->setGravity(EnumsAndVars::playerGravityOnAir);
 
-            m_obj->setDamping(EnumsAndVars::playerLinearDamping, 0.5f);
+            m_obj->setDamping(EnumsAndVars::playerDamping, 0.5f);
             checkVelocityOfGarbage();
 
             m_isOnAir = true;

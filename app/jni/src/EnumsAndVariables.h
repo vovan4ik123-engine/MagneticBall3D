@@ -180,8 +180,7 @@ namespace EnumsAndVars
     constexpr inline float playerImpulseFactorOnAirDefault = 0.4f;
     inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
-    constexpr inline float playerLinearDamping = 0.05f;
-    constexpr inline float playerAngularDamping = 0.05f;
+    constexpr inline float playerDamping = 0.05f;
     constexpr inline float playerFriction = 80.0f;
     constexpr inline float playerMass = 10.0f;
     constexpr inline glm::vec3 playerGravityOnAir{0.0f, -60.0f, 0.0f};
@@ -270,8 +269,8 @@ namespace EnumsAndVars
     {
         // Player.
         playerMagneticRadius = playerMagneticRadiusDefault * (1.0f + allPlayerTalents[1].getPercentsToImprove() / 100.0f);
-        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
-        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault *  (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
+        playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault * (1.0f + allPlayerTalents[3].getPercentsToImprove() / 100.0f);
         playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault; // Does not changed by talents.
