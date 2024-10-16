@@ -241,25 +241,24 @@ namespace MagneticBall3D
 
         glm::vec3 powerForImpulse{0.0f};
         glm::vec3 powerForTorque{0.0f};
-        float playerDirToJoystickDirAngle = 0.0f;
+        m_moveDirToJoystickDirAngle = 0.0f;
         float moveFactorBasedOnAngleAndSpeed = 0.0f;
         if(m_player->getMoveSpeedXZ() > 1.0f &&
            !BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_joystickDir3D)))
         {
-            playerDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
-            moveFactorBasedOnAngleAndSpeed = playerDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
-            //BR_INFO("moveFactorBasedOnAngleAndSpeed %f", moveFactorBasedOnAngleAndSpeed);
-            if(m_player->getIsOnGround() && m_joystickEnabledTime + 0.4f < EnumsAndVars::mapPlayTimeSec)
+            m_moveDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
+            moveFactorBasedOnAngleAndSpeed = m_moveDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
+            BR_INFO("m_moveDirToJoystickDirAngle %f", m_moveDirToJoystickDirAngle);
+            if(m_joystickEnabledTime + 0.4f < EnumsAndVars::mapPlayTimeSec &&
+               (m_player->getIsOnGround() ||
+               (m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)))
             {
-                float newDamping = glm::mix(0.0f, 1.0f, playerDirToJoystickDirAngle / glm::pi<float>()) * 1.9f;
+                float newDamping = glm::mix(0.0f, 1.0f, m_moveDirToJoystickDirAngle / glm::pi<float>()) * 1.9f;
                 newDamping = std::min(0.9f, newDamping);
-                BR_INFO("newDamping %f", newDamping);
+
                 m_player->getObj()->setDamping(newDamping, newDamping);
 
                 moveFactorBasedOnAngleAndSpeed *= (1.0f + (newDamping * 1.1f));
-
-                if(m_player->getMoveSpeedXZ() > 35.0f && newDamping > 0.89f)
-                    m_player->checkVelocityOfGarbage();
             }
         }
 
@@ -298,25 +297,6 @@ namespace MagneticBall3D
             powerForTorque = m_joystickDir3D * EnumsAndVars::playerTorqueFactorOnAir;
         }
 
-        // Help to player move faster on flat surface when speed is low.
-        if(m_player->getMoveSpeedXZ() < EnumsAndVars::playerMaxSpeedXZDefault)
-        {
-            const float powerToHelpPlayer = (EnumsAndVars::playerMaxSpeedXZDefault - m_player->getMoveSpeedXZ()) * 0.009f;
-
-            if(m_player->getLastTimeOnGround() + 0.1f > EnumsAndVars::mapPlayTimeSec ||
-               m_player->getLastTimeOnJumpPad() + 0.1f > EnumsAndVars::mapPlayTimeSec)
-            {
-                powerForImpulse += powerForImpulse * powerToHelpPlayer;
-                powerForTorque += powerForTorque * powerToHelpPlayer;
-            }
-            else if(m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec)
-            {
-                const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
-                powerForImpulse += powerForImpulse * (powerToHelpPlayer * (1.0f - angleFactor));
-                powerForTorque += powerForTorque * (powerToHelpPlayer * (1.0f - angleFactor));
-            }
-        }
-
         // If max allowed speed exceeded not all impulse power will applied.
         // In this case applyImpulseFactor shows how much was applied in range 0...1.
         float applyImpulseFactor = m_player->applyPowers(powerForImpulse, powerForTorque);
@@ -327,7 +307,7 @@ namespace MagneticBall3D
         {
             // Same as inside m_player->applyPowers(impulse, torque).
             garbageImpulse = (powerForImpulse * 0.00006f) * applyImpulseFactor;
-            const float addSpeedAndAngle = (std::min(40.0f, m_player->getMoveSpeedXZ()) / 30.0f) * std::min(1.2f, playerDirToJoystickDirAngle);
+            const float addSpeedAndAngle = (std::min(70.0f, m_player->getMoveSpeedXZ()) / 70.0f) * std::min(1.3f, m_moveDirToJoystickDirAngle);
             garbageImpulse *= std::max(1.0f, addSpeedAndAngle);
             if(applyImpulseFactor == 1.0f)
                 garbageImpulse += powerForTorque * 0.00002f;
@@ -336,12 +316,12 @@ namespace MagneticBall3D
         {
             // Same as inside m_player->applyPowers(impulse, torque).
             glm::vec3 garbageImpulseOnRoof = (powerForImpulse * 0.00006f) * applyImpulseFactor;
+            const float addSpeedAndAngle = (std::min(70.0f, m_player->getMoveSpeedXZ()) / 70.0f) * std::min(1.3f, m_moveDirToJoystickDirAngle);
+            garbageImpulseOnRoof *= std::max(1.0f, addSpeedAndAngle);
             if(applyImpulseFactor == 1.0f)
                 garbageImpulseOnRoof += powerForTorque * 0.00001f;
 
-            const glm::vec3 garbageImpulseOnWall = BeryllConstants::worldUp *
-                                                   EnumsAndVars::joystickPowerInOneSec * Beryll::TimeStep::getTimeStepSec() *
-                                                   0.000016f;
+            const glm::vec3 garbageImpulseOnWall = BeryllConstants::worldUp * Beryll::TimeStep::getTimeStepSec() * 0.02f;
 
             const float angleFactor = m_player->getBuildingNormalAngle() / glm::half_pi<float>();
             garbageImpulse = glm::mix(garbageImpulseOnRoof, garbageImpulseOnWall, angleFactor);
@@ -384,7 +364,7 @@ namespace MagneticBall3D
             gravPower *= 3.0f;
         gravPower += m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed;
 
-        const float speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+        const float speedToResetVelocity = m_player->getMoveSpeed() * glm::mix(1.4f, 1.2f, std::min(1.0f, m_moveDirToJoystickDirAngle * 0.9f));
 
         for(auto& wrapper : m_allGarbage)
         {
@@ -394,17 +374,20 @@ namespace MagneticBall3D
                 glm::vec3 gravDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
                 wrapper.obj->setGravity(gravDir * gravPower, false, false);
 
-                if(m_player->getIsNeedCheckGarbageVelocity())
+                if(m_player->getIsNeedCheckGarbageVelocity() && wrapper.getCanVelocityBeReseted())
                 {
                     // Stop garbage if it stats rotating around player too fast.
                     const glm::vec3 linVelocity = wrapper.obj->getLinearVelocity();
                     const glm::vec3 objMoveDir = glm::normalize(linVelocity);
                     const float objSpeed = glm::length(linVelocity);
-                    const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+                    glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
 
                     if(objSpeed > speedToResetVelocity && BeryllUtils::Common::getAngleInRadians(objToPlayerDir, objMoveDir) > 0.35f) // > 20 degrees.
                     {
-                        wrapper.obj->setLinearVelocity(objToPlayerDir * 16.0f);
+                        if(m_player->getIsOnGround())
+                            objToPlayerDir.y += 0.1f;
+
+                        wrapper.obj->setLinearVelocity(objToPlayerDir * std::max(15.0f, m_player->getMoveSpeedXZ() * 0.7f));
                     }
                 }
             }
@@ -413,7 +396,7 @@ namespace MagneticBall3D
                 wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
             }
 
-            // 2. Check for more garbage if we have limit for that.
+            // 2. Magnetize more garbage if we have limit for that.
             if(EnumsAndVars::garbageCountMagnetized < EnumsAndVars::garbageMaxCountMagnetized &&
                wrapper.getIsEnabled() && !wrapper.isMagnetized && wrapper.getCanBeMagnetized() &&
                glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVars::playerMagneticRadius)
@@ -421,8 +404,15 @@ namespace MagneticBall3D
                 ++EnumsAndVars::garbageCountMagnetized;
                 wrapper.isMagnetized = true;
                 wrapper.obj->activate();
-                const glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
-                wrapper.obj->setLinearVelocity(objToPlayerDir * 22.0f);
+
+                glm::vec3 objToPlayerDir = glm::normalize(m_player->getObj()->getOrigin() - wrapper.obj->getOrigin());
+                if(m_player->getMoveSpeed() > 0.1f)
+                    objToPlayerDir = glm::normalize(objToPlayerDir + m_player->getMoveDir() * m_player->getMoveSpeed() * 0.05f);
+
+                objToPlayerDir.y += 0.15f;
+
+                wrapper.obj->setLinearVelocity(objToPlayerDir * std::max(15.0f, m_player->getMoveSpeed() * 0.8f));
+                wrapper.pauseResetVelocity(0.25f);
             }
         }
 

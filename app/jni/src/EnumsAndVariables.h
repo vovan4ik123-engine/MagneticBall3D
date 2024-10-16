@@ -161,23 +161,23 @@ namespace EnumsAndVars
     constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Joystick.
-    constexpr inline float joystickPowerInOneSec = 1000.0f;
+    constexpr inline float joystickPowerInOneSec = 100.0f;
 
     // Player.
     constexpr inline float playerMagneticRadiusDefault = 30.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
-    constexpr inline float playerImpulseFactorOnGroundDefault = 0.11f;
+    constexpr inline float playerImpulseFactorOnGroundDefault = 1.5f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
-    constexpr inline float playerTorqueFactorOnGroundDefault = 0.1f;
+    constexpr inline float playerTorqueFactorOnGroundDefault = 1.4f;
     inline float playerTorqueFactorOnGround = playerTorqueFactorOnGroundDefault;
-    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 0.09f;
+    constexpr inline float playerImpulseFactorOnBuildingRoofDefault = 1.3f;
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
-    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 0.08f;
+    constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 1.2f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 0.2f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 0.8f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 2.0f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 8.0f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
-    constexpr inline float playerImpulseFactorOnAirDefault = 0.4f;
+    constexpr inline float playerImpulseFactorOnAirDefault = 3.5f;
     inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;
     constexpr inline float playerTorqueFactorOnAir = 0.02f;
     constexpr inline float playerDamping = 0.05f;

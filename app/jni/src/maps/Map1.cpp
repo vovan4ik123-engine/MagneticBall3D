@@ -1196,10 +1196,10 @@ namespace MagneticBall3D
                             float distance = glm::distance(rayAttack.hitPoint, wrapper.obj->getOrigin());
 
                             if(distance < 8.0f)
-                                wrapper.takeDamage(25.0f);
+                                wrapper.takeDamage(20.0f);
 
                             if(distance < 20.0f)
-                                wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 1.7f);
+                                wrapper.obj->applyCentralImpulse(glm::normalize(wrapper.obj->getOrigin() - rayAttack.hitPoint) * 1.0f);
                         }
                     }
                 }

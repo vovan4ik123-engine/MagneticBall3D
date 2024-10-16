@@ -52,16 +52,16 @@ namespace MagneticBall3D
             EnumsAndVars::playerMagneticRadius = 50.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
-        if(EnumsAndVars::playerImpulseFactorOnGround < 0.13f)
-            EnumsAndVars::playerImpulseFactorOnGround = 0.13f;
-        if(EnumsAndVars::playerTorqueFactorOnGround < 0.12f)
-            EnumsAndVars::playerTorqueFactorOnGround = 0.12f;
-        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 0.11f)
-            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 0.11f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 0.1f)
-            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 0.1f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 1.0f)
-            EnumsAndVars::playerTorqueFactorOnBuildingWall = 1.0f;
+        if(EnumsAndVars::playerImpulseFactorOnGround < 1.7f)
+            EnumsAndVars::playerImpulseFactorOnGround = 1.7f;
+        if(EnumsAndVars::playerTorqueFactorOnGround < 1.6f)
+            EnumsAndVars::playerTorqueFactorOnGround = 1.6f;
+        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 1.5f)
+            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 1.5f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 1.4f)
+            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 1.4f;
+        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 10.0f)
+            EnumsAndVars::playerTorqueFactorOnBuildingWall = 10.0f;
 
         SendStatisticsHelper::sendMapStart();
 

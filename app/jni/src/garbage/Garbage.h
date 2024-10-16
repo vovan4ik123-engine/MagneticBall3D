@@ -49,6 +49,13 @@ namespace MagneticBall3D
             m_pauseMagnetizationTime = EnumsAndVars::mapPlayTimeSec;
         }
 
+        bool getCanVelocityBeReseted() { return m_pauseResetVelocityTime + m_pauseResetVelocityHowLong < EnumsAndVars::mapPlayTimeSec; }
+        void pauseResetVelocity(float time)
+        {
+            m_pauseResetVelocityHowLong = time;
+            m_pauseResetVelocityTime = EnumsAndVars::mapPlayTimeSec;
+        }
+
     private:
         bool m_isEnabled = false;
         bool m_canBeMagnetized = true;
@@ -56,6 +63,8 @@ namespace MagneticBall3D
         float m_pauseMagnetizationDelay = 0;
         GarbageType m_type = GarbageType::NONE;
         static int m_commonActiveCount;
+        float m_pauseResetVelocityTime = 0.0f;
+        float m_pauseResetVelocityHowLong = 0.0f;
 
         // Hp.
         const float m_maxHP = 0.0f;

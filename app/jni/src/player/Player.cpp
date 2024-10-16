@@ -90,9 +90,7 @@ namespace MagneticBall3D
                 m_obj->applyCentralImpulse(BeryllConstants::worldUp * 100.0f);
             }
 
-            if(m_buildingNormalAngle > 0.78f && m_buildingNormalAngle < 2.35f && m_playerMoveSpeed > 10.0f) // > 45 && < 135 degrees.
-                checkVelocityOfGarbage();
-            else if(m_buildingNormalAngle < 0.175f && m_playerMoveSpeed > 20.0f) // < 10 degrees.
+            if(m_playerMoveSpeed > 20.0f)
                 checkVelocityOfGarbage();
 
             m_isOnBuilding = true;
@@ -110,7 +108,7 @@ namespace MagneticBall3D
                 m_fallDistance = glm::distance(m_startFallingHeight, m_obj->getOrigin().y - m_obj->getFromOriginToBottom());
             }
 
-            if(m_playerMoveSpeed > 50.0f)
+            if(m_playerMoveSpeed > 25.0f)
                 checkVelocityOfGarbage();
 
             m_isOnGround = true;

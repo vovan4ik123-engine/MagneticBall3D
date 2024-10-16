@@ -121,6 +121,7 @@ namespace MagneticBall3D
         // Joystick.
         glm::vec3 m_joystickDir3D{0.0f};
         float m_joystickEnabledTime = 0.0f;
+        float m_moveDirToJoystickDirAngle = 0.0f;
 
         // Pathfinding for enemies.
         AStar m_pathFinderEnemies; // Assign new object with map size in constructor of specific map.
