@@ -175,7 +175,7 @@ namespace EnumsAndVars
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 1.2f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
     constexpr inline float playerImpulseFactorOnBuildingWall = 2.0f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 8.0f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 10.0f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAirDefault = 3.5f;
     inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;
@@ -213,7 +213,7 @@ namespace EnumsAndVars
     constexpr inline float garbageMass = 0.001f;
     constexpr inline float garbageMinGravityPower = 15.0f; // Magnetic power when player speed = 0.0f.
     // If player speed > 0.0f increase gravity power linearly with player speed.
-    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.0f; // * by player speed and add to garbageMinGravityPower.
+    constexpr inline float garbageGravityIncreasedByPlayerSpeed = 3.5f; // * by player speed and add to garbageMinGravityPower.
     constexpr inline glm::vec3 garbageGravityDefault{0.0f, -30.0f, 0.0f};
     constexpr inline int garbageMaxCountMagnetizedDefault = 60;
     inline int garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault;

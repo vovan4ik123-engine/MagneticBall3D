@@ -239,8 +239,6 @@ namespace MagneticBall3D
             return;
         }
 
-        glm::vec3 powerForImpulse{0.0f};
-        glm::vec3 powerForTorque{0.0f};
         m_moveDirToJoystickDirAngle = 0.0f;
         float moveFactorBasedOnAngleAndSpeed = 0.0f;
         if(m_player->getMoveSpeedXZ() > 1.0f &&
@@ -248,22 +246,23 @@ namespace MagneticBall3D
         {
             m_moveDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
             moveFactorBasedOnAngleAndSpeed = m_moveDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
-            BR_INFO("m_moveDirToJoystickDirAngle %f", m_moveDirToJoystickDirAngle);
+
             if(m_joystickEnabledTime + 0.4f < EnumsAndVars::mapPlayTimeSec &&
                (m_player->getIsOnGround() ||
                (m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() < 0.1745f)))
             {
+                //BR_INFO("m_moveDirToJoystickDirAngle %f calculate damping", m_moveDirToJoystickDirAngle);
                 float newDamping = glm::mix(0.0f, 1.0f, m_moveDirToJoystickDirAngle / glm::pi<float>()) * 1.9f;
                 newDamping = std::min(0.9f, newDamping);
-
                 m_player->getObj()->setDamping(newDamping, newDamping);
-
+                // Increase control power if damping increased.
                 moveFactorBasedOnAngleAndSpeed *= (1.0f + (newDamping * 1.1f));
             }
         }
 
-        // 2 m = radius for default ball.
-        const float radiusForTorqueMultiplier = std::max(1.0f, m_player->getObj()->getXZRadius() * 0.5f);
+        glm::vec3 powerForImpulse{0.0f};
+        glm::vec3 powerForTorque{0.0f};
+        const float radiusForTorqueMultiplier = std::max(1.0f, m_player->getObj()->getXZRadius() * 0.5f); // 2 m = radius for default ball.
 
         if(m_player->getIsOnGround())
         {
@@ -301,6 +300,7 @@ namespace MagneticBall3D
         // In this case applyImpulseFactor shows how much was applied in range 0...1.
         float applyImpulseFactor = m_player->applyPowers(powerForImpulse, powerForTorque);
 
+        // Also apply powers for magnetized garbage.
         glm::vec3 garbageImpulse{0.0f};
 
         if(m_player->getIsOnGround())
@@ -364,7 +364,12 @@ namespace MagneticBall3D
             gravPower *= 3.0f;
         gravPower += m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed;
 
-        const float speedToResetVelocity = m_player->getMoveSpeed() * glm::mix(1.4f, 1.2f, std::min(1.0f, m_moveDirToJoystickDirAngle * 0.9f));
+        float speedToResetVelocity = m_player->getMoveSpeed() * glm::mix(1.4f, 1.2f, std::min(1.0f, m_moveDirToJoystickDirAngle * 0.9f));
+        if(m_player->getIsOnAir() || // On air or vertical wall.
+           (m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f && m_player->getBuildingNormalAngle() < 1.83f))
+        {
+            speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+        }
 
         for(auto& wrapper : m_allGarbage)
         {
