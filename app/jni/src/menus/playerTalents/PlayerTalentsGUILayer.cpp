@@ -7,8 +7,8 @@
 namespace MagneticBall3D
 {
     int PlayerTalentsGUILayer::m_selectedIndex = 0;
-    std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
-    std::atomic<bool> PlayerTalentsGUILayer::m_rewardedAdError = false;
+    std::atomic<bool> PlayerTalentsGUILayer::m_adSuccess = false;
+    std::atomic<bool> PlayerTalentsGUILayer::m_adError = false;
 
     PlayerTalentsGUILayer::PlayerTalentsGUILayer()
     {
@@ -46,8 +46,8 @@ namespace MagneticBall3D
         selectTalent(m_selectedIndex);
 
         // These callbacks are called from different thread.
-        m_rewardedAdSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayerTalentsGUILayer::m_rewardedAdSuccess = true; };
-        m_rewardedAdErrorCallback = []() -> void { BR_INFO("%s", "m_rewardedAdErrorCallback()"); PlayerTalentsGUILayer::m_rewardedAdError = true; };
+        m_adSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayerTalentsGUILayer::m_adSuccess = true; };
+        m_adErrorCallback = []() -> void { BR_INFO("%s", "m_adErrorCallback()"); PlayerTalentsGUILayer::m_adError = true; };
     }
 
     PlayerTalentsGUILayer::~PlayerTalentsGUILayer()
@@ -104,7 +104,7 @@ namespace MagneticBall3D
             m_improveByAdClicked = false;
             BR_INFO("%s", "m_improveByAdClicked.");
             m_adLoadingMenuShow = true;
-            Beryll::Ads::getInstance()->showRewardedAd(m_rewardedAdSuccessCallback, m_rewardedAdErrorCallback, false);
+            Beryll::Ads::getInstance()->showInterstitialAd(m_adSuccessCallback, m_adErrorCallback);
         }
         else if(m_improveByCrystalsClicked)
         {
@@ -119,14 +119,14 @@ namespace MagneticBall3D
             }
             else
             {
-                m_showNoCrystalsMenu = true;
+                m_noCrystalsMenuShow = true;
             }
         }
 
         if(m_noCrystalsButtonOkClicked)
         {
             m_noCrystalsButtonOkClicked = false;
-            m_showNoCrystalsMenu = false;
+            m_noCrystalsMenuShow = false;
         }
 
         if(m_adErrorButtonOkClicked)
@@ -135,9 +135,9 @@ namespace MagneticBall3D
             m_adErrorMenuShow = false;
         }
 
-        if(PlayerTalentsGUILayer::m_rewardedAdSuccess)
+        if(PlayerTalentsGUILayer::m_adSuccess)
         {
-            PlayerTalentsGUILayer::m_rewardedAdSuccess = false;
+            PlayerTalentsGUILayer::m_adSuccess = false;
             m_adLoadingMenuShow = false;
             EnumsAndVars::allPlayerTalents[m_selectedIndex].improveLevel(EnumsAndVars::PlayerTalentCurrency::AD);
             selectTalent(m_selectedIndex); // Recalculate values.
@@ -147,9 +147,9 @@ namespace MagneticBall3D
             DataBaseHelper::storeAdsRewardedAdTime(EnumsAndVars::Ads::rewardedAdTime);
         }
 
-        if(PlayerTalentsGUILayer::m_rewardedAdError)
+        if(PlayerTalentsGUILayer::m_adError)
         {
-            PlayerTalentsGUILayer::m_rewardedAdError = false;
+            PlayerTalentsGUILayer::m_adError = false;
             m_adLoadingMenuShow = false;
             m_adErrorMenuShow = true;
         }
@@ -351,7 +351,7 @@ namespace MagneticBall3D
         }
 
         // Not enough crystals menu.
-        if(m_showNoCrystalsMenu)
+        if(m_noCrystalsMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();

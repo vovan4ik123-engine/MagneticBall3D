@@ -22,11 +22,11 @@ namespace MagneticBall3D
 
         if(m_statisticsShow)
         {
-            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0, 0.55f, 0.03f);
+            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0, 0.5f, 0.04f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.025f, 0.1f, 0.025f, 0.75f, 0.03f);
+            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0.04f, 0.5f, 0.04f);
             m_guiObjects.push_back(m_statistics2);
-            m_statistics3 = std::make_shared<Beryll::Text>("Time: 00000", EnumsAndVars::FontsPath::roboto, 0.02f, 0.1f, 0.0475f, 0.5f, 0.025f);
+            m_statistics3 = std::make_shared<Beryll::Text>("Time: 00000", EnumsAndVars::FontsPath::roboto, 0.03f, 0.06f, 0.08f, 0.5f, 0.035f);
             m_guiObjects.push_back(m_statistics3);
         }
 
@@ -47,8 +47,8 @@ namespace MagneticBall3D
         m_guiObjects.push_back(playerJoystick);
         playerJoystick->disable();
 
-        m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
-        m_smashedSpeedFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.02f);
+        m_mapPlayTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.05f);
+        m_smashedSpeedFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.03f);
 
         m_smashedSpeedTexture = Beryll::Renderer::createTexture("GUI/playState/SmashedSpeed.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_pauseButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -363,24 +363,6 @@ namespace MagneticBall3D
         const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
-        // HP XP.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.96f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.02f * GUIWidth, 0.06f * GUIHeight));
-        ImGui::Begin("HPXP", nullptr, m_noBackgroundNoFrame);
-        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.6289f, 1.0f, 0.3086f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.8516f, 0.0859f, 0.1641f, 1.0f});
-        ImGui::ProgressBar(progressBarHP, ImVec2(1.02f * GUIWidth, 0.02f * GUIHeight));
-        ImGui::PopStyleColor(3);
-        ImGui::SetCursorPos(ImVec2(0.0f, 0.02f * GUIHeight));
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.1367f, 0.6016f, 0.953f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.1953f, 0.1953f, 0.2422f, 1.0f});
-        ImGui::ProgressBar(progressBarXP, ImVec2(1.02f * GUIWidth, 0.04f * GUIHeight));
-        ImGui::PopStyleColor(3);
-        ImGui::End();
-
         // Play timer.
         if(m_mapPlayTimerShow)
         {
@@ -410,35 +392,53 @@ namespace MagneticBall3D
         }
 
         // Smashed + speed texture.
-        ImGui::SetNextWindowPos(ImVec2(0.77f * GUIWidth, 0.0f * GUIHeight));
+        ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, -0.002f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin("smashedSpeedTexture", nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
-        ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, 0.0f));
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_smashedSpeedTexture->getID()),
-                     ImVec2(0.26f * GUIWidth, 0.06f * GUIHeight));
+                     ImVec2(0.088f * GUIWidth, 0.096f * GUIHeight));
         ImGui::End();
 
         // Smashed + speed texts.
-        ImGui::SetNextWindowPos(ImVec2(0.84f * GUIWidth, 0.006f * GUIHeight));
+        ImGui::SetNextWindowPos(ImVec2(0.94f * GUIWidth, 0.012f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin("smashedSpeedTexts", nullptr, m_noBackgroundNoFrame);
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
         ImGui::PushFont(m_smashedSpeedFont);
-        ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, 0.001f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
-        ImGui::SetCursorPos(ImVec2(0.01f * GUIWidth, 0.031f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.045f * GUIHeight));
         ImGui::Text("%d/%d", int(std::roundf(EnumsAndVars::playerCurrentSpeed)), int(std::roundf(EnumsAndVars::playerMaxSpeedXZ)));
         ImGui::PopFont();
         ImGui::PopStyleColor(1);
         ImGui::End();
 
+        // HP XP.
+        ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.092f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+        ImGui::Begin("HPXP", nullptr, m_noBackgroundNoFrame);
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.6289f, 1.0f, 0.3086f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.8516f, 0.0859f, 0.1641f, 1.0f});
+        ImGui::ProgressBar(progressBarHP, ImVec2(0.084f * GUIWidth, 0.03f * GUIHeight));
+        ImGui::PopStyleColor(3);
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.03f * GUIHeight));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.1367f, 0.6016f, 0.953f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.1953f, 0.1953f, 0.2422f, 1.0f});
+        ImGui::ProgressBar(progressBarXP, ImVec2(0.084f * GUIWidth, 0.03f * GUIHeight));
+        ImGui::PopStyleColor(3);
+        ImGui::End();
+
         // Pause button.
-        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.001f * GUIHeight));
+        ImGui::SetNextWindowPos(ImVec2(-0.003f * GUIWidth, -0.002f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
         ImGui::Begin("pauseButton", nullptr, m_noBackgroundNoFrame);
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
         m_pauseButtonClicked = ImGui::ImageButton("pauseButton", reinterpret_cast<ImTextureID>(m_pauseButtonTexture->getID()),
-                                                  ImVec2(0.13f * GUIWidth, 0.05f * GUIHeight));
+                                                  ImVec2(0.0596f * GUIWidth, 0.11f * GUIHeight));
         ImGui::End();
 
         // Pause menu.

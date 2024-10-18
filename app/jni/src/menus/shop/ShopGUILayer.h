@@ -63,7 +63,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_errorTexture;
         std::unique_ptr<Beryll::Texture> m_errorButtonOkTexture;
         bool m_errorButtonOkClicked = false;
-        bool m_showErrorMenu = false;
+        bool m_errorMenuShow = false;
 
         // Billing system callbacks. Can be called from different thread.
         std::function<void()> m_buyItem1SuccessCallback;

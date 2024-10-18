@@ -5,12 +5,12 @@ namespace MagneticBall3D
 {
     Improvements::Improvements()
     {
-        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                 5, {{[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
+        std::vector<ImprovementInfo> imprInfoVector{{ImprovementType::PLAYER_MAX_SPEED,                m_maxLevel, {{[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerMaxSpeedXZ += EnumsAndVars::playerMaxSpeedXZDefault * 0.08f; BR_INFO("%s", "Block PLAYER_MAX_SPEED pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_ACCELERATE_FASTER,         5, {{[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.04f;
+                                                    {ImprovementType::PLAYER_ACCELERATE_FASTER,        m_maxLevel, {{[&]() { EnumsAndVars::playerImpulseFactorOnGround += EnumsAndVars::playerImpulseFactorOnGroundDefault * 0.04f;
                                                                                                                                                 EnumsAndVars::playerTorqueFactorOnGround += EnumsAndVars::playerTorqueFactorOnGroundDefault * 0.04f;
                                                                                                                                                 EnumsAndVars::playerImpulseFactorOnBuildingRoof += EnumsAndVars::playerImpulseFactorOnBuildingRoofDefault * 0.04f;
                                                                                                                                                 EnumsAndVars::playerTorqueFactorOnBuildingRoof += EnumsAndVars::playerTorqueFactorOnBuildingRoofDefault * 0.04f;
@@ -41,17 +41,17 @@ namespace MagneticBall3D
                                                                                                                                                 EnumsAndVars::playerImpulseFactorOnAir += EnumsAndVars::playerImpulseFactorOnAirDefault * 0.04f;
                                                                                                                                                 BR_INFO("%s", "Block PLAYER_ACCELERATE_FASTER pressed 4."); }}
                                                                                                                              }},
-                                                    {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,       5, {{[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
+                                                    {ImprovementType::PLAYER_PUSH_ENEMIES_BETTER,      m_maxLevel, {{[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS,  5, {{[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
+                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS, m_maxLevel, {{[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE,    5, {{[&]() { EnumsAndVars::playerMagneticRadius += 4.0f;
+                                                    {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE,   m_maxLevel, {{[&]() { EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                 EnumsAndVars::garbageMaxCountMagnetized += 20;
                                                                                                                                                 EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.04f;
                                                                                                                                                 m_player->selectNextModel();
@@ -77,42 +77,42 @@ namespace MagneticBall3D
                                                                                                                                                m_player->selectNextModel();
                                                                                                                                                BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 4."); }},
                                                                                                                              }},
-                                                    {ImprovementType::PLAYER_INCREASE_MAX_HP,           5, {{[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
+                                                    {ImprovementType::PLAYER_INCREASE_MAX_HP,          m_maxLevel, {{[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 0."); }},
                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 1."); }},
                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 2."); }},
                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 3."); }},
                                                                                                                              {[&]() { m_player->addToMaxHP(EnumsAndVars::playerStartHP * 0.1f); BR_INFO("%s", "Block PLAYER_INCREASE_MAX_HP pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,          5, {{[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                    {ImprovementType::PLAYER_TAKE_LESS_DAMAGE,         m_maxLevel, {{[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_TAKE_LESS_DAMAGE pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_EXP_GAIN,                  5, {{[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
+                                                    {ImprovementType::PLAYER_EXP_GAIN,                 m_maxLevel, {{[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,           5, {{[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
+                                                    {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,          m_maxLevel, {{[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL,  5, {{[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
+                                                    {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL, m_maxLevel, {{[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 4."); }}}},
-                                                    {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,        5, {{[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
+                                                    {ImprovementType::GARBAGE_SPAWN_MORE_ON_MAP,       m_maxLevel, {{[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageCommonMaxCountOnMap += 10; BR_INFO("%s", "Block GARBAGE_SPAWN_MORE_ON_MAP pressed 4."); }}}},
-                                                    {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,         5, {{[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
+                                                    {ImprovementType::GARBAGE_TAKE_LESS_DAMAGE,        m_maxLevel, {{[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::garbageDamageTakenMultiplier -= 0.08f; BR_INFO("%s", "Block GARBAGE_TAKE_LESS_DAMAGE pressed 4."); }}}},
-                                                    {ImprovementType::JUMPPAD_POWER,                    5, {{[&]() { EnumsAndVars::jumpPadPower += EnumsAndVars::jumpPadPowerDefault * 0.2f; BR_INFO("%s", "Block JUMPPAD_POWER pressed 0."); }},
+                                                    {ImprovementType::JUMPPAD_POWER,                   m_maxLevel, {{[&]() { EnumsAndVars::jumpPadPower += EnumsAndVars::jumpPadPowerDefault * 0.2f; BR_INFO("%s", "Block JUMPPAD_POWER pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::jumpPadPower += EnumsAndVars::jumpPadPowerDefault * 0.2f; BR_INFO("%s", "Block JUMPPAD_POWER pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::jumpPadPower += EnumsAndVars::jumpPadPowerDefault * 0.2f; BR_INFO("%s", "Block JUMPPAD_POWER pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::jumpPadPower += EnumsAndVars::jumpPadPowerDefault * 0.2f; BR_INFO("%s", "Block JUMPPAD_POWER pressed 3."); }},
@@ -238,6 +238,21 @@ namespace MagneticBall3D
 
         buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.35f, 0.65f, 0.3f, 0.05f);
         buttonReroll->disable();
+
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame1.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame2.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame3.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame4.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame5.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame6.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame7.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame8.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame9.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame10.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame11.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame12.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+
+        m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);
     }
 
     Improvements::~Improvements()
@@ -249,9 +264,19 @@ namespace MagneticBall3D
     {
         BR_ASSERT((m_player != nullptr), "%s", "m_player is nullptr. Call setPlayer().");
 
-        if(m_player->getIsNextLevelAchieved())
+        if(m_player->getIsNextLevelAchieved() && m_piggyBankLevelsCollectedCount < m_piggyBankMaxLevel)
         {
+            ++m_piggyBankCurrentLevel;
+            ++m_piggyBankLevelsCollectedCount;
+            m_piggyBankShow = true;
+            m_piggyBankAnimationStartTime = EnumsAndVars::mapPlayTimeSec;
             m_player->handleLevelAchievement();
+            BR_INFO("piggyBankCurrentLevel %d allLevelsCollected %d", m_piggyBankCurrentLevel, m_piggyBankLevelsCollectedCount);
+        }
+
+        if(m_selectImprovement)
+        {
+            m_selectImprovement = false;
 
             if(m_allAvailableGUIBlocks.empty())
                 return;
@@ -264,10 +289,9 @@ namespace MagneticBall3D
             BR_INFO("%s", "improvementSystemOnScreen = true");
             EnumsAndVars::improvementSystemOnScreen = true;
             Beryll::Physics::disableSimulation();
-            m_timeAppearsOnScreen = Beryll::TimeStep::getSecFromStart();
         }
 
-        if(EnumsAndVars::improvementSystemOnScreen && m_timeAppearsOnScreen + m_delayBeforeCanBeClicked < Beryll::TimeStep::getSecFromStart())
+        if(EnumsAndVars::improvementSystemOnScreen)
         {
             if(buttonReroll->getIsEnabled())
             {
@@ -295,10 +319,6 @@ namespace MagneticBall3D
 
                 if(block.button->getIsPressed())
                 {
-                    BR_INFO("%s", "improvementSystemOnScreen = false");
-                    EnumsAndVars::improvementSystemOnScreen = false;
-                    Beryll::Physics::enableSimulation();
-
                     // Disable all.
                     for(auto& blockDisable : m_allAvailableGUIBlocks)
                         blockDisable.onScreen = false;
@@ -337,6 +357,21 @@ namespace MagneticBall3D
                                 break;
                             }
                         }
+                    }
+
+                    BR_ASSERT(m_piggyBankCurrentLevel > 0, "%s", "m_piggyBankCurrentLevel can not be 0 here.");
+                    --m_piggyBankCurrentLevel;
+
+                    if(m_piggyBankCurrentLevel > 0)
+                    {
+                        m_selectImprovement = true;
+                        BR_INFO("%s", "select improvement again");
+                    }
+                    else
+                    {
+                        BR_INFO("%s", "improvementSystemOnScreen = false");
+                        EnumsAndVars::improvementSystemOnScreen = false;
+                        Beryll::Physics::enableSimulation();
                     }
 
                     break;
@@ -405,13 +440,56 @@ namespace MagneticBall3D
             if(buttonReroll->getIsEnabled())
                 buttonReroll->draw();
         }
+
+        if(m_piggyBankShow)
+        {
+            // Show button with level.
+            int currentFrameIndex = m_piggyBankAnimationTextures.size() - 1;
+            bool showLevel = true;
+            if(m_piggyBankAnimationStartTime + m_piggyBankAnimationTime > EnumsAndVars::mapPlayTimeSec)
+            {
+                // Play animation for new level.
+                const float timeOfOneFrame = m_piggyBankAnimationTime / float(m_piggyBankAnimationTextures.size());
+                currentFrameIndex = int((EnumsAndVars::mapPlayTimeSec - m_piggyBankAnimationStartTime) / timeOfOneFrame);
+                if(currentFrameIndex >= m_piggyBankAnimationTextures.size())
+                    currentFrameIndex = m_piggyBankAnimationTextures.size() - 1;
+                showLevel = false;
+            }
+
+            const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+            const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+
+            ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.24f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+            ImGui::Begin("piggyBankWindow", nullptr, m_noBackgroundNoFrame);
+            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
+            if(ImGui::ImageButton("piggyBankButton", reinterpret_cast<ImTextureID>(m_piggyBankAnimationTextures[currentFrameIndex]->getID()),
+                                  ImVec2(0.084f * GUIWidth, 0.182f * GUIHeight)))
+            {
+                m_selectImprovement = true;
+                m_piggyBankShow = false;
+                BR_INFO("%s", "piggy bank pressed");
+            }
+
+            if(showLevel)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
+                ImGui::PushFont(m_piggyBankLevelFont);
+                ImGui::SetCursorPos(ImVec2(0.04f * GUIWidth, 0.06f * GUIHeight));
+                ImGui::Text("%d", m_piggyBankCurrentLevel);
+                ImGui::PopFont();
+                ImGui::PopStyleColor(1);
+            }
+            ImGui::End();
+        }
     }
 
     void Improvements::selectImprovementsToShow()
     {
+        BR_INFO("%s", "void Improvements::selectImprovementsToShow()");
         // Disable all.
-        for(auto& blockDisable : m_allAvailableGUIBlocks)
-            blockDisable.onScreen = false;
+        for(auto& block : m_allAvailableGUIBlocks)
+            block.onScreen = false;
 
         // Enable some blocks.
         if(m_allAvailableGUIBlocks.empty())

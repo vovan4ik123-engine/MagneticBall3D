@@ -89,14 +89,14 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_noCrystalsTexture;
         std::unique_ptr<Beryll::Texture> m_noCrystalsButtonOkTexture;
         bool m_noCrystalsButtonOkClicked = false;
-        bool m_showNoCrystalsMenu = false;
+        bool m_noCrystalsMenuShow = false;
 
         // Ad callbacks. Can be called from different thread.
-        std::function<void()> m_rewardedAdSuccessCallback;
-        std::function<void()> m_rewardedAdErrorCallback;
+        std::function<void()> m_adSuccessCallback;
+        std::function<void()> m_adErrorCallback;
         // Can be assigned from different thread.
-        static std::atomic<bool> m_rewardedAdSuccess;
-        static std::atomic<bool> m_rewardedAdError;
+        static std::atomic<bool> m_adSuccess;
+        static std::atomic<bool> m_adError;
         // Ad loading.
         std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
         bool m_adLoadingMenuShow = false;

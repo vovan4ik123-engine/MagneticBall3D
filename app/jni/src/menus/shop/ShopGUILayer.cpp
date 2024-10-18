@@ -239,13 +239,13 @@ namespace MagneticBall3D
         {
             ShopGUILayer::m_buyError = false;
             BR_INFO("%s", "Buy error.");
-            m_showErrorMenu = true;
+            m_errorMenuShow = true;
         }
 
         if(m_errorButtonOkClicked)
         {
             m_errorButtonOkClicked = false;
-            m_showErrorMenu = false;
+            m_errorMenuShow = false;
         }
     }
 
@@ -344,7 +344,7 @@ namespace MagneticBall3D
         }
         ImGui::End();
 
-        if(m_showErrorMenu)
+        if(m_errorMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();

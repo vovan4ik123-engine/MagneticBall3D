@@ -98,10 +98,25 @@ namespace MagneticBall3D
         std::vector<ImprovementGUIBlock> m_allAvailableGUIBlocks;
         std::vector<SelectedImprovement> m_selectedImprovements;
         static constexpr int m_maxImprovementsSelectedCount = 6; // Max unique improvements can be selected. Rest should be unavailable after reach limit.
+        static constexpr int m_maxLevel = 5; // Every improvement should has 5 levels.
         std::vector<int> m_IDsSelected; // Contains IDs of selected improvements.
         std::shared_ptr<Player> m_player;
         std::shared_ptr<Beryll::ButtonWithTexture> buttonReroll;
         int m_rerollAttempts = 1;
+
+        // Piggy bank with available levels. Store player levels. Can be spent for improvements when user wants(button click).
+        int m_piggyBankCurrentLevel = 0;
+        int m_piggyBankLevelsCollectedCount = 0;
+        const int m_piggyBankMaxLevel = m_maxImprovementsSelectedCount * m_maxLevel;
+        bool m_piggyBankShow = false;
+        float m_piggyBankAnimationStartTime = 0.0f;
+        float m_piggyBankAnimationTime = 0.6f;
+        bool m_selectImprovement = false;
+        std::vector<std::unique_ptr<Beryll::Texture>> m_piggyBankAnimationTextures;
+        ImFont* m_piggyBankLevelFont;
+        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+                                    ImGuiWindowFlags_NoScrollbar;
 
         // Positions of GUI block in range 0...1.
         // To create blocks.
@@ -118,8 +133,5 @@ namespace MagneticBall3D
         glm::vec2 m_leftPos2BlocksTexts{0.22f, 0.62f};
         glm::vec3 m_leftPos3BlocksButtons{0.02f, 0.35f, 0.68f};
         glm::vec3 m_leftPos3BlocksTexts{0.09f, 0.42f, 0.75f};
-
-        float m_timeAppearsOnScreen = 0.0f;
-        float m_delayBeforeCanBeClicked = 0.6f;
     };
 }

@@ -365,10 +365,17 @@ namespace MagneticBall3D
         gravPower += m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed;
 
         float speedToResetVelocity = m_player->getMoveSpeed() * glm::mix(1.4f, 1.2f, std::min(1.0f, m_moveDirToJoystickDirAngle * 0.9f));
-        if(m_player->getIsOnAir() || // On air or vertical wall.
-           (m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec && m_player->getBuildingNormalAngle() > 1.3f && m_player->getBuildingNormalAngle() < 1.83f))
+        if(m_player->getIsOnAir())
         {
-            speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+            if(m_player->getMoveSpeed() < 15.0f)
+                speedToResetVelocity = m_player->getMoveSpeed() * 1.2f;
+            else
+                speedToResetVelocity = m_player->getMoveSpeed() * 1.5f;
+        }
+        else if(m_player->getLastTimeOnBuilding() + 0.1f > EnumsAndVars::mapPlayTimeSec &&
+                m_player->getBuildingNormalAngle() > 1.3f && m_player->getBuildingNormalAngle() < 1.83f) // On vertical wall.
+        {
+            speedToResetVelocity = m_player->getMoveSpeed() * 1.4f;
         }
 
         for(auto& wrapper : m_allGarbage)
