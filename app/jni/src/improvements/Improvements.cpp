@@ -271,7 +271,7 @@ namespace MagneticBall3D
             m_piggyBankShow = true;
             m_piggyBankAnimationStartTime = EnumsAndVars::mapPlayTimeSec;
             m_player->handleLevelAchievement();
-            BR_INFO("piggyBankCurrentLevel %d allLevelsCollected %d", m_piggyBankCurrentLevel, m_piggyBankLevelsCollectedCount);
+            BR_INFO("New level achieved. piggyBankCurrentLevel %d allLevelsCollected %d", m_piggyBankCurrentLevel, m_piggyBankLevelsCollectedCount);
         }
 
         if(m_selectImprovement)
@@ -365,7 +365,7 @@ namespace MagneticBall3D
                     if(m_piggyBankCurrentLevel > 0)
                     {
                         m_selectImprovement = true;
-                        BR_INFO("%s", "select improvement again");
+                        BR_INFO("%s", "Select improvement again.");
                     }
                     else
                     {
@@ -385,7 +385,7 @@ namespace MagneticBall3D
 
                 if(iter != m_allAvailableGUIBlocks.end())
                 {
-                    BR_INFO("%s", "Remove from m_allAvailableGUIBlocks.");
+                    BR_INFO("%s", "Remove from m_allAvailableGUIBlocks because last level of improvements pressed.");
                     m_allAvailableGUIBlocks.erase(iter);
                 }
             }
@@ -414,7 +414,7 @@ namespace MagneticBall3D
 
                     if(iter != m_allAvailableGUIBlocks.end())
                     {
-                        BR_INFO("%s", "Remove from m_allAvailableGUIBlocks because > than m_maxImprovementsSelectedCount.");
+                        BR_INFO("%s", "Remove rest from m_allAvailableGUIBlocks because all 6 improvements selected.");
                         m_allAvailableGUIBlocks.erase(iter);
                     }
                 }
@@ -440,6 +440,9 @@ namespace MagneticBall3D
             if(buttonReroll->getIsEnabled())
                 buttonReroll->draw();
         }
+
+        if(EnumsAndVars::gameOnPause)
+            return;
 
         if(m_piggyBankShow)
         {
@@ -468,7 +471,7 @@ namespace MagneticBall3D
             {
                 m_selectImprovement = true;
                 m_piggyBankShow = false;
-                BR_INFO("%s", "piggy bank pressed");
+                BR_INFO("%s", "Piggy bank pressed.");
             }
 
             if(showLevel)
@@ -486,7 +489,7 @@ namespace MagneticBall3D
 
     void Improvements::selectImprovementsToShow()
     {
-        BR_INFO("%s", "void Improvements::selectImprovementsToShow()");
+        BR_INFO("%s", "selectImprovementsToShow()");
         // Disable all.
         for(auto& block : m_allAvailableGUIBlocks)
             block.onScreen = false;
@@ -542,7 +545,7 @@ namespace MagneticBall3D
                 if(std::find(randomIndexes.begin(), randomIndexes.end(), randomIndex) == randomIndexes.end())
                 {
                     randomIndexes.push_back(randomIndex);
-                    BR_INFO("Random index to show: %d", randomIndex);
+                    BR_INFO("Random index to show: %d.", randomIndex);
                 }
             }
 

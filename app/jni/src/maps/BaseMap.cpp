@@ -762,8 +762,6 @@ namespace MagneticBall3D
                                   (EnumsAndVars::garbageCountMagnetized * 0.3f) +
                                   (m_player->getObj()->getOrigin().y * 0.1f)
                                   - std::min(0.0f, m_eyesLookAngleY);
-        //if(m_eyesLookAngleY < 0.0f)
-        //    maxCameraDistance += std::abs(m_eyesLookAngleY);
 
         glm::vec3 cameraPosForRay = m_cameraFront - m_cameraAngleOffset * maxCameraDistance;
 
@@ -779,14 +777,11 @@ namespace MagneticBall3D
         {
             m_cameraHit = true;
 
-            float hitDistance = glm::length(m_cameraFront - rayCameraHit.hitPoint) * 0.9f;
-            float hitDistanceFactor = hitDistance / maxCameraDistance;
+            const float hitDistance = glm::length(m_cameraFront - rayCameraHit.hitPoint);
+            const float hitDistanceFraction = hitDistance / maxCameraDistance;
 
-            m_cameraDistance = maxCameraDistance * hitDistanceFactor;
-
-            // m_cameraYOffset also should be changed if camera collision.
-            float minCameraUpOffset = 8.0f + (EnumsAndVars::garbageCountMagnetized * 0.2f);
-            m_cameraYOffset = std::max(minCameraUpOffset, maxCameraYOffset * hitDistanceFactor);
+            m_cameraDistance = maxCameraDistance * hitDistanceFraction;
+            m_cameraYOffset = maxCameraYOffset * hitDistanceFraction; // Change together with distance when camera collision.
         }
         else if(glm::distance(m_cameraDistance, maxCameraDistance) < 0.565f)
         {

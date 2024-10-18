@@ -22,11 +22,11 @@ namespace MagneticBall3D
 
         if(m_statisticsShow)
         {
-            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0, 0.5f, 0.04f);
+            m_statistics1 = std::make_shared<Beryll::Text>("Frame: 00000  FPS: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0, 0.5f, 0.045f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0.04f, 0.5f, 0.04f);
+            m_statistics2 = std::make_shared<Beryll::Text>("Phys: 00000  Logic: 00000  GPU: 00000", EnumsAndVars::FontsPath::roboto, 0.035f, 0.06f, 0.04f, 0.5f, 0.045f);
             m_guiObjects.push_back(m_statistics2);
-            m_statistics3 = std::make_shared<Beryll::Text>("Time: 00000", EnumsAndVars::FontsPath::roboto, 0.03f, 0.06f, 0.08f, 0.5f, 0.035f);
+            m_statistics3 = std::make_shared<Beryll::Text>("Time: 00000", EnumsAndVars::FontsPath::roboto, 0.03f, 0.06f, 0.08f, 0.5f, 0.04f);
             m_guiObjects.push_back(m_statistics3);
         }
 
