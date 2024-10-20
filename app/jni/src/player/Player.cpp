@@ -221,32 +221,32 @@ namespace MagneticBall3D
         // Powers should control only XZ speed.
         // Y speed controlled by gravity.
         // linear velocity = m_linearVelocity + impulse * m_linearFactor * m_inverseMass;
-        glm::vec3 newVelocityXZ = m_playerLinearVelocity + (impulse * m_obj->getLinearFactor() * (1.0f / m_obj->getCollisionMass()));
-        newVelocityXZ.y = 0.0f;
-        float newPlayerSpeedXZ = glm::length(newVelocityXZ);
+        glm::vec3 requestedVelocityXZ = m_playerLinearVelocity + (impulse * m_obj->getLinearFactor() * (1.0f / m_obj->getCollisionMass()));
+        requestedVelocityXZ.y = 0.0f;
+        float requestedSpeedXZ = glm::length(requestedVelocityXZ);
 
-        float applyImpulseFactor = 1.0f;
-        const float speedLimitXZ = std::roundf(EnumsAndVars::playerMaxSpeedXZ) + 0.4f;
-        if(newPlayerSpeedXZ > speedLimitXZ)
+        float applyImpulseFraction = 1.0f;
+        const float maxAllowedSpeedXZ = std::roundf(EnumsAndVars::playerMaxSpeedXZ) + 0.4f;
+        if(requestedSpeedXZ > maxAllowedSpeedXZ)
         {
             // Apply less impulse because speed limit was exceeded.
-            newVelocityXZ = glm::normalize(newVelocityXZ) * speedLimitXZ;
+            requestedVelocityXZ = glm::normalize(requestedVelocityXZ) * maxAllowedSpeedXZ;
 
-            float newSpeedLimit = std::max(speedLimitXZ - m_playerMoveSpeedXZ, 0.0f);
-            float newSpeedAdded = newPlayerSpeedXZ - m_playerMoveSpeedXZ;
-            applyImpulseFactor = newSpeedLimit / newSpeedAdded;
+            const float currentSpeedToMaxAllowedSpeed = std::max(maxAllowedSpeedXZ - m_playerMoveSpeedXZ, 0.0f);
+            const float currentSpeedToRequestedSpeed = requestedSpeedXZ - m_playerMoveSpeedXZ;
+            applyImpulseFraction = currentSpeedToMaxAllowedSpeed / currentSpeedToRequestedSpeed;
         }
 
-        newVelocityXZ.y = m_playerLinearVelocity.y;
+        requestedVelocityXZ.y = m_playerLinearVelocity.y;
 
-        if(glm::any(glm::isnan(newVelocityXZ)))
+        if(glm::any(glm::isnan(requestedVelocityXZ)))
             return 0;
 
-        m_obj->setLinearVelocity(newVelocityXZ);
+        m_obj->setLinearVelocity(requestedVelocityXZ);
         updateSpeed();
         //BR_INFO("Speed after %f", m_playerMoveSpeed);
 
-        if(applyImpulseFactor == 1.0f)
+        if(applyImpulseFraction == 1.0f)
         {
             // Impulse was not enough to reach max speed. We have limit to apply torque.
             // Torque applied along right/left vector from impulse.
@@ -255,7 +255,7 @@ namespace MagneticBall3D
             m_obj->applyTorqueImpulse(impulseLeft);
         }
 
-        return applyImpulseFactor;
+        return applyImpulseFraction;
     }
 
     void Player::reduceSpeed(float speedToReduce)

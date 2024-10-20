@@ -102,14 +102,14 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Clicked.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, -0.01f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
+        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
         ImGui::Begin("mainMenu", nullptr, m_noFrameNoFocus);
 
         // Background.
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
-                     ImVec2(1.02f * GUIWidth, 1.02f * GUIHeight));
+                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Crystals text.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
@@ -120,46 +120,46 @@ namespace MagneticBall3D
         ImGui::PopStyleColor(1);
 
         // Play.
-        ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.74f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.48f * GUIWidth, 0.74f * GUIHeight));
         m_playButtonClicked = ImGui::ImageButton("playButton", reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
-                                                 ImVec2(0.4f * GUIWidth, 0.09f * GUIHeight));
+                                                 ImVec2(0.2f * GUIWidth, 0.2f * GUIHeight));
 
         // Shop.
-        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.91f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.0f * GUIHeight));
         m_shopButtonClicked = ImGui::ImageButton("shopButton", reinterpret_cast<ImTextureID>(m_shopButtonTexture->getID()),
-                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
+                                                 ImVec2(0.155f * GUIWidth, 0.3367f * GUIHeight));
 
         // Talents.
-        ImGui::SetCursorPos(ImVec2(0.34f * GUIWidth, 0.91f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.3367f * GUIHeight));
         m_talentsButtonClicked = ImGui::ImageButton("talentButton", reinterpret_cast<ImTextureID>(m_talentsButtonTexture->getID()),
-                                                    ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
+                                                    ImVec2(0.155f * GUIWidth, 0.3367f * GUIHeight));
 
         // Settings.
-        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.91f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.67f * GUIHeight));
         m_settingsButtonClicked = ImGui::ImageButton("settingsButton", reinterpret_cast<ImTextureID>(m_settingsButtonTexture->getID()),
-                                                     ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
+                                                     ImVec2(0.155f * GUIWidth, 0.3367f * GUIHeight));
 
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetCursorPos(ImVec2(0.055f * GUIWidth, 0.387f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.23f * GUIWidth, 0.355f * GUIHeight));
             m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
-                                                             ImVec2(0.155f * GUIWidth, 0.066f * GUIHeight));
+                                                             ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
         }
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
-            ImGui::SetCursorPos(ImVec2(0.21f * GUIWidth, 0.17f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.33f * GUIWidth, 0.175f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.5f * GUIHeight));
+                         ImVec2(0.5f * GUIWidth, 0.5f * GUIHeight));
         }
         // Map swipe right.
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.387f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.355f * GUIHeight));
             m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
-                                                              ImVec2(0.155f * GUIWidth, 0.066f * GUIHeight));
+                                                              ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
         }
         ImGui::End();
         ImGui::PopStyleColor(4);

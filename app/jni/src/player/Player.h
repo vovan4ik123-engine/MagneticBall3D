@@ -14,7 +14,7 @@ namespace MagneticBall3D
 
         void update();
 
-        // Return factor after impulse apply in range 0...1.
+        // Return fraction after impulse apply in range 0...1.
         // 1 if full impulse was applied.
         // 0 if nothing was applied.
         float applyPowers(const glm::vec3& impulse, const glm::vec3& torque);

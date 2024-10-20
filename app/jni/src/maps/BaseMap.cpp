@@ -92,7 +92,7 @@ namespace MagneticBall3D
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
-                    if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.96f))
+                    if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.97f))
                         so->enableDraw();
                     else
                         so->disableDraw();
@@ -361,7 +361,7 @@ namespace MagneticBall3D
         // Update gravity. And check for more garbage if we have limit for that.
         float gravPower = EnumsAndVars::garbageMinGravityPower;
         if(m_player->getIsOnAir())
-            gravPower *= 3.0f;
+            gravPower *= 4.0f;
         gravPower += m_player->getMoveSpeed() * EnumsAndVars::garbageGravityIncreasedByPlayerSpeed;
 
         float speedToResetVelocity = m_player->getMoveSpeed() * glm::mix(1.4f, 1.2f, std::min(1.0f, m_moveDirToJoystickDirAngle * 0.9f));
