@@ -18,7 +18,6 @@ namespace MagneticBall3D
     {
         m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_shopHeaderTexture = Beryll::Renderer::createTexture("GUI/menus/shop/ShopHeader.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item1ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item1FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item2ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -258,107 +257,103 @@ namespace MagneticBall3D
     {
         const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Lost focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // On focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f }); // Clicked.
+        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+        ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
+        ImGui::Begin("shopMenu", nullptr, m_noBackgroundNoFrameNoFocus);
+
+        // Background.
+//        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+//        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+//                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
+
         // Back.
-        ImGui::SetNextWindowPos(ImVec2(-0.01f * GUIWidth, 0.9f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
-        ImGui::Begin("backButton", nullptr, m_noBackgroundNoFrameNoFocus);
+        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));
         m_backButtonClicked = ImGui::ImageButton("backButton", reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.34f * GUIWidth, 0.105f * GUIHeight));
-        ImGui::End();
-
-        // Shop header.
-        ImGui::SetNextWindowPos(ImVec2(0.3f * GUIWidth, 0.0f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
-        ImGui::Begin("shopHeader", nullptr, m_noBackgroundNoFrameNoFocus);
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_shopHeaderTexture->getID()),
-                     ImVec2(0.4f * GUIWidth, 0.06f * GUIHeight));
-        ImGui::End();
-
-        // Shop all items.
-        ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, 0.1f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 0.8f * GUIHeight));
-        ImGui::Begin("allShopItemsMenu", nullptr, m_noBackgroundNoFrameNoFocus);
+                                                 ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
 
         // Crystals item1.
-        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.05f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.028f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item1FirstBuy)
             m_item1ButtonClicked = ImGui::ImageButton("item1Button", reinterpret_cast<ImTextureID>(m_item1FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item1ButtonClicked = ImGui::ImageButton("item1Button", reinterpret_cast<ImTextureID>(m_item1ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Crystals item2.
-        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.05f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.191f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item2FirstBuy)
             m_item2ButtonClicked = ImGui::ImageButton("item2Button", reinterpret_cast<ImTextureID>(m_item2FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item2ButtonClicked = ImGui::ImageButton("item2Button", reinterpret_cast<ImTextureID>(m_item2ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Crystals item3.
-        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.05f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.354f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item3FirstBuy)
             m_item3ButtonClicked = ImGui::ImageButton("item3Button", reinterpret_cast<ImTextureID>(m_item3FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item3ButtonClicked = ImGui::ImageButton("item3Button", reinterpret_cast<ImTextureID>(m_item3ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Crystals item4.
-        ImGui::SetCursorPos(ImVec2(0.02f * GUIWidth, 0.275f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.517f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item4FirstBuy)
             m_item4ButtonClicked = ImGui::ImageButton("item4Button", reinterpret_cast<ImTextureID>(m_item4FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item4ButtonClicked = ImGui::ImageButton("item4Button", reinterpret_cast<ImTextureID>(m_item4ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Crystals item5.
-        ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.275f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item5FirstBuy)
             m_item5ButtonClicked = ImGui::ImageButton("item5Button", reinterpret_cast<ImTextureID>(m_item5FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item5ButtonClicked = ImGui::ImageButton("item5Button", reinterpret_cast<ImTextureID>(m_item5ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Crystals item6.
-        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.275f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.843f * GUIWidth, 0.205f * GUIHeight));
         if(EnumsAndVars::Shop::item6FirstBuy)
             m_item6ButtonClicked = ImGui::ImageButton("item6Button", reinterpret_cast<ImTextureID>(m_item6FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
         else
             m_item6ButtonClicked = ImGui::ImageButton("item6Button", reinterpret_cast<ImTextureID>(m_item6ButtonTexture->getID()),
-                                                      ImVec2(0.3f * GUIWidth, 0.2f * GUIHeight));
+                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
 
         // Disable ads on maps.
         if(!EnumsAndVars::Shop::adsOnMapsDisabled)
         {
-            ImGui::SetCursorPos(ImVec2(0.17f * GUIWidth, 0.5f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.655f * GUIHeight));
             m_disableAdsOnMapsButtonClicked = ImGui::ImageButton("disableAdsOnMapsButton", reinterpret_cast<ImTextureID>(m_disableAdsOnMapsButtonTexture->getID()),
-                                                                 ImVec2(0.66f * GUIWidth, 0.27f * GUIHeight));
+                                                                 ImVec2(0.3f * GUIWidth, 0.3f * GUIHeight));
         }
         ImGui::End();
+        ImGui::PopStyleColor(3);
 
         if(m_errorMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
             ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("purchaseErrorMenu", nullptr, m_noFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_errorTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.436f * GUIWidth, 0.705f * GUIHeight));
             m_errorButtonOkClicked = ImGui::ImageButton("purchaseErrorButton",reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
-                                                        ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                        ImVec2(0.138f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }

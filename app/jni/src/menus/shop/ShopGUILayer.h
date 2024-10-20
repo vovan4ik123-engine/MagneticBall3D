@@ -28,8 +28,7 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
 
-        // Shop header.
-        std::unique_ptr<Beryll::Texture> m_shopHeaderTexture;
+        // Background.
 
         // Crystals item1.
         std::unique_ptr<Beryll::Texture> m_item1ButtonTexture;
