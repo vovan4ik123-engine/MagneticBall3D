@@ -111,12 +111,12 @@ namespace MagneticBall3D
                      ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Crystals text.
-//        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
-//        ImGui::PushFont(m_crystalsFont);
-//        ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.0555f * GUIHeight));
-//        ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
-//        ImGui::PopFont();
-//        ImGui::PopStyleColor(1);
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
+        ImGui::PushFont(m_crystalsFont);
+        ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.0555f * GUIHeight));
+        ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
+        ImGui::PopFont();
+        ImGui::PopStyleColor(1);
 
         // Play.
         ImGui::SetCursorPos(ImVec2(0.48f * GUIWidth, 0.74f * GUIHeight));

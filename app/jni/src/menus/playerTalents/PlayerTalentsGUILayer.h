@@ -37,9 +37,6 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
 
-        // Talents header.
-        std::unique_ptr<Beryll::Texture> m_talentsHeaderTexture;
-
         // Max speed. = 0
         std::shared_ptr<Beryll::Texture> m_maxSpeedButtonTexture;
         bool m_maxSpeedButtonClicked = false;
@@ -60,6 +57,7 @@ namespace MagneticBall3D
         bool m_resurrectionAttemptsButtonClicked = false;
 
         // Menu selected talent.
+        std::unique_ptr<Beryll::Texture> m_selectedTalentBackground;
         std::shared_ptr<Beryll::Texture> m_selectedTalentTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTimerTexture;

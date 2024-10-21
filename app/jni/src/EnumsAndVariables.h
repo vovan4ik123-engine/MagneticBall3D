@@ -116,7 +116,7 @@ namespace EnumsAndVars
             return float(currentLevel) * increasePerLevel;
         }
     };
-    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase max\nspeed limit.", 20,
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase\nspeed limit.", 20,
                                                            5.0f, "+5%", true, 20},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
                                                            5.0f, "+5%", true, 10},
@@ -127,7 +127,7 @@ namespace EnumsAndVars
                                                           {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
                                                            5.0f, "+5%", true, 10},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3,
-                                                           100.0f, "+1", false, 100}
+                                                           100.0f, "+1", false, 90}
                                                           };
     struct GameDifficulty
     {
