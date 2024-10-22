@@ -24,11 +24,12 @@ namespace MagneticBall3D
         int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
 
+        // Background.
+        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
+
         // Back.
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
-
-        // Background.
 
         // Crystals item1.
         std::unique_ptr<Beryll::Texture> m_item1ButtonTexture;

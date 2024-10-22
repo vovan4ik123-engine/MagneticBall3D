@@ -30,12 +30,15 @@ namespace MagneticBall3D
         int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
 
-        // Common texture for all transparent elements.
-        std::shared_ptr<Beryll::Texture> m_transparentTexture;
+        // Background.
+        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
 
         // Back.
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
+
+        // Common texture for all transparent elements.
+        std::shared_ptr<Beryll::Texture> m_transparentTexture;
 
         // Max speed. = 0
         std::shared_ptr<Beryll::Texture> m_maxSpeedButtonTexture;

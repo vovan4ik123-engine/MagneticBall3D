@@ -18,6 +18,7 @@ namespace MagneticBall3D
     {
         m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
+        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/shop/ShopBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item1ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item1FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_item2ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -266,9 +267,9 @@ namespace MagneticBall3D
         ImGui::Begin("shopMenu", nullptr, m_noBackgroundNoFrameNoFocus);
 
         // Background.
-//        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-//        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
-//                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Back.
         ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));

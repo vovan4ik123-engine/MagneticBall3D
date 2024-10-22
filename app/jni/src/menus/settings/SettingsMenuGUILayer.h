@@ -17,18 +17,18 @@ namespace MagneticBall3D
     private:
         // GUI based on raw ImGUI.
         // ImGUI flags.
-        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-                                    ImGuiWindowFlags_NoScrollbar;
+        int m_noBackgroundNoFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+        // Background.
+        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
 
         // Back.
         std::unique_ptr<Beryll::Texture> m_backButtonTexture;
         bool m_backButtonClicked = false;
 
         ImFont* m_fontForAllCheckBoxes;
-
-        // Settings header.
-        std::unique_ptr<Beryll::Texture> m_settingsHeaderTexture;
 
         // FPS limit.
         std::unique_ptr<Beryll::Texture> m_FPSLimitTexture;

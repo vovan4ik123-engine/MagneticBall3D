@@ -18,6 +18,7 @@ namespace MagneticBall3D
         m_transparentTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
+        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/TalentsBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_selectedTalentBackground = Beryll::Renderer::createTexture("GUI/menus/playerTalents/SelectedTalentBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_maxSpeedButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MaxSpeed.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_magneticRadiusButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MagneticRadius.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -25,7 +26,6 @@ namespace MagneticBall3D
         m_accelerateFasterButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AccelerateFaster.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_ballAndGarbageProtectionButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/BallAndGarbageProtection.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectionAttemptsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/ResurrectionAttempts.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-
 
         m_improveByAdTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_improveByAdTimerTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImageTimer.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -170,9 +170,9 @@ namespace MagneticBall3D
         ImGui::Begin("talentsMenu", nullptr, m_noBackgroundNoFrameNoFocus);
 
         // Background.
-        //        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        //        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
-        //                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Back.
         ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));
