@@ -7,9 +7,9 @@ namespace MagneticBall3D
 {
     SettingsMenuGUILayer::SettingsMenuGUILayer()
     {
-        m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/shop/ShopBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/settings/SettingsBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_FPSTipTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSTip.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -69,6 +69,9 @@ namespace MagneticBall3D
         const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
         ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
         ImGui::Begin("shopMenu", nullptr, m_noBackgroundNoFrameNoFocus);
@@ -84,57 +87,57 @@ namespace MagneticBall3D
                                                  ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
 
         // FPS limit.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.205f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.245f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSLimitTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f });
-        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
-        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
+        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
         ImGui::PushFont(m_fontForAllCheckBoxes);
 
         // FPS check boxes.
-        ImGui::SetCursorPos(ImVec2(0.4f * GUIWidth, 0.22f * GUIHeight));
-        if(ImGui::Checkbox("030", &m_30FPSChecked, false))
+        ImGui::SetCursorPos(ImVec2(0.385f * GUIWidth, 0.26f * GUIHeight));
+        if(ImGui::Checkbox("30", &m_30FPSChecked, false))
             resetFPS(30);
 
-        ImGui::SetCursorPos(ImVec2(0.5f * GUIWidth, 0.22f * GUIHeight));
-        if(ImGui::Checkbox("060", &m_60FPSChecked, false))
+        ImGui::SetCursorPos(ImVec2(0.45f * GUIWidth, 0.26f * GUIHeight));
+        if(ImGui::Checkbox("60", &m_60FPSChecked, false))
             resetFPS(60);
 
-        ImGui::SetCursorPos(ImVec2(0.6f * GUIWidth, 0.22f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("120", &m_120FPSChecked, false))
             resetFPS(120);
 
-        ImGui::SetCursorPos(ImVec2(0.7f * GUIWidth, 0.22f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.595f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("250", &m_250FPSChecked, false))
             resetFPS(250);
 
         // FPS tip.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.325f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.365f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSTipTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         // Background music.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.445f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.485f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_musicTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::SetCursorPos(ImVec2(0.5f * GUIWidth, 0.46f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.47f * GUIWidth, 0.5f * GUIHeight));
         ImGui::Checkbox("music", &m_musicCheckBoxChecked, false);
 
         // Meteor particles.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.565f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.605f * GUIHeight));
         ImGui::Image(reinterpret_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::SetCursorPos(ImVec2(0.5f * GUIWidth, 0.58f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.46f * GUIWidth, 0.62f * GUIHeight));
         ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked, false);
 
         ImGui::PopFont();
-        ImGui::PopStyleColor(5);
+        ImGui::PopStyleColor(8);
         ImGui::End();
     }
 

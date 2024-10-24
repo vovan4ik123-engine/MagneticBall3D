@@ -721,7 +721,7 @@ namespace MagneticBall3D
                 m_eyesLookAngleY -= deltaY;
                 if(m_eyesLookAngleY > 45.0f) m_eyesLookAngleY = 45.0f; // Eye up.
                 if(m_eyesLookAngleY < -88.0f) m_eyesLookAngleY = -88.0f; // Eye down.
-                //BR_INFO("m_eyesLookAngleY %f", m_eyesLookAngleY);
+                //BR_INFO("m_eyesLookAngleXZ %f m_eyesLookAngleY %f", m_eyesLookAngleXZ, m_eyesLookAngleY);
                 break;
             }
         }

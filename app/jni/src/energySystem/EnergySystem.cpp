@@ -78,7 +78,7 @@ namespace MagneticBall3D
         const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
         const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
         // Text amount.
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
         ImGui::SetNextWindowPos(ImVec2(0.45f * GUIWidth, 0.008f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
@@ -115,7 +115,7 @@ namespace MagneticBall3D
 
             m_restoreTimerText += std::to_string(sec);
         }
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
         ImGui::SetNextWindowPos(ImVec2(0.47f * GUIWidth, 0.033f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 

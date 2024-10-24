@@ -95,7 +95,7 @@ namespace MagneticBall3D
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
-            m_ambientLight = 0.25f;
+            m_ambientLight = 0.15f;
         else
             m_ambientLight = 0.6f;
 

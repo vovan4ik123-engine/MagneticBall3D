@@ -36,7 +36,6 @@ namespace MagneticBall3D
 
         bool resurrectPlayer = false;
         bool tutorialMoveShow = false;
-        bool tutorialMoveOnWallShow = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
@@ -87,7 +86,7 @@ namespace MagneticBall3D
 
         // Map0Tutorial.
         std::unique_ptr<Beryll::Texture> m_tutorialMoveTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialMoveOnWallTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialCameraTexture;
 
         // Resurrect.
         std::unique_ptr<Beryll::Texture> m_resurrectTexture;

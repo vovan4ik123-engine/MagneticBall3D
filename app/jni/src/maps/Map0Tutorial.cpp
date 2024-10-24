@@ -52,7 +52,6 @@ namespace MagneticBall3D
         if(EnumsAndVars::gameOnPause)
         {
             m_gui->tutorialMoveShow = false;
-            m_gui->tutorialMoveOnWallShow = false;
             return;
         }
 
@@ -119,18 +118,11 @@ namespace MagneticBall3D
         else if(m_player->getObj()->getOrigin().x > 100.0f)
             SendStatisticsHelper::sendMap0_100mPassed();
 
-        m_gui->tutorialMoveShow = false;
-        m_gui->tutorialMoveOnWallShow = false;
         // Tutorial tips on screen.
         if(m_player->getMoveSpeed() < 2.0f)
             m_gui->tutorialMoveShow = true;
         else
             m_gui->tutorialMoveShow = false;
-
-        if(m_player->getObj()->getOrigin().x > 800.0f && m_player->getObj()->getOrigin().x < 1030.0f)
-            m_gui->tutorialMoveOnWallShow = true;
-        else
-            m_gui->tutorialMoveOnWallShow = false;
     }
 
     void Map0Tutorial::draw()
@@ -151,7 +143,7 @@ namespace MagneticBall3D
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
-            m_ambientLight = 0.25f;
+            m_ambientLight = 0.15f;
         else
             m_ambientLight = 0.7f;
 

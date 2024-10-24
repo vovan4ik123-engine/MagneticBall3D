@@ -23,6 +23,8 @@ namespace MagneticBall3D
         StaticEnemy::spawnDelay = 40.0f;
 
         loadShaders();
+        m_eyesLookAngleXZ = -120.0f;
+        m_eyesLookAngleY = -5.0f;
         handleCamera();
 
         m_minX = -800.0f;
@@ -90,7 +92,7 @@ namespace MagneticBall3D
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
-            m_ambientLight = 0.25f;
+            m_ambientLight = 0.15f;
         else
             m_ambientLight = 0.7f;
 

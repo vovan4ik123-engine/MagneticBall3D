@@ -239,18 +239,14 @@ namespace MagneticBall3D
         buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.35f, 0.65f, 0.3f, 0.05f);
         buttonReroll->disable();
 
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame1.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame2.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame3.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame4.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame5.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame6.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame7.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame8.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame9.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame10.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame11.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture("GUI/improvements/piggyBankAnimation/PiggyBankFrame12.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        std::string animationFrameName;
+        for(int i = 1; i <= 12; ++i)
+        {
+            animationFrameName = "GUI/improvements/piggyBankAnimation/PiggyBankFrame";
+            animationFrameName += std::to_string(i);
+            animationFrameName += ".png";
+            m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture(animationFrameName.c_str(), Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        }
 
         m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);
     }
@@ -476,7 +472,7 @@ namespace MagneticBall3D
 
             if(showLevel)
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
                 ImGui::PushFont(m_piggyBankLevelFont);
                 ImGui::SetCursorPos(ImVec2(0.04f * GUIWidth, 0.06f * GUIHeight));
                 ImGui::Text("%d", m_piggyBankCurrentLevel);

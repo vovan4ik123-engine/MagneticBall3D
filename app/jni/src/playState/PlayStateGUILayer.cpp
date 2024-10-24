@@ -55,7 +55,7 @@ namespace MagneticBall3D
         m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_exitButtonTexture = Beryll::Renderer::createTexture("GUI/Exit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialMoveTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialMoveOnWallTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMoveOnWall.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialCameraTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialCamera.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectByCrystalsButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -290,7 +290,7 @@ namespace MagneticBall3D
             m_adLoadingMenuShow = false;
             m_winMenuShow = false;
 
-            EnumsAndVars::CurrencyBalance::crystals += 20;
+            EnumsAndVars::CurrencyBalance::crystals += 25;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
             GameStateHelper::popState();
@@ -304,7 +304,7 @@ namespace MagneticBall3D
             m_adLoadingMenuShow = false;
             m_winMenuShow = false;
 
-            EnumsAndVars::CurrencyBalance::crystals += 40;
+            EnumsAndVars::CurrencyBalance::crystals += 50;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
             GameStateHelper::popState();
@@ -380,7 +380,7 @@ namespace MagneticBall3D
 
             m_mapPlayTimerText += std::to_string(sec);
 
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
             ImGui::SetNextWindowPos(ImVec2(0.42f * GUIWidth, -0.005f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
             ImGui::Begin("mapPlayTimer", nullptr, m_noBackgroundNoFrame);
@@ -404,7 +404,7 @@ namespace MagneticBall3D
         ImGui::SetNextWindowPos(ImVec2(0.94f * GUIWidth, 0.012f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
         ImGui::Begin("smashedSpeedTexts", nullptr, m_noBackgroundNoFrame);
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
         ImGui::PushFont(m_smashedSpeedFont);
         ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
@@ -438,79 +438,86 @@ namespace MagneticBall3D
         ImGui::Begin("pauseButton", nullptr, m_noBackgroundNoFrame);
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
         m_pauseButtonClicked = ImGui::ImageButton("pauseButton", reinterpret_cast<ImTextureID>(m_pauseButtonTexture->getID()),
-                                                  ImVec2(0.0596f * GUIWidth, 0.11f * GUIHeight));
+                                                  ImVec2(0.06f * GUIWidth, 0.12f * GUIHeight));
         ImGui::End();
 
         // Pause menu.
         if(m_pauseMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.25f * GUIWidth, 0.505f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f});
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("pauseMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.39f * GUIWidth, 0.417f * GUIHeight));
             m_resumeButtonClicked = ImGui::ImageButton("pauseMenuResumeButton", reinterpret_cast<ImTextureID>(m_resumeButtonTexture->getID()),
-                                                       ImVec2(0.5f * GUIWidth, 0.08f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.1f * GUIWidth, 0.15f * GUIHeight));
+                                                       ImVec2(0.23f * GUIWidth, 0.176f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_exitButtonClicked = ImGui::ImageButton("pauseMenuExitButton", reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
-                                                     ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
+            ImGui::PopStyleColor(1);
         }
 
         // Map0Tutorial.
         if(tutorialMoveShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.093f * GUIWidth, 0.55f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("tutorialMove", nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
-                         ImVec2(0.8f * GUIWidth, 0.37f * GUIHeight));
-            ImGui::End();
-        }
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f});
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, 0.45f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 0.55f * GUIHeight));
+            ImGui::Begin("tutorialMoveAndCamera", nullptr, m_noBackgroundNoFrame);
 
-        if(tutorialMoveOnWallShow)
-        {
-            ImGui::SetNextWindowPos(ImVec2(0.12f * GUIWidth, 0.07f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("tutorialMoveOnWall", nullptr, m_noBackgroundNoFrame);
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveOnWallTexture->getID()),
-                         ImVec2(0.76f * GUIWidth, 0.08f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.105f * GUIWidth, 0.0f * GUIHeight));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.605f * GUIWidth, 0.0f * GUIHeight));
+            ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCameraTexture->getID()),
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
             ImGui::End();
+            ImGui::PopStyleColor(1);
         }
 
         if(m_resurrectMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("resurrectMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.255f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
             m_resurrectByAdButtonClicked = ImGui::ImageButton("resurrectByAdButton",reinterpret_cast<ImTextureID>(m_resurrectByAdButtonTexture->getID()),
-                                                              ImVec2(0.295f * GUIWidth, 0.07f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.255f * GUIHeight));
+                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
             m_resurrectByCrystalsButtonClicked = ImGui::ImageButton("resurrectByCrystalsButton", reinterpret_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
-                                                                    ImVec2(0.295f * GUIWidth, 0.07f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.15f * GUIWidth, 0.4f * GUIHeight));
-            m_exitButtonClicked = ImGui::ImageButton("resurrectMenuExitButton", reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
-                                                     ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                                    ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
+            m_exitButtonClicked = ImGui::ImageButton("resurrectExitButton", reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
+                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
 
         // Not enough crystals menu.
         if(m_noCrystalsMenuShow)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
-            ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            //ImGui::SetNextWindowFocus();
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("noCrystalsMenu", nullptr, m_noFrame);
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_noCrystalsTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsOkButton",reinterpret_cast<ImTextureID>(m_noCrystalsButtonOkTexture->getID()),
-                                                             ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                             ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
         }
@@ -518,14 +525,15 @@ namespace MagneticBall3D
         // Ad loading.
         if(m_adLoadingMenuShow)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
-            ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("adLoadingMenu", nullptr, m_noFrame);
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
             ImGui::End();
             ImGui::PopStyleColor(1);
         }
@@ -533,82 +541,93 @@ namespace MagneticBall3D
         // Ad error.
         if(m_adErrorMenuShow)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.92f });
-            ImGui::SetNextWindowFocus();
-            ImGui::SetNextWindowPos(ImVec2(0.0f * GUIWidth, -0.01f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.0f * GUIWidth, 1.02f * GUIHeight));
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("adErrorMenu", nullptr, m_noFrame);
-            ImGui::SetCursorPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.35f * GUIWidth, 0.505f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_adErrorButtonOkClicked = ImGui::ImageButton("adErrorOkButton",reinterpret_cast<ImTextureID>(m_adErrorButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+
             ImGui::End();
             ImGui::PopStyleColor(1);
         }
 
-        // Menu kill all can be before boss or without boss.
+        // Menu kill all. Can be before boss or without boss.
         if(m_killAllMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("killAllMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             if(m_killAllToSpawnBoss) // Show message to spawn boss.
                 ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToSpawnBossTexture->getID()),
-                             ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
+                             ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
             else // Show message to win without boss.
                 ImGui::Image(reinterpret_cast<ImTextureID>(m_killAllToWinTexture->getID()),
-                             ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.15f * GUIWidth, 0.255f * GUIHeight));
+                             ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_killAllButtonClicked = ImGui::ImageButton("killAllOkButton",reinterpret_cast<ImTextureID>(m_killAllButtonOkTexture->getID()),
-                                                          ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
 
         if(m_winMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("winMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.255f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
             m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",reinterpret_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
-                                                              ImVec2(0.295f * GUIWidth, 0.07f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.31f * GUIWidth, 0.255f * GUIHeight));
+                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
             m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", reinterpret_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
-                                                                    ImVec2(0.295f * GUIWidth, 0.07f * GUIHeight));
+                                                                    ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
 
         if(m_loseMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("loseMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_loseTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.15f * GUIWidth, 0.255f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
             m_exitButtonClicked = ImGui::ImageButton("loseMenuExitButton", reinterpret_cast<ImTextureID>(m_exitButtonTexture->getID()),
-                                                     ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
 
         if(m_tankWithCommanderMenuShow)
         {
-            ImGui::SetNextWindowPos(ImVec2(0.2f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
+            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("tankWithCommanderMenu", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
+
+            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
-                         ImVec2(0.6f * GUIWidth, 0.25f * GUIHeight));
-            ImGui::SetCursorPos(ImVec2(0.15f * GUIWidth, 0.255f * GUIHeight));
+                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+
+            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_tankWithCommanderButtonClicked = ImGui::ImageButton("tankWithCommanderOkButton",reinterpret_cast<ImTextureID>(m_tankWithCommanderButtonOkTexture->getID()),
-                                                                  ImVec2(0.3f * GUIWidth, 0.07f * GUIHeight));
+                                                                  ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
     }
