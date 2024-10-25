@@ -92,26 +92,26 @@ namespace MagneticBall3D
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{0.5f, 0.5f, 0.5f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
         ImGui::PushFont(m_fontForAllCheckBoxes);
 
         // FPS check boxes.
-        ImGui::SetCursorPos(ImVec2(0.385f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.392f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("30", &m_30FPSChecked, false))
             resetFPS(30);
 
-        ImGui::SetCursorPos(ImVec2(0.45f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.466f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("60", &m_60FPSChecked, false))
             resetFPS(60);
 
-        ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.541f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("120", &m_120FPSChecked, false))
             resetFPS(120);
 
-        ImGui::SetCursorPos(ImVec2(0.595f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.629f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("250", &m_250FPSChecked, false))
             resetFPS(250);
 

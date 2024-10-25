@@ -92,7 +92,7 @@ namespace MagneticBall3D
                 if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
-                    if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.97f))
+                    if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.98f))
                         so->enableDraw();
                     else
                         so->disableDraw();

@@ -25,7 +25,7 @@ namespace MagneticBall3D
         m_talentsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/PlayerTalents.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_settingsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
-        m_crystalsFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
+        m_crystalsFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.05f);
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -113,7 +113,7 @@ namespace MagneticBall3D
         // Crystals text.
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
         ImGui::PushFont(m_crystalsFont);
-        ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.0555f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.89f * GUIWidth, 0.047f * GUIHeight));
         ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
         ImGui::PopFont();
         ImGui::PopStyleColor(1);

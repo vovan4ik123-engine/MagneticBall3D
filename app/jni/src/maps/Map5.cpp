@@ -16,6 +16,7 @@ namespace MagneticBall3D
         loadEnemies();
 
         loadShaders();
+        m_eyesLookAngleY = -5.0f;
         handleCamera();
 
         m_minX = -800.0f;
