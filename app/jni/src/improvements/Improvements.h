@@ -121,17 +121,17 @@ namespace MagneticBall3D
         // Positions of GUI block in range 0...1.
         // To create blocks.
         float m_leftDefault = 0.0f;
-        float m_buttonWidth = 0.3f;
-        float m_buttonTop = 0.35f;
-        float m_buttonHeight = 0.25f;
-        float m_progressTop = 0.545f;
-        float m_progressHeight = 0.05f;
+        float m_buttonWidth = 0.1362f;
+        float m_buttonTop = 0.25f;
+        float m_buttonHeight = 0.537f;
+        float m_progressTextTop = 0.6705f;
+        float m_progressTextHeight = 0.11f;
         // To position before show on screen. Only left-right pos should be changed.
-        float m_leftPos1BlockButton = 0.35f;
-        float m_leftPos1BlockText = 0.42f;
-        glm::vec2 m_leftPos2BlocksButtons{0.15f, 0.55f};
-        glm::vec2 m_leftPos2BlocksTexts{0.22f, 0.62f};
-        glm::vec3 m_leftPos3BlocksButtons{0.02f, 0.35f, 0.68f};
-        glm::vec3 m_leftPos3BlocksTexts{0.09f, 0.42f, 0.75f};
+        float m_leftPos1BlockButton = 0.4319f;
+        float m_leftPos1BlockText = 0.4648f;
+        glm::vec2 m_leftPos2BlocksButtons{0.3338f, 0.53f};
+        glm::vec2 m_leftPos2BlocksTexts{0.3667f, 0.5629f};
+        glm::vec3 m_leftPos3BlocksButtons{0.2357f, 0.4319f, 0.6281f};
+        glm::vec3 m_leftPos3BlocksTexts{0.2686f, 0.4648f, 0.661f};
     };
 }

@@ -101,6 +101,8 @@ namespace DataBaseHelper
                 executeSql(insertDailyReward);
                 storeDailyRewardTookTime(EnumsAndVars::DailyReward::tookTime);
                 storeDailyRewardTookDay(EnumsAndVars::DailyReward::tookDay);
+
+                checkDatabaseMigrations();
             }
             catch(const Beryll::DataBaseException& e)
             {

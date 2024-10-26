@@ -174,8 +174,8 @@ namespace EnumsAndVars
     inline float playerImpulseFactorOnBuildingRoof = playerImpulseFactorOnBuildingRoofDefault;
     constexpr inline float playerTorqueFactorOnBuildingRoofDefault = 1.2f;
     inline float playerTorqueFactorOnBuildingRoof = playerTorqueFactorOnBuildingRoofDefault;
-    constexpr inline float playerImpulseFactorOnBuildingWall = 2.0f;
-    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 10.0f;
+    constexpr inline float playerImpulseFactorOnBuildingWall = 8.0f;
+    constexpr inline float playerTorqueFactorOnBuildingWallDefault = 8.0f;
     inline float playerTorqueFactorOnBuildingWall = playerTorqueFactorOnBuildingWallDefault;
     constexpr inline float playerImpulseFactorOnAirDefault = 3.5f;
     inline float playerImpulseFactorOnAir = playerImpulseFactorOnAirDefault;

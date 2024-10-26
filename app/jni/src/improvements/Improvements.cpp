@@ -46,34 +46,34 @@ namespace MagneticBall3D
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerSpeedReductionMultiplier -= 0.08f; BR_INFO("%s", "Block PLAYER_PUSH_ENEMIES_BETTER pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS, m_maxLevel, {{[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.08f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
+                                                    {ImprovementType::PLAYER_BETTER_CLUTCH_WITH_WALLS, m_maxLevel, {{[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.2f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 0."); }},
+                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.2f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 1."); }},
+                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.2f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 2."); }},
+                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.2f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 3."); }},
+                                                                                                                             {[&]() { EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.2f; BR_INFO("%s", "Block PLAYER_BETTER_CLUTCH_WITH_WALLS pressed 4."); }}}},
                                                     {ImprovementType::PLAYER_MAGNETIZE_MORE_GARBAGE,   m_maxLevel, {{[&]() { EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                 EnumsAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                                EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.05f;
+                                                                                                                                                EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.06f;
                                                                                                                                                 m_player->selectNextModel();
                                                                                                                                                 BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 0."); }},
                                                                                                                              {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                EnumsAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.05f;
+                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.06f;
                                                                                                                                                m_player->selectNextModel();
                                                                                                                                                BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 1."); }},
                                                                                                                              {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                EnumsAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.05f;
+                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.06f;
                                                                                                                                                m_player->selectNextModel();
                                                                                                                                                BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 2."); }},
                                                                                                                              {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                EnumsAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.05f;
+                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.06f;
                                                                                                                                                m_player->selectNextModel();
                                                                                                                                                BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 3."); }},
                                                                                                                              {[&](){ EnumsAndVars::playerMagneticRadius += 4.0f;
                                                                                                                                                EnumsAndVars::garbageMaxCountMagnetized += 20;
-                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.05f;
+                                                                                                                                               EnumsAndVars::playerTorqueFactorOnBuildingWall += EnumsAndVars::playerTorqueFactorOnBuildingWallDefault * 0.06f;
                                                                                                                                                m_player->selectNextModel();
                                                                                                                                                BR_INFO("%s", "Block PLAYER_MAGNETIZE_MORE_GARBAGE pressed 4."); }},
                                                                                                                              }},
@@ -206,16 +206,16 @@ namespace MagneticBall3D
             if(mainTexturePath.empty() || selectedTexturePath.empty())
                 continue;
 
-            auto b = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
+            auto button = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
                                                                  m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
 
-            auto st = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
+            auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
 
-            auto txt = std::make_shared<Beryll::Text>("00/00", EnumsAndVars::FontsPath::roboto, m_progressHeight,
-                                                      m_leftDefault, m_progressTop, 0.2f, 0.055f, false, true);
-            txt->setFontColor(1.0f, 1.0f, 1.0f, 1.0f);
+            auto progressText = std::make_shared<Beryll::Text>("00/00", EnumsAndVars::FontsPath::roboto, m_progressTextHeight,
+                                                               m_leftDefault, m_progressTextTop, 0.1f, 0.12f, false, true);
+            progressText->setFontColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-            ImprovementGUIBlock guiBlock(info, b, st, txt);
+            ImprovementGUIBlock guiBlock(info, button, selected, progressText);
             m_allAvailableGUIBlocks.push_back(guiBlock);
         }
 
@@ -224,11 +224,10 @@ namespace MagneticBall3D
         for(int i = 0; i < m_maxImprovementsSelectedCount; ++i)
         {
             SelectedImprovement selected;
-            // selected.leftPos = 0.022f + (i * 0.12f); // if m_maxImprovementsSelectedCount = 8.
-            selected.leftPos = 0.142f + (i * 0.12f); // if m_maxImprovementsSelectedCount = 6.
-            selected.topPos = 0.25f;
-            selected.width = 0.115f;
-            selected.height = selected.width / screenAR;
+            selected.leftPos = 0.295f + (i * 0.07f); // if m_maxImprovementsSelectedCount = 6.
+            selected.topPos = 0.07f;
+            selected.width = 0.06f;
+            selected.height = selected.width * screenAR;
             selected.texture = std::make_shared<Beryll::GUITexture>("GUI/improvements/SELECTED_DEFAULT.jpg",
                                                                     selected.leftPos, selected.topPos,
                                                                     selected.width, selected.height);
@@ -236,7 +235,7 @@ namespace MagneticBall3D
             m_selectedImprovements.push_back(selected);
         }
 
-        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.35f, 0.65f, 0.3f, 0.05f);
+        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.43f, 0.83f, 0.14f, 0.1f);
         buttonReroll->disable();
 
         std::string animationFrameName;

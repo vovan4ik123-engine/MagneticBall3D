@@ -242,9 +242,9 @@ namespace MagneticBall3D
         m_moveDirToJoystickDirAngle = 0.0f;
         float moveFactorBasedOnAngleAndSpeed = 0.0f;
         if(m_player->getMoveSpeedXZ() > 1.0f &&
-           !BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDir(), glm::normalize(m_joystickDir3D)))
+           !BeryllUtils::Common::getIsVectorsParallelInSameDir(m_player->getMoveDirXZ(), glm::normalize(m_joystickDir3D)))
         {
-            m_moveDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDir(), glm::normalize(m_joystickDir3D));
+            m_moveDirToJoystickDirAngle = BeryllUtils::Common::getAngleInRadians(m_player->getMoveDirXZ(), glm::normalize(m_joystickDir3D));
             moveFactorBasedOnAngleAndSpeed = m_moveDirToJoystickDirAngle * std::min(90.0f, m_player->getMoveSpeedXZ()) * 0.06f;
 
             if(m_joystickEnabledTime + 0.4f < EnumsAndVars::mapPlayTimeSec &&
@@ -736,7 +736,7 @@ namespace MagneticBall3D
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
-        float maxCameraYOffset = m_startCameraYOffset +
+        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) +
                                  (EnumsAndVars::garbageCountMagnetized * 0.1f) +
                                  std::min(30.0f, m_player->getObj()->getOrigin().y * 0.04f + m_player->getMoveSpeedXZ() * 0.12f);
 
