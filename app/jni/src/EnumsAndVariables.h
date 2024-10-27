@@ -23,6 +23,7 @@ namespace EnumsAndVars
         static inline int FPSLimit = 60;
         static inline bool backgroundMusic = true;
         static inline bool meteorParticles = false;
+        static inline bool interfaceGUI = true; // Disable GUI elements in play state. (HP/XP bars, counters, pause button, improvements, joystick)
         // Not stored in DB.
         static inline float cameraHorizontalSpeed = 480.0f * 0.9f;
         static inline float cameraVerticalSpeed = 173.0f * 0.9f;

@@ -49,5 +49,9 @@ namespace MagneticBall3D
         // Meteor particles.
         std::unique_ptr<Beryll::Texture> m_meteorParticlesTexture;
         bool m_meteorParticlesCheckBoxChecked;
+
+        // Interface GUI.
+        std::unique_ptr<Beryll::Texture> m_interfaceGUITexture;
+        bool m_interfaceGUICheckBoxChecked;
     };
 }

@@ -216,7 +216,7 @@ namespace DataBaseHelper
     const inline std::string selectDatabaseMigrationsAll = "SELECT * FROM DatabaseMigrations LIMIT 1;";
     const inline std::string updateDatabaseMigrationsLastScriptApplied = "UPDATE DatabaseMigrations SET LastScriptApplied = :::lastScript;";
 
-    void checkDatabaseMigrations();
+    void applyDatabaseMigrations();
     inline void storeDatabaseMigrationsLastScriptApplied(long long int value)
     {
         executeSql(std::regex_replace(updateDatabaseMigrationsLastScriptApplied, std::regex(":::lastScript"), std::to_string(value)));
@@ -311,5 +311,17 @@ namespace DataBaseHelper
     {
         BR_ASSERT((value > 0 && value < 8), "%s", "DailyReward TookDay represent day of week and must be in range 1 - 7.");
         executeSql(std::regex_replace(updateDailyRewardTookDay, std::regex(":::tookDay"), std::to_string(value)));
+    }
+
+    // Migration script 1.
+    const inline std::string alterTableSettings1 = "ALTER TABLE Settings ADD InterfaceGUI INTEGER;";
+    const inline std::string updateSettingsInterfaceGUI = "UPDATE Settings SET InterfaceGUI = :::showGUI;";
+    inline void storeSettingsInterfaceGUI(bool showGUI)
+    {
+        long long int intValue = 0;
+        if(showGUI)
+            intValue = 1;
+
+        executeSql(std::regex_replace(updateSettingsInterfaceGUI, std::regex(":::showGUI"), std::to_string(intValue)));
     }
 }

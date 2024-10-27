@@ -14,6 +14,7 @@ namespace MagneticBall3D
         m_FPSTipTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSTip.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_meteorParticlesTexture = Beryll::Renderer::createTexture("GUI/menus/settings/MeteorParticles.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_interfaceGUITexture = Beryll::Renderer::createTexture("GUI/menus/settings/InterfaceGUI.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_fontForAllCheckBoxes = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.07f);
 
@@ -28,6 +29,7 @@ namespace MagneticBall3D
 
         m_musicCheckBoxChecked = EnumsAndVars::SettingsMenu::backgroundMusic;
         m_meteorParticlesCheckBoxChecked = EnumsAndVars::SettingsMenu::meteorParticles;
+        m_interfaceGUICheckBoxChecked = EnumsAndVars::SettingsMenu::interfaceGUI;
     }
 
     SettingsMenuGUILayer::~SettingsMenuGUILayer()
@@ -56,6 +58,13 @@ namespace MagneticBall3D
             BR_INFO("%s", "Enable/disable meteor particles.");
             EnumsAndVars::SettingsMenu::meteorParticles = m_meteorParticlesCheckBoxChecked;
             DataBaseHelper::storeSettingsMeteorParticles(EnumsAndVars::SettingsMenu::meteorParticles);
+        }
+
+        if(m_interfaceGUICheckBoxChecked != EnumsAndVars::SettingsMenu::interfaceGUI)
+        {
+            BR_INFO("%s", "Enable/disable interface GUI.");
+            EnumsAndVars::SettingsMenu::interfaceGUI = m_interfaceGUICheckBoxChecked;
+            DataBaseHelper::storeSettingsInterfaceGUI(EnumsAndVars::SettingsMenu::interfaceGUI);
         }
     }
 
@@ -135,6 +144,14 @@ namespace MagneticBall3D
 
         ImGui::SetCursorPos(ImVec2(0.46f * GUIWidth, 0.62f * GUIHeight));
         ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked, false);
+
+        // Interface GUI.
+        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.725f * GUIHeight));
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_interfaceGUITexture->getID()),
+                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
+
+        ImGui::SetCursorPos(ImVec2(0.5f * GUIWidth, 0.74f * GUIHeight));
+        ImGui::Checkbox("interfaceGUI", &m_interfaceGUICheckBoxChecked, false);
 
         ImGui::PopFont();
         ImGui::PopStyleColor(8);

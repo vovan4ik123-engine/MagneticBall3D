@@ -419,6 +419,9 @@ namespace MagneticBall3D
 
     void Improvements::draw()
     {
+        if(!EnumsAndVars::SettingsMenu::interfaceGUI)
+            return;
+
         if(EnumsAndVars::improvementSystemOnScreen)
         {
             for(const auto& block : m_allAvailableGUIBlocks)

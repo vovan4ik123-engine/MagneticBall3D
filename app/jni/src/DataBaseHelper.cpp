@@ -102,7 +102,7 @@ namespace DataBaseHelper
                 storeDailyRewardTookTime(EnumsAndVars::DailyReward::tookTime);
                 storeDailyRewardTookDay(EnumsAndVars::DailyReward::tookDay);
 
-                checkDatabaseMigrations();
+                applyDatabaseMigrations();
             }
             catch(const Beryll::DataBaseException& e)
             {
@@ -119,7 +119,7 @@ namespace DataBaseHelper
         {
             BR_INFO("%s", "Read database tables at app launch.");
 
-            checkDatabaseMigrations();
+            applyDatabaseMigrations();
 
             readSettings();
             readCurrencyBalance();
@@ -156,6 +156,11 @@ namespace DataBaseHelper
         if(std::holds_alternative<long long int>(rows[0][3]))
             EnumsAndVars::SettingsMenu::meteorParticles = std::get<long long int>(rows[0][3]) == 1; // True if column contains 1.
         BR_INFO("SettingsMenu::meteorParticles after read: %d", int(EnumsAndVars::SettingsMenu::meteorParticles));
+
+        BR_ASSERT((std::holds_alternative<long long int>(rows[0][4])), "%s", "InterfaceGUI contains wrong data.");
+        if(std::holds_alternative<long long int>(rows[0][4]))
+            EnumsAndVars::SettingsMenu::interfaceGUI = std::get<long long int>(rows[0][4]) == 1; // True if column contains 1.
+        BR_INFO("SettingsMenu::interfaceGUI after read: %d", int(EnumsAndVars::SettingsMenu::interfaceGUI));
     }
 
     void readCurrencyBalance()
@@ -265,12 +270,12 @@ namespace DataBaseHelper
         BR_INFO("Shop::adsOnMapsDisabled after read: %d", int(EnumsAndVars::Shop::adsOnMapsDisabled));
     }
 
-    void checkDatabaseMigrations()
+    void applyDatabaseMigrations()
     {
         std::vector<std::vector<std::variant<long long int, double, std::string, Beryll::SqliteNULL>>> rows = executeSqlSelect(selectDatabaseMigrationsAll);
-        BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "checkDatabaseMigrations() rows are empty.");
+        BR_ASSERT((!rows.empty() && !rows[0].empty()), "%s", "applyDatabaseMigrations() rows are empty.");
 
-        BR_INFO("checkDatabaseMigrations() rows: %d columns: %d", rows.size(), rows[0].size());
+        BR_INFO("applyDatabaseMigrations() rows: %d columns: %d", rows.size(), rows[0].size());
 
         BR_ASSERT((std::holds_alternative<long long int>(rows[0][0])), "%s", "ID INTEGER PRIMARY KEY contains wrong data.");
 
@@ -280,16 +285,19 @@ namespace DataBaseHelper
             lastScriptAppliedIndex = std::get<long long int>(rows[0][1]);
         BR_INFO("DatabaseMigrations lastScriptAppliedIndex: %d", lastScriptAppliedIndex);
 
-        //        if(lastScriptAppliedIndex < 1)
-        //        {
-        //            applyDatabaseMigrationsScript1();
-        //            storeDatabaseMigrationsLastScriptApplied(1);
-        //        }
+        if(lastScriptAppliedIndex < 1)
+        {
+            executeSql(alterTableSettings1);
+            storeSettingsInterfaceGUI(EnumsAndVars::SettingsMenu::interfaceGUI);
+            storeDatabaseMigrationsLastScriptApplied(1);
+            BR_INFO("%s", "Data base migration script 1 applied.");
+        }
         //        // No else here. Only new if().
         //        if(lastScriptAppliedIndex < 2)
         //        {
         //            applyDatabaseMigrationsScript2();
         //            storeDatabaseMigrationsLastScriptApplied(2);
+        //            BR_INFO("%s", "Data base migration script 2 applied.");
         //        }
         //        // No else here. Only new if().
     }

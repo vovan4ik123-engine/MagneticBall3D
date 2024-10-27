@@ -52,9 +52,6 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::Text> m_statistics3;
         uint64_t m_statisticsUpdateTime = 0;
 
-        float m_timeAppearsOnScreen = 0.0f;
-        float m_delayBeforeCanBeClicked = 0.6f;
-
         // GUI based on raw ImGUI.
         // ImGUI flags.
         int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
