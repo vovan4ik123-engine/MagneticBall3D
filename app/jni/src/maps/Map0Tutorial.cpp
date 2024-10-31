@@ -37,8 +37,6 @@ namespace MagneticBall3D
         if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 10.0f)
             EnumsAndVars::playerTorqueFactorOnBuildingWall = 10.0f;
 
-        m_gui->disableMapPlayTimer();
-
         SendStatisticsHelper::sendMapStart();
     }
 

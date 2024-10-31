@@ -1012,14 +1012,14 @@ namespace MagneticBall3D
             lastWaveToWinPhase();
         }
 
-        // Spawn enemies.
+        // Spawn new of respawn long distance enemies.
         if(!m_pointsToSpawnEnemies.empty())
         {
             for(const auto& enemy : m_allAnimatedEnemies)
             {
                 if(enemy->unitType != UnitType::ENEMY_SNIPER)
                 {
-                    if((enemy->getIsEnabled() && glm::distance(m_player->getObj()->getOriginXZ(), enemy->getOriginXZ()) > EnumsAndVars::enemiesDisableDistance) ||
+                    if((enemy->getIsEnabled() && glm::distance(m_player->getObj()->getOriginXZ(), enemy->getOriginXZ()) > EnumsAndVars::enemiesRespawnDistance) ||
                        (!enemy->getIsEnabledUpdate() && enemy->isCanBeSpawned))
                     {
                         enemy->enableEnemy();

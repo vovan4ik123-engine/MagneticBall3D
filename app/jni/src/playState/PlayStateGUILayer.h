@@ -14,8 +14,6 @@ namespace MagneticBall3D
         void updateAfterPhysics() override;
         void draw() override;
 
-        void disableMapPlayTimer() { m_mapPlayTimerShow = false; }
-
         void showMenuResurrect();
         void showMenuKillAllToSpawnBoss();
         void showMenuKillAllToWin();
@@ -42,10 +40,8 @@ namespace MagneticBall3D
 
 #if defined(BR_DEBUG)
         bool m_statisticsShow = true;
-        bool m_mapPlayTimerShow = false;
 #else
         bool m_statisticsShow = false;
-        bool m_mapPlayTimerShow = true;
 #endif
         std::shared_ptr<Beryll::Text> m_statistics1;
         std::shared_ptr<Beryll::Text> m_statistics2;
@@ -61,13 +57,16 @@ namespace MagneticBall3D
         int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
 
+        // Common textures.
+        std::unique_ptr<Beryll::Texture> m_okTexture;
+        std::unique_ptr<Beryll::Texture> m_exitTexture;
+
         // Play timer.
         std::string m_mapPlayTimerText;
-        ImFont* m_mapPlayTimerFont;
 
-        // Smashed + speed.
-        std::unique_ptr<Beryll::Texture> m_smashedSpeedTexture;
-        ImFont* m_smashedSpeedFont;
+        // Counters.
+        std::unique_ptr<Beryll::Texture> m_countersTexture;
+        ImFont* m_countersFont;
 
         // Pause button.
         std::unique_ptr<Beryll::Texture> m_pauseButtonTexture;
@@ -78,7 +77,6 @@ namespace MagneticBall3D
         bool m_resumeButtonClicked = false;
 
         // Exit.
-        std::unique_ptr<Beryll::Texture> m_exitButtonTexture;
         bool m_exitButtonClicked = false;
 
         // Map0Tutorial.
@@ -95,7 +93,6 @@ namespace MagneticBall3D
 
         // Not enough crystals menu.
         std::unique_ptr<Beryll::Texture> m_noCrystalsTexture;
-        std::unique_ptr<Beryll::Texture> m_noCrystalsButtonOkTexture;
         bool m_noCrystalsButtonOkClicked = false;
         bool m_noCrystalsMenuShow = false;
 
@@ -104,7 +101,6 @@ namespace MagneticBall3D
         bool m_adLoadingMenuShow = false;
         // Ad error.
         std::unique_ptr<Beryll::Texture> m_adErrorTexture;
-        std::unique_ptr<Beryll::Texture> m_adErrorButtonOkTexture;
         bool m_adErrorButtonOkClicked = false;
         bool m_adErrorMenuShow = false;
 
@@ -115,7 +111,6 @@ namespace MagneticBall3D
         // Last wave kill all enemies.
         std::unique_ptr<Beryll::Texture> m_killAllToSpawnBossTexture; // If map has boss.
         std::unique_ptr<Beryll::Texture> m_killAllToWinTexture; // Without boss.
-        std::unique_ptr<Beryll::Texture> m_killAllButtonOkTexture;
         bool m_killAllMenuShow = false;
         bool m_killAllButtonClicked = false;
         bool m_killAllToSpawnBoss = false;
@@ -146,7 +141,6 @@ namespace MagneticBall3D
         // Menus before specific bosses.
         // Tank with commander.
         std::unique_ptr<Beryll::Texture> m_tankWithCommanderTexture;
-        std::unique_ptr<Beryll::Texture> m_tankWithCommanderButtonOkTexture;
         bool m_tankWithCommanderMenuShow = false;
         bool m_tankWithCommanderButtonClicked = false;
     };

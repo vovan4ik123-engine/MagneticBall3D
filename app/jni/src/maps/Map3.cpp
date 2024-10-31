@@ -669,16 +669,16 @@ namespace MagneticBall3D
             lastWaveToWinPhase();
         }
 
-        // Spawn enemies.
-        int reSpawnedCount = 0;
+        // Spawn new of respawn long distance enemies.
+        //int reSpawnedCount = 0;
         if(!m_pointsToSpawnEnemies.empty())
         {
             for(const auto& enemy : m_allAnimatedEnemies)
             {
-                if((enemy->getIsEnabled() && glm::distance(m_player->getObj()->getOriginXZ(), enemy->getOriginXZ()) > EnumsAndVars::enemiesDisableDistance) ||
+                if((enemy->getIsEnabled() && glm::distance(m_player->getObj()->getOriginXZ(), enemy->getOriginXZ()) > EnumsAndVars::enemiesRespawnDistance) ||
                    (!enemy->getIsEnabledUpdate() && enemy->isCanBeSpawned))
                 {
-                    ++reSpawnedCount;
+                    //++reSpawnedCount;
                     enemy->enableEnemy();
                     enemy->disableDraw();
 

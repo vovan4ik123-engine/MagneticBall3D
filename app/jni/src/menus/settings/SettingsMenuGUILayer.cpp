@@ -83,7 +83,7 @@ namespace MagneticBall3D
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
         ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
         ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-        ImGui::Begin("shopMenu", nullptr, m_noBackgroundNoFrameNoFocus);
+        ImGui::Begin("settingsMenu", nullptr, m_noBackgroundNoFrameNoFocus);
 
         // Background.
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));

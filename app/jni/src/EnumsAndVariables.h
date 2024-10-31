@@ -25,15 +25,15 @@ namespace EnumsAndVars
         static inline bool meteorParticles = false;
         static inline bool interfaceGUI = true; // Disable GUI elements in play state. (HP/XP bars, counters, pause button, improvements, joystick)
         // Not stored in DB.
-        static inline float cameraHorizontalSpeed = 480.0f * 0.9f;
-        static inline float cameraVerticalSpeed = 173.0f * 0.9f;
+        static inline float cameraHorizontalSpeed = 432.0f;
+        static inline float cameraVerticalSpeed = 155.7f;
         static inline float cameraSpeedThresholdToAccelerate = 50.0f;
     };
 
     struct CurrencyBalance
     {
         // Stored in DB.
-        static inline int crystals = 35;
+        static inline int crystals = 99935;
         // Not stored in DB.
         // ...
     };
@@ -158,7 +158,7 @@ namespace EnumsAndVars
 
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
-    constexpr inline float cameraUpOffsetMaxSpeed = 2.6f; // Meters in sec.
+    constexpr inline float cameraUpOffsetMaxSpeed = 1.5f; // Meters in sec.
     constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Joystick.
@@ -207,6 +207,7 @@ namespace EnumsAndVars
     constexpr inline int playerCostOfResurrectionCrystals = 5;
     constexpr inline float playerDamageGroundRadiusAfterFallDefault = 0.0f;
     inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
+    inline float playerResurrectTime = -9999.0f;
 
     // Garbage.
     constexpr inline float garbageLinearDamping = 0.1f;
@@ -243,10 +244,8 @@ namespace EnumsAndVars
     inline int enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
     constexpr inline float enemiesMinDistanceToSpawn = 200.0f;
     constexpr inline float enemiesMaxDistanceToSpawn = 450.0f;
-    constexpr inline float enemiesDisableDistance = 451.0f;
+    constexpr inline float enemiesRespawnDistance = 451.0f;
     inline int enemiesKilledCount = 0;
-    inline float enemiesPauseAllActionsTime = -9999.0f; // After player resurrection pause enemies for some sec
-    inline float enemiesPauseAllActionsDelay = 0.0f;    // to give player time to collect garbage and prepare to fight.
 
     // Jump pad.
     constexpr inline float jumpPadPowerDefault = 120.0f * playerMass; // Power for player.
@@ -285,6 +284,7 @@ namespace EnumsAndVars
         playerStartHP = playerStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
         playerResurrectionAttempts = playerResurrectionAttemptsDefault * int(1.0f + std::roundf(allPlayerTalents[5].getPercentsToImprove() / 100.0f));
         playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
+        playerResurrectTime = -9999.0f;
 
         // Garbage.
         garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault * (1.0f + allPlayerTalents[2].getPercentsToImprove() / 100.0f);
@@ -298,8 +298,6 @@ namespace EnumsAndVars
         // Enemies.
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;
         enemiesKilledCount = 0;
-        enemiesPauseAllActionsTime = -9999.0f;
-        enemiesPauseAllActionsDelay = 0.0f;
 
         // Jump pad.
         jumpPadPower = jumpPadPowerDefault;

@@ -33,7 +33,7 @@ namespace MagneticBall3D
         m_item6FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem6FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_disableAdsOnMapsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/DisableAdsOnMaps.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_errorTexture = Beryll::Renderer::createTexture("GUI/menus/shop/PurchaseError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_errorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_errorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         // These callbacks are called from different thread.
         m_buyItem1SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem1SuccessCallback()"); ShopGUILayer::m_item1Bought = true; };
@@ -343,6 +343,9 @@ namespace MagneticBall3D
         if(m_errorMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
             ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("purchaseErrorMenu", nullptr, m_noFrame);
@@ -355,7 +358,7 @@ namespace MagneticBall3D
             m_errorButtonOkClicked = ImGui::ImageButton("purchaseErrorButtonOk",reinterpret_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
                                                         ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
-            ImGui::PopStyleColor(1);
+            ImGui::PopStyleColor(4);
         }
     }
 }

@@ -48,8 +48,7 @@ namespace MagneticBall3D
                     enemy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             }
 
-            EnumsAndVars::enemiesPauseAllActionsTime = EnumsAndVars::mapPlayTimeSec;
-            EnumsAndVars::enemiesPauseAllActionsDelay = 20.0f;
+            EnumsAndVars::playerResurrectTime = EnumsAndVars::mapPlayTimeSec;
         }
 
         if(EnumsAndVars::gameOnPause)
@@ -68,7 +67,7 @@ namespace MagneticBall3D
         handlePlayerWin();
 
         handleControls();
-        if(EnumsAndVars::enemiesPauseAllActionsTime + EnumsAndVars::enemiesPauseAllActionsDelay < EnumsAndVars::mapPlayTimeSec)
+        if(EnumsAndVars::playerResurrectTime + 14.0f < EnumsAndVars::mapPlayTimeSec)
             updatePathfindingAndSpawnEnemies();
         spawnCommonGarbage();
         handleJumpPads();
@@ -105,7 +104,7 @@ namespace MagneticBall3D
         }
 
         m_player->update();
-        if(EnumsAndVars::enemiesPauseAllActionsTime + EnumsAndVars::enemiesPauseAllActionsDelay < EnumsAndVars::mapPlayTimeSec)
+        if(EnumsAndVars::playerResurrectTime + 14.0f < EnumsAndVars::mapPlayTimeSec)
             updateEnemiesAndTheirsAttacks();
         updateAndMagnetizeGarbage();
         killEnemies();
@@ -256,7 +255,7 @@ namespace MagneticBall3D
                 newDamping = std::min(0.9f, newDamping);
                 m_player->getObj()->setDamping(newDamping, newDamping);
                 // Increase control power if damping increased.
-                moveFactorBasedOnAngleAndSpeed *= (1.0f + (newDamping * 1.1f));
+                moveFactorBasedOnAngleAndSpeed *= (1.0f + newDamping);
             }
         }
 
@@ -477,7 +476,7 @@ namespace MagneticBall3D
         }
         // In second frame:
         // 1. Clear blocked positions.
-        // 2. Spawn enemies. In subclass.
+        // 2. Spawn or respawn enemies. In subclass.
         else if(m_pathFindingIteration == 1)
         {
             ++m_pathFindingIteration;
@@ -485,8 +484,9 @@ namespace MagneticBall3D
             // 1.
             m_pathFinderEnemies.clearBlockedPositions();
 
-            // 2.
-            spawnEnemies();
+            // 2. Spawn new enemies or respawn long distance enemies closer to player only in 28 sec after resurrection.
+            if(EnumsAndVars::playerResurrectTime + 28.0f < EnumsAndVars::mapPlayTimeSec)
+                spawnEnemies();
         }
         // In third frame:
         // 1. Update paths for enemies.
@@ -736,13 +736,15 @@ namespace MagneticBall3D
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
-        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) +
-                                 (EnumsAndVars::garbageCountMagnetized * 0.08f) +
-                                 std::min(15.0f, m_player->getObj()->getOrigin().y * 0.03f + m_player->getMoveSpeedXZ() * 0.1f);
+        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) + (EnumsAndVars::garbageCountMagnetized * 0.08f);
+
+        if(m_player->getIsOnGround())
+            maxCameraYOffset += m_player->getMoveSpeedXZ() * 0.08f;
+
 
         if(!m_cameraHit)
         {
-            if(glm::distance(m_cameraYOffset, maxCameraYOffset) < 0.105f)
+            if(glm::distance(m_cameraYOffset, maxCameraYOffset) < 0.061f)
             {
                 m_cameraYOffset = maxCameraYOffset;
             }
@@ -758,9 +760,9 @@ namespace MagneticBall3D
         m_cameraFront.y += m_cameraYOffset;
 
         float maxCameraDistance = m_startCameraDistance +
-                                  (m_player->getMoveSpeedXZ() * 0.6f) +
+                                  (m_player->getMoveSpeedXZ() * 0.4f) +
                                   (EnumsAndVars::garbageCountMagnetized * 0.3f) +
-                                  (m_player->getObj()->getOrigin().y * 0.15f)
+                                  std::min(45.0f, m_player->getObj()->getOrigin().y * 0.16f)
                                   - std::min(0.0f, m_eyesLookAngleY * 1.1f);
 
         glm::vec3 cameraPosForRay = m_cameraFront - m_cameraAngleOffset * maxCameraDistance;

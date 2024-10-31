@@ -235,7 +235,7 @@ namespace MagneticBall3D
             m_selectedImprovements.push_back(selected);
         }
 
-        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.jpg", "", 0.43f, 0.83f, 0.14f, 0.1f);
+        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.png", "", 0.43f, 0.83f, 0.14f, 0.1f);
         buttonReroll->disable();
 
         std::string animationFrameName;
