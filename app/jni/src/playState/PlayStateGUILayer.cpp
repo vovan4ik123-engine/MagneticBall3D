@@ -126,7 +126,6 @@ namespace MagneticBall3D
             stream.str("");
             stream << "Time: " << int(EnumsAndVars::mapPlayTimeSec / 60.0f) << ":" << int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
             m_statistics3->text = stream.str();
-            stream.str("");
 
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
@@ -383,8 +382,8 @@ namespace MagneticBall3D
             ImGui::Text("%d/%d", int(std::roundf(EnumsAndVars::playerCurrentSpeed)), int(std::roundf(EnumsAndVars::playerMaxSpeedXZ)));
 
             m_mapPlayTimerText = "";
-            int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
-            int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
+            const int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
+            const int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
             if(min < 10)
                 m_mapPlayTimerText += "0";
 
@@ -582,11 +581,11 @@ namespace MagneticBall3D
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
             m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",reinterpret_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
-                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
             m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", reinterpret_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
-                                                                    ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
 

@@ -582,17 +582,13 @@ namespace MagneticBall3D
                     else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
                     {
                         // Garbage under attack =).
+                        const int garbageIndex = rayAttack.hittedObjectID - m_idOfFirstGarbage;
+                        BR_ASSERT((garbageIndex >= 0 && garbageIndex < m_allGarbage.size()), "%s", "garbageIndex out of range.");
+
                         if(enemy->attackType == AttackType::RANGE_DAMAGE_ONE || enemy->attackType == AttackType::MELEE_DAMAGE_ONE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::RANGE_DAMAGE_ONE");
-                            for(auto& wrapper : m_allGarbage)
-                            {
-                                if(rayAttack.hittedObjectID == wrapper.obj->getID())
-                                {
-                                    wrapper.takeDamage(enemy->damage);
-                                    break;
-                                }
-                            }
+                            m_allGarbage[garbageIndex].takeDamage(enemy->damage);
                         }
                         else if(enemy->attackType == AttackType::RANGE_DAMAGE_RADIUS)
                         {
@@ -609,18 +605,11 @@ namespace MagneticBall3D
                         else if(enemy->attackType == AttackType::MAGNETIZE_GARBAGE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::MAGNETIZE_GARBAGE");
-                            for(auto& wrapper : m_allGarbage)
-                            {
-                                if(rayAttack.hittedObjectID == wrapper.obj->getID())
-                                {
-                                    wrapper.pauseMagnetization(1.25f);
-                                    wrapper.obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
-                                    glm::vec3 impulseDir = glm::normalize(enemy->getOrigin() - wrapper.obj->getOrigin());
-                                    impulseDir.y += 0.4f;
-                                    wrapper.obj->applyCentralImpulse(impulseDir * 0.1f);
-                                    break;
-                                }
-                            }
+                            m_allGarbage[garbageIndex].pauseMagnetization(1.25f);
+                            m_allGarbage[garbageIndex].obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
+                            glm::vec3 impulseDir = glm::normalize(enemy->getOrigin() - m_allGarbage[garbageIndex].obj->getOrigin());
+                            impulseDir.y += 0.4f;
+                            m_allGarbage[garbageIndex].obj->applyCentralImpulse(impulseDir * 0.1f);
                         }
                     }
                 }

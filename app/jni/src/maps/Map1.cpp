@@ -273,6 +273,8 @@ namespace MagneticBall3D
 
     void Map1::loadGarbage()
     {
+        m_idOfFirstGarbage = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 6; ++i) // 6 * 34 = 204
         {
             const auto garbageCommon = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map1/GarbageCommon.fbx",
