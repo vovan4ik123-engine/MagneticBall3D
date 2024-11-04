@@ -104,6 +104,7 @@ namespace MagneticBall3D
             m_improveByAdClicked = false;
             BR_INFO("%s", "m_improveByAdClicked.");
             m_adLoadingMenuShow = true;
+            SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
             Beryll::Ads::getInstance()->showInterstitialAd(m_adSuccessCallback, m_adErrorCallback);
         }
         else if(m_improveByCrystalsClicked)

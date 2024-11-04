@@ -345,6 +345,8 @@ namespace MagneticBall3D
 
     void Map5::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 120; ++i)
         {
             auto skeleton = std::make_shared<MovableEnemy>("models3D/enemies/Skeleton.fbx",
@@ -367,11 +369,11 @@ namespace MagneticBall3D
             skeleton->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
             skeleton->castRayToFindYPos = true;
 
-            skeleton->damage = 1.5f;
+            skeleton->damage = 2.0f;
             skeleton->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             skeleton->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            skeleton->garbageAmountToDie = 10;
+            skeleton->garbageAmountToDie = 14;
             skeleton->reducePlayerSpeedWhenDie = 1.0f;
             skeleton->experienceWhenDie = 30;
             skeleton->getController().moveSpeed = 55.0f;
@@ -403,11 +405,11 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
             copShield->castRayToFindYPos = true;
 
-            copShield->damage = 1.5f;
+            copShield->damage = 2.0f;
             copShield->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            copShield->garbageAmountToDie = 10;
+            copShield->garbageAmountToDie = 14;
             copShield->reducePlayerSpeedWhenDie = 1.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 45.0f;
@@ -439,12 +441,12 @@ namespace MagneticBall3D
             ghoul->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
             ghoul->castRayToFindYPos = true;
 
-            ghoul->damage = 1.0f;
+            ghoul->damage = 1.5f;
             ghoul->damageRadius = 10.0f;
             ghoul->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             ghoul->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            ghoul->garbageAmountToDie = 20;
+            ghoul->garbageAmountToDie = 25;
             ghoul->reducePlayerSpeedWhenDie = 1.0f;
             ghoul->experienceWhenDie = 35;
             ghoul->getController().moveSpeed = 35.0f;

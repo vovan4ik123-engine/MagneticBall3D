@@ -31,7 +31,9 @@ namespace MagneticBall3D
         MELEE_DAMAGE_ONE,
         RANGE_DAMAGE_ONE,
         RANGE_DAMAGE_RADIUS,
-        MAGNETIZE_GARBAGE
+        MAGNETIZE_GARBAGE,
+        IMPULSE_UP_GARBAGE,
+        DISAPPEAR_GARBAGE
     };
 
     class BaseEnemy : public Beryll::AnimatedCollidingCharacter

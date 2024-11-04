@@ -154,7 +154,6 @@ namespace MagneticBall3D
         {
             m_exitButtonClicked = false;
             Sounds::stopBackgroundMusic();
-            SendStatisticsHelper::sendCustomMessage("click_exit_button");
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
             {
@@ -163,6 +162,7 @@ namespace MagneticBall3D
             else
             {
                 m_adLoadingMenuShow = true;
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showInterstitialAd(m_exitAdSuccessCallback, m_commonAdErrorCallback);
             }
         }
@@ -179,6 +179,7 @@ namespace MagneticBall3D
             else
             {
                 m_adLoadingMenuShow = true;
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showInterstitialAd(m_killAllAdSuccessCallback, m_commonAdErrorCallback);
             }
         }
@@ -186,7 +187,6 @@ namespace MagneticBall3D
         {
             BR_INFO("%s", "m_winPrize1ButtonClicked");
             m_winPrize1ButtonClicked = false;
-            SendStatisticsHelper::sendCustomMessage("click_win_prize_1");
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
             {
@@ -195,6 +195,7 @@ namespace MagneticBall3D
             else
             {
                 m_adLoadingMenuShow = true;
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
             }
         }
@@ -202,7 +203,6 @@ namespace MagneticBall3D
         {
             BR_INFO("%s", "m_winPrize2ButtonClicked");
             m_winPrize2ButtonClicked = false;
-            SendStatisticsHelper::sendCustomMessage("click_win_prize_2");
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
             {
@@ -211,6 +211,7 @@ namespace MagneticBall3D
             else
             {
                 m_adLoadingMenuShow = true;
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
             }
         }
@@ -225,7 +226,6 @@ namespace MagneticBall3D
         {
             BR_INFO("%s", "m_resurrectByAdButtonClicked");
             m_resurrectByAdButtonClicked = false;
-            SendStatisticsHelper::sendCustomMessage("click_resurrect_ad");
             Sounds::pauseBackgroundMusic();
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
@@ -235,6 +235,7 @@ namespace MagneticBall3D
             else
             {
                 m_adLoadingMenuShow = true;
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showRewardedAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback, true);
             }
         }
@@ -242,7 +243,6 @@ namespace MagneticBall3D
         {
             BR_INFO("%s", "m_resurrectByCrystalsButtonClicked");
             m_resurrectByCrystalsButtonClicked = false;
-            SendStatisticsHelper::sendCustomMessage("click_resurrect_crystals");
 
             if(EnumsAndVars::CurrencyBalance::crystals >= EnumsAndVars::playerCostOfResurrectionCrystals)
             {
@@ -453,15 +453,15 @@ namespace MagneticBall3D
         if(tutorialMoveShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f});
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, 0.45f * GUIHeight));
+            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, 0.4f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 0.55f * GUIHeight));
             ImGui::Begin("tutorialMoveAndCamera", nullptr, m_noBackgroundNoFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.105f * GUIWidth, 0.0f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.055f * GUIWidth, 0.0f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.605f * GUIWidth, 0.0f * GUIHeight));
+            ImGui::SetCursorPos(ImVec2(0.655f * GUIWidth, 0.0f * GUIHeight));
             ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCameraTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
             ImGui::End();

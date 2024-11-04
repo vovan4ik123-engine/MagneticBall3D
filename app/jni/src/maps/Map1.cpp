@@ -422,6 +422,8 @@ namespace MagneticBall3D
 
     void Map1::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 110; ++i)
         {
             auto copPistol = std::make_shared<MovableEnemy>("models3D/enemies/CopWithPistol.fbx",
@@ -447,7 +449,7 @@ namespace MagneticBall3D
             copPistol->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
             copPistol->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copPistol->garbageAmountToDie = 10;
+            copPistol->garbageAmountToDie = 14;
             copPistol->reducePlayerSpeedWhenDie = 6.0f;
             copPistol->experienceWhenDie = 25;
             copPistol->getController().moveSpeed = 25.0f;
@@ -482,7 +484,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 10;
+            copShield->garbageAmountToDie = 14;
             copShield->reducePlayerSpeedWhenDie = 10.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 20.0f;
@@ -517,7 +519,7 @@ namespace MagneticBall3D
             sniper->attackDistance = 2500.0f;
             sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            sniper->garbageAmountToDie = 10;
+            sniper->garbageAmountToDie = 14;
             sniper->reducePlayerSpeedWhenDie = 0.0f;
             sniper->experienceWhenDie = 30;
 
@@ -552,7 +554,7 @@ namespace MagneticBall3D
             copGrenade->attackDistance = 130.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             copGrenade->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copGrenade->garbageAmountToDie = 10;
+            copGrenade->garbageAmountToDie = 14;
             copGrenade->reducePlayerSpeedWhenDie = 8.0f;
             copGrenade->experienceWhenDie = 50;
             copGrenade->getController().moveSpeed = 20.0f;

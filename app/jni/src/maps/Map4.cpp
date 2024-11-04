@@ -345,6 +345,8 @@ namespace MagneticBall3D
 
     void Map4::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 160; ++i)
         {
             auto mummy = std::make_shared<MovableEnemy>("models3D/enemies/Mummy.fbx",
@@ -366,11 +368,11 @@ namespace MagneticBall3D
             mummy->dieSound = SoundType::POP;
             mummy->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
-            mummy->damage = 1.0f;
+            mummy->damage = 1.5f;
             mummy->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
-            mummy->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
+            mummy->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            mummy->garbageAmountToDie = 10;
+            mummy->garbageAmountToDie = 14;
             mummy->reducePlayerSpeedWhenDie = 0.5f;
             mummy->experienceWhenDie = 25;
             mummy->getController().moveSpeed = 25.0f;
@@ -401,12 +403,12 @@ namespace MagneticBall3D
             camel->dieSound = SoundType::POP;
             camel->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
-            camel->damage = 0.5f;
+            camel->damage = 1.0f;
             camel->damageRadius = 10.0f;
             camel->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 250.0f;
             camel->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            camel->garbageAmountToDie = 20;
+            camel->garbageAmountToDie = 25;
             camel->reducePlayerSpeedWhenDie = 0.5f;
             camel->experienceWhenDie = 35;
             camel->getController().moveSpeed = 35.0f;
@@ -437,11 +439,11 @@ namespace MagneticBall3D
             chariotJavelin->dieSound = SoundType::POP;
             chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
-            chariotJavelin->damage = 1.0f;
+            chariotJavelin->damage = 1.5f;
             chariotJavelin->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             chariotJavelin->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            chariotJavelin->garbageAmountToDie = 20;
+            chariotJavelin->garbageAmountToDie = 25;
             chariotJavelin->reducePlayerSpeedWhenDie = 0.5f;
             chariotJavelin->experienceWhenDie = 50;
             chariotJavelin->getController().moveSpeed = 50.0f;

@@ -335,6 +335,8 @@ namespace MagneticBall3D
 
     void Map3::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 110; ++i)
         {
             auto janitorRake = std::make_shared<MovableEnemy>("models3D/enemies/JanitorRake.fbx",
@@ -354,11 +356,11 @@ namespace MagneticBall3D
             janitorRake->dieSound = SoundType::POP;
             janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
-            janitorRake->damage = 0.5f;
+            janitorRake->damage = 10.0f;
             janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            janitorRake->garbageAmountToDie = 10;
+            janitorRake->garbageAmountToDie = 14;
             janitorRake->reducePlayerSpeedWhenDie = 0.0f;
             janitorRake->experienceWhenDie = 25;
             janitorRake->getController().moveSpeed = 40.0f;
@@ -389,11 +391,11 @@ namespace MagneticBall3D
             janitorBroom->dieSound = SoundType::POP;
             janitorBroom->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
-            janitorBroom->damage = 0.5f;
+            janitorBroom->damage = 1.0f;
             janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            janitorBroom->garbageAmountToDie = 10;
+            janitorBroom->garbageAmountToDie = 14;
             janitorBroom->reducePlayerSpeedWhenDie = 0.0f;
             janitorBroom->experienceWhenDie = 25;
             janitorBroom->getController().moveSpeed = 35.0f;
@@ -424,11 +426,11 @@ namespace MagneticBall3D
             copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
-            copShield->damage = 0.5f;
+            copShield->damage = 1.0f;
             copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            copShield->garbageAmountToDie = 10;
+            copShield->garbageAmountToDie = 14;
             copShield->reducePlayerSpeedWhenDie = 0.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 30.0f;

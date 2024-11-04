@@ -26,7 +26,7 @@ namespace MagneticBall3D
         static void sendMap0_1200mPassed();
 
         // Talents.
-        static void sendTalentImproved(const std::string name, const std::string currencySpent); // currencySpent = ad or crystals.
+        static void sendTalentImproved(const std::string name, const std::string currencySpent); // currencySpent = "ad" or "crystal".
 
         // Custom message.
         static void sendCustomMessage(const std::string text);

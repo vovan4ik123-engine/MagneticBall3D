@@ -408,6 +408,8 @@ namespace MagneticBall3D
 
     void Map2::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 150; ++i)
         {
             auto rat = std::make_shared<MovableEnemy>("models3D/enemies/RatWithMagnet.fbx",
@@ -431,7 +433,7 @@ namespace MagneticBall3D
             rat->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             rat->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat();
 
-            rat->garbageAmountToDie = 4;
+            rat->garbageAmountToDie = 5;
             rat->reducePlayerSpeedWhenDie = 5.0f;
             rat->experienceWhenDie = 25;
             rat->getController().moveSpeed = 55.0f;
@@ -467,7 +469,7 @@ namespace MagneticBall3D
             guard->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
             guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            guard->garbageAmountToDie = 12;
+            guard->garbageAmountToDie = 14;
             guard->reducePlayerSpeedWhenDie = 10.0f;
             guard->experienceWhenDie = 30;
             guard->getController().moveSpeed = 40.0f;
@@ -503,7 +505,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 10;
+            copShield->garbageAmountToDie = 14;
             copShield->reducePlayerSpeedWhenDie = 10.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 45.0f;
@@ -538,7 +540,7 @@ namespace MagneticBall3D
             sniper->attackDistance = 2500.0f;
             sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            sniper->garbageAmountToDie = 10;
+            sniper->garbageAmountToDie = 14;
             sniper->reducePlayerSpeedWhenDie = 0.0f;
             sniper->experienceWhenDie = 30;
 

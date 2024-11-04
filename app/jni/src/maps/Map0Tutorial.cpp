@@ -117,7 +117,7 @@ namespace MagneticBall3D
             SendStatisticsHelper::sendMap0_100mPassed();
 
         // Tutorial tips on screen.
-        if(m_player->getMoveSpeed() < 2.0f)
+        if(m_player->getMoveSpeed() < 3.0f)
             m_gui->tutorialMoveShow = true;
         else
             m_gui->tutorialMoveShow = false;
@@ -346,6 +346,8 @@ namespace MagneticBall3D
 
     void Map0Tutorial::loadEnemies()
     {
+        m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
+
         for(int i = 0; i < 70; ++i)
         {
             auto janitorRake = std::make_shared<StaticEnemy>("models3D/enemies/JanitorRake.fbx",
@@ -369,7 +371,7 @@ namespace MagneticBall3D
             janitorRake->attackDistance = 50.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            janitorRake->garbageAmountToDie = 10;
+            janitorRake->garbageAmountToDie = 14;
             janitorRake->reducePlayerSpeedWhenDie = 0.0f;
             janitorRake->experienceWhenDie = 0;
 
@@ -410,7 +412,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 100.0f;
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 10;
+            copShield->garbageAmountToDie = 14;
             copShield->reducePlayerSpeedWhenDie = 0.0f;
             copShield->experienceWhenDie = 0;
 

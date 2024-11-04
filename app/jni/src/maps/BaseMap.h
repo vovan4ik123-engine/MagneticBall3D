@@ -64,7 +64,6 @@ namespace MagneticBall3D
 
         const int m_maxEnvCount = 300;
         const int m_maxGarbageCount = 400;
-        int m_idOfFirstGarbage = 0;
         const int m_maxEnemiesCount = 500;
         std::shared_ptr<Player> m_player;
         std::vector<Garbage> m_allGarbage; // Common garbage spawned on map + garbage after kill enemies.
@@ -88,6 +87,11 @@ namespace MagneticBall3D
         float m_maxX = 999999.0f;
         float m_minZ = -999999.0f;
         float m_maxZ = 999999.0f;
+
+        // Some IDs.
+        int m_idOfFirstGarbage = 0;
+        int m_idOfFirstEnemy = 0;
+        int m_idOfNearestEnemy = 0;
 
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;

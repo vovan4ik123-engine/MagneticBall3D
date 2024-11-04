@@ -656,11 +656,22 @@ namespace MagneticBall3D
 
         float speedToReduce = 0.0f;
         int addToExp = 0;
+        m_idOfNearestEnemy = 0;
+        float distanceToNearestEnemy = 999999.0f;
         for(const auto& enemy : m_allAnimatedEnemies)
         {
-            if(enemy->getIsEnabledUpdate() &&
-               enemy->garbageAmountToDie < EnumsAndVars::garbageCountMagnetized &&
-               glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin()) < radiusToKill + (enemy->getXZRadius() * 0.5f))
+            if(!enemy->getIsEnabledUpdate())
+                continue;
+
+            const float distancePlayerToEnemy = glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin());
+
+            if(distancePlayerToEnemy < distanceToNearestEnemy)
+            {
+                distanceToNearestEnemy = distancePlayerToEnemy;
+                m_idOfNearestEnemy = enemy->getID();
+            }
+
+            if(enemy->garbageAmountToDie <= EnumsAndVars::garbageCountMagnetized && distancePlayerToEnemy < radiusToKill + (enemy->getXZRadius() * 0.5f))
             {
                 enemy->die();
                 speedToReduce += enemy->reducePlayerSpeedWhenDie;
@@ -725,10 +736,10 @@ namespace MagneticBall3D
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
-        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) + (EnumsAndVars::garbageCountMagnetized * 0.08f);
+        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) + (EnumsAndVars::garbageCountMagnetized * 0.07f);
 
         if(m_player->getIsOnGround())
-            maxCameraYOffset += m_player->getMoveSpeedXZ() * 0.08f;
+            maxCameraYOffset += m_player->getMoveSpeedXZ() * 0.07f;
 
 
         if(!m_cameraHit)
