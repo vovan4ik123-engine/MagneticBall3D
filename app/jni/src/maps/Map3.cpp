@@ -356,11 +356,11 @@ namespace MagneticBall3D
             janitorRake->dieSound = SoundType::POP;
             janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
-            janitorRake->damage = 10.0f;
+            janitorRake->damage = 15.0f;
             janitorRake->attackDistance = 45.0f + Beryll::RandomGenerator::getFloat() * 10.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            janitorRake->garbageAmountToDie = 14;
+            janitorRake->garbageAmountToDie = 12;
             janitorRake->reducePlayerSpeedWhenDie = 0.0f;
             janitorRake->experienceWhenDie = 25;
             janitorRake->getController().moveSpeed = 40.0f;
@@ -395,7 +395,7 @@ namespace MagneticBall3D
             janitorBroom->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            janitorBroom->garbageAmountToDie = 14;
+            janitorBroom->garbageAmountToDie = 12;
             janitorBroom->reducePlayerSpeedWhenDie = 0.0f;
             janitorBroom->experienceWhenDie = 25;
             janitorBroom->getController().moveSpeed = 35.0f;
@@ -430,7 +430,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            copShield->garbageAmountToDie = 14;
+            copShield->garbageAmountToDie = 12;
             copShield->reducePlayerSpeedWhenDie = 0.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 30.0f;

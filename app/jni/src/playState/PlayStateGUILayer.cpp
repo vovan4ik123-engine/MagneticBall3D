@@ -492,7 +492,6 @@ namespace MagneticBall3D
             ImGui::End();
         }
 
-        // Not enough crystals menu.
         if(m_noCrystalsMenuShow)
         {
             //ImGui::SetNextWindowFocus();
@@ -512,7 +511,6 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        // Ad loading.
         if(m_adLoadingMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
@@ -528,7 +526,6 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        // Ad error.
         if(m_adErrorMenuShow)
         {
             ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
@@ -548,8 +545,7 @@ namespace MagneticBall3D
             ImGui::PopStyleColor(1);
         }
 
-        // Menu kill all. Can be before boss or without boss.
-        if(m_killAllMenuShow)
+        if(m_killAllMenuShow) // Can be before boss or without boss.
         {
             ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));

@@ -110,7 +110,7 @@ namespace MagneticBall3D
         const int m_piggyBankMaxLevel = m_maxImprovementsSelectedCount * m_maxLevel;
         bool m_piggyBankShow = false;
         float m_piggyBankAnimationStartTime = 0.0f;
-        float m_piggyBankAnimationTime = 0.6f;
+        float m_piggyBankAnimationTime = 1.0f;
         bool m_selectImprovement = false;
         std::vector<std::unique_ptr<Beryll::Texture>> m_piggyBankAnimationTextures;
         ImFont* m_piggyBankLevelFont;

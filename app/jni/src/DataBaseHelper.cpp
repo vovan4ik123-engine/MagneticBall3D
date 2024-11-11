@@ -81,10 +81,13 @@ namespace DataBaseHelper
 
                 // Player talents.
                 executeSql(createTablePlayerTalents);
-                for(const auto& talent : EnumsAndVars::allPlayerTalents)
-                {
-                    insertPlayerTalentsTalent(talent.name, talent.currentLevel);
-                }
+                BR_ASSERT((EnumsAndVars::allPlayerTalents.size() >= 6), "%s", "allPlayerTalents wrong size.")
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[0].name, EnumsAndVars::allPlayerTalents[0].currentLevel);
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[1].name, EnumsAndVars::allPlayerTalents[1].currentLevel);
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[2].name, EnumsAndVars::allPlayerTalents[2].currentLevel);
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[3].name, EnumsAndVars::allPlayerTalents[3].currentLevel);
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[4].name, EnumsAndVars::allPlayerTalents[4].currentLevel);
+                insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[5].name, EnumsAndVars::allPlayerTalents[5].currentLevel);
 
                 // Game difficulty.
                 executeSql(createTableGameDifficulty);

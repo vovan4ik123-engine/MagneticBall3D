@@ -239,7 +239,7 @@ namespace MagneticBall3D
         buttonReroll->disable();
 
         std::string animationFrameName;
-        for(int i = 1; i <= 12; ++i)
+        for(int i = 1; i <= 20; ++i)
         {
             animationFrameName = "GUI/improvements/piggyBankAnimation/PiggyBankFrame";
             animationFrameName += std::to_string(i);
@@ -460,6 +460,9 @@ namespace MagneticBall3D
             const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
             const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
             ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.24f * GUIHeight));
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin("piggyBankWindow", nullptr, m_noBackgroundNoFrame);
@@ -471,12 +474,16 @@ namespace MagneticBall3D
                 m_piggyBankShow = false;
                 BR_INFO("%s", "Piggy bank pressed.");
             }
+            ImGui::PopStyleColor(3);
 
             if(showLevel)
             {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.08f, 0.08f, 0.08f, 1.0f});
                 ImGui::PushFont(m_piggyBankLevelFont);
-                ImGui::SetCursorPos(ImVec2(0.04f * GUIWidth, 0.06f * GUIHeight));
+                if(m_piggyBankCurrentLevel < 10)
+                    ImGui::SetCursorPos(ImVec2(0.0405f * GUIWidth, 0.0193f * GUIHeight));
+                else
+                    ImGui::SetCursorPos(ImVec2(0.034f * GUIWidth, 0.0193f * GUIHeight));
                 ImGui::Text("%d", m_piggyBankCurrentLevel);
                 ImGui::PopFont();
                 ImGui::PopStyleColor(1);

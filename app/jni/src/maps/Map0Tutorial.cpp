@@ -94,7 +94,7 @@ namespace MagneticBall3D
         m_player->update();
         updateEnemiesAndTheirsAttacks();
         updateAndMagnetizeGarbage();
-        killEnemies();
+        damageEnemies();
         handleCamera();
         updateGUI();
 
@@ -117,7 +117,7 @@ namespace MagneticBall3D
             SendStatisticsHelper::sendMap0_100mPassed();
 
         // Tutorial tips on screen.
-        if(m_player->getMoveSpeed() < 3.0f)
+        if(m_player->getMoveSpeed() < 5.0f)
             m_gui->tutorialMoveShow = true;
         else
             m_gui->tutorialMoveShow = false;
@@ -371,7 +371,7 @@ namespace MagneticBall3D
             janitorRake->attackDistance = 50.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            janitorRake->garbageAmountToDie = 14;
+            janitorRake->garbageAmountToDie = 12;
             janitorRake->reducePlayerSpeedWhenDie = 0.0f;
             janitorRake->experienceWhenDie = 0;
 
@@ -412,7 +412,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 100.0f;
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 14;
+            copShield->garbageAmountToDie = 12;
             copShield->reducePlayerSpeedWhenDie = 0.0f;
             copShield->experienceWhenDie = 0;
 

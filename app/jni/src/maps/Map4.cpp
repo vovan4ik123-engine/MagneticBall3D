@@ -372,7 +372,7 @@ namespace MagneticBall3D
             mummy->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             mummy->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            mummy->garbageAmountToDie = 14;
+            mummy->garbageAmountToDie = 12;
             mummy->reducePlayerSpeedWhenDie = 0.5f;
             mummy->experienceWhenDie = 25;
             mummy->getController().moveSpeed = 25.0f;
@@ -408,7 +408,7 @@ namespace MagneticBall3D
             camel->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 250.0f;
             camel->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            camel->garbageAmountToDie = 25;
+            camel->garbageAmountToDie = 20;
             camel->reducePlayerSpeedWhenDie = 0.5f;
             camel->experienceWhenDie = 35;
             camel->getController().moveSpeed = 35.0f;

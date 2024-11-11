@@ -23,7 +23,7 @@ namespace EnumsAndVars
         static inline int FPSLimit = 60;
         static inline bool backgroundMusic = true;
         static inline bool meteorParticles = false;
-        static inline bool interfaceGUI = true; // Disable GUI elements in play state. (HP/XP bars, counters, pause button, improvements, joystick)
+        static inline bool interfaceGUI = true; // Disable GUI elements in play state. (HP/XP bars, counters, pause button, improvements, joystick).
         // Not stored in DB.
         static inline float cameraHorizontalSpeed = 432.0f;
         static inline float cameraVerticalSpeed = 155.7f;
@@ -55,8 +55,7 @@ namespace EnumsAndVars
         static inline uint64_t lastSecOneEnergyRestored = 0; // Time in sec since epoch (1.1.1970).
         // Not stored in DB.
         static constexpr inline int secToRestoreOneEnergy = 10;
-        static constexpr inline int maxLimitToRestore = 25; // In update method when restore energy by time passes.
-                                                            // If player buy energy for real money dont apply any limit.
+        static constexpr inline int maxLimitToRestore = 25; // Max limit that can be restored by time. If player buy energy for real money dont apply any limit.
         static constexpr inline int playCost = 5;
     };
 
@@ -159,7 +158,6 @@ namespace EnumsAndVars
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.
     constexpr inline float cameraUpOffsetMaxSpeed = 1.5f; // Meters in sec.
-    constexpr inline float minPlayerSpeedToCameraFollow = 3.0f;
 
     // Joystick.
     constexpr inline float joystickPowerInOneSec = 100.0f;
@@ -238,6 +236,14 @@ namespace EnumsAndVars
     constexpr inline float staticEnvFriction = 2.0f;
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
+    // Damage.
+    constexpr inline float damageCrushDefault = 1.0f; // Crush damage per ball/one magnetized garbage.
+    inline float damageCrush = damageCrushDefault;
+    constexpr inline float damageShootDefault = 15.0f; // Damage of shot garbage.
+    inline float damageShoot = damageShootDefault;
+    constexpr inline float damageShootReloadTimeDefault = 0.6f;
+    inline float damageShootReloadTime = damageShootReloadTimeDefault;
+
     // Enemies.
     constexpr inline int enemiesMaxPathfindingInOneFrame = 10;
     constexpr inline int enemiesCurrentPathfindingIndexDefault = 0;
@@ -294,6 +300,11 @@ namespace EnumsAndVars
         garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
         garbageCommonMaxCountOnMap = garbageCommonMaxCountOnMapDefault;
         garbageStartHP = garbageStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
+
+        // Damage.
+        damageCrush = damageCrushDefault;
+        damageShoot = damageShootDefault;
+        damageShootReloadTime = damageShootReloadTimeDefault;
 
         // Enemies.
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;

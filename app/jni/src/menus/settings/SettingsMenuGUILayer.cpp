@@ -108,19 +108,19 @@ namespace MagneticBall3D
         ImGui::PushFont(m_fontForAllCheckBoxes);
 
         // FPS check boxes.
-        ImGui::SetCursorPos(ImVec2(0.392f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.411f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("30", &m_30FPSChecked, false))
             resetFPS(30);
 
-        ImGui::SetCursorPos(ImVec2(0.466f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.478f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("60", &m_60FPSChecked, false))
             resetFPS(60);
 
-        ImGui::SetCursorPos(ImVec2(0.541f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.546f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("120", &m_120FPSChecked, false))
             resetFPS(120);
 
-        ImGui::SetCursorPos(ImVec2(0.629f * GUIWidth, 0.26f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.626f * GUIWidth, 0.26f * GUIHeight));
         if(ImGui::Checkbox("250", &m_250FPSChecked, false))
             resetFPS(250);
 
@@ -134,7 +134,7 @@ namespace MagneticBall3D
         ImGui::Image(reinterpret_cast<ImTextureID>(m_musicTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::SetCursorPos(ImVec2(0.47f * GUIWidth, 0.5f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.489f * GUIWidth, 0.5f * GUIHeight));
         ImGui::Checkbox("music", &m_musicCheckBoxChecked, false);
 
         // Meteor particles.
@@ -142,7 +142,7 @@ namespace MagneticBall3D
         ImGui::Image(reinterpret_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::SetCursorPos(ImVec2(0.46f * GUIWidth, 0.62f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.470f * GUIWidth, 0.62f * GUIHeight));
         ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked, false);
 
         // Interface GUI.
@@ -150,7 +150,7 @@ namespace MagneticBall3D
         ImGui::Image(reinterpret_cast<ImTextureID>(m_interfaceGUITexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
-        ImGui::SetCursorPos(ImVec2(0.5f * GUIWidth, 0.74f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.519f * GUIWidth, 0.74f * GUIHeight));
         ImGui::Checkbox("interfaceGUI", &m_interfaceGUICheckBoxChecked, false);
 
         ImGui::PopFont();

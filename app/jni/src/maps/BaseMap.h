@@ -40,7 +40,7 @@ namespace MagneticBall3D
         // After physics.
         void updateEnemiesAndTheirsAttacks();
         void updateAndMagnetizeGarbage();
-        void killEnemies();
+        void damageEnemies();
         void handleCamera();
         void updateGUI();
 

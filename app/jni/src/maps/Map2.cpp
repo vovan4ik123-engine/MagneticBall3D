@@ -469,7 +469,7 @@ namespace MagneticBall3D
             guard->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
             guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            guard->garbageAmountToDie = 14;
+            guard->garbageAmountToDie = 12;
             guard->reducePlayerSpeedWhenDie = 10.0f;
             guard->experienceWhenDie = 30;
             guard->getController().moveSpeed = 40.0f;
@@ -505,7 +505,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 14;
+            copShield->garbageAmountToDie = 12;
             copShield->reducePlayerSpeedWhenDie = 10.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 45.0f;
@@ -540,7 +540,7 @@ namespace MagneticBall3D
             sniper->attackDistance = 2500.0f;
             sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            sniper->garbageAmountToDie = 14;
+            sniper->garbageAmountToDie = 12;
             sniper->reducePlayerSpeedWhenDie = 0.0f;
             sniper->experienceWhenDie = 30;
 

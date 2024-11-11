@@ -104,10 +104,10 @@ namespace MagneticBall3D
         }
 
         m_player->update();
+        updateAndMagnetizeGarbage();
+        damageEnemies();
         if(EnumsAndVars::playerResurrectTime + 14.0f < EnumsAndVars::mapPlayTimeSec)
             updateEnemiesAndTheirsAttacks();
-        updateAndMagnetizeGarbage();
-        killEnemies();
 
         if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 0)
         {
@@ -530,6 +530,9 @@ namespace MagneticBall3D
             // 1. Update enemy.
             enemy->update(m_player->getObj()->getOrigin());
 
+            if(!enemy->getIsEnabledUpdate()) // Check again because can be disabled inside enemy->update(...).
+                continue;
+
             // 2. Handle enemy attack.
             if(enemy->unitState == UnitState::CAN_ATTACK)
             {
@@ -643,9 +646,9 @@ namespace MagneticBall3D
                                                     orig, glm::vec3(0.0f), 10);
     }
 
-    void BaseMap::killEnemies()
+    void BaseMap::damageEnemies()
     {
-        float radiusToKill = std::max(6.0f, m_player->getObj()->getXZRadius() * 1.4f) + EnumsAndVars::garbageCountMagnetized * 0.1f;
+        float radiusToKill = 7.0f + EnumsAndVars::garbageCountMagnetized * 0.1f;
 
         if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
         {
@@ -665,7 +668,7 @@ namespace MagneticBall3D
 
             const float distancePlayerToEnemy = glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin());
 
-            if(distancePlayerToEnemy < distanceToNearestEnemy)
+            if(enemy->getIsEnabledDraw() && distancePlayerToEnemy < distanceToNearestEnemy)
             {
                 distanceToNearestEnemy = distancePlayerToEnemy;
                 m_idOfNearestEnemy = enemy->getID();

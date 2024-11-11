@@ -11,8 +11,8 @@ android {
 
         minSdk 29 // Android 10 (2019 year).
         targetSdk 34
-        versionCode 10
-        versionName "3.0.0"
+        versionCode 12
+        versionName "4.0.1"
 
         externalNativeBuild {
             cmake {
@@ -56,12 +56,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Import the Firebase BoM.
-    implementation platform('com.google.firebase:firebase-bom:33.4.0')
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
     implementation 'com.google.firebase:firebase-analytics'
 
     // Billing system.
-    implementation 'com.android.billingclient:billing:7.0.0'
+    implementation 'com.android.billingclient:billing:7.1.1'
 
     // Ads.
-    implementation 'com.google.android.gms:play-services-ads:23.2.0'
+    implementation 'com.google.android.gms:play-services-ads:23.5.0'
 }

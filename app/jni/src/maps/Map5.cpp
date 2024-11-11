@@ -373,7 +373,7 @@ namespace MagneticBall3D
             skeleton->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 120.0f;
             skeleton->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            skeleton->garbageAmountToDie = 14;
+            skeleton->garbageAmountToDie = 12;
             skeleton->reducePlayerSpeedWhenDie = 1.0f;
             skeleton->experienceWhenDie = 30;
             skeleton->getController().moveSpeed = 55.0f;
@@ -409,7 +409,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            copShield->garbageAmountToDie = 14;
+            copShield->garbageAmountToDie = 12;
             copShield->reducePlayerSpeedWhenDie = 1.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 45.0f;
@@ -446,7 +446,7 @@ namespace MagneticBall3D
             ghoul->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             ghoul->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            ghoul->garbageAmountToDie = 25;
+            ghoul->garbageAmountToDie = 20;
             ghoul->reducePlayerSpeedWhenDie = 1.0f;
             ghoul->experienceWhenDie = 35;
             ghoul->getController().moveSpeed = 35.0f;
