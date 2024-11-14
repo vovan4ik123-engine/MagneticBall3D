@@ -47,6 +47,9 @@ namespace MagneticBall3D
         m_guiObjects.push_back(playerJoystick);
         playerJoystick->disable();
 
+        m_shotButton = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
+                                                                   0.8f, 0.33f, 0.15f / screenAR, 0.15f);
+
         m_countersFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.032f);
 
         // Common textures.
@@ -107,6 +110,10 @@ namespace MagneticBall3D
             {
                 go->updateBeforePhysics();
             }
+        }
+        if(EnumsAndVars::SettingsMenu::interfaceGUI && EnumsAndVars::MapsProgress::currentMapIndex > 0)
+        {
+            m_shotButton->updateBeforePhysics();
         }
 
         if(m_statisticsShow && Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
@@ -359,6 +366,11 @@ namespace MagneticBall3D
                 {
                     go->draw();
                 }
+            }
+
+            if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
+            {
+                m_shotButton->draw();
             }
 
             // Counters texture.

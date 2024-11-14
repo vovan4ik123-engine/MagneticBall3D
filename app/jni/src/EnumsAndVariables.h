@@ -118,14 +118,14 @@ namespace EnumsAndVars
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase\nspeed limit.", 20,
                                                            5.0f, "+5%", true, 20},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
-                                                           5.0f, "+5%", true, 10},
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 100,
+                                                           5.0f, "+5%", true, 5},
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
                                                            5.0f, "+5%", true, 20},
                                                           {"Accelerate", 0, "Increase\nacceleration.", 10,
-                                                           3.0f, "+3%", true, 30},
+                                                           3.0f, "+3%", true, 40},
                                                           {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
-                                                           5.0f, "+5%", true, 10},
+                                                           5.0f, "+5%", true, 5},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3,
                                                            100.0f, "+1", false, 90}
                                                           };
@@ -205,7 +205,7 @@ namespace EnumsAndVars
     constexpr inline int playerCostOfResurrectionCrystals = 5;
     constexpr inline float playerDamageGroundRadiusAfterFallDefault = 0.0f;
     inline float playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
-    inline float playerResurrectTime = -9999.0f;
+    inline float playerResurrectTime = -999999.0f;
 
     // Garbage.
     constexpr inline float garbageLinearDamping = 0.1f;
@@ -223,7 +223,7 @@ namespace EnumsAndVars
     inline float garbageDamageTakenMultiplier = garbageDamageTakenMultiplierDefault;
     constexpr inline float garbageCommonSpawnMinDistance = 80.0f;
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
-    constexpr inline float garbageCommonSpawnTimeDefault = -9999.0f; // Sec.
+    constexpr inline float garbageCommonSpawnTimeDefault = -999999.0f; // Sec.
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
     constexpr inline float garbageCommonSpawnDelay = 2.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 3;
@@ -237,12 +237,15 @@ namespace EnumsAndVars
     constexpr inline float playerMassToGarbageMassRatio = 1.0f / (playerMass / garbageMass);
 
     // Damage.
-    constexpr inline float damageCrushDefault = 1.0f; // Crush damage per ball/one magnetized garbage.
-    inline float damageCrush = damageCrushDefault;
-    constexpr inline float damageShootDefault = 15.0f; // Damage of shot garbage.
-    inline float damageShoot = damageShootDefault;
-    constexpr inline float damageShootReloadTimeDefault = 0.6f;
-    inline float damageShootReloadTime = damageShootReloadTimeDefault;
+    constexpr inline float damageSmashDefault = 1.0f; // Smash damage per ball/one magnetized garbage.
+    inline float damageSmash = damageSmashDefault;
+    constexpr inline float damageShotDefault = 10.0f; // Damage of shot garbage.
+    inline float damageShot = damageShotDefault;
+    constexpr inline float damageShotReloadTimeDefault = 0.2f;
+    inline float damageShotReloadTime = damageShotReloadTimeDefault;
+    inline float damageLastShotTime = -999999.0f;
+    constexpr inline float damageShotPower = 0.35f;
+    inline std::vector<int> garbageAsBulletsIDs;
 
     // Enemies.
     constexpr inline int enemiesMaxPathfindingInOneFrame = 10;
@@ -290,7 +293,7 @@ namespace EnumsAndVars
         playerStartHP = playerStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
         playerResurrectionAttempts = playerResurrectionAttemptsDefault * int(1.0f + std::roundf(allPlayerTalents[5].getPercentsToImprove() / 100.0f));
         playerDamageGroundRadiusAfterFall = playerDamageGroundRadiusAfterFallDefault;
-        playerResurrectTime = -9999.0f;
+        playerResurrectTime = -999999.0f;
 
         // Garbage.
         garbageMaxCountMagnetized = garbageMaxCountMagnetizedDefault * (1.0f + allPlayerTalents[2].getPercentsToImprove() / 100.0f);
@@ -302,9 +305,11 @@ namespace EnumsAndVars
         garbageStartHP = garbageStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
 
         // Damage.
-        damageCrush = damageCrushDefault;
-        damageShoot = damageShootDefault;
-        damageShootReloadTime = damageShootReloadTimeDefault;
+        damageSmash = damageSmashDefault;
+        damageShot = damageShotDefault;
+        damageShotReloadTime = damageShotReloadTimeDefault;
+        damageLastShotTime = -999999.0f;
+        garbageAsBulletsIDs.clear();
 
         // Enemies.
         enemiesCurrentPathfindingIndex = enemiesCurrentPathfindingIndexDefault;

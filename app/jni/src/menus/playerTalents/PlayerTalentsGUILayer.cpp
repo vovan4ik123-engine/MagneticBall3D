@@ -292,7 +292,10 @@ namespace MagneticBall3D
 
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0742f, 0.0742f, 0.0742f, 1.0f});
             ImGui::PushFont(m_valueToAddFont);
-            ImGui::SetCursorPos(ImVec2(0.705f * GUIWidth, 0.77f * GUIHeight));
+            if(m_selectedPriceCrystals < 10)
+                ImGui::SetCursorPos(ImVec2(0.713f * GUIWidth, 0.77f * GUIHeight));
+            else
+                ImGui::SetCursorPos(ImVec2(0.705f * GUIWidth, 0.77f * GUIHeight));
             ImGui::Text("%d", m_selectedPriceCrystals);
             ImGui::PopFont();
             ImGui::PopStyleColor(1);

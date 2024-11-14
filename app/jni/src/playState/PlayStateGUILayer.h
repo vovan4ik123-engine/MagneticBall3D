@@ -28,6 +28,7 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::SliderHorizontal> slider3;
 
         std::shared_ptr<Beryll::Joystick> playerJoystick;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_shotButton;
 
         float progressBarHP = 1.0f;
         float progressBarXP = 0.0f;

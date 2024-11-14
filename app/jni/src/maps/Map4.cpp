@@ -94,6 +94,36 @@ namespace MagneticBall3D
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
+        // Sync HP bar rotations with camera direction.
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+        glm::vec3 HPBarOrigin{0.0f};
+        for(const auto& enemy : m_allAnimatedEnemies)
+        {
+            if(enemy->getIsEnabledDraw() && enemy->getIsNeedShowHPBar())
+            {
+                if(enemy->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1)
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.5f;
+                    m_enemySize1HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize1HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize1HPBar.draw();
+                }
+                else
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.7f;
+                    m_enemySize2HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize2HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize2HPBar.draw();
+                }
+            }
+        }
+
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
@@ -355,7 +385,8 @@ namespace MagneticBall3D
                                                             Beryll::CollisionFlags::STATIC,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY);
+                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                            13.0f);
 
             mummy->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             mummy->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -372,8 +403,7 @@ namespace MagneticBall3D
             mummy->attackDistance = 50.0f + Beryll::RandomGenerator::getFloat() * 150.0f;
             mummy->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            mummy->garbageAmountToDie = 12;
-            mummy->reducePlayerSpeedWhenDie = 0.5f;
+            mummy->reducePlayerSpeedWhenTakeSmashDamage = 0.5f;
             mummy->experienceWhenDie = 25;
             mummy->getController().moveSpeed = 25.0f;
 
@@ -390,7 +420,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionFlags::STATIC,
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY);
+                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_2,
+                                                        21.0f);
 
             camel->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             camel->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -408,8 +439,7 @@ namespace MagneticBall3D
             camel->attackDistance = 150.0f + Beryll::RandomGenerator::getFloat() * 250.0f;
             camel->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            camel->garbageAmountToDie = 20;
-            camel->reducePlayerSpeedWhenDie = 0.5f;
+            camel->reducePlayerSpeedWhenTakeSmashDamage = 0.5f;
             camel->experienceWhenDie = 35;
             camel->getController().moveSpeed = 35.0f;
 
@@ -426,7 +456,8 @@ namespace MagneticBall3D
                                                          Beryll::CollisionFlags::STATIC,
                                                          Beryll::CollisionGroups::NONE,
                                                          Beryll::CollisionGroups::NONE,
-                                                         Beryll::SceneObjectGroups::ENEMY);
+                                                         Beryll::SceneObjectGroups::ENEMY_SIZE_2,
+                                                         26.0f);
 
             chariotJavelin->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             chariotJavelin->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -443,8 +474,7 @@ namespace MagneticBall3D
             chariotJavelin->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 200.0f;
             chariotJavelin->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
-            chariotJavelin->garbageAmountToDie = 25;
-            chariotJavelin->reducePlayerSpeedWhenDie = 0.5f;
+            chariotJavelin->reducePlayerSpeedWhenTakeSmashDamage = 0.5f;
             chariotJavelin->experienceWhenDie = 50;
             chariotJavelin->getController().moveSpeed = 50.0f;
 

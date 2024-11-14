@@ -46,11 +46,11 @@ namespace MagneticBall3D
                   Beryll::CollisionFlags collFlag,
                   Beryll::CollisionGroups collGroup,
                   Beryll::CollisionGroups collMask,
-                  Beryll::SceneObjectGroups sceneGroup);
+                  Beryll::SceneObjectGroups sceneGroup,
+                  float health);
         ~BaseEnemy() override;
         
         virtual void update(const glm::vec3& playerOrigin) = 0;
-        virtual void die() = 0;
         void attack(const glm::vec3& playerOrigin);
         virtual void freeStaticPosition() = 0; // Implement for StaticEnemy.
         virtual void setPathArray(std::vector<glm::ivec2> pathArray, const int indexToMove) = 0; // Implement for MovableEnemy.
@@ -63,6 +63,16 @@ namespace MagneticBall3D
         bool getIsTimeToAttack() { return (m_lastAttackTime + timeBetweenAttacks) < EnumsAndVars::mapPlayTimeSec; }
         bool getIsAttacking() { return (m_lastAttackTime + timeBetweenAttacks) > EnumsAndVars::mapPlayTimeSec; }
         bool getIsDelayBeforeFirstAttack() { return (m_prepareToFirstAttackStartTime + timeBetweenAttacks) > EnumsAndVars::mapPlayTimeSec; }
+
+        float getMaxHP() { return m_maxHP; }
+        float getCurrentHP() { return m_currentHP; }
+        bool getIsNeedShowHPBar()
+        {
+            return m_smashDamageLastTimeApplied + 2.0f > EnumsAndVars::mapPlayTimeSec ||
+                   m_shotDamageLastTimeApplied + 2.0f > EnumsAndVars::mapPlayTimeSec;
+        }
+        bool takeSmashDamage(const float d);
+        void takeShotDamage(const float d);
 
         bool castRayToFindYPos = false;
         glm::ivec2 getCurrentPointToMove2DInt() { return m_currentPointToMove2DIntegers; };
@@ -85,20 +95,26 @@ namespace MagneticBall3D
         float damageRadius = 0.0f; // Use if unit AttackType::RANGE_DAMAGE_RADIUS.
         float timeBetweenAttacks = 0.0f; // Sec.
 
-        int garbageAmountToDie = 0; // Amount of garbage inside player magnetic radius to kill this unit by collision.
-        float reducePlayerSpeedWhenDie = 0.0f;
+        float reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
         int experienceWhenDie = 0;
 
     protected:
         virtual void move() = 0;
+        virtual void die() = 0;
 
-        static int m_activeEnemiesCount;
-        bool m_isEnabled = false;
+        bool m_isEnabled = true;
         bool m_isCanMove = true; // False for StaticUnit.
 
+        // Hp.
+        const float m_maxHP = 0.0f;
+        float m_currentHP = 0.0f;
+        float m_smashDamageLastTimeApplied = -999999.0f;
+        float m_shotDamageLastTimeApplied = -999999.0f;
+        const float m_smashDamageApplyDelay = 1.0f; // Smash damage can be applied once per sec.
+
         // Attack data.
-        float m_lastAttackTime = -9999.0f; // Sec.
-        float m_prepareToFirstAttackStartTime = -9999.0f;
+        float m_lastAttackTime = -999999.0f; // Sec.
+        float m_prepareToFirstAttackStartTime = -999999.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
         // Pathfinding.
@@ -107,5 +123,8 @@ namespace MagneticBall3D
         glm::ivec2 m_currentPointToMove2DIntegers{0};
         glm::vec3 m_currentPointToMove3DFloats{0.0f};
         glm::vec3 m_startPointMoveFrom{0.0f};
+
+    private:
+        static int m_activeEnemiesCount;
     };
 }

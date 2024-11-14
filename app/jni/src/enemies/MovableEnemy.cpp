@@ -8,14 +8,16 @@ namespace MagneticBall3D
                                Beryll::CollisionFlags collFlag,
                                Beryll::CollisionGroups collGroup,
                                Beryll::CollisionGroups collMask,
-                               Beryll::SceneObjectGroups sceneGroup)
-                                 : BaseEnemy(filePath,
-                                             collisionMassKg,
-                                             wantCollisionCallBack,
-                                             collFlag,
-                                             collGroup,
-                                             collMask,
-                                             sceneGroup)
+                               Beryll::SceneObjectGroups sceneGroup,
+                               float health)
+                               : BaseEnemy(filePath,
+                                           collisionMassKg,
+                                           wantCollisionCallBack,
+                                           collFlag,
+                                           collGroup,
+                                           collMask,
+                                           sceneGroup,
+                                           health)
     {
         unitState = UnitState::MOVE;
     }
@@ -27,6 +29,12 @@ namespace MagneticBall3D
 
     void MovableEnemy::update(const glm::vec3& playerOrigin)
     {
+        if(m_currentHP <= 0.0f)
+        {
+            die();
+            return;
+        }
+
         if(getIsAttacking())
         {
             //BR_INFO("%s", "MovableEnemy is attacking");

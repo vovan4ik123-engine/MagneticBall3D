@@ -356,7 +356,8 @@ namespace MagneticBall3D
                                                              Beryll::CollisionFlags::STATIC,
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::CollisionGroups::NONE,
-                                                             Beryll::SceneObjectGroups::ENEMY);
+                                                             Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                             13.0f);
 
             janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -371,8 +372,7 @@ namespace MagneticBall3D
             janitorRake->attackDistance = 50.0f;
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            janitorRake->garbageAmountToDie = 12;
-            janitorRake->reducePlayerSpeedWhenDie = 0.0f;
+            janitorRake->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
             janitorRake->experienceWhenDie = 0;
 
             m_animatedOrDynamicObjects.push_back(janitorRake);
@@ -395,7 +395,8 @@ namespace MagneticBall3D
                                                             Beryll::CollisionFlags::STATIC,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY);
+                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                           13.0f);
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -412,8 +413,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 100.0f;
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 12;
-            copShield->reducePlayerSpeedWhenDie = 0.0f;
+            copShield->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
             copShield->experienceWhenDie = 0;
 
             m_animatedOrDynamicObjects.push_back(copShield);

@@ -3,7 +3,7 @@
 namespace MagneticBall3D
 {
     std::vector<StaticPosition> StaticEnemy::staticPositions{};
-    float StaticEnemy::spawnTime = -9999.0f;
+    float StaticEnemy::spawnTime = -999999.0f;
     float StaticEnemy::spawnDelay = 20.0f;
 
     StaticEnemy::StaticEnemy(const char* filePath,
@@ -12,14 +12,16 @@ namespace MagneticBall3D
                              Beryll::CollisionFlags collFlag,
                              Beryll::CollisionGroups collGroup,
                              Beryll::CollisionGroups collMask,
-                             Beryll::SceneObjectGroups sceneGroup)
-                                 : BaseEnemy(filePath,
-                                             collisionMassKg,
-                                             wantCollisionCallBack,
-                                             collFlag,
-                                             collGroup,
-                                             collMask,
-                                             sceneGroup)
+                             Beryll::SceneObjectGroups sceneGroup,
+                             float health)
+                             : BaseEnemy(filePath,
+                                         collisionMassKg,
+                                         wantCollisionCallBack,
+                                         collFlag,
+                                         collGroup,
+                                         collMask,
+                                         sceneGroup,
+                                         health)
     {
         unitState = UnitState::STAND_AIMING;
         m_isCanMove = false;
@@ -32,6 +34,12 @@ namespace MagneticBall3D
 
     void StaticEnemy::update(const glm::vec3& playerOrigin)
     {
+        if(m_currentHP <= 0.0f)
+        {
+            die();
+            return;
+        }
+
         if(getIsAttacking())
         {
             //BR_INFO("%s", "StaticEnemy is attacking");

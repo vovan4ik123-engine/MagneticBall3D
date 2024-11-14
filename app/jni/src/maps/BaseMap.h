@@ -38,9 +38,9 @@ namespace MagneticBall3D
 
 
         // After physics.
-        void updateEnemiesAndTheirsAttacks();
         void updateAndMagnetizeGarbage();
         void damageEnemies();
+        void updateEnemiesAndTheirsAttacks();
         void handleCamera();
         void updateGUI();
 
@@ -75,7 +75,10 @@ namespace MagneticBall3D
         std::vector<std::shared_ptr<Beryll::BaseAnimatedObject>> m_animatedObjForShadowMap;
 
         std::shared_ptr<BaseBoss> m_boss;
-        Beryll::BannerProgressTwoColors m_bossHpBar{30.0f, 5.0f, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};
+        Beryll::BannerProgressTwoColors m_bossHpBar{30.0f, 5.0f, {0.8516f, 0.0859f, 0.1641f}, {0.6289f, 1.0f, 0.3086f}};
+
+        Beryll::BannerProgressTwoColors m_enemySize1HPBar{4.0f, 0.8f, {0.8516f, 0.0859f, 0.1641f}, {0.6289f, 1.0f, 0.3086f}};
+        Beryll::BannerProgressTwoColors m_enemySize2HPBar{10.0f, 1.8f, {0.8516f, 0.0859f, 0.1641f}, {0.6289f, 1.0f, 0.3086f}};
 
 //        std::function<void(std::vector<std::shared_ptr<Beryll::SceneObject>>&, int, int)> m_updateAfterPhysics;
 //        m_updateAfterPhysics = [](std::vector<std::shared_ptr<Beryll::SceneObject>>& v, int begin, int end) -> void // -> void = return type.
@@ -90,8 +93,9 @@ namespace MagneticBall3D
 
         // Some IDs.
         int m_idOfFirstGarbage = 0;
+        int m_idOfGarbageBullet = 0;
         int m_idOfFirstEnemy = 0;
-        int m_idOfNearestEnemy = 0;
+        int m_idOfEnemyTarget = 0; // Target to shoot garbage.
 
         // Shaders and light.
         std::shared_ptr<Beryll::Shader> m_simpleObjSunLightShadows;

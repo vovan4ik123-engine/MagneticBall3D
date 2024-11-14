@@ -89,6 +89,36 @@ namespace MagneticBall3D
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
+        // Sync HP bar rotations with camera direction.
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+        glm::vec3 HPBarOrigin{0.0f};
+        for(const auto& enemy : m_allAnimatedEnemies)
+        {
+            if(enemy->getIsEnabledDraw() && enemy->getIsNeedShowHPBar())
+            {
+                if(enemy->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1)
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.5f;
+                    m_enemySize1HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize1HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize1HPBar.draw();
+                }
+                else
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.7f;
+                    m_enemySize2HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize2HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize2HPBar.draw();
+                }
+            }
+        }
+
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
@@ -418,7 +448,8 @@ namespace MagneticBall3D
                                                             Beryll::CollisionFlags::STATIC,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY);
+                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                            6.0f);
 
             rat->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             rat->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -433,8 +464,7 @@ namespace MagneticBall3D
             rat->attackDistance = 80.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             rat->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat();
 
-            rat->garbageAmountToDie = 5;
-            rat->reducePlayerSpeedWhenDie = 5.0f;
+            rat->reducePlayerSpeedWhenTakeSmashDamage = 5.0f;
             rat->experienceWhenDie = 25;
             rat->getController().moveSpeed = 55.0f;
 
@@ -451,7 +481,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionFlags::STATIC,
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY);
+                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                        13.0f);
 
             guard->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             guard->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -469,8 +500,7 @@ namespace MagneticBall3D
             guard->attackDistance = 100.0f + Beryll::RandomGenerator::getFloat() * 100.0f;
             guard->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            guard->garbageAmountToDie = 12;
-            guard->reducePlayerSpeedWhenDie = 10.0f;
+            guard->reducePlayerSpeedWhenTakeSmashDamage = 10.0f;
             guard->experienceWhenDie = 30;
             guard->getController().moveSpeed = 40.0f;
 
@@ -487,7 +517,8 @@ namespace MagneticBall3D
                                                             Beryll::CollisionFlags::STATIC,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY);
+                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                            13.0f);
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -505,8 +536,7 @@ namespace MagneticBall3D
             copShield->attackDistance = 70.0f + Beryll::RandomGenerator::getFloat() * 50.0f;
             copShield->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            copShield->garbageAmountToDie = 12;
-            copShield->reducePlayerSpeedWhenDie = 10.0f;
+            copShield->reducePlayerSpeedWhenTakeSmashDamage = 10.0f;
             copShield->experienceWhenDie = 30;
             copShield->getController().moveSpeed = 45.0f;
 
@@ -523,7 +553,8 @@ namespace MagneticBall3D
                                                         Beryll::CollisionFlags::STATIC,
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY);
+                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                        13.0f);
 
             sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -540,8 +571,7 @@ namespace MagneticBall3D
             sniper->attackDistance = 2500.0f;
             sniper->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            sniper->garbageAmountToDie = 12;
-            sniper->reducePlayerSpeedWhenDie = 0.0f;
+            sniper->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
             sniper->experienceWhenDie = 30;
 
             m_animatedOrDynamicObjects.push_back(sniper);
@@ -557,7 +587,8 @@ namespace MagneticBall3D
                                                        Beryll::CollisionFlags::STATIC,
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::CollisionGroups::NONE,
-                                                       Beryll::SceneObjectGroups::ENEMY);
+                                                       Beryll::SceneObjectGroups::ENEMY_SIZE_2,
+                                                       26.0f);
 
             junkyardBusRocket->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             junkyardBusRocket->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -576,8 +607,7 @@ namespace MagneticBall3D
             junkyardBusRocket->attackDistance = 200.0f + Beryll::RandomGenerator::getFloat() * 250.0f;
             junkyardBusRocket->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
-            junkyardBusRocket->garbageAmountToDie = 25;
-            junkyardBusRocket->reducePlayerSpeedWhenDie = 20.0f;
+            junkyardBusRocket->reducePlayerSpeedWhenTakeSmashDamage = 20.0f;
             junkyardBusRocket->experienceWhenDie = 200;
             junkyardBusRocket->getController().moveSpeed = 50.0f;
 

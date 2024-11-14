@@ -10,14 +10,16 @@ namespace MagneticBall3D
                          Beryll::CollisionFlags collFlag,
                          Beryll::CollisionGroups collGroup,
                          Beryll::CollisionGroups collMask,
-                         Beryll::SceneObjectGroups sceneGroup)
+                         Beryll::SceneObjectGroups sceneGroup,
+                         float health)
                          : AnimatedCollidingCharacter(filePath,
                                                       collisionMassKg,
                                                       wantCollisionCallBack,
                                                       collFlag,
                                                       collGroup,
                                                       collMask,
-                                                      sceneGroup)
+                                                      sceneGroup),
+                         m_maxHP(health), m_currentHP(health)
     {
         disableEnemy();
     }
@@ -30,32 +32,36 @@ namespace MagneticBall3D
 
     void BaseEnemy::enableEnemy()
     {
+        if(m_isEnabled)
+            return;
+
         enableDraw();
         enableUpdate();
         enableCollisionMesh();
 
-        if(!m_isEnabled)
-        {
-            ++BaseEnemy::m_activeEnemiesCount;
-            m_isEnabled = true;
-        }
+        ++BaseEnemy::m_activeEnemiesCount;
+        m_isEnabled = true;
+        m_currentHP = m_maxHP;
     }
 
     void BaseEnemy::disableEnemy()
     {
+        if(!m_isEnabled)
+            return;
+
         disableDraw();
         disableUpdate();
         disableCollisionMesh();
 
-        m_lastAttackTime = -9999.0f;
-        m_prepareToFirstAttackStartTime = -9999.0f;
+        m_lastAttackTime = -999999.0f;
+        m_prepareToFirstAttackStartTime = -999999.0f;
         m_prepareToFirstAttack = true;
+        m_smashDamageLastTimeApplied = -999999.0f;
+        m_shotDamageLastTimeApplied = -999999.0f;
 
-        if(m_isEnabled)
-        {
+        if(BaseEnemy::m_activeEnemiesCount > 0)
             --BaseEnemy::m_activeEnemiesCount;
-            m_isEnabled = false;
-        }
+        m_isEnabled = false;
     }
 
     void BaseEnemy::attack(const glm::vec3& playerOrigin)
@@ -68,5 +74,23 @@ namespace MagneticBall3D
 
         Sounds::playSoundEffect(attackSound);
         Sounds::playSoundEffect(attackHitSound);
+    }
+
+    bool BaseEnemy::takeSmashDamage(const float d)
+    {
+        if(m_smashDamageLastTimeApplied + m_smashDamageApplyDelay < EnumsAndVars::mapPlayTimeSec)
+        {
+            m_currentHP -= d;
+            m_smashDamageLastTimeApplied = EnumsAndVars::mapPlayTimeSec;
+            return true;
+        }
+
+        return false;
+    }
+
+    void BaseEnemy::takeShotDamage(const float d)
+    {
+        m_currentHP -= d;
+        m_shotDamageLastTimeApplied = EnumsAndVars::mapPlayTimeSec;
     }
 }

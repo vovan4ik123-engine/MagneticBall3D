@@ -45,7 +45,7 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d)
+        void takeDamage(const float d)
         {
             if(m_takeDamageTime + m_takeDamageDelay < EnumsAndVars::mapPlayTimeSec)
             {
@@ -70,13 +70,13 @@ namespace MagneticBall3D
     protected:
         void move();
 
-        bool m_isEnabled = false;
+        bool m_isEnabled = true;
         BossType m_bossType = BossType::NONE;
         bool m_isCanMove = true;
 
         // Attack data.
-        float m_lastAttackTime = -9999.0f; // Sec.
-        float m_prepareToFirstAttackStartTime = -9999.0f;
+        float m_lastAttackTime = -999999.0f; // Sec.
+        float m_prepareToFirstAttackStartTime = -999999.0f;
         bool m_prepareToFirstAttack = true; // When was outside attack radius and enter inside attack radius.
 
         // HP.

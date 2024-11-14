@@ -136,8 +136,8 @@ namespace MagneticBall3D
         disableCollisionMesh();
 
         m_isEnabled = false;
-        m_lastAttackTime = -9999.0f;
-        m_prepareToFirstAttackStartTime = -9999.0f;
+        m_lastAttackTime = -999999.0f;
+        m_prepareToFirstAttackStartTime = -999999.0f;
         m_prepareToFirstAttack = true;
     }
 }

@@ -88,7 +88,8 @@ namespace MagneticBall3D
             {
                 so->updateAfterPhysics();
 
-                if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY ||
+                if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1 ||
+                   so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_2 ||
                    so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
                 {
                     if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.98f))
@@ -198,6 +199,28 @@ namespace MagneticBall3D
 
     void BaseMap::handleControls()
     {
+        if(m_gui->m_shotButton->getIsPressedFingerStillOnScreen() &&
+           EnumsAndVars::damageLastShotTime + EnumsAndVars::damageShotReloadTime < EnumsAndVars::mapPlayTimeSec &&
+           m_idOfEnemyTarget > 0 && m_idOfGarbageBullet > 0)
+        {
+            // Shoot.
+            const int enemyIndex = m_idOfEnemyTarget - m_idOfFirstEnemy;
+            const int garbageIndex = m_idOfGarbageBullet - m_idOfFirstGarbage;
+            BR_ASSERT((enemyIndex >= 0 && enemyIndex < m_allAnimatedEnemies.size()), "%s", "index of enemy is wrong.");
+            BR_ASSERT((garbageIndex >= 0 && garbageIndex < m_allGarbage.size()), "%s", "index of garbage is wrong.");
+
+            glm::vec3 shotPos = m_player->getObj()->getOrigin();
+            if(!m_player->getIsOnAir())
+                shotPos.y += m_player->getObj()->getXZRadius() * 2.0f;
+
+            const glm::vec3 shotDir = glm::normalize(m_allAnimatedEnemies[enemyIndex]->getOrigin() - shotPos);
+            shotPos += shotDir * (6.0f + EnumsAndVars::garbageCountMagnetized * 0.3f);
+
+            m_allGarbage[garbageIndex].shoot(shotPos, shotDir);
+
+            EnumsAndVars::damageLastShotTime = EnumsAndVars::mapPlayTimeSec;
+        }
+
         if(m_gui->playerJoystick->getIsTouched())
         {
             const glm::vec2 joyDir2D = m_gui->playerJoystick->getDirection();
@@ -339,6 +362,7 @@ namespace MagneticBall3D
     void BaseMap::updateAndMagnetizeGarbage()
     {
         EnumsAndVars::garbageCountMagnetized = 0;
+        m_idOfGarbageBullet = 0; // Take any magnetized garbage. It will shot.
 
         // Check if magnetized garbage still in playerMagneticRadius.
         for(auto& wrapper : m_allGarbage)
@@ -350,6 +374,9 @@ namespace MagneticBall3D
                glm::distance(m_player->getObj()->getOrigin(), wrapper.obj->getOrigin()) < EnumsAndVars::playerMagneticRadius)
             {
                 ++EnumsAndVars::garbageCountMagnetized;
+
+                if(m_idOfGarbageBullet == 0 && wrapper.getCanBeShot())
+                    m_idOfGarbageBullet = wrapper.obj->getID();
             }
             else
             {
@@ -424,10 +451,83 @@ namespace MagneticBall3D
 
                 wrapper.obj->setLinearVelocity(objToPlayerDir * std::max(15.0f, m_player->getMoveSpeed() * 0.8f));
                 wrapper.pauseResetVelocity(0.25f);
+                wrapper.pauseShot(EnumsAndVars::playerMagneticRadius / 100.0f); // Bigger radius require more time to magnetize garbage close to ball.
+                                                                                        // Lets pause shot for 1 sec if magnetic radius = 100. For 2 sec if = 200.
             }
         }
 
         //BR_INFO("magnetized %d resetCount %d", EnumsAndVariables::garbageCountMagnetized, resetCount);
+    }
+
+    void BaseMap::damageEnemies()
+    {
+        float radiusToDamage = 6.0f + EnumsAndVars::garbageCountMagnetized * 0.08f;
+
+        if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
+        {
+            radiusToDamage = EnumsAndVars::playerDamageGroundRadiusAfterFall;
+            //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
+            Sounds::playSoundEffect(SoundType::FELL_ON_GROUND);
+        }
+
+        float speedToReduce = 0.0f;
+        int addToExp = 0;
+        m_idOfEnemyTarget = 0;
+        float distanceNearestEnemyTarget = 999999.0f;
+        const float distancePlayerToCamera = glm::distance(Beryll::Camera::getCameraPos(), m_player->getObj()->getOrigin());
+        for(const auto& enemy : m_allAnimatedEnemies)
+        {
+            if(!enemy->getIsEnabledUpdate())
+                continue;
+
+            const float distancePlayerToEnemy = glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin());
+            const float distanceEnemyToCamera = glm::distance(Beryll::Camera::getCameraPos(), enemy->getOrigin());
+            const glm::vec3 cameraToEnemyDir = glm::normalize(enemy->getOrigin() - Beryll::Camera::getCameraPos());
+
+            if(enemy->getIsEnabledDraw() &&
+               distancePlayerToEnemy < distanceNearestEnemyTarget &&
+               distancePlayerToCamera < distanceEnemyToCamera &&
+               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXYZ(), cameraToEnemyDir) < 0.35f)
+            {
+                distanceNearestEnemyTarget = distancePlayerToEnemy;
+                m_idOfEnemyTarget = enemy->getID();
+            }
+
+            // Apply smash damage.
+            if(distancePlayerToEnemy < radiusToDamage + (enemy->getXZRadius() * 0.5f))
+            {
+                if(enemy->takeSmashDamage((EnumsAndVars::garbageCountMagnetized + 1) * EnumsAndVars::damageSmash)) // True = damage to enemy was applied.
+                    speedToReduce += enemy->reducePlayerSpeedWhenTakeSmashDamage;
+
+                if(enemy->getCurrentHP() <= 0.0f)
+                    spawnGarbage(1, enemy->dieGarbageType, enemy->getOrigin());
+            }
+
+            // Apply shot damage.
+            for(const int garbageAsBulletID : EnumsAndVars::garbageAsBulletsIDs)
+            {
+                const int index = garbageAsBulletID - m_idOfFirstGarbage;
+                BR_ASSERT((index >= 0 && index < m_allGarbage.size()), "%s", "index of garbage is wrong.");
+
+                // Apply if distance < 10 and did not damage this enemy yet.
+                if(glm::distance(m_allGarbage[index].obj->getOrigin(), enemy->getOrigin()) < 10.0f &&
+                   std::find(m_allGarbage[index].damagedEnemyIDs.begin(), m_allGarbage[index].damagedEnemyIDs.end(), enemy->getID()) == m_allGarbage[index].damagedEnemyIDs.end())
+                {
+                    enemy->takeShotDamage(EnumsAndVars::damageShot);
+                    m_allGarbage[index].damagedEnemyIDs.push_back(enemy->getID());
+                }
+            }
+
+            // Check if enemy died.
+            if(enemy->getCurrentHP() <= 0.0f)
+            {
+                addToExp += enemy->experienceWhenDie;
+                ++EnumsAndVars::enemiesKilledCount;
+            }
+        }
+
+        m_player->reduceSpeed(speedToReduce);
+        m_player->addToExp(addToExp);
     }
 
     void BaseMap::updatePathfindingAndSpawnEnemies()
@@ -608,7 +708,7 @@ namespace MagneticBall3D
                         else if(enemy->attackType == AttackType::MAGNETIZE_GARBAGE)
                         {
                             //BR_INFO("%s", "Garbage under attack =) by AttackType::MAGNETIZE_GARBAGE");
-                            m_allGarbage[garbageIndex].pauseMagnetization(1.25f);
+                            m_allGarbage[garbageIndex].pauseMagnetization(1.5f);
                             m_allGarbage[garbageIndex].obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
                             glm::vec3 impulseDir = glm::normalize(enemy->getOrigin() - m_allGarbage[garbageIndex].obj->getOrigin());
                             impulseDir.y += 0.4f;
@@ -646,56 +746,12 @@ namespace MagneticBall3D
                                                     orig, glm::vec3(0.0f), 10);
     }
 
-    void BaseMap::damageEnemies()
-    {
-        float radiusToKill = 7.0f + EnumsAndVars::garbageCountMagnetized * 0.1f;
-
-        if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
-        {
-            radiusToKill = EnumsAndVars::playerDamageGroundRadiusAfterFall;
-            //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
-            Sounds::playSoundEffect(SoundType::FELL_ON_GROUND);
-        }
-
-        float speedToReduce = 0.0f;
-        int addToExp = 0;
-        m_idOfNearestEnemy = 0;
-        float distanceToNearestEnemy = 999999.0f;
-        for(const auto& enemy : m_allAnimatedEnemies)
-        {
-            if(!enemy->getIsEnabledUpdate())
-                continue;
-
-            const float distancePlayerToEnemy = glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin());
-
-            if(enemy->getIsEnabledDraw() && distancePlayerToEnemy < distanceToNearestEnemy)
-            {
-                distanceToNearestEnemy = distancePlayerToEnemy;
-                m_idOfNearestEnemy = enemy->getID();
-            }
-
-            if(enemy->garbageAmountToDie <= EnumsAndVars::garbageCountMagnetized && distancePlayerToEnemy < radiusToKill + (enemy->getXZRadius() * 0.5f))
-            {
-                enemy->die();
-                speedToReduce += enemy->reducePlayerSpeedWhenDie;
-                addToExp += enemy->experienceWhenDie;
-                ++EnumsAndVars::enemiesKilledCount;
-                spawnGarbage(1, enemy->dieGarbageType, enemy->getOrigin());
-
-                //BR_INFO("Kill enemy. active count: %d", AnimatedCollidingEnemy::getActiveCount());
-            }
-        }
-
-        m_player->reduceSpeed(speedToReduce);
-        m_player->addToExp(addToExp);
-    }
-
     void BaseMap::handleCamera()
     {
         const std::vector<Beryll::Finger>& fingers = Beryll::EventHandler::getFingers();
         for(const Beryll::Finger& f : fingers)
         {
-            if(f.handled || f.normalizedPos.x < 0.5f)
+            if(f.normalizedPos.x < 0.5f)
                 continue;
 
             if(f.downEvent)

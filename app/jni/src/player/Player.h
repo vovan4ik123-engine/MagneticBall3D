@@ -64,7 +64,7 @@ namespace MagneticBall3D
 
         float getMaxHP() { return m_maxHP; }
         float getCurrentHP() { return m_currentHP; }
-        void takeDamage(float d) { m_currentHP -= (d * std::max(0.0f, EnumsAndVars::playerDamageTakenMultiplier)); }
+        void takeDamage(const float d) { m_currentHP -= (d * std::max(0.0f, EnumsAndVars::playerDamageTakenMultiplier)); }
         bool getIsDie() { return m_currentHP <= 0.0f; }
         void resurrect() { m_currentHP = m_maxHP; }
 
@@ -86,9 +86,9 @@ namespace MagneticBall3D
         glm::vec3 m_playerLinearVelocityXZ{0.0f};
 
         // Gravity.
-        float m_lastTimeOnBuilding = -9999.0f; // Sec.
-        float m_lastTimeOnGround = -9999.0f; // Sec.
-        float m_lastTimeOnJumpPad = -9999.0f; // Sec.
+        float m_lastTimeOnBuilding = -999999.0f; // Sec.
+        float m_lastTimeOnGround = -999999.0f; // Sec.
+        float m_lastTimeOnJumpPad = -999999.0f; // Sec.
         const float m_applyAirGravityDelay = 0.4f; // Sec. For player after he stop collide with buildings.
         bool m_isOnGround = false;
         bool m_isOnBuilding = false;
