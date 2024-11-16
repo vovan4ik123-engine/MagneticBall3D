@@ -20,12 +20,15 @@ namespace MagneticBall3D
 
         m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/TalentsBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_selectedTalentBackground = Beryll::Renderer::createTexture("GUI/menus/playerTalents/SelectedTalentBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
         m_maxSpeedButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MaxSpeed.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_magneticRadiusButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/MagneticRadius.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_amountOfMagnetizedGarbageButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AmountOfMagnetizedGarbage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_accelerateFasterButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AccelerateFaster.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_ballAndGarbageProtectionButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/BallAndGarbageProtection.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectionAttemptsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/ResurrectionAttempts.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_smashDamageButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/SmashDamage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_shotDamageButtonTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/ShotDamage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_improveByAdTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImage.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_improveByAdTimerTexture = Beryll::Renderer::createTexture("GUI/menus/playerTalents/AdImageTimer.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -98,6 +101,18 @@ namespace MagneticBall3D
             m_resurrectionAttemptsButtonClicked = false;
             BR_INFO("%s", "Resurrection attempts clicked.");
             selectTalent(5);
+        }
+        else if(m_smashDamageButtonClicked)
+        {
+            m_smashDamageButtonClicked = false;
+            BR_INFO("%s", "Smash damage clicked.");
+            selectTalent(6);
+        }
+        else if(m_shotDamageButtonClicked)
+        {
+            m_shotDamageButtonClicked = false;
+            BR_INFO("%s", "Shot damage clicked.");
+            selectTalent(7);
         }
         else if(m_improveByAdClicked)
         {
@@ -184,28 +199,36 @@ namespace MagneticBall3D
                                                  ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
 
         // Max speed.
-        ImGui::SetCursorPos(ImVec2(0.028f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.1f * GUIHeight));
         m_maxSpeedButtonClicked = ImGui::ImageButton("maxSpeedButton", reinterpret_cast<ImTextureID>(m_maxSpeedButtonTexture->getID()),
                                                      ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
         // Magnetic radius.
-        ImGui::SetCursorPos(ImVec2(0.191f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.21f * GUIWidth, 0.25f * GUIHeight));
         m_magneticRadiusButtonClicked = ImGui::ImageButton("magneticRadiusButton", reinterpret_cast<ImTextureID>(m_magneticRadiusButtonTexture->getID()),
                                                            ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
         // Amount of magnetized garbage.
-        ImGui::SetCursorPos(ImVec2(0.354f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.36f * GUIWidth, 0.25f * GUIHeight));
         m_amountOfMagnetizedGarbageButtonClicked = ImGui::ImageButton("amountOfMagnetizedGarbageButton", reinterpret_cast<ImTextureID>(m_amountOfMagnetizedGarbageButtonTexture->getID()),
                                                                       ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
         // Accelerate faster.
-        ImGui::SetCursorPos(ImVec2(0.517f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.51f * GUIWidth, 0.25f * GUIHeight));
         m_accelerateFasterButtonClicked = ImGui::ImageButton("accelerateFasterButton", reinterpret_cast<ImTextureID>(m_accelerateFasterButtonTexture->getID()),
                                                              ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
         // Ball and garbage protection.
-        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.66f * GUIWidth, 0.25f * GUIHeight));
         m_ballAndGarbageProtectionButtonClicked = ImGui::ImageButton("ballAndGarbageProtectionButton", reinterpret_cast<ImTextureID>(m_ballAndGarbageProtectionButtonTexture->getID()),
                                                                      ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
         //Resurrection attempts.
-        ImGui::SetCursorPos(ImVec2(0.843f * GUIWidth, 0.245f * GUIHeight));
+        ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.1f * GUIHeight));
         m_resurrectionAttemptsButtonClicked = ImGui::ImageButton("resurrectionAttemptsButton", reinterpret_cast<ImTextureID>(m_resurrectionAttemptsButtonTexture->getID()),
+                                                                 ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
+        // Smash damage.
+        ImGui::SetCursorPos(ImVec2(0.06f * GUIWidth, 0.427f * GUIHeight));
+        m_smashDamageButtonClicked = ImGui::ImageButton("smashDamageButton", reinterpret_cast<ImTextureID>(m_smashDamageButtonTexture->getID()),
+                                                     ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
+        // Shot Damage.
+        ImGui::SetCursorPos(ImVec2(0.81f * GUIWidth, 0.427f * GUIHeight));
+        m_shotDamageButtonClicked = ImGui::ImageButton("shotDamageButton", reinterpret_cast<ImTextureID>(m_shotDamageButtonTexture->getID()),
                                                                  ImVec2(0.14f * GUIWidth, 0.305f * GUIHeight));
 
         // Menu selected talent.
@@ -394,35 +417,35 @@ namespace MagneticBall3D
         float currentValue = 0.0f;
         if(m_selectedIndex == 0) // Max speed. = 0
         {
-            m_selectedTalentTexture = m_maxSpeedButtonTexture;
             currentValue = EnumsAndVars::playerMaxSpeedXZDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 1) // Magnetic radius. = 1
         {
-            m_selectedTalentTexture = m_magneticRadiusButtonTexture;
             currentValue = EnumsAndVars::playerMagneticRadiusDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 2) // Amount of magnetized garbage. = 2
         {
-            m_selectedTalentTexture = m_amountOfMagnetizedGarbageButtonTexture;
             currentValue = EnumsAndVars::garbageMaxCountMagnetizedDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 3) // Accelerate faster. = 3
         {
-            m_selectedTalentTexture = m_accelerateFasterButtonTexture;
             currentValue = EnumsAndVars::playerImpulseFactorOnGroundDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
-
-            currentValue *= 10.0f; // Because original value too small. Show it for user in range 10...15.
         }
         else if(m_selectedIndex == 4) // Ball and garbage protection. = 4
         {
-            m_selectedTalentTexture = m_ballAndGarbageProtectionButtonTexture;
             currentValue = EnumsAndVars::garbageStartHPDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else if(m_selectedIndex == 5) // Resurrection attempts. = 5
         {
-            m_selectedTalentTexture = m_resurrectionAttemptsButtonTexture;
             currentValue = EnumsAndVars::playerResurrectionAttemptsDefault * int(1.0f + std::roundf(EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f));
+        }
+        else if(m_selectedIndex == 6) // Smash damage. = 6
+        {
+            currentValue = EnumsAndVars::damageSmashDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
+        }
+        else if(m_selectedIndex == 7) // Shot Damage. = 7
+        {
+            currentValue = EnumsAndVars::damageShotDefault * (1.0f + EnumsAndVars::allPlayerTalents[m_selectedIndex].getPercentsToImprove() / 100.0f);
         }
         else
         {
@@ -435,7 +458,7 @@ namespace MagneticBall3D
         m_selectedCanBeImprovedByAds = EnumsAndVars::allPlayerTalents[m_selectedIndex].canBeImprovedByAd;
 
         std::stringstream stream;
-        stream << std::fixed << std::setprecision(1) << currentValue;
+        stream << std::fixed << std::setprecision(2) << currentValue;
         m_selectedValue = stream.str();
 
         m_selectedCurrentLevel = EnumsAndVars::allPlayerTalents[m_selectedIndex].currentLevel;

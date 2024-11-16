@@ -81,7 +81,7 @@ namespace DataBaseHelper
 
                 // Player talents.
                 executeSql(createTablePlayerTalents);
-                BR_ASSERT((EnumsAndVars::allPlayerTalents.size() >= 6), "%s", "allPlayerTalents wrong size.")
+                BR_ASSERT((EnumsAndVars::allPlayerTalents.size() >= 6), "%s", "allPlayerTalents has wrong size.")
                 insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[0].name, EnumsAndVars::allPlayerTalents[0].currentLevel);
                 insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[1].name, EnumsAndVars::allPlayerTalents[1].currentLevel);
                 insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[2].name, EnumsAndVars::allPlayerTalents[2].currentLevel);
@@ -295,14 +295,20 @@ namespace DataBaseHelper
             storeDatabaseMigrationsLastScriptApplied(1);
             BR_INFO("%s", "Data base migration script 1 applied.");
         }
-        //        // No else here. Only new if().
-        //        if(lastScriptAppliedIndex < 2)
-        //        {
-        //            applyDatabaseMigrationsScript2();
-        //            storeDatabaseMigrationsLastScriptApplied(2);
-        //            BR_INFO("%s", "Data base migration script 2 applied.");
-        //        }
-        //        // No else here. Only new if().
+        // No else here. Only new if().
+        if(lastScriptAppliedIndex < 2)
+        {
+            BR_ASSERT((EnumsAndVars::allPlayerTalents.size() >= 8), "%s", "allPlayerTalents has wrong size.")
+            insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[6].name, EnumsAndVars::allPlayerTalents[6].currentLevel);
+            insertPlayerTalentsTalent(EnumsAndVars::allPlayerTalents[7].name, EnumsAndVars::allPlayerTalents[7].currentLevel);
+            storeDatabaseMigrationsLastScriptApplied(2);
+            BR_INFO("%s", "Data base migration script 2 applied.");
+        }
+        // No else here. Only new if().
+//        if(lastScriptAppliedIndex < 3)
+//        {
+//
+//        }
     }
 
     void readPlayerTalents()

@@ -160,11 +160,8 @@ namespace MagneticBall3D
         if(m_currentLevelExp >= m_currentLevelMaxExp)
         {
             ++m_currentLevel;
-            BR_INFO("Got level: %d. Healed for: %f", m_currentLevel, EnumsAndVars::playerRestoreHPAtNewLevel);
+            BR_INFO("Got level: %d.", m_currentLevel);
             m_nextLevelAchieved = true; // Achievement should be handled by Improvements class.
-            m_currentHP += EnumsAndVars::playerRestoreHPAtNewLevel;
-            if(m_currentHP > m_maxHP)
-                m_currentHP = m_maxHP;
 
             int levelExpOverflow = m_currentLevelExp - m_currentLevelMaxExp;
             m_currentLevelExp = std::max(0, levelExpOverflow);

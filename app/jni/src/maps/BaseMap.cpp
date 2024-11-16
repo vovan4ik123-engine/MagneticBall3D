@@ -211,10 +211,11 @@ namespace MagneticBall3D
 
             glm::vec3 shotPos = m_player->getObj()->getOrigin();
             if(!m_player->getIsOnAir())
-                shotPos.y += m_player->getObj()->getXZRadius() * 2.0f;
+                shotPos.y += 6.0f;
 
-            const glm::vec3 shotDir = glm::normalize(m_allAnimatedEnemies[enemyIndex]->getOrigin() - shotPos);
-            shotPos += shotDir * (6.0f + EnumsAndVars::garbageCountMagnetized * 0.3f);
+            glm::vec3 shotDir = glm::normalize(m_allAnimatedEnemies[enemyIndex]->getOrigin() - shotPos);
+            shotDir.y += 0.05f;
+            shotPos += shotDir * (10.0f + EnumsAndVars::garbageCountMagnetized * 0.3f);
 
             m_allGarbage[garbageIndex].shoot(shotPos, shotDir);
 
@@ -451,8 +452,8 @@ namespace MagneticBall3D
 
                 wrapper.obj->setLinearVelocity(objToPlayerDir * std::max(15.0f, m_player->getMoveSpeed() * 0.8f));
                 wrapper.pauseResetVelocity(0.25f);
-                wrapper.pauseShot(EnumsAndVars::playerMagneticRadius / 100.0f); // Bigger radius require more time to magnetize garbage close to ball.
-                                                                                        // Lets pause shot for 1 sec if magnetic radius = 100. For 2 sec if = 200.
+                wrapper.pauseShot(EnumsAndVars::playerMagneticRadius / 150.0f); // Bigger radius require more time to magnetize garbage close to ball.
+                                                                                        // Lets pause shot for 1 sec if magnetic radius = 150. For 2 sec if = 300.
             }
         }
 
@@ -483,11 +484,15 @@ namespace MagneticBall3D
             const float distancePlayerToEnemy = glm::distance(enemy->getOrigin(), m_player->getObj()->getOrigin());
             const float distanceEnemyToCamera = glm::distance(Beryll::Camera::getCameraPos(), enemy->getOrigin());
             const glm::vec3 cameraToEnemyDir = glm::normalize(enemy->getOrigin() - Beryll::Camera::getCameraPos());
+            glm::vec3 cameraToEnemyDirXZ = glm::normalize(glm::vec3{cameraToEnemyDir.x, 0.0f, cameraToEnemyDir.z});
+            if(glm::any(glm::isnan(cameraToEnemyDirXZ)) || glm::length(cameraToEnemyDirXZ) == 0.0f)
+                cameraToEnemyDirXZ = glm::normalize(enemy->getOrigin() - Beryll::Camera::getCameraPos());
 
             if(enemy->getIsEnabledDraw() &&
                distancePlayerToEnemy < distanceNearestEnemyTarget &&
                distancePlayerToCamera < distanceEnemyToCamera &&
-               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXYZ(), cameraToEnemyDir) < 0.35f)
+               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXZ(), cameraToEnemyDirXZ) < 0.08f && // Left - right angle
+               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXYZ(), cameraToEnemyDir) < 0.26f) // Up - down angle.
             {
                 distanceNearestEnemyTarget = distancePlayerToEnemy;
                 m_idOfEnemyTarget = enemy->getID();
@@ -498,9 +503,6 @@ namespace MagneticBall3D
             {
                 if(enemy->takeSmashDamage((EnumsAndVars::garbageCountMagnetized + 1) * EnumsAndVars::damageSmash)) // True = damage to enemy was applied.
                     speedToReduce += enemy->reducePlayerSpeedWhenTakeSmashDamage;
-
-                if(enemy->getCurrentHP() <= 0.0f)
-                    spawnGarbage(1, enemy->dieGarbageType, enemy->getOrigin());
             }
 
             // Apply shot damage.
@@ -515,6 +517,8 @@ namespace MagneticBall3D
                 {
                     enemy->takeShotDamage(EnumsAndVars::damageShot);
                     m_allGarbage[index].damagedEnemyIDs.push_back(enemy->getID());
+                    if(enemy->getCurrentHP() > 0.0f)
+                        Sounds::playSoundEffect(SoundType::GARBAGE_AS_BULLET_HIT);
                 }
             }
 
@@ -523,6 +527,7 @@ namespace MagneticBall3D
             {
                 addToExp += enemy->experienceWhenDie;
                 ++EnumsAndVars::enemiesKilledCount;
+                spawnGarbage(1, enemy->dieGarbageType, enemy->getOrigin(), true);
             }
         }
 
@@ -822,7 +827,7 @@ namespace MagneticBall3D
                                   (m_player->getMoveSpeedXZ() * 0.4f) +
                                   (EnumsAndVars::garbageCountMagnetized * 0.3f) +
                                   std::min(45.0f, m_player->getObj()->getOrigin().y * 0.16f)
-                                  - std::min(0.0f, m_eyesLookAngleY * 1.1f);
+                                  - std::min(-10.0f, m_eyesLookAngleY * 1.1f);
 
         glm::vec3 cameraPosForRay = m_cameraFront - m_cameraAngleOffset * maxCameraDistance;
 
@@ -863,7 +868,7 @@ namespace MagneticBall3D
         Beryll::Camera::setCameraFrontPos(m_cameraFront);
     }
 
-    void BaseMap::spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint)
+    void BaseMap::spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint, const bool addImpulses)
     {
         int spawnedCount = 0;
         for(auto& wrapper : m_allGarbage)
@@ -880,6 +885,19 @@ namespace MagneticBall3D
                 wrapper.obj->setOrigin(spawnPoint);
 
                 ++spawnedCount;
+
+                if(type != GarbageType::COMMON && addImpulses)
+                {
+                    wrapper.obj->applyCentralImpulse(glm::vec3{0.0f, Beryll::RandomGenerator::getFloat() * 0.03f + 0.01f, 0.0f});
+
+                    float rotationPower = (Beryll::RandomGenerator::getFloat() - 0.5f) * 0.25f;
+                    if(rotationPower > 0.0f)
+                        rotationPower += 0.09f;
+                    else
+                        rotationPower -= 0.09f;
+
+                    wrapper.obj->applyTorqueImpulse(glm::vec3{rotationPower, 0.0f, rotationPower});
+                }
             }
         }
     }

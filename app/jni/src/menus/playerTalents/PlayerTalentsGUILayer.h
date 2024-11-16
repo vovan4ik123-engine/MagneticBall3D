@@ -58,10 +58,15 @@ namespace MagneticBall3D
         // Resurrection attempts. = 5
         std::shared_ptr<Beryll::Texture> m_resurrectionAttemptsButtonTexture;
         bool m_resurrectionAttemptsButtonClicked = false;
+        // Smash damage. = 6
+        std::shared_ptr<Beryll::Texture> m_smashDamageButtonTexture;
+        bool m_smashDamageButtonClicked = false;
+        // Shot Damage. = 7
+        std::shared_ptr<Beryll::Texture> m_shotDamageButtonTexture;
+        bool m_shotDamageButtonClicked = false;
 
         // Menu selected talent.
         std::unique_ptr<Beryll::Texture> m_selectedTalentBackground;
-        std::shared_ptr<Beryll::Texture> m_selectedTalentTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTexture;
         std::shared_ptr<Beryll::Texture> m_improveByAdTimerTexture;
         std::shared_ptr<Beryll::Texture> m_improveByCrystalsTexture;

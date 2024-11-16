@@ -8,6 +8,7 @@ namespace MagneticBall3D
     : obj(std::move(so)), m_type(type), m_maxHP(health), m_currentHP(health)
     {
         disableGarbage();
+        damagedEnemyIDs.reserve(20);
     }
 
     Garbage::~Garbage()
@@ -25,7 +26,8 @@ namespace MagneticBall3D
         if(!m_canBeMagnetized && m_pauseMagnetizationTime + m_pauseMagnetizationDelay < EnumsAndVars::mapPlayTimeSec)
             m_canBeMagnetized = true;
 
-        if(m_addedToGarbageAsBulletArray && m_shotTime + 3.0f < EnumsAndVars::mapPlayTimeSec)
+        // Garbage can do damage as bullet only 2 sec after shot.
+        if(m_addedToGarbageAsBulletArray && m_shotTime + 2.0f < EnumsAndVars::mapPlayTimeSec)
         {
             const auto iter = std::find(EnumsAndVars::garbageAsBulletsIDs.begin(), EnumsAndVars::garbageAsBulletsIDs.end(), obj->getID());
             BR_ASSERT((iter != EnumsAndVars::garbageAsBulletsIDs.end()), "%s", "garbage must exists in garbageAsBulletsIDs.");
@@ -94,7 +96,6 @@ namespace MagneticBall3D
     void Garbage::shoot(const glm::vec3& shootPos, const glm::vec3& shootDir)
     {
         pauseMagnetization(2.0f);
-        pauseShot(2.0f);
         obj->setGravity(EnumsAndVars::garbageGravityDefault, false, false);
         obj->setOrigin(shootPos, true);
         obj->applyCentralImpulse(shootDir * EnumsAndVars::damageShotPower);

@@ -92,11 +92,6 @@ namespace MagneticBall3D
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 2."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 3."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerXPMultiplier += EnumsAndVars::playerXPMultiplierDefault * 0.08f; BR_INFO("%s", "Block PLAYER_EXP_GAIN pressed 4."); }}}},
-                                                    {ImprovementType::PLAYER_HEAL_AT_NEW_LVL,          m_maxLevel, {{[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 0."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 1."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 2."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 3."); }},
-                                                                                                                             {[&]() { EnumsAndVars::playerRestoreHPAtNewLevel += m_player->getMaxHP() * 0.04f; BR_INFO("%s", "Block PLAYER_HEAL_AT_NEW_LVL pressed 4."); }}}},
                                                     {ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL, m_maxLevel, {{[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 0."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 1."); }},
                                                                                                                              {[&]() { EnumsAndVars::playerDamageGroundRadiusAfterFall += 25.0f; BR_INFO("%s", "Block PLAYER_DAMAGE_GROUND_AFTER_FALL pressed 2."); }},
@@ -171,12 +166,6 @@ namespace MagneticBall3D
                 mainTexturePath = "GUI/improvements/PLAYER_EXP_GAIN.jpg";
                 selectedTexturePath = "GUI/improvements/PLAYER_EXP_GAIN_SELECTED.jpg";
                 BR_INFO("%s", "Created GUI block for PLAYER_EXP_GAIN.");
-            }
-            else if(info.type == ImprovementType::PLAYER_HEAL_AT_NEW_LVL)
-            {
-                mainTexturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL.jpg";
-                selectedTexturePath = "GUI/improvements/PLAYER_HEAL_AT_NEW_LVL_SELECTED.jpg";
-                BR_INFO("%s", "Created GUI block for PLAYER_HEAL_AT_NEW_LVL.");
             }
             else if(info.type == ImprovementType::PLAYER_DAMAGE_GROUND_AFTER_FALL)
             {

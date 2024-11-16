@@ -48,7 +48,7 @@ namespace MagneticBall3D
                                const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
         void emitParticlesExplosion(const glm::vec3& orig, const int count, const float sizeBegin, const float sizeEnd,
                                     const glm::vec4& colorBegin, const glm::vec4& colorEnd, const float lifeTime);
-        void spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint);
+        void spawnGarbage(const int count, const GarbageType type, glm::vec3 spawnPoint, const bool addImpulses = false);
 
         void updateSunPosition(const glm::vec3& pos, float clipCubeWidth, float clipCubeHeight, float clipCubeDepth);
         void respawnEnemiesAtNewDistance(float minDistance);
@@ -121,9 +121,9 @@ namespace MagneticBall3D
         float m_eyesLookAngleY = -13.0f; // Degrees.
         glm::vec3 m_cameraAngleOffset{0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 15.0f;
+        const float m_startCameraDistance = 24.0f;
         float m_cameraDistance = m_startCameraDistance;
-        const float m_startCameraYOffset = 6.0f;
+        const float m_startCameraYOffset = 9.0f;
         float m_cameraYOffset = m_startCameraYOffset;
         bool m_cameraHit = false;
 

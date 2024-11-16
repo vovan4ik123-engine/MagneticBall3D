@@ -83,6 +83,8 @@ namespace MagneticBall3D
         // Map0Tutorial.
         std::unique_ptr<Beryll::Texture> m_tutorialMoveTexture;
         std::unique_ptr<Beryll::Texture> m_tutorialCameraTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialCompletedTexture;
+        bool m_tutorialCompletedButtonClicked = false;
 
         // Resurrect.
         std::unique_ptr<Beryll::Texture> m_resurrectTexture;
@@ -135,7 +137,6 @@ namespace MagneticBall3D
         static std::atomic<bool> m_resurrectAdSuccess;
         static std::atomic<bool> m_winPrize1AdSuccess;
         static std::atomic<bool> m_winPrize2AdSuccess;
-        static std::atomic<bool> m_exitAdSuccess;
         static std::atomic<bool> m_killAllAdSuccess;
         static std::atomic<bool> m_commonAdError;
 

@@ -49,6 +49,10 @@ namespace MagneticBall3D
     std::string Sounds::m_stoneHit1 = "sounds/StoneHit1.wav";
     std::string Sounds::m_stoneHit2 = "sounds/StoneHit2.wav";
     std::string Sounds::m_stoneHit3 = "sounds/StoneHit3.wav";
+    std::string Sounds::m_garbageAsBulletHit1 = "sounds/GarbageAsBulletHit1.wav";
+    std::string Sounds::m_garbageAsBulletHit2 = "sounds/GarbageAsBulletHit2.wav";
+    float Sounds::m_garbageAsBulletHitTime = 0.0f;
+    float Sounds::m_garbageAsBulletHitDelay = 0.15f;
 
     // Music.
     std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
@@ -62,13 +66,14 @@ namespace MagneticBall3D
         m_tankShotTime = 0.0f;
         m_fellOnGroundTime = 0.0f;
         m_bigRocketLaunchTime = 0.0f;
+        m_garbageAsBulletHitTime = 0.0f;
 
         stopBackgroundMusic();
     }
 
     void Sounds::loadSounds()
     {
-        if(m_loaded)  { return; }
+        if(m_loaded) { return; }
 
         Beryll::SoundsManager::loadWAV(m_pistolShot1, 11);
         Beryll::SoundsManager::loadWAV(m_pistolShot2, 11);
@@ -100,6 +105,8 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_stoneHit1, 30);
         Beryll::SoundsManager::loadWAV(m_stoneHit2, 30);
         Beryll::SoundsManager::loadWAV(m_stoneHit3, 30);
+        Beryll::SoundsManager::loadWAV(m_garbageAsBulletHit1, 20);
+        Beryll::SoundsManager::loadWAV(m_garbageAsBulletHit2, 20);
 
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 15);
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 15);
@@ -115,15 +122,6 @@ namespace MagneticBall3D
 
     void Sounds::playSoundEffect(SoundType type)
     {
-        if(type == SoundType::FELL_ON_GROUND)
-        {
-            if(m_fellOnGroundTime + m_fellOnGroundDelay < EnumsAndVars::mapPlayTimeSec)
-            {
-                m_fellOnGroundTime = EnumsAndVars::mapPlayTimeSec;
-                Beryll::SoundsManager::playWAV(m_fellOnGround1);
-            }
-        }
-
         if(type == SoundType::NONE || m_numberOfCurrentlyPlayingWAV >= 8)
             return;
 
@@ -149,9 +147,29 @@ namespace MagneticBall3D
 
             return;
         }
+        else if(type == SoundType::GARBAGE_AS_BULLET_HIT)
+        {
+            if(m_garbageAsBulletHitTime + m_garbageAsBulletHitDelay < EnumsAndVars::mapPlayTimeSec)
+            {
+                m_garbageAsBulletHitTime = EnumsAndVars::mapPlayTimeSec;
+
+                if(Beryll::RandomGenerator::getFloat() < 0.5f)
+                    Beryll::SoundsManager::playWAV(m_garbageAsBulletHit1);
+                else
+                    Beryll::SoundsManager::playWAV(m_garbageAsBulletHit2);
+            }
+        }
         else if(type == SoundType::JUMPPAD)
         {
             Beryll::SoundsManager::playWAV(m_jumppad);
+        }
+        if(type == SoundType::FELL_ON_GROUND)
+        {
+            //if(m_fellOnGroundTime + m_fellOnGroundDelay < EnumsAndVars::mapPlayTimeSec)
+            {
+                m_fellOnGroundTime = EnumsAndVars::mapPlayTimeSec;
+                Beryll::SoundsManager::playWAV(m_fellOnGround1);
+            }
         }
 
         if(m_numberOfCurrentlyPlayingWAV >= 4)
@@ -213,8 +231,7 @@ namespace MagneticBall3D
         }
         else if(type == SoundType::STICK_HIT)
         {
-            float randomValue = Beryll::RandomGenerator::getFloat();
-            if(randomValue < 0.5f)
+            if(Beryll::RandomGenerator::getFloat() < 0.5f)
                 Beryll::SoundsManager::playWAV(m_stickHit1);
             else
                 Beryll::SoundsManager::playWAV(m_stickHit2);
@@ -233,8 +250,7 @@ namespace MagneticBall3D
         }
         else if(type == SoundType::SPIT)
         {
-            float randomValue = Beryll::RandomGenerator::getFloat();
-            if(randomValue < 0.5f)
+            if(Beryll::RandomGenerator::getFloat() < 0.5f)
                 Beryll::SoundsManager::playWAV(m_spit1);
             else
                 Beryll::SoundsManager::playWAV(m_spit2);

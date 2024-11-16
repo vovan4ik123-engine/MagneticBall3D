@@ -313,7 +313,7 @@ namespace DataBaseHelper
         executeSql(std::regex_replace(updateDailyRewardTookDay, std::regex(":::tookDay"), std::to_string(value)));
     }
 
-    // Migration script 1.
+    // Migration script 1. Add column to table Settings.
     const inline std::string alterTableSettings1 = "ALTER TABLE Settings ADD InterfaceGUI INTEGER;";
     const inline std::string updateSettingsInterfaceGUI = "UPDATE Settings SET InterfaceGUI = :::showGUI;";
     inline void storeSettingsInterfaceGUI(bool showGUI)
@@ -324,4 +324,7 @@ namespace DataBaseHelper
 
         executeSql(std::regex_replace(updateSettingsInterfaceGUI, std::regex(":::showGUI"), std::to_string(intValue)));
     }
+
+    // Migration script 2. Add two rows to Talents.
+
 }

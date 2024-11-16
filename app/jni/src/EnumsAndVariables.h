@@ -123,11 +123,15 @@ namespace EnumsAndVars
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
                                                            5.0f, "+5%", true, 20},
                                                           {"Accelerate", 0, "Increase\nacceleration.", 10,
-                                                           3.0f, "+3%", true, 40},
+                                                           3.0f, "+3%", true, 20},
                                                           {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
                                                            5.0f, "+5%", true, 5},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3,
-                                                           100.0f, "+1", false, 90}
+                                                           100.0f, "+1", false, 90},
+                                                          {"SmashDamage", 0, "Increase smash damage\nper one garbage.", 100,
+                                                           5.0f, "+5%", true, 5},
+                                                          {"ShotDamage", 0, "Increase\nshot damage.", 100,
+                                                           5.0f, "+5%", true, 5}
                                                           };
     struct GameDifficulty
     {
@@ -194,8 +198,6 @@ namespace EnumsAndVars
     inline float playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
     constexpr inline float playerSpeedReductionMultiplierDefault = 1.0f;
     inline float playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
-    constexpr inline float playerRestoreHPAtNewLevelDefault = 0.0f;
-    inline float playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
     constexpr inline float playerXPMultiplierDefault = 1.0f;
     inline float playerXPMultiplier = playerXPMultiplierDefault;
     constexpr inline float playerStartHPDefault = 500.0f;
@@ -239,9 +241,9 @@ namespace EnumsAndVars
     // Damage.
     constexpr inline float damageSmashDefault = 1.0f; // Smash damage per ball/one magnetized garbage.
     inline float damageSmash = damageSmashDefault;
-    constexpr inline float damageShotDefault = 10.0f; // Damage of shot garbage.
+    constexpr inline float damageShotDefault = 8.0f; // Damage of shot garbage.
     inline float damageShot = damageShotDefault;
-    constexpr inline float damageShotReloadTimeDefault = 0.2f;
+    constexpr inline float damageShotReloadTimeDefault = 0.5f;
     inline float damageShotReloadTime = damageShotReloadTimeDefault;
     inline float damageLastShotTime = -999999.0f;
     constexpr inline float damageShotPower = 0.35f;
@@ -288,7 +290,6 @@ namespace EnumsAndVars
         playerCurrentSpeed = 0;
         playerDamageTakenMultiplier = playerDamageTakenMultiplierDefault;
         playerSpeedReductionMultiplier = playerSpeedReductionMultiplierDefault;
-        playerRestoreHPAtNewLevel = playerRestoreHPAtNewLevelDefault;
         playerXPMultiplier = playerXPMultiplierDefault;
         playerStartHP = playerStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
         playerResurrectionAttempts = playerResurrectionAttemptsDefault * int(1.0f + std::roundf(allPlayerTalents[5].getPercentsToImprove() / 100.0f));
@@ -305,8 +306,8 @@ namespace EnumsAndVars
         garbageStartHP = garbageStartHPDefault * (1.0f + allPlayerTalents[4].getPercentsToImprove() / 100.0f);
 
         // Damage.
-        damageSmash = damageSmashDefault;
-        damageShot = damageShotDefault;
+        damageSmash = damageSmashDefault * (1.0f + allPlayerTalents[6].getPercentsToImprove() / 100.0f);
+        damageShot = damageShotDefault * (1.0f + allPlayerTalents[7].getPercentsToImprove() / 100.0f);
         damageShotReloadTime = damageShotReloadTimeDefault;
         damageLastShotTime = -999999.0f;
         garbageAsBulletsIDs.clear();

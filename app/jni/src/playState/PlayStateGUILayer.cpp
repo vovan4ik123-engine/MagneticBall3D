@@ -10,7 +10,6 @@ namespace MagneticBall3D
     std::atomic<bool> PlayStateGUILayer::m_resurrectAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_winPrize1AdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_winPrize2AdSuccess = false;
-    std::atomic<bool> PlayStateGUILayer::m_exitAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_killAllAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_commonAdError = false;
 
@@ -48,7 +47,7 @@ namespace MagneticBall3D
         playerJoystick->disable();
 
         m_shotButton = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
-                                                                   0.8f, 0.33f, 0.15f / screenAR, 0.15f);
+                                                                   0.8f, 0.38f, 0.15f / screenAR, 0.15f);
 
         m_countersFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.032f);
 
@@ -61,6 +60,7 @@ namespace MagneticBall3D
         m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialMoveTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tutorialCameraTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialCamera.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_tutorialCompletedTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialCompleted.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_resurrectByCrystalsButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByCrystals.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -81,7 +81,6 @@ namespace MagneticBall3D
         PlayStateGUILayer::m_resurrectAdSuccess = false;
         PlayStateGUILayer::m_winPrize1AdSuccess = false;
         PlayStateGUILayer::m_winPrize2AdSuccess = false;
-        PlayStateGUILayer::m_exitAdSuccess = false;
         PlayStateGUILayer::m_killAllAdSuccess = false;
         PlayStateGUILayer::m_commonAdError = false;
 
@@ -89,7 +88,6 @@ namespace MagneticBall3D
         m_resurrectAdSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayStateGUILayer::m_resurrectAdSuccess = true; };
         m_winPrize1AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize1AdSuccessCallback()"); PlayStateGUILayer::m_winPrize1AdSuccess = true; };
         m_winPrize2AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize2AdSuccessCallback()"); PlayStateGUILayer::m_winPrize2AdSuccess = true; };
-        m_exitAdSuccessCallback = []() -> void { BR_INFO("%s", "m_exitAdSuccessCallback()"); PlayStateGUILayer::m_exitAdSuccess = true; };
         m_killAllAdSuccessCallback = []() -> void { BR_INFO("%s", "m_killAllAdSuccessCallback()"); PlayStateGUILayer::m_killAllAdSuccess = true; };
         m_commonAdErrorCallback = []() -> void { BR_INFO("%s", "m_commonAdErrorCallback()"); PlayStateGUILayer::m_commonAdError = true; };
     }
@@ -162,49 +160,51 @@ namespace MagneticBall3D
             m_exitButtonClicked = false;
             Sounds::stopBackgroundMusic();
 
-            if(EnumsAndVars::Shop::adsOnMapsDisabled)
-            {
-                m_exitAdSuccessCallback();
-            }
-            else
-            {
-                m_adLoadingMenuShow = true;
-                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showInterstitialAd(m_exitAdSuccessCallback, m_commonAdErrorCallback);
-            }
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
         }
         else if(m_killAllButtonClicked)
         {
             m_killAllButtonClicked = false;
-            Sounds::pauseBackgroundMusic();
             SendStatisticsHelper::sendCustomMessage("kill_all_map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex));
+            m_killAllMenuShow = false;
+            GameStateHelper::resumeGame();
 
-            if(EnumsAndVars::Shop::adsOnMapsDisabled)
-            {
-                m_killAllAdSuccessCallback();
-            }
-            else
-            {
-                m_adLoadingMenuShow = true;
-                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showInterstitialAd(m_killAllAdSuccessCallback, m_commonAdErrorCallback);
-            }
+//            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+//            {
+//                m_killAllAdSuccessCallback();
+//            }
+//            else
+//            {
+//                m_adLoadingMenuShow = true;
+//                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
+//                Beryll::Ads::getInstance()->showInterstitialAd(m_killAllAdSuccessCallback, m_commonAdErrorCallback);
+//            }
         }
         else if(m_winPrize1ButtonClicked)
         {
             BR_INFO("%s", "m_winPrize1ButtonClicked");
             m_winPrize1ButtonClicked = false;
+            m_winMenuShow = false;
 
-            if(EnumsAndVars::Shop::adsOnMapsDisabled)
-            {
-                m_winPrize1AdSuccessCallback();
-            }
-            else
-            {
-                m_adLoadingMenuShow = true;
-                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
-            }
+            EnumsAndVars::CurrencyBalance::crystals += 25;
+            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
+
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
+
+//            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+//            {
+//                m_winPrize1AdSuccessCallback();
+//            }
+//            else
+//            {
+//                m_adLoadingMenuShow = true;
+//                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
+//                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
+//            }
         }
         else if(m_winPrize2ButtonClicked)
         {
@@ -221,6 +221,15 @@ namespace MagneticBall3D
                 SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
             }
+        }
+        else if(m_tutorialCompletedButtonClicked)
+        {
+            m_tutorialCompletedButtonClicked = false;
+            Sounds::stopBackgroundMusic();
+
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
         }
         else if(m_tankWithCommanderButtonClicked)
         {
@@ -283,19 +292,19 @@ namespace MagneticBall3D
             Sounds::resumeBackgroundMusic();
         }
 
-        if(PlayStateGUILayer::m_winPrize1AdSuccess)
-        {
-            PlayStateGUILayer::m_winPrize1AdSuccess = false;
-            m_adLoadingMenuShow = false;
-            m_winMenuShow = false;
-
-            EnumsAndVars::CurrencyBalance::crystals += 25;
-            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
-
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
-        }
+//        if(PlayStateGUILayer::m_winPrize1AdSuccess)
+//        {
+//            PlayStateGUILayer::m_winPrize1AdSuccess = false;
+//            m_adLoadingMenuShow = false;
+//            m_winMenuShow = false;
+//
+//            EnumsAndVars::CurrencyBalance::crystals += 25;
+//            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
+//
+//            GameStateHelper::popState();
+//            GameStateHelper::pushStartMenuState();
+//            return;
+//        }
 
         if(PlayStateGUILayer::m_winPrize2AdSuccess)
         {
@@ -311,23 +320,14 @@ namespace MagneticBall3D
             return;
         }
 
-        if(PlayStateGUILayer::m_exitAdSuccess)
-        {
-            PlayStateGUILayer::m_exitAdSuccess = false;
-
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
-        }
-
-        if(PlayStateGUILayer::m_killAllAdSuccess)
-        {
-            PlayStateGUILayer::m_killAllAdSuccess = false;
-            m_killAllMenuShow = false;
-            m_adLoadingMenuShow = false;
-            Sounds::resumeBackgroundMusic();
-            GameStateHelper::resumeGame();
-        }
+//        if(PlayStateGUILayer::m_killAllAdSuccess)
+//        {
+//            PlayStateGUILayer::m_killAllAdSuccess = false;
+//            m_killAllMenuShow = false;
+//            m_adLoadingMenuShow = false;
+//            Sounds::resumeBackgroundMusic();
+//            GameStateHelper::resumeGame();
+//        }
 
         if(PlayStateGUILayer::m_commonAdError)
         {
@@ -583,17 +583,31 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("winMenu", nullptr, m_noBackgroundNoFrame);
 
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
+            if(EnumsAndVars::MapsProgress::currentMapIndex == 0)
+            {
+                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
+                ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCompletedTexture->getID()),
+                             ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
-            m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",reinterpret_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
-                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+                ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
+                m_tutorialCompletedButtonClicked = ImGui::ImageButton("tutorialCompletedButton", reinterpret_cast<ImTextureID>(m_okTexture->getID()),
+                                                                      ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+            }
+            else
+            {
+                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
+                ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
+                             ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
-            ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
-            m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", reinterpret_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
-                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
+                m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",reinterpret_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
+                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+
+                ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
+                m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", reinterpret_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
+                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
+            }
+
             ImGui::End();
         }
 
