@@ -195,7 +195,6 @@ namespace MagneticBall3D
 
     void MovableEnemy::die()
     {
-        Sounds::playSoundEffect(dieSound);
         disableEnemy();
     }
 }

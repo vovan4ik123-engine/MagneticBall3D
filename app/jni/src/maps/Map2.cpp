@@ -457,7 +457,6 @@ namespace MagneticBall3D
             rat->attackType = AttackType::MAGNETIZE_GARBAGE;
             rat->attackSound = SoundType::NONE;
             rat->attackHitSound = SoundType::NONE;
-            rat->dieSound = SoundType::POP;
             rat->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
             rat->castRayToFindYPos = true;
 
@@ -492,7 +491,6 @@ namespace MagneticBall3D
             guard->attackHitSound = SoundType::PISTOL_HIT;
             guard->attackParticlesColor = glm::vec3{0.945f, 0.82f, 0.48f};
             guard->attackParticlesSize = 0.3f;
-            guard->dieSound = SoundType::POP;
             guard->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
             guard->castRayToFindYPos = true;
 
@@ -528,7 +526,6 @@ namespace MagneticBall3D
             copShield->attackHitSound = SoundType::PISTOL_HIT;
             copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
             copShield->attackParticlesSize = 0.3f;
-            copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
             copShield->castRayToFindYPos = true;
 
@@ -564,7 +561,6 @@ namespace MagneticBall3D
             sniper->attackHitSound = SoundType::PISTOL_HIT;
             sniper->attackParticlesColor = glm::vec3{0.8476f, 0.195f, 0.305f};
             sniper->attackParticlesSize = 0.2f;
-            sniper->dieSound = SoundType::POP;
             sniper->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
             sniper->damage = 15.0f;
@@ -598,7 +594,6 @@ namespace MagneticBall3D
             junkyardBusRocket->attackHitSound = SoundType::NONE;
             junkyardBusRocket->attackParticlesColor = glm::vec3{0.9f, 0.578f, 0.0f};
             junkyardBusRocket->attackParticlesSize = 0.6f;
-            junkyardBusRocket->dieSound = SoundType::POP;
             junkyardBusRocket->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
             junkyardBusRocket->castRayToFindYPos = true;
 

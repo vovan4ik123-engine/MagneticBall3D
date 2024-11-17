@@ -102,7 +102,6 @@ namespace MagneticBall3D
 
     void StaticEnemy::die()
     {
-        Sounds::playSoundEffect(dieSound);
         disableEnemy();
         freeStaticPosition();
     }

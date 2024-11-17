@@ -79,8 +79,6 @@ namespace MagneticBall3D
         static std::string m_stickHit2;
         static std::string m_broomHit1;
         static std::string m_fellOnGround1;
-        static float m_fellOnGroundTime;
-        static float m_fellOnGroundDelay;
         static std::string m_bigRocketLaunch1;
         static float m_bigRocketLaunchTime;
         static float m_bigRocketLaunchDelay;

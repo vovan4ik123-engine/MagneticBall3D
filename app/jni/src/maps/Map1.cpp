@@ -473,7 +473,6 @@ namespace MagneticBall3D
             copPistol->attackHitSound = SoundType::PISTOL_HIT;
             copPistol->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
             copPistol->attackParticlesSize = 0.3f;
-            copPistol->dieSound = SoundType::POP;
             copPistol->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             copPistol->damage = 5.0f;
@@ -508,7 +507,6 @@ namespace MagneticBall3D
             copShield->attackHitSound = SoundType::PISTOL_HIT;
             copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
             copShield->attackParticlesSize = 0.3f;
-            copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             copShield->damage = 5.0f;
@@ -543,7 +541,6 @@ namespace MagneticBall3D
             sniper->attackHitSound = SoundType::PISTOL_HIT;
             sniper->attackParticlesColor = glm::vec3{0.8476f, 0.195f, 0.305f};
             sniper->attackParticlesSize = 0.2f;
-            sniper->dieSound = SoundType::POP;
             sniper->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             sniper->damage = 15.0f;
@@ -577,7 +574,6 @@ namespace MagneticBall3D
             copGrenade->attackHitSound = SoundType::NONE;
             copGrenade->attackParticlesColor = glm::vec3{0.656f, 0.43f, 0.008f};
             copGrenade->attackParticlesSize = 0.4f;
-            copGrenade->dieSound = SoundType::POP;
             copGrenade->dieGarbageType = GarbageType::ENEMY_GARBAGE4;
 
             copGrenade->damage = 1.0f;
@@ -613,7 +609,6 @@ namespace MagneticBall3D
             tank->attackHitSound = SoundType::NONE;
             tank->attackParticlesColor = glm::vec3{0.9f, 0.578f, 0.0f};
             tank->attackParticlesSize = 0.6f;
-            tank->dieSound = SoundType::POP;
             tank->dieGarbageType = GarbageType::ENEMY_GARBAGE5;
 
             tank->damage = 2.0f;

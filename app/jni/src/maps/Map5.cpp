@@ -396,7 +396,6 @@ namespace MagneticBall3D
             skeleton->attackHitSound = SoundType::STONE_HIT;
             skeleton->attackParticlesColor = glm::vec3{0.5f, 0.66f, 0.86f};
             skeleton->attackParticlesSize = 0.3f;
-            skeleton->dieSound = SoundType::POP;
             skeleton->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
             skeleton->castRayToFindYPos = true;
 
@@ -432,7 +431,6 @@ namespace MagneticBall3D
             copShield->attackHitSound = SoundType::PISTOL_HIT;
             copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
             copShield->attackParticlesSize = 0.3f;
-            copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
             copShield->castRayToFindYPos = true;
 
@@ -468,7 +466,6 @@ namespace MagneticBall3D
             ghoul->attackHitSound = SoundType::STONE_HIT;
             ghoul->attackParticlesColor = glm::vec3{0.43f, 0.84f, 0.808f};
             ghoul->attackParticlesSize = 0.6f;
-            ghoul->dieSound = SoundType::POP;
             ghoul->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
             ghoul->castRayToFindYPos = true;
 

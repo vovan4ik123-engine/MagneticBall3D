@@ -486,13 +486,13 @@ namespace MagneticBall3D
             const glm::vec3 cameraToEnemyDir = glm::normalize(enemy->getOrigin() - Beryll::Camera::getCameraPos());
             glm::vec3 cameraToEnemyDirXZ = glm::normalize(glm::vec3{cameraToEnemyDir.x, 0.0f, cameraToEnemyDir.z});
             if(glm::any(glm::isnan(cameraToEnemyDirXZ)) || glm::length(cameraToEnemyDirXZ) == 0.0f)
-                cameraToEnemyDirXZ = glm::normalize(enemy->getOrigin() - Beryll::Camera::getCameraPos());
+                cameraToEnemyDirXZ = cameraToEnemyDir;
 
             if(enemy->getIsEnabledDraw() &&
                distancePlayerToEnemy < distanceNearestEnemyTarget &&
                distancePlayerToCamera < distanceEnemyToCamera &&
                BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXZ(), cameraToEnemyDirXZ) < 0.08f && // Left - right angle
-               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXYZ(), cameraToEnemyDir) < 0.26f) // Up - down angle.
+               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraUp(), cameraToEnemyDir) < 1.7453f) // Upper half of camera view.
             {
                 distanceNearestEnemyTarget = distancePlayerToEnemy;
                 m_idOfEnemyTarget = enemy->getID();
@@ -503,6 +503,9 @@ namespace MagneticBall3D
             {
                 if(enemy->takeSmashDamage((EnumsAndVars::garbageCountMagnetized + 1) * EnumsAndVars::damageSmash)) // True = damage to enemy was applied.
                     speedToReduce += enemy->reducePlayerSpeedWhenTakeSmashDamage;
+
+                if(enemy->getCurrentHP() <= 0.0f)
+                    Sounds::playSoundEffect(SoundType::POP);
             }
 
             // Apply shot damage.
@@ -517,8 +520,7 @@ namespace MagneticBall3D
                 {
                     enemy->takeShotDamage(EnumsAndVars::damageShot);
                     m_allGarbage[index].damagedEnemyIDs.push_back(enemy->getID());
-                    if(enemy->getCurrentHP() > 0.0f)
-                        Sounds::playSoundEffect(SoundType::GARBAGE_AS_BULLET_HIT);
+                    Sounds::playSoundEffect(SoundType::GARBAGE_AS_BULLET_HIT);
                 }
             }
 

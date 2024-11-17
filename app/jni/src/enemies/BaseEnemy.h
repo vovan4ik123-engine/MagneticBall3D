@@ -85,7 +85,6 @@ namespace MagneticBall3D
         SoundType attackHitSound = SoundType::NONE;
         glm::vec3 attackParticlesColor{0.5f};
         float attackParticlesSize = 0.2f;
-        SoundType dieSound = SoundType::NONE;
         GarbageType dieGarbageType = GarbageType::NONE; // Spawn garbage when die.
 
         bool isCanBeSpawned = false;

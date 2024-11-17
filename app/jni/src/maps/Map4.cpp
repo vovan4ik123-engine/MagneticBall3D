@@ -396,7 +396,6 @@ namespace MagneticBall3D
             mummy->attackHitSound = SoundType::STONE_HIT;
             mummy->attackParticlesColor = glm::vec3{0.347f, 0.379f, 0.5586f};
             mummy->attackParticlesSize = 0.2f;
-            mummy->dieSound = SoundType::POP;
             mummy->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             mummy->damage = 1.5f;
@@ -431,7 +430,6 @@ namespace MagneticBall3D
             camel->attackHitSound = SoundType::SPIT;
             camel->attackParticlesColor = glm::vec3{0.59f, 0.828f, 0.555f};
             camel->attackParticlesSize = 0.6f;
-            camel->dieSound = SoundType::POP;
             camel->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             camel->damage = 1.0f;
@@ -467,7 +465,6 @@ namespace MagneticBall3D
             chariotJavelin->attackHitSound = SoundType::STICK_HIT;
             chariotJavelin->attackParticlesColor = glm::vec3{0.633f, 0.7967f, 0.789f};
             chariotJavelin->attackParticlesSize = 0.3f;
-            chariotJavelin->dieSound = SoundType::POP;
             chariotJavelin->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             chariotJavelin->damage = 1.5f;

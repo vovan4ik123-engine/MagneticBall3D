@@ -39,8 +39,6 @@ namespace MagneticBall3D
     std::string Sounds::m_stickHit2 = "sounds/StickHit2.wav";
     std::string Sounds::m_broomHit1 = "sounds/BroomHit1.wav";
     std::string Sounds::m_fellOnGround1 = "sounds/FellOnGround1.wav";
-    float Sounds::m_fellOnGroundTime = 0.0f;
-    float Sounds::m_fellOnGroundDelay = 1.0f;
     std::string Sounds::m_bigRocketLaunch1 = "sounds/BigRocketLaunch1.wav";
     float Sounds::m_bigRocketLaunchTime = 0.0f;
     float Sounds::m_bigRocketLaunchDelay = 0.5f;
@@ -64,7 +62,6 @@ namespace MagneticBall3D
         m_pistolHitTime = 0.0f;
         m_grenadeLauncherShotTime = 0.0f;
         m_tankShotTime = 0.0f;
-        m_fellOnGroundTime = 0.0f;
         m_bigRocketLaunchTime = 0.0f;
         m_garbageAsBulletHitTime = 0.0f;
 
@@ -165,11 +162,7 @@ namespace MagneticBall3D
         }
         if(type == SoundType::FELL_ON_GROUND)
         {
-            //if(m_fellOnGroundTime + m_fellOnGroundDelay < EnumsAndVars::mapPlayTimeSec)
-            {
-                m_fellOnGroundTime = EnumsAndVars::mapPlayTimeSec;
-                Beryll::SoundsManager::playWAV(m_fellOnGround1);
-            }
+            Beryll::SoundsManager::playWAV(m_fellOnGround1);
         }
 
         if(m_numberOfCurrentlyPlayingWAV >= 4)

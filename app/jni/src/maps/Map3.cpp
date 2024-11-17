@@ -384,7 +384,6 @@ namespace MagneticBall3D
             janitorRake->attackType = AttackType::MELEE_DAMAGE_ONE;
             janitorRake->attackSound = SoundType::NONE;
             janitorRake->attackHitSound = SoundType::STICK_HIT;
-            janitorRake->dieSound = SoundType::POP;
             janitorRake->dieGarbageType = GarbageType::ENEMY_GARBAGE1;
 
             janitorRake->damage = 15.0f;
@@ -419,7 +418,6 @@ namespace MagneticBall3D
             janitorBroom->attackHitSound = SoundType::BROOM_HIT;
             janitorBroom->attackParticlesColor = glm::vec3{0.4258f, 0.84f, 0.68f};
             janitorBroom->attackParticlesSize = 0.3f;
-            janitorBroom->dieSound = SoundType::POP;
             janitorBroom->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             janitorBroom->damage = 1.0f;
@@ -454,7 +452,6 @@ namespace MagneticBall3D
             copShield->attackHitSound = SoundType::PISTOL_HIT;
             copShield->attackParticlesColor = glm::vec3{0.9f, 0.9f, 0.0f};
             copShield->attackParticlesSize = 0.3f;
-            copShield->dieSound = SoundType::POP;
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE3;
 
             copShield->damage = 1.0f;
