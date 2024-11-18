@@ -45,6 +45,7 @@ namespace EnumsAndVars
         static inline int lastOpenedMapIndex = 5; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 5; // Last possible map index (opened or not). Must be hardcoded before release.
+        static inline int mapIndexWhenMapStart = 0;
     };
 
     struct EnergySystem

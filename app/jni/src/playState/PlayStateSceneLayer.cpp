@@ -32,6 +32,7 @@ namespace MagneticBall3D
             BR_ASSERT(false, "Map index does not handled: %d", EnumsAndVars::MapsProgress::currentMapIndex);
         }
 
+        EnumsAndVars::MapsProgress::mapIndexWhenMapStart = EnumsAndVars::MapsProgress::currentMapIndex;
         Beryll::Physics::enableSimulation();
         Beryll::TimeStep::fixateTime();
 

@@ -109,7 +109,7 @@ namespace MagneticBall3D
                 go->updateBeforePhysics();
             }
         }
-        if(EnumsAndVars::SettingsMenu::interfaceGUI && EnumsAndVars::MapsProgress::currentMapIndex > 0)
+        if(EnumsAndVars::SettingsMenu::interfaceGUI && EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0)
         {
             m_shotButton->updateBeforePhysics();
         }
@@ -167,7 +167,7 @@ namespace MagneticBall3D
         else if(m_killAllButtonClicked)
         {
             m_killAllButtonClicked = false;
-            SendStatisticsHelper::sendCustomMessage("kill_all_map_" + std::to_string(EnumsAndVars::MapsProgress::currentMapIndex));
+            SendStatisticsHelper::sendCustomMessage("kill_all_map_" + std::to_string(EnumsAndVars::MapsProgress::mapIndexWhenMapStart));
             m_killAllMenuShow = false;
             GameStateHelper::resumeGame();
 
@@ -368,7 +368,7 @@ namespace MagneticBall3D
                 }
             }
 
-            if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
+            if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0)
             {
                 m_shotButton->draw();
             }
@@ -583,7 +583,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
             ImGui::Begin("winMenu", nullptr, m_noBackgroundNoFrame);
 
-            if(EnumsAndVars::MapsProgress::currentMapIndex == 0)
+            if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart == 0)
             {
                 ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
                 ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCompletedTexture->getID()),

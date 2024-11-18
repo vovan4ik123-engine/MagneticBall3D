@@ -463,7 +463,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                            13.0f);
+                                                            20.0f);
 
             copPistol->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copPistol->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -497,7 +497,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                            13.0f);
+                                                            20.0f);
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -531,7 +531,7 @@ namespace MagneticBall3D
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::CollisionGroups::NONE,
                                                         Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                        13.0f);
+                                                        20.0f);
 
             sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             sniper->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -564,7 +564,7 @@ namespace MagneticBall3D
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                             13.0f);
+                                                             20.0f);
 
             copGrenade->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             copGrenade->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -599,7 +599,7 @@ namespace MagneticBall3D
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::CollisionGroups::NONE,
                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_2,
-                                                       26.0f);
+                                                       40.0f);
 
             tank->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
             tank->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
