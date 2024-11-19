@@ -260,7 +260,7 @@ namespace EnumsAndVars
     inline int enemiesKilledCount = 0;
 
     // Jump pad.
-    constexpr inline float jumpPadPowerDefault = 120.0f * playerMass; // Power for player.
+    constexpr inline float jumpPadPowerDefault = 110.0f * playerMass; // Power for player.
     inline float jumpPadPower = jumpPadPowerDefault;
 
     // Pause.

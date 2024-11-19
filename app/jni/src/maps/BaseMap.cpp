@@ -200,24 +200,37 @@ namespace MagneticBall3D
     void BaseMap::handleControls()
     {
         if(m_gui->m_shotButton->getIsPressedFingerStillOnScreen() &&
-           EnumsAndVars::damageLastShotTime + EnumsAndVars::damageShotReloadTime < EnumsAndVars::mapPlayTimeSec &&
-           m_idOfEnemyTarget > 0 && m_idOfGarbageBullet > 0)
+           EnumsAndVars::damageLastShotTime + EnumsAndVars::damageShotReloadTime < EnumsAndVars::mapPlayTimeSec)
         {
             // Shoot.
-            const int enemyIndex = m_idOfEnemyTarget - m_idOfFirstEnemy;
-            const int garbageIndex = m_idOfGarbageBullet - m_idOfFirstGarbage;
-            BR_ASSERT((enemyIndex >= 0 && enemyIndex < m_allAnimatedEnemies.size()), "%s", "index of enemy is wrong.");
-            BR_ASSERT((garbageIndex >= 0 && garbageIndex < m_allGarbage.size()), "%s", "index of garbage is wrong.");
+            if(m_idOfGarbageBullet == 0)
+            {
+                Sounds::playSoundEffect(SoundType::NO_AMMO);
+            }
+            else
+            {
+                glm::vec3 shotPos = m_player->getObj()->getOrigin();
+                if(!m_player->getIsOnAir())
+                    shotPos.y += 6.0f;
 
-            glm::vec3 shotPos = m_player->getObj()->getOrigin();
-            if(!m_player->getIsOnAir())
-                shotPos.y += 6.0f;
+                glm::vec3 shotDir{0.0f};
+                if(m_idOfEnemyTarget == 0)
+                {
+                    shotDir = Beryll::Camera::getCameraFrontDirectionXZ();
+                }
+                else
+                {
+                    const int enemyIndex = m_idOfEnemyTarget - m_idOfFirstEnemy;
+                    BR_ASSERT((enemyIndex >= 0 && enemyIndex < m_allAnimatedEnemies.size()), "%s", "index of enemy is wrong.");
+                    shotDir = glm::normalize(m_allAnimatedEnemies[enemyIndex]->getOrigin() - shotPos);
+                }
+                shotDir.y += 0.05f;
+                shotPos += shotDir * (12.0f + EnumsAndVars::garbageCountMagnetized * 0.3f);
 
-            glm::vec3 shotDir = glm::normalize(m_allAnimatedEnemies[enemyIndex]->getOrigin() - shotPos);
-            shotDir.y += 0.05f;
-            shotPos += shotDir * (10.0f + EnumsAndVars::garbageCountMagnetized * 0.3f);
-
-            m_allGarbage[garbageIndex].shoot(shotPos, shotDir);
+                const int garbageIndex = m_idOfGarbageBullet - m_idOfFirstGarbage;
+                BR_ASSERT((garbageIndex >= 0 && garbageIndex < m_allGarbage.size()), "%s", "index of garbage is wrong.");
+                m_allGarbage[garbageIndex].shoot(shotPos, shotDir);
+            }
 
             EnumsAndVars::damageLastShotTime = EnumsAndVars::mapPlayTimeSec;
         }
@@ -491,7 +504,7 @@ namespace MagneticBall3D
             if(enemy->getIsEnabledDraw() &&
                distancePlayerToEnemy < distanceNearestEnemyTarget &&
                distancePlayerToCamera < distanceEnemyToCamera &&
-               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXZ(), cameraToEnemyDirXZ) < 0.08f && // Left - right angle
+               BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraFrontDirectionXZ(), cameraToEnemyDirXZ) < 0.07f && // Left - right angle
                BeryllUtils::Common::getAngleInRadians(Beryll::Camera::getCameraUp(), cameraToEnemyDir) < 1.7453f) // Upper half of camera view.
             {
                 distanceNearestEnemyTarget = distancePlayerToEnemy;

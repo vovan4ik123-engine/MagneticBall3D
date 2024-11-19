@@ -51,6 +51,7 @@ namespace MagneticBall3D
     std::string Sounds::m_garbageAsBulletHit2 = "sounds/GarbageAsBulletHit2.wav";
     float Sounds::m_garbageAsBulletHitTime = 0.0f;
     float Sounds::m_garbageAsBulletHitDelay = 0.15f;
+    std::string Sounds::m_noAmmo = "sounds/NoAmmo.wav";
 
     // Music.
     std::string Sounds::m_backgroundMusic1 = "sounds/BackgroundMusic1.mp3";
@@ -104,6 +105,7 @@ namespace MagneticBall3D
         Beryll::SoundsManager::loadWAV(m_stoneHit3, 30);
         Beryll::SoundsManager::loadWAV(m_garbageAsBulletHit1, 20);
         Beryll::SoundsManager::loadWAV(m_garbageAsBulletHit2, 20);
+        Beryll::SoundsManager::loadWAV(m_noAmmo, 26);
 
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic1, 15);
         Beryll::SoundsManager::loadBackgroundMP3(m_backgroundMusic2, 15);
@@ -160,9 +162,13 @@ namespace MagneticBall3D
         {
             Beryll::SoundsManager::playWAV(m_jumppad);
         }
-        if(type == SoundType::FELL_ON_GROUND)
+        else if(type == SoundType::FELL_ON_GROUND)
         {
             Beryll::SoundsManager::playWAV(m_fellOnGround1);
+        }
+        else if(type == SoundType::NO_AMMO)
+        {
+            Beryll::SoundsManager::playWAV(m_noAmmo);
         }
 
         if(m_numberOfCurrentlyPlayingWAV >= 4)

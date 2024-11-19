@@ -21,6 +21,7 @@ namespace MagneticBall3D
         STONE_HIT,
         SPIT, // plewok
         GARBAGE_AS_BULLET_HIT,
+        NO_AMMO,
 
         BACKGROUND_MUSIC_1,
         BACKGROUND_MUSIC_2
@@ -91,6 +92,7 @@ namespace MagneticBall3D
         static std::string m_garbageAsBulletHit2;
         static float m_garbageAsBulletHitTime;
         static float m_garbageAsBulletHitDelay;
+        static std::string m_noAmmo;
 
         // Music.
         static std::string m_backgroundMusic1;
