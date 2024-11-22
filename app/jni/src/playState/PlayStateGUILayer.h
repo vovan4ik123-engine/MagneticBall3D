@@ -99,9 +99,6 @@ namespace MagneticBall3D
         bool m_noCrystalsButtonOkClicked = false;
         bool m_noCrystalsMenuShow = false;
 
-        // Ad loading.
-        std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
-        bool m_adLoadingMenuShow = false;
         // Ad error.
         std::unique_ptr<Beryll::Texture> m_adErrorTexture;
         bool m_adErrorButtonOkClicked = false;

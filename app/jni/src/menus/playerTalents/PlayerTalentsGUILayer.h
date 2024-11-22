@@ -103,9 +103,7 @@ namespace MagneticBall3D
         // Can be assigned from different thread.
         static std::atomic<bool> m_adSuccess;
         static std::atomic<bool> m_adError;
-        // Ad loading.
-        std::unique_ptr<Beryll::Texture> m_adLoadingTexture;
-        bool m_adLoadingMenuShow = false;
+
         // Ad error.
         std::unique_ptr<Beryll::Texture> m_adErrorTexture;
         std::unique_ptr<Beryll::Texture> m_adErrorButtonOkTexture;

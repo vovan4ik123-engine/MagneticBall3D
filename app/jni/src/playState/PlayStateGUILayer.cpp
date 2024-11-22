@@ -67,15 +67,14 @@ namespace MagneticBall3D
         m_resurrectByAdButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByAd.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_noCrystalsTexture = Beryll::Renderer::createTexture("GUI/NotEnoughCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adLoadingTexture = Beryll::Renderer::createTexture("GUI/AdLoading.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/SomethingWentWrong.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/AdError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         m_loseTexture = Beryll::Renderer::createTexture("GUI/playState/Lose.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_killAllToSpawnBossTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToSpawnBoss.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_killAllToWinTexture = Beryll::Renderer::createTexture("GUI/playState/KillAllEnemiesToWin.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_winTexture = Beryll::Renderer::createTexture("GUI/playState/Win.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_winPrize1ButtonTexture = Beryll::Renderer::createTexture("GUI/playState/WinPrize1.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_winPrize2ButtonTexture = Beryll::Renderer::createTexture("GUI/playState/WinPrize2.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_winPrize2ButtonTexture = Beryll::Renderer::createTexture("GUI/playState/WinPrize2Ad.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_tankWithCommanderTexture = Beryll::Renderer::createTexture("GUI/playState/BossTankWithCommander.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         PlayStateGUILayer::m_resurrectAdSuccess = false;
@@ -177,7 +176,6 @@ namespace MagneticBall3D
 //            }
 //            else
 //            {
-//                m_adLoadingMenuShow = true;
 //                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
 //                Beryll::Ads::getInstance()->showInterstitialAd(m_killAllAdSuccessCallback, m_commonAdErrorCallback);
 //            }
@@ -201,7 +199,6 @@ namespace MagneticBall3D
 //            }
 //            else
 //            {
-//                m_adLoadingMenuShow = true;
 //                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
 //                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
 //            }
@@ -217,7 +214,6 @@ namespace MagneticBall3D
             }
             else
             {
-                m_adLoadingMenuShow = true;
                 SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
             }
@@ -250,7 +246,6 @@ namespace MagneticBall3D
             }
             else
             {
-                m_adLoadingMenuShow = true;
                 SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
                 Beryll::Ads::getInstance()->showRewardedAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback, true);
             }
@@ -284,7 +279,6 @@ namespace MagneticBall3D
         if(PlayStateGUILayer::m_resurrectAdSuccess)
         {
             PlayStateGUILayer::m_resurrectAdSuccess = false;
-            m_adLoadingMenuShow = false;
             m_resurrectMenuShow = false;
 
             resurrectPlayer = true; // Will handled in BaseMap.cpp
@@ -309,7 +303,6 @@ namespace MagneticBall3D
         if(PlayStateGUILayer::m_winPrize2AdSuccess)
         {
             PlayStateGUILayer::m_winPrize2AdSuccess = false;
-            m_adLoadingMenuShow = false;
             m_winMenuShow = false;
 
             EnumsAndVars::CurrencyBalance::crystals += 50;
@@ -332,7 +325,6 @@ namespace MagneticBall3D
         if(PlayStateGUILayer::m_commonAdError)
         {
             PlayStateGUILayer::m_commonAdError = false;
-            m_adLoadingMenuShow = false;
             m_adErrorMenuShow = true;
         }
 
@@ -519,21 +511,6 @@ namespace MagneticBall3D
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
             m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsOkButton",reinterpret_cast<ImTextureID>(m_okTexture->getID()),
                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-            ImGui::PopStyleColor(1);
-        }
-
-        if(m_adLoadingMenuShow)
-        {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("adLoadingMenu", nullptr, m_noFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_adLoadingTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-
             ImGui::End();
             ImGui::PopStyleColor(1);
         }

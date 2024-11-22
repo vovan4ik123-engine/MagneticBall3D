@@ -18,6 +18,9 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
+import android.net.ConnectivityManager;
+import android.net.Network;
+
 import org.libsdl.app.SDLActivity;
 
 public class AdsManager {
@@ -41,6 +44,13 @@ public class AdsManager {
             @Override
             public void run() {
                 Log.v("AdsManager", "loadRewarded()");
+
+                ConnectivityManager connectivityManager = AdsManager.m_activity.getSystemService(ConnectivityManager.class);
+                if(connectivityManager.getActiveNetwork() == null) {
+                    Log.v("AdsManager", "No internet connection. Load ad rejected.");
+                    return;
+                }
+
                 AdsManager.m_rewardedAd = null;
                 AdRequest adRequest = new AdRequest.Builder().build(); // Test rewarded ad id: ca-app-pub-3940256099942544/5224354917
                 RewardedAd.load(AdsManager.m_activity, "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
@@ -73,7 +83,7 @@ public class AdsManager {
                                     @Override
                                     public void onAdFailedToShowFullScreenContent(AdError adError) {
                                         Log.v("AdsManager", "Rewarded ad failed to show fullscreen content.");
-                                        loadRewarded(true);
+                                        loadRewarded(false);
                                         rewardedAdErrorCallback();
                                     }
 
@@ -100,6 +110,13 @@ public class AdsManager {
             @Override
             public void run() {
                 Log.v("AdsManager", "loadInter()");
+
+                ConnectivityManager connectivityManager = AdsManager.m_activity.getSystemService(ConnectivityManager.class);
+                if(connectivityManager.getActiveNetwork() == null) {
+                    Log.v("AdsManager", "No internet connection. Load ad rejected.");
+                    return;
+                }
+
                 AdsManager.m_interstitialAd = null;
                 AdRequest adRequest = new AdRequest.Builder().build(); // Test interstitial ad id: ca-app-pub-3940256099942544/1033173712
                 InterstitialAd.load(AdsManager.m_activity,"ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
@@ -131,7 +148,7 @@ public class AdsManager {
                                     @Override
                                     public void onAdFailedToShowFullScreenContent(AdError adError) {
                                         Log.v("AdsManager", "Interstitial ad failed to show fullscreen content.");
-                                        loadInter(true);
+                                        loadInter(false);
                                         interstitialAdErrorCallback();
                                     }
 
@@ -189,10 +206,13 @@ public class AdsManager {
             public void run() {
                 Log.v("AdsManager", "showRewardedAd()");
                 AdsManager.m_rewardedCallbackAtCloseWindow.set(callbackAtCloseWindow);
-                if(AdsManager.m_rewardedAd != null)
+                if(AdsManager.m_rewardedAd != null) {
                     showRewarded();
-                else
-                    loadRewarded(true);
+                }
+                else {
+                    loadRewarded(false);
+                    rewardedAdErrorCallback();
+                }
             }
         });
     }
@@ -202,10 +222,13 @@ public class AdsManager {
             @Override
             public void run() {
                 Log.v("AdsManager", "showInterstitialAd()");
-                if(AdsManager.m_interstitialAd != null)
+                if(AdsManager.m_interstitialAd != null) {
                     showInter();
-                else
-                    loadInter(true);
+                }
+                else {
+                    loadInter(false);
+                    interstitialAdErrorCallback();
+                }
             }
         });
     }

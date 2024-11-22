@@ -476,10 +476,12 @@ namespace MagneticBall3D
     void BaseMap::damageEnemies()
     {
         float radiusToDamage = 6.0f + EnumsAndVars::garbageCountMagnetized * 0.08f;
+        float smashDamage = (EnumsAndVars::garbageCountMagnetized + 1) * EnumsAndVars::damageSmash; // Garbage + ball.
 
-        if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 90.0f)
+        if(m_player->getIsTouchGroundAfterFall() && m_player->getFallDistance() > 40.0f)
         {
             radiusToDamage = EnumsAndVars::playerDamageGroundRadiusAfterFall;
+            smashDamage *= (m_player->getFallDistance() / 100.0f);
             //BR_INFO("Damage radius after fall on ground: %f", radiusToKill);
             Sounds::playSoundEffect(SoundType::FELL_ON_GROUND);
         }
@@ -514,7 +516,7 @@ namespace MagneticBall3D
             // Apply smash damage.
             if(distancePlayerToEnemy < radiusToDamage + (enemy->getXZRadius() * 0.5f))
             {
-                if(enemy->takeSmashDamage((EnumsAndVars::garbageCountMagnetized + 1) * EnumsAndVars::damageSmash)) // True = damage to enemy was applied.
+                if(enemy->takeSmashDamage(smashDamage)) // True = damage to enemy was applied.
                     speedToReduce += enemy->reducePlayerSpeedWhenTakeSmashDamage;
 
                 if(enemy->getCurrentHP() <= 0.0f)
@@ -798,7 +800,7 @@ namespace MagneticBall3D
 
                 m_eyesLookAngleXZ += deltaX;
                 m_eyesLookAngleY -= deltaY;
-                if(m_eyesLookAngleY > 45.0f) m_eyesLookAngleY = 45.0f; // Eye up.
+                if(m_eyesLookAngleY > 5.0f) m_eyesLookAngleY = 5.0f; // Eye up.
                 if(m_eyesLookAngleY < -88.0f) m_eyesLookAngleY = -88.0f; // Eye down.
                 //BR_INFO("m_eyesLookAngleXZ %f m_eyesLookAngleY %f", m_eyesLookAngleXZ, m_eyesLookAngleY);
                 break;
