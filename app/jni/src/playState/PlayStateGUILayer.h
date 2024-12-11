@@ -15,8 +15,6 @@ namespace MagneticBall3D
         void draw() override;
 
         void showMenuResurrect();
-        void showMenuKillAllToSpawnBoss();
-        void showMenuKillAllToWin();
         void showMenuLose();
         void showMenuWin();
 
@@ -35,6 +33,7 @@ namespace MagneticBall3D
 
         bool resurrectPlayer = false;
         bool tutorialMoveShow = false;
+        bool tutorialTextTipsShow = false;
 
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
@@ -83,6 +82,9 @@ namespace MagneticBall3D
         // Map0Tutorial.
         std::unique_ptr<Beryll::Texture> m_tutorialMoveTexture;
         std::unique_ptr<Beryll::Texture> m_tutorialCameraTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialKillEnemiesTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialHealthTexture;
+        std::unique_ptr<Beryll::Texture> m_tutorialShotButtonTexture;
         std::unique_ptr<Beryll::Texture> m_tutorialCompletedTexture;
         bool m_tutorialCompletedButtonClicked = false;
 
@@ -108,13 +110,6 @@ namespace MagneticBall3D
         std::unique_ptr<Beryll::Texture> m_loseTexture;
         bool m_loseMenuShow = false;
 
-        // Last wave kill all enemies.
-        std::unique_ptr<Beryll::Texture> m_killAllToSpawnBossTexture; // If map has boss.
-        std::unique_ptr<Beryll::Texture> m_killAllToWinTexture; // Without boss.
-        bool m_killAllMenuShow = false;
-        bool m_killAllButtonClicked = false;
-        bool m_killAllToSpawnBoss = false;
-
         // Win.
         std::unique_ptr<Beryll::Texture> m_winTexture;
         std::unique_ptr<Beryll::Texture> m_winPrize1ButtonTexture;
@@ -128,7 +123,6 @@ namespace MagneticBall3D
         std::function<void()> m_winPrize1AdSuccessCallback;
         std::function<void()> m_winPrize2AdSuccessCallback;
         std::function<void()> m_exitAdSuccessCallback;
-        std::function<void()> m_killAllAdSuccessCallback;
         std::function<void()> m_commonAdErrorCallback;
         // Can be assigned from different thread.
         static std::atomic<bool> m_resurrectAdSuccess;

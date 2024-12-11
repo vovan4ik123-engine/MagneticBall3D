@@ -17,6 +17,17 @@ namespace MagneticBall3D
         loadShaders();
         handleCamera();
 
+        std::vector<glm::vec3> allowedPoints = BeryllUtils::Common::loadMeshVerticesToVector("models3D/map0Tutorial/PathEnemiesAllowedPositions.fbx");
+        m_pathAllowedPositionsXZ.reserve(allowedPoints.size());
+        for(const auto& point : allowedPoints)
+        {
+            m_pathAllowedPositionsXZ.push_back({(int)std::roundf(point.x), (int)std::roundf(point.z)});
+        }
+
+        BR_INFO("Map0Tutorial pathfinder allowed points: %d", m_pathAllowedPositionsXZ.size());
+        m_pointsToSpawnEnemies.reserve(m_pathAllowedPositionsXZ.size());
+        m_pointsToSpawnCommonGarbage.reserve(m_pathAllowedPositionsXZ.size());
+
         m_dirToSun = glm::normalize(glm::vec3(-0.5f, 2.0f, 0.4f));
         m_sunLightDir = -m_dirToSun;
 
@@ -30,12 +41,6 @@ namespace MagneticBall3D
             EnumsAndVars::playerImpulseFactorOnGround = 1.7f;
         if(EnumsAndVars::playerTorqueFactorOnGround < 1.6f)
             EnumsAndVars::playerTorqueFactorOnGround = 1.6f;
-        if(EnumsAndVars::playerImpulseFactorOnBuildingRoof < 1.5f)
-            EnumsAndVars::playerImpulseFactorOnBuildingRoof = 1.5f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingRoof < 1.4f)
-            EnumsAndVars::playerTorqueFactorOnBuildingRoof = 1.4f;
-        if(EnumsAndVars::playerTorqueFactorOnBuildingWall < 10.0f)
-            EnumsAndVars::playerTorqueFactorOnBuildingWall = 10.0f;
 
         SendStatisticsHelper::sendMapStart();
     }
@@ -48,10 +53,12 @@ namespace MagneticBall3D
     void Map0Tutorial::updateBeforePhysics()
     {
         if(EnumsAndVars::gameOnPause)
-        {
-            m_gui->tutorialMoveShow = false;
             return;
-        }
+
+        m_improvements.update();
+
+        if(EnumsAndVars::improvementSystemOnScreen)
+            return;
 
         EnumsAndVars::mapPlayTimeSec += Beryll::TimeStep::getTimeStepSec();
 
@@ -60,28 +67,44 @@ namespace MagneticBall3D
         handlePlayerWin();
 
         handleControls();
+        updatePathfindingAndSpawnEnemies();
+        spawnCommonGarbage();
 
-        if(m_player->getObj()->getOrigin().x < 85.0f)
+        if(m_player->getObj()->getOrigin().x < 52.0f)
         {
             m_player->getObj()->resetVelocities();
             m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 0.0f, 0.0f) * 300.0f);
+            m_player->checkVelocityOfGarbage();
+        }
+        else if(m_player->getObj()->getOrigin().x > 1248.0f)
+        {
+            m_player->getObj()->resetVelocities();
+            m_player->getObj()->applyCentralImpulse(glm::vec3(-1.0f, 0.0f, 0.0f) * 300.0f);
+            m_player->checkVelocityOfGarbage();
         }
         else if(m_player->getObj()->getOrigin().z > 58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 1.0f, -0.8f) * 150.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, -1.0f) * 200.0f);
+            m_player->checkVelocityOfGarbage();
         }
         else if(m_player->getObj()->getOrigin().z < -58.0f)
         {
             m_player->getObj()->resetVelocities();
-            m_player->getObj()->applyCentralImpulse(glm::vec3(1.0f, 1.0f, 0.8f) * 150.0f);
+            m_player->getObj()->applyCentralImpulse(glm::vec3(0.0f, 0.0f, 1.0f) * 200.0f);
+            m_player->checkVelocityOfGarbage();
         }
     }
 
     void Map0Tutorial::updateAfterPhysics()
     {
-        if(EnumsAndVars::gameOnPause)
+        if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
+        {
+            m_gui->playerJoystick->disable();
+            m_gui->tutorialMoveShow = false;
+            m_gui->tutorialTextTipsShow = false;
             return;
+        }
 
         for(const std::shared_ptr<Beryll::SceneObject>& so : m_animatedOrDynamicObjects)
         {
@@ -92,17 +115,18 @@ namespace MagneticBall3D
         }
 
         m_player->update();
-        updateEnemiesAndTheirsAttacks();
         updateAndMagnetizeGarbage();
         damageEnemies();
+        updateEnemiesAndTheirsAttacks();
         handleCamera();
         updateGUI();
 
-        // Tutorial progress.
-        if(m_player->getObj()->getOrigin().x > 1300.0f)
+        if(BaseEnemy::getActiveCount() <= 0)
             EnumsAndVars::mapPlayerWin = true;
 
         // Tutorial tips on screen.
+        m_gui->tutorialTextTipsShow = true;
+
         if(m_player->getMoveSpeed() < 5.0f)
             m_gui->tutorialMoveShow = true;
         else
@@ -124,6 +148,36 @@ namespace MagneticBall3D
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
+        // Sync HP bar rotations with camera direction.
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize1HPBar.addToRotation(glm::rotation(m_enemySize1HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getFaceDirXYZ(), Beryll::Camera::getCameraFrontDirectionXYZ()));
+        m_enemySize2HPBar.addToRotation(glm::rotation(m_enemySize2HPBar.getUpDirXYZ(), Beryll::Camera::getCameraUp()));
+        glm::vec3 HPBarOrigin{0.0f};
+        for(const auto& enemy : m_allAnimatedEnemies)
+        {
+            if(enemy->getIsEnabledDraw() && enemy->getIsNeedShowHPBar())
+            {
+                if(enemy->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1)
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.5f;
+                    m_enemySize1HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize1HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize1HPBar.draw();
+                }
+                else
+                {
+                    HPBarOrigin = enemy->getOrigin();
+                    HPBarOrigin.y += enemy->getFromOriginToTop() * 1.7f;
+                    m_enemySize2HPBar.setOrigin(HPBarOrigin);
+                    m_enemySize2HPBar.progress = 1.0f - (enemy->getCurrentHP() / enemy->getMaxHP());
+                    m_enemySize2HPBar.draw();
+                }
+            }
+        }
+
         glm::mat4 modelMatrix{1.0f};
 
         if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
@@ -222,22 +276,6 @@ namespace MagneticBall3D
         m_objWithNormalMap.push_back(ground);
         ground->setFriction(EnumsAndVars::staticEnvFriction);
 
-        const auto walls = Beryll::SimpleCollidingObject::loadManyModelsFromOneFile("models3D/map0Tutorial/Buildings.fbx",
-                                                                                       0.0f,
-                                                                                       false,
-                                                                                       Beryll::CollisionFlags::STATIC,
-                                                                                       Beryll::CollisionGroups::BUILDING,
-                                                                                       Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                       Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT | Beryll::CollisionGroups::CAMERA,
-                                                                                       Beryll::SceneObjectGroups::BUILDING);
-
-        for(const auto& obj : walls)
-        {
-            m_objWithNormalMap.push_back(obj);
-            m_simpleObjForShadowMap.push_back(obj);
-            obj->setFriction(EnumsAndVars::staticEnvFriction);
-        }
-
         const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map0Tutorial/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
 
         for(const auto& obj : envNoColliders1)
@@ -334,7 +372,7 @@ namespace MagneticBall3D
     {
         m_idOfFirstEnemy = BeryllUtils::Common::getLastGeneratedID() + 1;
 
-        for(int i = 0; i < 70; ++i)
+        for(int i = 0; i < 75; ++i)
         {
             auto janitorRake = std::make_shared<StaticEnemy>("models3D/enemies/JanitorRake.fbx",
                                                              0.0f,
@@ -343,7 +381,7 @@ namespace MagneticBall3D
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::CollisionGroups::NONE,
                                                              Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                             13.0f);
+                                                             20.0f);
 
             janitorRake->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             janitorRake->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -358,13 +396,13 @@ namespace MagneticBall3D
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             janitorRake->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            janitorRake->experienceWhenDie = 0;
+            janitorRake->experienceWhenDie = 25;
 
             m_animatedOrDynamicObjects.push_back(janitorRake);
             m_allAnimatedEnemies.push_back(janitorRake);
             m_animatedObjForShadowMap.push_back(janitorRake);
 
-            janitorRake->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(200) + 550,
+            janitorRake->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(250) + 550,
                                              janitorRake->getFromOriginToBottom(),
                                              Beryll::RandomGenerator::getInt(100) - 50));
 
@@ -372,7 +410,7 @@ namespace MagneticBall3D
             janitorRake->rotateToDirection(glm::vec3(-1.0f, 0.0f, 0.0f), true);
         }
 
-        for(int i = 0; i < 30; ++i)
+        for(int i = 0; i < 75; ++i)
         {
             auto copShield = std::make_shared<StaticEnemy>("models3D/enemies/CopWithPistolShield.fbx",
                                                             0.0f,
@@ -381,7 +419,7 @@ namespace MagneticBall3D
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::CollisionGroups::NONE,
                                                             Beryll::SceneObjectGroups::ENEMY_SIZE_1,
-                                                           13.0f);
+                                                            20.0f);
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
             copShield->setDefaultAnimationByIndex(EnumsAndVars::AnimationIndexes::stand);
@@ -394,17 +432,17 @@ namespace MagneticBall3D
             copShield->dieGarbageType = GarbageType::ENEMY_GARBAGE2;
 
             copShield->damage = 0.0f;
-            copShield->attackDistance = 100.0f;
+            copShield->attackDistance = 200.0f;
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            copShield->experienceWhenDie = 0;
+            copShield->experienceWhenDie = 25;
 
             m_animatedOrDynamicObjects.push_back(copShield);
             m_allAnimatedEnemies.push_back(copShield);
             m_animatedObjForShadowMap.push_back(copShield);
 
-            copShield->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(150) + 750,
+            copShield->setOrigin(glm::vec3(Beryll::RandomGenerator::getInt(400) + 800,
                                            copShield->getFromOriginToBottom(),
                                            Beryll::RandomGenerator::getInt(100) - 50));
 

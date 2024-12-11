@@ -60,7 +60,7 @@ namespace MagneticBall3D
         virtual void handlePossPhase() {};
 
     protected:
-        std::shared_ptr<PlayStateGUILayer> m_gui;
+        const std::shared_ptr<PlayStateGUILayer> m_gui;
 
         const int m_maxEnvCount = 300;
         const int m_maxGarbageCount = 400;
@@ -121,7 +121,7 @@ namespace MagneticBall3D
         float m_eyesLookAngleY = -13.0f; // Degrees.
         glm::vec3 m_cameraAngleOffset{0.0f};
         glm::vec3 m_cameraFront{0.0f};
-        const float m_startCameraDistance = 24.0f;
+        const float m_startCameraDistance = 20.0f;
         float m_cameraDistance = m_startCameraDistance;
         const float m_startCameraYOffset = 9.0f;
         float m_cameraYOffset = m_startCameraYOffset;

@@ -30,12 +30,12 @@ namespace MagneticBall3D
         if(m_addedToGarbageAsBulletArray && m_shotTime + 2.0f < EnumsAndVars::mapPlayTimeSec)
         {
             const auto iter = std::find(EnumsAndVars::garbageAsBulletsIDs.begin(), EnumsAndVars::garbageAsBulletsIDs.end(), obj->getID());
-            BR_ASSERT((iter != EnumsAndVars::garbageAsBulletsIDs.end()), "%s", "garbage must exists in garbageAsBulletsIDs.");
+            BR_ASSERT((iter != EnumsAndVars::garbageAsBulletsIDs.end()), "%s", "Garbage must exists in garbageAsBulletsIDs.");
 
             EnumsAndVars::garbageAsBulletsIDs.erase(iter);
             m_addedToGarbageAsBulletArray = false;
             damagedEnemyIDs.clear();
-            //BR_INFO("%s", "remove garbage from EnumsAndVars::garbageAsBulletsIDs");
+            //BR_INFO("%s", "Remove garbage from EnumsAndVars::garbageAsBulletsIDs");
         }
     }
 

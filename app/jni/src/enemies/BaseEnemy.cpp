@@ -21,6 +21,8 @@ namespace MagneticBall3D
                                                       sceneGroup),
                          m_maxHP(health), m_currentHP(health)
     {
+        m_isEnabled = true;
+        ++BaseEnemy::m_activeEnemiesCount;
         disableEnemy();
     }
 
@@ -59,7 +61,7 @@ namespace MagneticBall3D
         m_smashDamageLastTimeApplied = -999999.0f;
         m_shotDamageLastTimeApplied = -999999.0f;
 
-        if(BaseEnemy::m_activeEnemiesCount > 0)
+        //if(BaseEnemy::m_activeEnemiesCount > 0)
             --BaseEnemy::m_activeEnemiesCount;
         m_isEnabled = false;
     }

@@ -46,15 +46,15 @@ namespace MagneticBall3D
         // Magnetic radius. = 1
         std::shared_ptr<Beryll::Texture> m_magneticRadiusButtonTexture;
         bool m_magneticRadiusButtonClicked = false;
-        // Amount of magnetized garbage. = 2
-        std::shared_ptr<Beryll::Texture> m_amountOfMagnetizedGarbageButtonTexture;
-        bool m_amountOfMagnetizedGarbageButtonClicked = false;
+        // Amount of magnetized items. = 2
+        std::shared_ptr<Beryll::Texture> m_amountOfMagnetizedItemsButtonTexture;
+        bool m_amountOfMagnetizedItemsButtonClicked = false;
         // Accelerate faster. = 3
         std::shared_ptr<Beryll::Texture> m_accelerateFasterButtonTexture;
         bool m_accelerateFasterButtonClicked = false;
-        // Ball and garbage protection. = 4
-        std::shared_ptr<Beryll::Texture> m_ballAndGarbageProtectionButtonTexture;
-        bool m_ballAndGarbageProtectionButtonClicked = false;
+        // Ball and items protection. = 4
+        std::shared_ptr<Beryll::Texture> m_ballAndItemsProtectionButtonTexture;
+        bool m_ballAndItemsProtectionButtonClicked = false;
         // Resurrection attempts. = 5
         std::shared_ptr<Beryll::Texture> m_resurrectionAttemptsButtonTexture;
         bool m_resurrectionAttemptsButtonClicked = false;

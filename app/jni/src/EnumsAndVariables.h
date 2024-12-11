@@ -88,7 +88,7 @@ namespace EnumsAndVars
         const float increasePerLevel = 0; // Percents in range 0...100 added per level.
         const std::string increasePerLevelText; // To show for user.
         const bool canBeImprovedByAd;
-        const int priceCrystals;
+        const int firstLevelPriceCrystals;
 
         void improveLevel(PlayerTalentCurrency currency)
         {
@@ -98,12 +98,12 @@ namespace EnumsAndVars
 
             if(currency == PlayerTalentCurrency::CRYSTALS)
             {
-                BR_ASSERT((priceCrystals <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
-                if(priceCrystals > CurrencyBalance::crystals)
+                BR_ASSERT((getCurrentLevelPriceCrystals() <= CurrencyBalance::crystals), "%s", "improveLevel(): not enough crystals. Check it before call.");
+                if(getCurrentLevelPriceCrystals() > CurrencyBalance::crystals)
                     return;
 
                 // Update currency after subtract price.
-                CurrencyBalance::crystals -= priceCrystals;
+                CurrencyBalance::crystals -= getCurrentLevelPriceCrystals();
                 DataBaseHelper::storeCurrencyBalanceCrystals(CurrencyBalance::crystals);
             }
 
@@ -116,23 +116,28 @@ namespace EnumsAndVars
         {
             return float(currentLevel) * increasePerLevel;
         }
+
+        int getCurrentLevelPriceCrystals()
+        {
+            return firstLevelPriceCrystals + currentLevel;
+        }
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase\nspeed limit.", 20,
-                                                           5.0f, "+5%", true, 20},
+                                                           5.0f, "+5%", true, 10},
                                                           {"MagneticRadius", 0, "Increase\nmagnetic radius.", 100,
-                                                           5.0f, "+5%", true, 5},
-                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized garbage.", 20,
-                                                           5.0f, "+5%", true, 20},
+                                                           5.0f, "+5%", true, 1},
+                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized items.", 20,
+                                                           5.0f, "+5%", true, 10},
                                                           {"Accelerate", 0, "Increase\nacceleration.", 10,
-                                                           3.0f, "+3%", true, 20},
-                                                          {"Protection", 0, "Increase ball and\ngarbage protection.", 100,
-                                                           5.0f, "+5%", true, 5},
+                                                           3.0f, "+3%", true, 15},
+                                                          {"Protection", 0, "Increase ball and\nitems protection.", 100,
+                                                           5.0f, "+5%", true, 1},
                                                           {"Resurrection", 0, "Increase number\nof resurrections.", 3,
                                                            100.0f, "+1", false, 90},
-                                                          {"SmashDamage", 0, "Increase smash damage\nper one garbage.", 100,
-                                                           5.0f, "+5%", true, 5},
+                                                          {"SmashDamage", 0, "Increase smash damage\nper one item.", 100,
+                                                           5.0f, "+5%", true, 1},
                                                           {"ShotDamage", 0, "Increase\nshot damage.", 100,
-                                                           5.0f, "+5%", true, 5}
+                                                           5.0f, "+5%", true, 1}
                                                           };
     struct GameDifficulty
     {

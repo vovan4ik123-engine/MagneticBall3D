@@ -524,7 +524,7 @@ namespace MagneticBall3D
             }
 
             // Apply shot damage.
-            for(const int garbageAsBulletID : EnumsAndVars::garbageAsBulletsIDs)
+            for(const int& garbageAsBulletID : EnumsAndVars::garbageAsBulletsIDs)
             {
                 const int index = garbageAsBulletID - m_idOfFirstGarbage;
                 BR_ASSERT((index >= 0 && index < m_allGarbage.size()), "%s", "index of garbage is wrong.");
@@ -817,7 +817,7 @@ namespace MagneticBall3D
 
         m_cameraFront = m_player->getObj()->getOrigin();
 
-        float maxCameraYOffset = m_startCameraYOffset + (m_player->getObj()->getXZRadius() - 2.0f) + (EnumsAndVars::garbageCountMagnetized * 0.07f);
+        float maxCameraYOffset = m_startCameraYOffset + (EnumsAndVars::garbageCountMagnetized * 0.07f);
 
         if(m_player->getIsOnGround())
             maxCameraYOffset += m_player->getMoveSpeedXZ() * 0.07f;
@@ -840,7 +840,7 @@ namespace MagneticBall3D
 
         m_cameraFront.y += m_cameraYOffset;
 
-        float maxCameraDistance = m_startCameraDistance +
+        float maxCameraDistance = m_startCameraDistance + (m_player->getObj()->getXZRadius() * 2.0f) +
                                   (m_player->getMoveSpeedXZ() * 0.4f) +
                                   (EnumsAndVars::garbageCountMagnetized * 0.3f) +
                                   std::min(45.0f, m_player->getObj()->getOrigin().y * 0.16f)
@@ -1061,8 +1061,6 @@ namespace MagneticBall3D
     {
         BR_INFO("%s", "lastWaveToBossPhase()");
 
-        m_gui->showMenuKillAllToSpawnBoss();
-
         EnumsAndVars::enemiesLastWavePhase = true;
         EnumsAndVars::mapHasBossPhase = true;
         EnumsAndVars::bossPhase = false;
@@ -1071,8 +1069,6 @@ namespace MagneticBall3D
     void BaseMap::lastWaveToWinPhase()
     {
         BR_INFO("%s", "lastWaveToWinPhase()");
-
-        m_gui->showMenuKillAllToWin();
 
         EnumsAndVars::enemiesLastWavePhase = true;
         EnumsAndVars::mapHasBossPhase = false;
