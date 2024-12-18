@@ -47,11 +47,9 @@ namespace MagneticBall3D
         const float m_enemiesWave10Time = 260.0f;
         bool m_prepareWave11 = true;
         const float m_enemiesWave11Time = 290.0f;
-        bool m_prepareWave12 = true;
-        const float m_enemiesWave12Time = 320.0f;
 
         // Last wave.
         bool m_prepareLastWave = true;
-        const float m_prepareLastWaveTime = 360.0f;
+        const float m_prepareLastWaveTime = 300.0f;
     };
 }

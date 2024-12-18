@@ -8,10 +8,10 @@
 namespace MagneticBall3D
 {
     std::atomic<bool> PlayStateGUILayer::m_resurrectAdSuccess = false;
-    std::atomic<bool> PlayStateGUILayer::m_winPrize1AdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_winPrize2AdSuccess = false;
-    std::atomic<bool> PlayStateGUILayer::m_killAllAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_commonAdError = false;
+    std::atomic<bool> PlayStateGUILayer::m_tutorialAdSuccessError = false;
+    std::atomic<bool> PlayStateGUILayer::m_interruptAdSuccessError = false;
 
     PlayStateGUILayer::PlayStateGUILayer()
     {
@@ -79,16 +79,17 @@ namespace MagneticBall3D
         m_tankWithCommanderTexture = Beryll::Renderer::createTexture("GUI/playState/BossTankWithCommander.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
 
         PlayStateGUILayer::m_resurrectAdSuccess = false;
-        PlayStateGUILayer::m_winPrize1AdSuccess = false;
         PlayStateGUILayer::m_winPrize2AdSuccess = false;
-        PlayStateGUILayer::m_killAllAdSuccess = false;
         PlayStateGUILayer::m_commonAdError = false;
+        PlayStateGUILayer::m_tutorialAdSuccessError = false;
+        PlayStateGUILayer::m_interruptAdSuccessError = false;
 
         // These callbacks are called from different thread.
         m_resurrectAdSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayStateGUILayer::m_resurrectAdSuccess = true; };
-        m_winPrize1AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize1AdSuccessCallback()"); PlayStateGUILayer::m_winPrize1AdSuccess = true; };
         m_winPrize2AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize2AdSuccessCallback()"); PlayStateGUILayer::m_winPrize2AdSuccess = true; };
         m_commonAdErrorCallback = []() -> void { BR_INFO("%s", "m_commonAdErrorCallback()"); PlayStateGUILayer::m_commonAdError = true; };
+        m_tutorialAdSuccessErrorCallback = [](){ BR_INFO("%s", "m_tutorialAdSuccessErrorCallback()"); PlayStateGUILayer::m_tutorialAdSuccessError = true; };
+        m_interruptAdSuccessErrorCallback = [](){ BR_INFO("%s", "m_interruptAdSuccessErrorCallback()"); PlayStateGUILayer::m_interruptAdSuccessError = true; };
     }
 
     PlayStateGUILayer::~PlayStateGUILayer()
@@ -134,6 +135,19 @@ namespace MagneticBall3D
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
+        // This just interrupt game and show interstitial ad. =)
+        if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0 && !EnumsAndVars::Shop::adsOnMapsDisabled &&
+           m_m_interruptAdLastTimePlayed + m_m_interruptAdDelaySec < EnumsAndVars::mapPlayTimeSec)
+        {
+            m_m_interruptAdLastTimePlayed = EnumsAndVars::mapPlayTimeSec;
+
+            Sounds::pauseBackgroundMusic();
+            GameStateHelper::pauseGame();
+
+            SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
+            Beryll::Ads::getInstance()->showInterstitialAd(m_interruptAdSuccessErrorCallback, m_interruptAdSuccessErrorCallback);
+        }
+
         if(m_pauseButtonClicked)
         {
             m_pauseButtonClicked = false;
@@ -165,7 +179,6 @@ namespace MagneticBall3D
         }
         else if(m_winPrize1ButtonClicked)
         {
-            BR_INFO("%s", "m_winPrize1ButtonClicked");
             m_winPrize1ButtonClicked = false;
             m_winMenuShow = false;
 
@@ -175,20 +188,9 @@ namespace MagneticBall3D
             GameStateHelper::popState();
             GameStateHelper::pushStartMenuState();
             return;
-
-//            if(EnumsAndVars::Shop::adsOnMapsDisabled)
-//            {
-//                m_winPrize1AdSuccessCallback();
-//            }
-//            else
-//            {
-//                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-//                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize1AdSuccessCallback, m_commonAdErrorCallback);
-//            }
         }
         else if(m_winPrize2ButtonClicked)
         {
-            BR_INFO("%s", "m_winPrize2ButtonClicked");
             m_winPrize2ButtonClicked = false;
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
@@ -198,7 +200,7 @@ namespace MagneticBall3D
             else
             {
                 SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showRewardedAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback, true);
+                Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback);
             }
         }
         else if(m_tutorialCompletedButtonClicked)
@@ -206,9 +208,15 @@ namespace MagneticBall3D
             m_tutorialCompletedButtonClicked = false;
             Sounds::stopBackgroundMusic();
 
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
+            if(EnumsAndVars::Shop::adsOnMapsDisabled)
+            {
+                m_tutorialAdSuccessErrorCallback();
+            }
+            else
+            {
+                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
+                Beryll::Ads::getInstance()->showInterstitialAd(m_tutorialAdSuccessErrorCallback, m_tutorialAdSuccessErrorCallback);
+            }
         }
         else if(m_tankWithCommanderButtonClicked)
         {
@@ -230,7 +238,7 @@ namespace MagneticBall3D
             else
             {
                 SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showRewardedAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback, true);
+                Beryll::Ads::getInstance()->showInterstitialAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback);
             }
         }
         else if(m_resurrectByCrystalsButtonClicked)
@@ -269,19 +277,22 @@ namespace MagneticBall3D
             Sounds::resumeBackgroundMusic();
         }
 
-//        if(PlayStateGUILayer::m_winPrize1AdSuccess)
-//        {
-//            PlayStateGUILayer::m_winPrize1AdSuccess = false;
-//            m_adLoadingMenuShow = false;
-//            m_winMenuShow = false;
-//
-//            EnumsAndVars::CurrencyBalance::crystals += 25;
-//            DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
-//
-//            GameStateHelper::popState();
-//            GameStateHelper::pushStartMenuState();
-//            return;
-//        }
+        if(PlayStateGUILayer::m_tutorialAdSuccessError)
+        {
+            PlayStateGUILayer::m_tutorialAdSuccessError = false;
+
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
+        }
+
+        if(PlayStateGUILayer::m_interruptAdSuccessError)
+        {
+            PlayStateGUILayer::m_interruptAdSuccessError = false;
+
+            Sounds::resumeBackgroundMusic();
+            GameStateHelper::resumeGame();
+        }
 
         if(PlayStateGUILayer::m_winPrize2AdSuccess)
         {

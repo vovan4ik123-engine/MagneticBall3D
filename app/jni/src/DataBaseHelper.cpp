@@ -66,13 +66,13 @@ namespace DataBaseHelper
                 // Shop.
                 executeSql(createTableShop);
                 executeSql(insertShop);
-                storeShopItem1FirstBuy(1);
-                storeShopItem2FirstBuy(1);
-                storeShopItem3FirstBuy(1);
-                storeShopItem4FirstBuy(1);
-                storeShopItem5FirstBuy(1);
-                storeShopItem6FirstBuy(1);
-                storeShopAdsOnMapsDisabled(0);
+                storeShopItem1FirstBuy(EnumsAndVars::Shop::item1FirstBuy);
+                storeShopItem2FirstBuy(EnumsAndVars::Shop::item2FirstBuy);
+                storeShopItem3FirstBuy(EnumsAndVars::Shop::item3FirstBuy);
+                storeShopItem4FirstBuy(EnumsAndVars::Shop::item4FirstBuy);
+                storeShopItem5FirstBuy(EnumsAndVars::Shop::item5FirstBuy);
+                storeShopItem6FirstBuy(EnumsAndVars::Shop::item6FirstBuy);
+                storeShopAdsOnMapsDisabled(EnumsAndVars::Shop::adsOnMapsDisabled);
 
                 // DatabaseMigrations.
                 executeSql(createTableDatabaseMigrations);

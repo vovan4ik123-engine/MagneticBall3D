@@ -33,8 +33,8 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        if(EnumsAndVars::playerMagneticRadius < 60.0f)
-            EnumsAndVars::playerMagneticRadius = 60.0f;
+        if(EnumsAndVars::playerMagneticRadius < 70.0f)
+            EnumsAndVars::playerMagneticRadius = 70.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 85.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 85.0f;
         if(EnumsAndVars::playerImpulseFactorOnGround < 1.7f)

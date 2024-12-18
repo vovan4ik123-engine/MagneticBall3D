@@ -72,11 +72,9 @@ namespace MagneticBall3D
                            (Beryll::Camera::getCameraFrontDirectionXZ() * 200.0f) +
                            (m_dirToSun * (600.0f - m_player->getObj()->getOrigin().y)); // sunPos.y is 600 max.
         updateSunPosition(sunPos, m_shadowsCubeWidth, m_shadowsCubeHeight, m_shadowsCubeDepth);
+
         Beryll::Renderer::disableFaceCulling();
-        if(BaseEnemy::getActiveCount() < 200)
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
-        else
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
@@ -404,7 +402,7 @@ namespace MagneticBall3D
             skeleton->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             skeleton->reducePlayerSpeedWhenTakeSmashDamage = 1.0f;
-            skeleton->experienceWhenDie = 30;
+            skeleton->experienceWhenDie = 35;
             skeleton->getController().moveSpeed = 55.0f;
 
             m_animatedOrDynamicObjects.push_back(skeleton);
@@ -439,7 +437,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             copShield->reducePlayerSpeedWhenTakeSmashDamage = 1.0f;
-            copShield->experienceWhenDie = 30;
+            copShield->experienceWhenDie = 40;
             copShield->getController().moveSpeed = 45.0f;
 
             m_animatedOrDynamicObjects.push_back(copShield);
@@ -475,7 +473,7 @@ namespace MagneticBall3D
             ghoul->timeBetweenAttacks = 3.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             ghoul->reducePlayerSpeedWhenTakeSmashDamage = 1.0f;
-            ghoul->experienceWhenDie = 35;
+            ghoul->experienceWhenDie = 45;
             ghoul->getController().moveSpeed = 35.0f;
 
             m_animatedOrDynamicObjects.push_back(ghoul);
@@ -507,7 +505,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 20 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 15 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -525,7 +523,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 40 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 30 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -549,7 +547,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
                 }
-                if(gunShieldCount < 30 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                if(gunShieldCount < 20 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -609,7 +607,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                 }
-                if(tankCount < 40 && enemy->unitType == UnitType::ENEMY_TANK)
+                if(tankCount < 30 && enemy->unitType == UnitType::ENEMY_TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -629,7 +627,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 80 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -639,7 +637,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                 }
-                if(tankCount < 60 && enemy->unitType == UnitType::ENEMY_TANK)
+                if(tankCount < 40 && enemy->unitType == UnitType::ENEMY_TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -659,17 +657,17 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 80 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
                 }
-                if(gunShieldCount < 80 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                if(gunShieldCount < 60 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
                 }
-                if(tankCount < 80 && enemy->unitType == UnitType::ENEMY_TANK)
+                if(tankCount < 50 && enemy->unitType == UnitType::ENEMY_TANK)
                 {
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
@@ -677,36 +675,6 @@ namespace MagneticBall3D
             }
 
             BR_INFO("Prepare wave 8. Max enemies: %d", gun1Count + gunShieldCount + tankCount);
-        }
-        else if(m_prepareWave9 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave9Time)
-        {
-            m_prepareWave9 = false;
-
-            int gun1Count = 0;
-            int gunShieldCount = 0;
-            int tankCount = 0;
-            for(auto& enemy : m_allAnimatedEnemies)
-            {
-                enemy->isCanBeSpawned = false;
-
-                if(gun1Count < 120 && enemy->unitType == UnitType::ENEMY_GUN1)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gun1Count;
-                }
-                if(gunShieldCount < 100 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gunShieldCount;
-                }
-                if(tankCount < 100 && enemy->unitType == UnitType::ENEMY_TANK)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++tankCount;
-                }
-            }
-
-            BR_INFO("Prepare wave 9. Max enemies: %d", gun1Count + gunShieldCount + tankCount);
         }
         else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {

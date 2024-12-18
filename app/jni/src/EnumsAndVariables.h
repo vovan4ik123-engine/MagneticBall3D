@@ -69,7 +69,7 @@ namespace EnumsAndVars
         static inline bool item4FirstBuy = true;
         static inline bool item5FirstBuy = true;
         static inline bool item6FirstBuy = true;
-        static inline bool adsOnMapsDisabled = false; // Ads in play state (resurrection and after win/lose/exit).
+        static inline bool adsOnMapsDisabled = false; // Ads in play state.
     };
 
     enum class PlayerTalentCurrency
@@ -124,7 +124,7 @@ namespace EnumsAndVars
     };
     inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase\nspeed limit.", 20,
                                                            5.0f, "+5%", true, 10},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 100,
+                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
                                                            5.0f, "+5%", true, 1},
                                                           {"GarbageAmount", 0, "Increase amount of\nmagnetized items.", 20,
                                                            5.0f, "+5%", true, 10},
@@ -173,7 +173,7 @@ namespace EnumsAndVars
     constexpr inline float joystickPowerInOneSec = 100.0f;
 
     // Player.
-    constexpr inline float playerMagneticRadiusDefault = 30.0f;
+    constexpr inline float playerMagneticRadiusDefault = 50.0f;
     inline float playerMagneticRadius = playerMagneticRadiusDefault;
     constexpr inline float playerImpulseFactorOnGroundDefault = 1.5f;
     inline float playerImpulseFactorOnGround = playerImpulseFactorOnGroundDefault;
@@ -233,7 +233,7 @@ namespace EnumsAndVars
     constexpr inline float garbageCommonSpawnMaxDistance = 400.0f;
     constexpr inline float garbageCommonSpawnTimeDefault = -999999.0f; // Sec.
     inline float garbageCommonSpawnTime = garbageCommonSpawnTimeDefault; // Sec.
-    constexpr inline float garbageCommonSpawnDelay = 2.0f; // Sec.
+    constexpr inline float garbageCommonSpawnDelay = 1.0f; // Sec.
     constexpr inline int garbageCommonSpawnCountDefault = 3;
     inline int garbageCommonSpawnCount = garbageCommonSpawnCountDefault;
     constexpr inline int garbageCommonMaxCountOnMapDefault = 130.0f;

@@ -48,8 +48,8 @@ namespace MagneticBall3D
 
         m_skyBox = Beryll::Renderer::createSkyBox("skyboxes/whiteClouds");
 
-        if(EnumsAndVars::playerMagneticRadius < 50.0f)
-            EnumsAndVars::playerMagneticRadius = 50.0f;
+        if(EnumsAndVars::playerMagneticRadius < 70.0f)
+            EnumsAndVars::playerMagneticRadius = 70.0f;
         if(EnumsAndVars::garbageMaxCountMagnetized < 80.0f)
             EnumsAndVars::garbageMaxCountMagnetized = 80.0f;
         if(EnumsAndVars::playerImpulseFactorOnGround < 1.7f)
@@ -391,7 +391,7 @@ namespace MagneticBall3D
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorRake->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            janitorRake->experienceWhenDie = 25;
+            janitorRake->experienceWhenDie = 35;
             janitorRake->getController().moveSpeed = 40.0f;
 
             m_animatedOrDynamicObjects.push_back(janitorRake);
@@ -425,7 +425,7 @@ namespace MagneticBall3D
             janitorBroom->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             janitorBroom->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            janitorBroom->experienceWhenDie = 25;
+            janitorBroom->experienceWhenDie = 35;
             janitorBroom->getController().moveSpeed = 35.0f;
 
             m_animatedOrDynamicObjects.push_back(janitorBroom);
@@ -459,7 +459,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 2.5f + Beryll::RandomGenerator::getFloat() * 0.5f;
 
             copShield->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            copShield->experienceWhenDie = 30;
+            copShield->experienceWhenDie = 40;
             copShield->getController().moveSpeed = 30.0f;
 
             m_animatedOrDynamicObjects.push_back(copShield);
@@ -552,7 +552,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(meleeCount < 45 && enemy->unitType == UnitType::ENEMY_MELEE)
+                if(meleeCount < 40 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
@@ -577,7 +577,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(meleeCount < 60 && enemy->unitType == UnitType::ENEMY_MELEE)
+                if(meleeCount < 50 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
@@ -607,17 +607,17 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(meleeCount < 75 && enemy->unitType == UnitType::ENEMY_MELEE)
+                if(meleeCount < 60 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
                 }
-                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
+                else if(gunCount < 60 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                 }
-                else if(gunShieldCount < 40 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                else if(gunShieldCount < 30 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -637,17 +637,17 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(meleeCount < 90 && enemy->unitType == UnitType::ENEMY_MELEE)
+                if(meleeCount < 70 && enemy->unitType == UnitType::ENEMY_MELEE)
                 {
                     enemy->isCanBeSpawned = true;
                     ++meleeCount;
                 }
-                else if(gunCount < 85 && enemy->unitType == UnitType::ENEMY_GUN1)
+                else if(gunCount < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunCount;
                 }
-                else if(gunShieldCount < 70 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
+                else if(gunShieldCount < 50 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gunShieldCount;
@@ -655,36 +655,6 @@ namespace MagneticBall3D
             }
 
             BR_INFO("Prepare wave 8. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
-        }
-        else if(m_prepareWave9 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave9Time)
-        {
-            m_prepareWave9 = false;
-
-            int meleeCount = 0;
-            int gunCount = 0;
-            int gunShieldCount = 0;
-            for(auto& enemy : m_allAnimatedEnemies)
-            {
-                enemy->isCanBeSpawned = false;
-
-                if(meleeCount < 110 && enemy->unitType == UnitType::ENEMY_MELEE)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++meleeCount;
-                }
-                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gunCount;
-                }
-                else if(gunShieldCount < 90 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gunShieldCount;
-                }
-            }
-
-            BR_INFO("Prepare wave 9. Max enemies: %d", meleeCount + gunCount + gunShieldCount);
         }
         else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {

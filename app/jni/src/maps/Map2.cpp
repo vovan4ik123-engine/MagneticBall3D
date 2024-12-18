@@ -985,48 +985,6 @@ namespace MagneticBall3D
 
             BR_INFO("Prepare wave 11. Max enemies: %d", ratCount + gunCount + gunShieldCount + sniperCount + rocketCount);
         }
-        else if(m_prepareWave12 && EnumsAndVars::mapPlayTimeSec > m_enemiesWave12Time)
-        {
-            m_prepareWave12 = false;
-
-            int ratCount = 0;
-            int gunCount = 0;
-            int gunShieldCount = 0;
-            int sniperCount = 0;
-            int rocketCount = 0;
-            for(auto& enemy : m_allAnimatedEnemies)
-            {
-                enemy->isCanBeSpawned = false;
-
-                if(ratCount < 150 && enemy->unitType == UnitType::ENEMY_MAGNET)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++ratCount;
-                }
-                else if(gunCount < 100 && enemy->unitType == UnitType::ENEMY_GUN1)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gunCount;
-                }
-                else if(gunShieldCount < 100 && enemy->unitType == UnitType::ENEMY_GUN_SHIELD)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++gunShieldCount;
-                }
-                else if(sniperCount < 2 && enemy->unitType == UnitType::ENEMY_SNIPER)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++sniperCount;
-                }
-                else if(rocketCount < 20 && enemy->unitType == UnitType::ENEMY_TANK)
-                {
-                    enemy->isCanBeSpawned = true;
-                    ++rocketCount;
-                }
-            }
-
-            BR_INFO("Prepare wave 12. Max enemies: %d", ratCount + gunCount + gunShieldCount + sniperCount + rocketCount);
-        }
         else if(m_prepareLastWave && EnumsAndVars::mapPlayTimeSec > m_prepareLastWaveTime)
         {
             m_prepareLastWave = false;

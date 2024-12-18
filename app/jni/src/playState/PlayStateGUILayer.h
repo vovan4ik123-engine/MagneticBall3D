@@ -118,18 +118,20 @@ namespace MagneticBall3D
         bool m_winPrize1ButtonClicked = false;
         bool m_winPrize2ButtonClicked = false;
 
+        float m_m_interruptAdLastTimePlayed = 0.0f;
+        const float m_m_interruptAdDelaySec = 120.0f;
         // Ad callbacks. Can be called from different thread.
         std::function<void()> m_resurrectAdSuccessCallback;
-        std::function<void()> m_winPrize1AdSuccessCallback;
         std::function<void()> m_winPrize2AdSuccessCallback;
-        std::function<void()> m_exitAdSuccessCallback;
         std::function<void()> m_commonAdErrorCallback;
+        std::function<void()> m_tutorialAdSuccessErrorCallback;
+        std::function<void()> m_interruptAdSuccessErrorCallback;
         // Can be assigned from different thread.
         static std::atomic<bool> m_resurrectAdSuccess;
-        static std::atomic<bool> m_winPrize1AdSuccess;
         static std::atomic<bool> m_winPrize2AdSuccess;
-        static std::atomic<bool> m_killAllAdSuccess;
         static std::atomic<bool> m_commonAdError;
+        static std::atomic<bool> m_tutorialAdSuccessError;
+        static std::atomic<bool> m_interruptAdSuccessError;
 
         // Menus before specific bosses.
         // Tank with commander.

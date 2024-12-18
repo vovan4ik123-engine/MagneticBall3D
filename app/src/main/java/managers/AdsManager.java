@@ -35,7 +35,7 @@ public class AdsManager {
         Log.v("AdsManager", "init(SDLActivity activity)");
         AdsManager.m_activity = activ;
         MobileAds.initialize(AdsManager.m_activity, initializationStatus -> {}); // calls onInitializationComplete().
-        loadRewarded(false);
+        //loadRewarded(false);
         loadInter(false);
     }
 
