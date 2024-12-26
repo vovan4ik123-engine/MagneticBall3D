@@ -396,7 +396,7 @@ namespace MagneticBall3D
             janitorRake->timeBetweenAttacks = 1.5f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             janitorRake->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            janitorRake->experienceWhenDie = 25;
+            janitorRake->experienceWhenDie = 50;
 
             m_animatedOrDynamicObjects.push_back(janitorRake);
             m_allAnimatedEnemies.push_back(janitorRake);
@@ -436,7 +436,7 @@ namespace MagneticBall3D
             copShield->timeBetweenAttacks = 2.0f + Beryll::RandomGenerator::getFloat() * 0.2f;
 
             copShield->reducePlayerSpeedWhenTakeSmashDamage = 0.0f;
-            copShield->experienceWhenDie = 25;
+            copShield->experienceWhenDie = 60;
 
             m_animatedOrDynamicObjects.push_back(copShield);
             m_allAnimatedEnemies.push_back(copShield);

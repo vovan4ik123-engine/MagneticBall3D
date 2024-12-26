@@ -110,9 +110,9 @@ namespace MagneticBall3D
         if(EnumsAndVars::playerResurrectTime + 14.0f < EnumsAndVars::mapPlayTimeSec)
             updateEnemiesAndTheirsAttacks();
 
-        if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 0)
+        if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 5)
         {
-            BR_INFO("%s", "if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 0)");
+            BR_INFO("%s", "if(EnumsAndVars::enemiesLastWavePhase && BaseEnemy::getActiveCount() <= 5)");
 
             if(EnumsAndVars::mapHasBossPhase)
                 startBossPhase();
@@ -800,7 +800,7 @@ namespace MagneticBall3D
 
                 m_eyesLookAngleXZ += deltaX;
                 m_eyesLookAngleY -= deltaY;
-                if(m_eyesLookAngleY > 5.0f) m_eyesLookAngleY = 5.0f; // Eye up.
+                if(m_eyesLookAngleY > 10.0f) m_eyesLookAngleY = 10.0f; // Eye up.
                 if(m_eyesLookAngleY < -88.0f) m_eyesLookAngleY = -88.0f; // Eye down.
                 //BR_INFO("m_eyesLookAngleXZ %f m_eyesLookAngleY %f", m_eyesLookAngleXZ, m_eyesLookAngleY);
                 break;

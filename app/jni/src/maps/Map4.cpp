@@ -502,7 +502,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 15 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 10 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -520,7 +520,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 30 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 25 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -539,7 +539,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 40 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 30 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -564,7 +564,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 40 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -594,7 +594,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 60 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 50 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -604,7 +604,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
                 }
-                else if(gun2Count < 30 && enemy->unitType == UnitType::ENEMY_GUN2)
+                else if(gun2Count < 20 && enemy->unitType == UnitType::ENEMY_GUN2)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun2Count;
@@ -624,7 +624,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 60 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -634,7 +634,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
                 }
-                else if(gun2Count < 40 && enemy->unitType == UnitType::ENEMY_GUN2)
+                else if(gun2Count < 30 && enemy->unitType == UnitType::ENEMY_GUN2)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun2Count;
@@ -654,7 +654,7 @@ namespace MagneticBall3D
             {
                 enemy->isCanBeSpawned = false;
 
-                if(gun1Count < 80 && enemy->unitType == UnitType::ENEMY_GUN1)
+                if(gun1Count < 70 && enemy->unitType == UnitType::ENEMY_GUN1)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun1Count;
@@ -664,7 +664,7 @@ namespace MagneticBall3D
                     enemy->isCanBeSpawned = true;
                     ++tankCount;
                 }
-                else if(gun2Count < 50 && enemy->unitType == UnitType::ENEMY_GUN2)
+                else if(gun2Count < 40 && enemy->unitType == UnitType::ENEMY_GUN2)
                 {
                     enemy->isCanBeSpawned = true;
                     ++gun2Count;
