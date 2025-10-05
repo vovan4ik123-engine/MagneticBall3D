@@ -10,7 +10,6 @@ namespace MagneticBall3D
     std::atomic<bool> PlayStateGUILayer::m_resurrectAdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_winPrize2AdSuccess = false;
     std::atomic<bool> PlayStateGUILayer::m_commonAdError = false;
-    std::atomic<bool> PlayStateGUILayer::m_tutorialAdSuccessError = false;
     std::atomic<bool> PlayStateGUILayer::m_interruptAdSuccessError = false;
 
     PlayStateGUILayer::PlayStateGUILayer()
@@ -81,14 +80,12 @@ namespace MagneticBall3D
         PlayStateGUILayer::m_resurrectAdSuccess = false;
         PlayStateGUILayer::m_winPrize2AdSuccess = false;
         PlayStateGUILayer::m_commonAdError = false;
-        PlayStateGUILayer::m_tutorialAdSuccessError = false;
         PlayStateGUILayer::m_interruptAdSuccessError = false;
 
         // These callbacks are called from different thread.
         m_resurrectAdSuccessCallback = []() -> void { BR_INFO("%s", "m_resurrectAdSuccessCallback()"); PlayStateGUILayer::m_resurrectAdSuccess = true; };
         m_winPrize2AdSuccessCallback = []() -> void { BR_INFO("%s", "m_winPrize2AdSuccessCallback()"); PlayStateGUILayer::m_winPrize2AdSuccess = true; };
         m_commonAdErrorCallback = []() -> void { BR_INFO("%s", "m_commonAdErrorCallback()"); PlayStateGUILayer::m_commonAdError = true; };
-        m_tutorialAdSuccessErrorCallback = [](){ BR_INFO("%s", "m_tutorialAdSuccessErrorCallback()"); PlayStateGUILayer::m_tutorialAdSuccessError = true; };
         m_interruptAdSuccessErrorCallback = [](){ BR_INFO("%s", "m_interruptAdSuccessErrorCallback()"); PlayStateGUILayer::m_interruptAdSuccessError = true; };
     }
 
@@ -136,17 +133,17 @@ namespace MagneticBall3D
         }
 
         // This just interrupt game and show interstitial ad. =)
-        if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0 && !EnumsAndVars::Shop::adsOnMapsDisabled &&
-           m_m_interruptAdLastTimePlayed + m_m_interruptAdDelaySec < EnumsAndVars::mapPlayTimeSec)
-        {
-            m_m_interruptAdLastTimePlayed = EnumsAndVars::mapPlayTimeSec;
-
-            Sounds::pauseBackgroundMusic();
-            GameStateHelper::pauseGame();
-
-            SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-            Beryll::Ads::getInstance()->showInterstitialAd(m_interruptAdSuccessErrorCallback, m_interruptAdSuccessErrorCallback);
-        }
+//        if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0 && !EnumsAndVars::Shop::adsOnMapsDisabled &&
+//           m_m_interruptAdLastTimePlayed + m_m_interruptAdDelaySec < EnumsAndVars::mapPlayTimeSec)
+//        {
+//            m_m_interruptAdLastTimePlayed = EnumsAndVars::mapPlayTimeSec;
+//
+//            Sounds::pauseBackgroundMusic();
+//            GameStateHelper::pauseGame();
+//
+//            SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
+//            Beryll::Ads::getInstance()->showInterstitialAd(m_interruptAdSuccessErrorCallback, m_interruptAdSuccessErrorCallback);
+//        }
 
         if(m_pauseButtonClicked)
         {
@@ -208,15 +205,9 @@ namespace MagneticBall3D
             m_tutorialCompletedButtonClicked = false;
             Sounds::stopBackgroundMusic();
 
-            if(EnumsAndVars::Shop::adsOnMapsDisabled)
-            {
-                m_tutorialAdSuccessErrorCallback();
-            }
-            else
-            {
-                SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-                Beryll::Ads::getInstance()->showInterstitialAd(m_tutorialAdSuccessErrorCallback, m_tutorialAdSuccessErrorCallback);
-            }
+            GameStateHelper::popState();
+            GameStateHelper::pushStartMenuState();
+            return;
         }
         else if(m_tankWithCommanderButtonClicked)
         {
@@ -275,15 +266,6 @@ namespace MagneticBall3D
             resurrectPlayer = true; // Will handled in BaseMap.cpp
             GameStateHelper::resumeGame();
             Sounds::resumeBackgroundMusic();
-        }
-
-        if(PlayStateGUILayer::m_tutorialAdSuccessError)
-        {
-            PlayStateGUILayer::m_tutorialAdSuccessError = false;
-
-            GameStateHelper::popState();
-            GameStateHelper::pushStartMenuState();
-            return;
         }
 
         if(PlayStateGUILayer::m_interruptAdSuccessError)
@@ -352,7 +334,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin("smashedSpeedTexture", nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
             ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_countersTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_countersTexture->getID()),
                          ImVec2(0.088f * GUIWidth, 0.144f * GUIHeight));
             ImGui::End();
 
@@ -410,7 +392,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin("pauseButton", nullptr, m_noBackgroundNoFrame);
             ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-            m_pauseButtonClicked = ImGui::ImageButton("pauseButton", reinterpret_cast<ImTextureID>(m_pauseButtonTexture->getID()),
+            m_pauseButtonClicked = ImGui::ImageButton("pauseButton", static_cast<ImTextureID>(m_pauseButtonTexture->getID()),
                                                       ImVec2(0.06f * GUIWidth, 0.12f * GUIHeight));
             ImGui::End();
 
@@ -422,10 +404,10 @@ namespace MagneticBall3D
                 ImGui::Begin("pauseMenu", nullptr, m_noBackgroundNoFrame);
 
                 ImGui::SetCursorPos(ImVec2(0.39f * GUIWidth, 0.417f * GUIHeight));
-                m_resumeButtonClicked = ImGui::ImageButton("pauseMenuResumeButton", reinterpret_cast<ImTextureID>(m_resumeButtonTexture->getID()),
+                m_resumeButtonClicked = ImGui::ImageButton("pauseMenuResumeButton", static_cast<ImTextureID>(m_resumeButtonTexture->getID()),
                                                            ImVec2(0.23f * GUIWidth, 0.176f * GUIHeight));
                 ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-                m_exitButtonClicked = ImGui::ImageButton("pauseMenuExitButton", reinterpret_cast<ImTextureID>(m_exitTexture->getID()),
+                m_exitButtonClicked = ImGui::ImageButton("pauseMenuExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
                 ImGui::End();
             }
@@ -439,17 +421,17 @@ namespace MagneticBall3D
                 ImGui::Begin("tutorialTextTips", nullptr, m_noBackgroundNoFrame);
 
                 ImGui::SetCursorPos(ImVec2(0.198f * GUIWidth, 0.0f * GUIHeight));
-                ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialKillEnemiesTexture->getID()),
+                ImGui::Image(static_cast<ImTextureID>(m_tutorialKillEnemiesTexture->getID()),
                              ImVec2(0.434f * GUIWidth, 0.093f * GUIHeight));
 
                 ImGui::SetCursorPos(ImVec2(0.7f * GUIWidth, 0.106f * GUIHeight));
-                ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialHealthTexture->getID()),
+                ImGui::Image(static_cast<ImTextureID>(m_tutorialHealthTexture->getID()),
                              ImVec2(0.13f * GUIWidth, 0.1f * GUIHeight));
 
                 if(EnumsAndVars::garbageCountMagnetized > 0)
                 {
                     ImGui::SetCursorPos(ImVec2(0.649f * GUIWidth, 0.248f * GUIHeight));
-                    ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialShotButtonTexture->getID()),
+                    ImGui::Image(static_cast<ImTextureID>(m_tutorialShotButtonTexture->getID()),
                                  ImVec2(0.18f * GUIWidth, 0.1f * GUIHeight));
                 }
 
@@ -463,11 +445,11 @@ namespace MagneticBall3D
                     ImGui::Begin("tutorialMoveAndCamera", nullptr, m_noBackgroundNoFrame);
 
                     ImGui::SetCursorPos(ImVec2(0.055f * GUIWidth, 0.0f * GUIHeight));
-                    ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
+                    ImGui::Image(static_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
                                  ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
                     ImGui::SetCursorPos(ImVec2(0.655f * GUIWidth, 0.0f * GUIHeight));
-                    ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCameraTexture->getID()),
+                    ImGui::Image(static_cast<ImTextureID>(m_tutorialCameraTexture->getID()),
                                  ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
                     ImGui::End();
                 }
@@ -483,19 +465,19 @@ namespace MagneticBall3D
             ImGui::Begin("resurrectMenu", nullptr, m_noBackgroundNoFrame);
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_resurrectTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_resurrectTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
-            m_resurrectByAdButtonClicked = ImGui::ImageButton("resurrectByAdButton",reinterpret_cast<ImTextureID>(m_resurrectByAdButtonTexture->getID()),
+            m_resurrectByAdButtonClicked = ImGui::ImageButton("resurrectByAdButton",static_cast<ImTextureID>(m_resurrectByAdButtonTexture->getID()),
                                                               ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
-            m_resurrectByCrystalsButtonClicked = ImGui::ImageButton("resurrectByCrystalsButton", reinterpret_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
+            m_resurrectByCrystalsButtonClicked = ImGui::ImageButton("resurrectByCrystalsButton", static_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
                                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_exitButtonClicked = ImGui::ImageButton("resurrectExitButton", reinterpret_cast<ImTextureID>(m_exitTexture->getID()),
+            m_exitButtonClicked = ImGui::ImageButton("resurrectExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
                                                      ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
@@ -509,11 +491,11 @@ namespace MagneticBall3D
             ImGui::Begin("noCrystalsMenu", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_noCrystalsTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_noCrystalsTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsOkButton",reinterpret_cast<ImTextureID>(m_okTexture->getID()),
+            m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
             ImGui::PopStyleColor(1);
@@ -527,11 +509,11 @@ namespace MagneticBall3D
             ImGui::Begin("adErrorMenu", nullptr, m_noFrame);
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_adErrorTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_adErrorTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_adErrorButtonOkClicked = ImGui::ImageButton("adErrorOkButton",reinterpret_cast<ImTextureID>(m_okTexture->getID()),
+            m_adErrorButtonOkClicked = ImGui::ImageButton("adErrorOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
                                                           ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
 
             ImGui::End();
@@ -547,25 +529,25 @@ namespace MagneticBall3D
             if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart == 0) // Tutorial completed.
             {
                 ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-                ImGui::Image(reinterpret_cast<ImTextureID>(m_tutorialCompletedTexture->getID()),
+                ImGui::Image(static_cast<ImTextureID>(m_tutorialCompletedTexture->getID()),
                              ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
                 ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
-                m_tutorialCompletedButtonClicked = ImGui::ImageButton("tutorialCompletedButton", reinterpret_cast<ImTextureID>(m_okTexture->getID()),
+                m_tutorialCompletedButtonClicked = ImGui::ImageButton("tutorialCompletedButton", static_cast<ImTextureID>(m_okTexture->getID()),
                                                                       ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             }
             else
             {
                 ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-                ImGui::Image(reinterpret_cast<ImTextureID>(m_winTexture->getID()),
+                ImGui::Image(static_cast<ImTextureID>(m_winTexture->getID()),
                              ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
                 ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
-                m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",reinterpret_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
+                m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",static_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
                                                               ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
 
                 ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
-                m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", reinterpret_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
+                m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", static_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
                                                               ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             }
 
@@ -579,11 +561,11 @@ namespace MagneticBall3D
             ImGui::Begin("loseMenu", nullptr, m_noBackgroundNoFrame);
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_loseTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_loseTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
-            m_exitButtonClicked = ImGui::ImageButton("loseMenuExitButton", reinterpret_cast<ImTextureID>(m_exitTexture->getID()),
+            m_exitButtonClicked = ImGui::ImageButton("loseMenuExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
                                                      ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }
@@ -595,11 +577,11 @@ namespace MagneticBall3D
             ImGui::Begin("tankWithCommanderMenu", nullptr, m_noBackgroundNoFrame);
 
             ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
                          ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
 
             ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_tankWithCommanderButtonClicked = ImGui::ImageButton("tankWithCommanderOkButton",reinterpret_cast<ImTextureID>(m_okTexture->getID()),
+            m_tankWithCommanderButtonClicked = ImGui::ImageButton("tankWithCommanderOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
                                                                   ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
             ImGui::End();
         }

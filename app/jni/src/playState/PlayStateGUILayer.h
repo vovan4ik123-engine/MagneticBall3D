@@ -130,7 +130,6 @@ namespace MagneticBall3D
         static std::atomic<bool> m_resurrectAdSuccess;
         static std::atomic<bool> m_winPrize2AdSuccess;
         static std::atomic<bool> m_commonAdError;
-        static std::atomic<bool> m_tutorialAdSuccessError;
         static std::atomic<bool> m_interruptAdSuccessError;
 
         // Menus before specific bosses.

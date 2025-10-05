@@ -534,7 +534,7 @@ namespace MagneticBall3D
             ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
             ImGui::Begin("piggyBankWindow", nullptr, m_noBackgroundNoFrame);
             ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
-            if(ImGui::ImageButton("piggyBankButton", reinterpret_cast<ImTextureID>(m_piggyBankAnimationTextures[currentFrameIndex]->getID()),
+            if(ImGui::ImageButton("piggyBankButton", static_cast<ImTextureID>(m_piggyBankAnimationTextures[currentFrameIndex]->getID()),
                                   ImVec2(0.084f * GUIWidth, 0.182f * GUIHeight)))
             {
                 m_selectImprovement = true;

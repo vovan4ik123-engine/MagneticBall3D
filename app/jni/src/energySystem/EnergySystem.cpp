@@ -134,7 +134,7 @@ namespace MagneticBall3D
 
         ImGui::Begin(m_energyTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_energyTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_energyTexture->getID()),
                      ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
 
         ImGui::End();
@@ -148,7 +148,7 @@ namespace MagneticBall3D
 
         ImGui::Begin(m_energyButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
 
-        m_energyButtonClicked = ImGui::ImageButton(m_energyButtonID.c_str(), reinterpret_cast<ImTextureID>(m_energyButtonTexture->getID()),
+        m_energyButtonClicked = ImGui::ImageButton(m_energyButtonID.c_str(), static_cast<ImTextureID>(m_energyButtonTexture->getID()),
                                                    ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
 
         ImGui::End();

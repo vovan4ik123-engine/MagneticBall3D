@@ -107,7 +107,7 @@ namespace MagneticBall3D
 
         // Background.
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_backgroundTexture->getID()),
                      ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Crystals text.
@@ -120,36 +120,36 @@ namespace MagneticBall3D
 
         // Play.
         ImGui::SetCursorPos(ImVec2(0.48f * GUIWidth, 0.74f * GUIHeight));
-        m_playButtonClicked = ImGui::ImageButton("playButton", reinterpret_cast<ImTextureID>(m_playButtonTexture->getID()),
+        m_playButtonClicked = ImGui::ImageButton("playButton", static_cast<ImTextureID>(m_playButtonTexture->getID()),
                                                  ImVec2(0.2f * GUIWidth, 0.2f * GUIHeight));
 
         // Shop.
         ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.0f * GUIHeight));
-        m_shopButtonClicked = ImGui::ImageButton("shopButton", reinterpret_cast<ImTextureID>(m_shopButtonTexture->getID()),
+        m_shopButtonClicked = ImGui::ImageButton("shopButton", static_cast<ImTextureID>(m_shopButtonTexture->getID()),
                                                  ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
 
         // Talents.
         ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.33667f * GUIHeight));
-        m_talentsButtonClicked = ImGui::ImageButton("talentButton", reinterpret_cast<ImTextureID>(m_talentsButtonTexture->getID()),
+        m_talentsButtonClicked = ImGui::ImageButton("talentButton", static_cast<ImTextureID>(m_talentsButtonTexture->getID()),
                                                     ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
 
         // Settings.
         ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.67334f * GUIHeight));
-        m_settingsButtonClicked = ImGui::ImageButton("settingsButton", reinterpret_cast<ImTextureID>(m_settingsButtonTexture->getID()),
+        m_settingsButtonClicked = ImGui::ImageButton("settingsButton", static_cast<ImTextureID>(m_settingsButtonTexture->getID()),
                                                      ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
 
         // Map swipe left.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
             ImGui::SetCursorPos(ImVec2(0.23f * GUIWidth, 0.355f * GUIHeight));
-            m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", reinterpret_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
+            m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", static_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
                                                              ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
         }
         // Map preview.
         if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
         {
             ImGui::SetCursorPos(ImVec2(0.33f * GUIWidth, 0.175f * GUIHeight));
-            ImGui::Image(reinterpret_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
+            ImGui::Image(static_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
                          ImVec2(0.5f * GUIWidth, 0.5f * GUIHeight));
         }
         // Map swipe right.
@@ -157,7 +157,7 @@ namespace MagneticBall3D
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
             ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.355f * GUIHeight));
-            m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", reinterpret_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
+            m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", static_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
                                                               ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
         }
         ImGui::End();

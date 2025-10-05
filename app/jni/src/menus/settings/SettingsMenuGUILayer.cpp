@@ -87,17 +87,17 @@ namespace MagneticBall3D
 
         // Background.
         ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_backgroundTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_backgroundTexture->getID()),
                      ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
 
         // Back.
         ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));
-        m_backButtonClicked = ImGui::ImageButton("backButton", reinterpret_cast<ImTextureID>(m_backButtonTexture->getID()),
+        m_backButtonClicked = ImGui::ImageButton("backButton", static_cast<ImTextureID>(m_backButtonTexture->getID()),
                                                  ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
 
         // FPS limit.
         ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.245f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSLimitTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_FPSLimitTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
@@ -109,49 +109,49 @@ namespace MagneticBall3D
 
         // FPS check boxes.
         ImGui::SetCursorPos(ImVec2(0.411f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("30", &m_30FPSChecked, false))
+        if(ImGui::Checkbox("30", &m_30FPSChecked))
             resetFPS(30);
 
         ImGui::SetCursorPos(ImVec2(0.478f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("60", &m_60FPSChecked, false))
+        if(ImGui::Checkbox("60", &m_60FPSChecked))
             resetFPS(60);
 
         ImGui::SetCursorPos(ImVec2(0.546f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("120", &m_120FPSChecked, false))
+        if(ImGui::Checkbox("120", &m_120FPSChecked))
             resetFPS(120);
 
         ImGui::SetCursorPos(ImVec2(0.626f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("250", &m_250FPSChecked, false))
+        if(ImGui::Checkbox("250", &m_250FPSChecked))
             resetFPS(250);
 
         // FPS tip.
         ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.365f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_FPSTipTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_FPSTipTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         // Background music.
         ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.485f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_musicTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_musicTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         ImGui::SetCursorPos(ImVec2(0.489f * GUIWidth, 0.5f * GUIHeight));
-        ImGui::Checkbox("music", &m_musicCheckBoxChecked, false);
+        ImGui::Checkbox("music", &m_musicCheckBoxChecked);
 
         // Meteor particles.
         ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.605f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         ImGui::SetCursorPos(ImVec2(0.470f * GUIWidth, 0.62f * GUIHeight));
-        ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked, false);
+        ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked);
 
         // Interface GUI.
         ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.725f * GUIHeight));
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_interfaceGUITexture->getID()),
+        ImGui::Image(static_cast<ImTextureID>(m_interfaceGUITexture->getID()),
                      ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
 
         ImGui::SetCursorPos(ImVec2(0.519f * GUIWidth, 0.74f * GUIHeight));
-        ImGui::Checkbox("interfaceGUI", &m_interfaceGUICheckBoxChecked, false);
+        ImGui::Checkbox("interfaceGUI", &m_interfaceGUICheckBoxChecked);
 
         ImGui::PopFont();
         ImGui::PopStyleColor(8);
