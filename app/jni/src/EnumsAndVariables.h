@@ -112,12 +112,12 @@ namespace EnumsAndVars
             DataBaseHelper::updatePlayerTalent(name, currentLevel);
         }
 
-        float getPercentsToImprove() // Percents to add to default value.
+        float getPercentsToImprove() const // Percents to add to default value.
         {
             return float(currentLevel) * increasePerLevel;
         }
 
-        int getCurrentLevelPriceCrystals()
+        int getCurrentLevelPriceCrystals() const
         {
             return firstLevelPriceCrystals + currentLevel;
         }
