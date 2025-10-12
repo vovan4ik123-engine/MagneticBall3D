@@ -302,17 +302,14 @@ namespace MagneticBall3D
             m_selectedImprovements.push_back(selected);
         }
 
-        buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.png", "", 0.43f, 0.83f, 0.14f, 0.1f);
-        buttonReroll->disable();
+        m_buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.png", "", 0.43f, 0.83f, 0.14f, 0.1f);
+        m_buttonReroll->disable();
 
-        std::string animationFrameName;
-        for(int i = 1; i <= 20; ++i)
-        {
-            animationFrameName = "GUI/improvements/piggyBankAnimation/PiggyBankFrame";
-            animationFrameName += std::to_string(i);
-            animationFrameName += ".png";
-            m_piggyBankAnimationTextures.push_back(Beryll::Renderer::createTexture(animationFrameName.c_str(), Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        }
+        m_buttonPiggyBank = std::make_shared<Beryll::ButtonWithAnimation>("GUI/improvements/piggyBankAnim",
+                                                                          std::vector<const std::string>{"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png",
+                                                                           "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png"},
+                                                                          1.0f, false, 0.912f, 0.24f, 0.084f, 0.182f);
+        m_buttonPiggyBank->disable();
 
         m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);
     }
@@ -326,14 +323,25 @@ namespace MagneticBall3D
     {
         BR_ASSERT((m_player != nullptr), "%s", "m_player is nullptr. Call setPlayer().");
 
+        if(EnumsAndVars::gameOnPause)
+            return;
+
         if(m_player->getIsNextLevelAchieved() && m_piggyBankLevelsCollectedCount < m_piggyBankMaxLevel)
         {
             ++m_piggyBankCurrentLevel;
             ++m_piggyBankLevelsCollectedCount;
-            m_piggyBankShow = true;
-            m_piggyBankAnimationStartTime = EnumsAndVars::mapPlayTimeSec;
+            m_buttonPiggyBank->enable(true);
             m_player->handleLevelAchievement();
             BR_INFO("New level achieved. piggyBankCurrentLevel %d allLevelsCollected %d", m_piggyBankCurrentLevel, m_piggyBankLevelsCollectedCount);
+        }
+
+        if(m_buttonPiggyBank->getIsEnabled())
+            m_buttonPiggyBank->updateBeforePhysics();
+
+        if(m_buttonPiggyBank->getIsPressed())
+        {
+            m_selectImprovement = true;
+            m_buttonPiggyBank->disable();
         }
 
         if(m_selectImprovement)
@@ -346,7 +354,7 @@ namespace MagneticBall3D
             selectImprovementsToShow();
 
             if(m_rerollAttempts > 0)
-                buttonReroll->enable();
+                m_buttonReroll->enable();
 
             BR_INFO("%s", "improvementSystemOnScreen = true");
             EnumsAndVars::improvementSystemOnScreen = true;
@@ -355,18 +363,18 @@ namespace MagneticBall3D
 
         if(EnumsAndVars::improvementSystemOnScreen)
         {
-            if(buttonReroll->getIsEnabled())
+            if(m_buttonReroll->getIsEnabled())
             {
-                buttonReroll->updateBeforePhysics();
+                m_buttonReroll->updateBeforePhysics();
 
-                if(buttonReroll->getIsPressed())
+                if(m_buttonReroll->getIsPressed())
                 {
                     --m_rerollAttempts;
 
                     selectImprovementsToShow();
 
                     if(m_rerollAttempts <= 0)
-                        buttonReroll->disable();
+                        m_buttonReroll->disable();
                 }
             }
 
@@ -385,7 +393,7 @@ namespace MagneticBall3D
                     for(auto& blockDisable : m_allAvailableGUIBlocks)
                         blockDisable.onScreen = false;
 
-                    buttonReroll->disable();
+                    m_buttonReroll->disable();
 
                     // Handle click.
                     if(block.info.currentLevel < block.info.actions.size())
@@ -502,60 +510,37 @@ namespace MagneticBall3D
                 selected.texture->draw();
             }
 
-            if(buttonReroll->getIsEnabled())
-                buttonReroll->draw();
+            if(m_buttonReroll->getIsEnabled())
+                m_buttonReroll->draw();
         }
 
         if(EnumsAndVars::gameOnPause)
             return;
 
-        if(m_piggyBankShow)
+        if(m_buttonPiggyBank->getIsEnabled())
         {
-            // Show button with level.
-            int currentFrameIndex = m_piggyBankAnimationTextures.size() - 1;
-            bool showLevel = true;
-            if(m_piggyBankAnimationStartTime + m_piggyBankAnimationTime > EnumsAndVars::mapPlayTimeSec)
-            {
-                // Play animation for new level.
-                const float timeOfOneFrame = m_piggyBankAnimationTime / float(m_piggyBankAnimationTextures.size());
-                currentFrameIndex = int((EnumsAndVars::mapPlayTimeSec - m_piggyBankAnimationStartTime) / timeOfOneFrame);
-                if(currentFrameIndex >= m_piggyBankAnimationTextures.size())
-                    currentFrameIndex = m_piggyBankAnimationTextures.size() - 1;
-                showLevel = false;
-            }
+            m_buttonPiggyBank->draw();
 
-            const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-            const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-            ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.24f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("piggyBankWindow", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
-            if(ImGui::ImageButton("piggyBankButton", static_cast<ImTextureID>(m_piggyBankAnimationTextures[currentFrameIndex]->getID()),
-                                  ImVec2(0.084f * GUIWidth, 0.182f * GUIHeight)))
+            if(m_buttonPiggyBank->getIsAnimationFinished())
             {
-                m_selectImprovement = true;
-                m_piggyBankShow = false;
-                BR_INFO("%s", "Piggy bank pressed.");
-            }
-            ImGui::PopStyleColor(3);
+                // Show text over button.
+                const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
+                const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
 
-            if(showLevel)
-            {
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.08f, 0.08f, 0.08f, 1.0f});
                 ImGui::PushFont(m_piggyBankLevelFont);
+                ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.24f * GUIHeight));
+                ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
+                ImGui::Begin("piggyBankLevel", nullptr, m_noBackgroundNoFrame);
                 if(m_piggyBankCurrentLevel < 10)
-                    ImGui::SetCursorPos(ImVec2(0.0405f * GUIWidth, 0.0193f * GUIHeight));
+                    ImGui::SetCursorPos(ImVec2(0.039f * GUIWidth, 0.028f * GUIHeight));
                 else
-                    ImGui::SetCursorPos(ImVec2(0.034f * GUIWidth, 0.0193f * GUIHeight));
+                    ImGui::SetCursorPos(ImVec2(0.033f * GUIWidth, 0.028f * GUIHeight));
                 ImGui::Text("%d", m_piggyBankCurrentLevel);
                 ImGui::PopFont();
                 ImGui::PopStyleColor(1);
+                ImGui::End();
             }
-            ImGui::End();
         }
     }
 

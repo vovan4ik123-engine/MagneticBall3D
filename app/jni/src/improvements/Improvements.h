@@ -101,18 +101,16 @@ namespace MagneticBall3D
         static constexpr int m_maxLevel = 5; // Every improvement should has 5 levels.
         std::vector<int> m_IDsSelected; // Contains IDs of selected improvements.
         std::shared_ptr<Player> m_player;
-        std::shared_ptr<Beryll::ButtonWithTexture> buttonReroll;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonReroll;
         int m_rerollAttempts = 1;
 
         // Piggy bank with available levels. Store player levels. Can be spent for improvements when user wants(button click).
+        std::shared_ptr<Beryll::ButtonWithAnimation> m_buttonPiggyBank;
+
         int m_piggyBankCurrentLevel = 0;
         int m_piggyBankLevelsCollectedCount = 0;
         const int m_piggyBankMaxLevel = m_maxImprovementsSelectedCount * m_maxLevel;
-        bool m_piggyBankShow = false;
-        float m_piggyBankAnimationStartTime = 0.0f;
-        float m_piggyBankAnimationTime = 1.0f;
         bool m_selectImprovement = false;
-        std::vector<std::unique_ptr<Beryll::Texture>> m_piggyBankAnimationTextures;
         ImFont* m_piggyBankLevelFont;
         int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
