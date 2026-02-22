@@ -156,7 +156,7 @@ namespace MagneticBall3D
         m_animatedObjSunLight->activateDiffuseTextureMat1();
         m_animatedObjSunLight->unBind();
 
-        m_shadowMap = Beryll::Renderer::createShadowMap(3500, 3500);
+        m_shadowMap = Beryll::Renderer::createShadowMap(3600, 3600);
     }
 
     void BaseMap::loadPlayer()
