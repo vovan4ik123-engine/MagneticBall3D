@@ -5,8 +5,8 @@ plugins {
 
 android {
     namespace = "com.magneticBall3D.app"
-    compileSdk = 36
-	ndkVersion "28.2.13676358"
+    compileSdk 36
+	ndkVersion "29.0.14206865"
 	
     defaultConfig {
 	applicationId = "com.magneticBall3D.app"
@@ -25,23 +25,23 @@ android {
             }
         }
     }
-
+	
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_20
         targetCompatibility JavaVersion.VERSION_20
     }
 	
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-	
-    applicationVariants.all { variant ->
-        tasks["merge${variant.name.capitalize()}Assets"]
-            .dependsOn("externalNativeBuild${variant.name.capitalize()}")
-    }
+//    applicationVariants.all { variant ->
+//        tasks["merge${variant.name.capitalize()}Assets"]
+//            .dependsOn("externalNativeBuild${variant.name.capitalize()}")
+//    }
 	
     if (!project.hasProperty('EXCLUDE_NATIVE_LIBS')) {
         sourceSets.main {
@@ -59,16 +59,28 @@ android {
     }
 }
 
+androidComponents {
+    onVariants(selector().all()) { variant ->
+
+        def capitalizedName = variant.name.take(1).toUpperCase() + variant.name.drop(1)
+
+        // Wire tasks lazily to avoid 'Task not found' errors during configuration.
+        tasks.matching{ it.name == "merge${capitalizedName}Assets" }.configureEach {
+            dependsOn("externalNativeBuild${capitalizedName}")
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Import the Firebase BoM.
-    implementation platform('com.google.firebase:firebase-bom:34.3.0')
+    implementation platform('com.google.firebase:firebase-bom:34.9.0')
     implementation 'com.google.firebase:firebase-analytics'
 
     // Billing system.
-    implementation 'com.android.billingclient:billing:8.0.0'
+    implementation 'com.android.billingclient:billing:8.3.0'
 
     // Ads.
-    implementation 'com.google.android.gms:play-services-ads:24.6.0'
+    implementation 'com.google.android.gms:play-services-ads:25.0.0'
 }

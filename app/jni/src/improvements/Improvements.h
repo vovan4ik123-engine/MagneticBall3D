@@ -44,13 +44,13 @@ namespace MagneticBall3D
         ImprovementGUIBlock(ImprovementInfo inf,
                             std::shared_ptr<Beryll::ButtonWithTexture> b,
                             std::shared_ptr<Beryll::GUITexture> st,
-                            std::shared_ptr<Beryll::Text> pt)
+                            std::shared_ptr<Beryll::GUIText> pt)
                             : info(std::move(inf)), button(std::move(b)), selectedTexture(std::move(st)), progressText(std::move(pt)) {}
 
         ImprovementInfo info;
         std::shared_ptr<Beryll::ButtonWithTexture> button;
         std::shared_ptr<Beryll::GUITexture> selectedTexture;
-        std::shared_ptr<Beryll::Text> progressText;
+        std::shared_ptr<Beryll::GUIText> progressText;
 
         bool onScreen = false;
 
@@ -122,8 +122,6 @@ namespace MagneticBall3D
         float m_buttonWidth = 0.1362f;
         float m_buttonTop = 0.25f;
         float m_buttonHeight = 0.537f;
-        float m_progressTextTop = 0.6705f;
-        float m_progressTextHeight = 0.11f;
         // To position before show on screen. Only left-right pos should be changed.
         float m_leftPos1BlockButton = 0.4319f;
         float m_leftPos1BlockText = 0.4648f;

@@ -43,9 +43,10 @@ namespace MagneticBall3D
 #else
         bool m_statisticsShow = false;
 #endif
-        std::shared_ptr<Beryll::Text> m_statistics1;
-        std::shared_ptr<Beryll::Text> m_statistics2;
-        std::shared_ptr<Beryll::Text> m_statistics3;
+
+        std::shared_ptr<Beryll::GUIText> m_statistics1;
+        std::shared_ptr<Beryll::GUIText> m_statistics2;
+        std::shared_ptr<Beryll::GUIText> m_statistics3;
         uint64_t m_statisticsUpdateTime = 0;
 
         // GUI based on raw ImGUI.

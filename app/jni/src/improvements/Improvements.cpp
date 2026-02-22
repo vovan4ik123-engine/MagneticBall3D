@@ -278,9 +278,7 @@ namespace MagneticBall3D
 
             auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
 
-            auto progressText = std::make_shared<Beryll::Text>("00/00", EnumsAndVars::FontsPath::roboto, m_progressTextHeight,
-                                                               m_leftDefault, m_progressTextTop, 0.1f, 0.12f, false, true);
-            progressText->setFontColor(1.0f, 1.0f, 1.0f, 1.0f);
+            std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("", glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 13.0f, 1.0f}, 1.0f);
 
             ImprovementGUIBlock guiBlock(info, button, selected, progressText);
             m_allAvailableGUIBlocks.push_back(guiBlock);
@@ -561,7 +559,9 @@ namespace MagneticBall3D
         else if(m_allAvailableGUIBlocks.size() == 1)
         {
             m_allAvailableGUIBlocks[0].button->leftPos = m_leftPos1BlockButton;
-            m_allAvailableGUIBlocks[0].progressText->leftPos = m_leftPos1BlockText;
+
+            glm::vec2 currentPos = m_allAvailableGUIBlocks[0].progressText->getLeftBottomPosInPercents();
+            m_allAvailableGUIBlocks[0].progressText->setLeftBottomPosInPercents({m_leftPos1BlockText * 100.0f, currentPos.y});
             m_allAvailableGUIBlocks[0].progressText->text = std::to_string(m_allAvailableGUIBlocks[0].info.currentLevel);
             m_allAvailableGUIBlocks[0].progressText->text += "/";
             m_allAvailableGUIBlocks[0].progressText->text += std::to_string(m_allAvailableGUIBlocks[0].info.maxLevel);
@@ -572,7 +572,9 @@ namespace MagneticBall3D
             for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
             {
                 m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos2BlocksButtons[i];
-                m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos2BlocksTexts[i];
+
+                glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
+                m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos2BlocksTexts[i] * 100.0f, currentPos.y});
                 m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                 m_allAvailableGUIBlocks[i].progressText->text += "/";
                 m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
@@ -584,7 +586,9 @@ namespace MagneticBall3D
             for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
             {
                 m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[i];
-                m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[i];
+
+                glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
+                m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos3BlocksTexts[i] * 100.0f, currentPos.y});
                 m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                 m_allAvailableGUIBlocks[i].progressText->text += "/";
                 m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
@@ -613,7 +617,9 @@ namespace MagneticBall3D
                 {
                     // Show block.
                     m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];
-                    m_allAvailableGUIBlocks[i].progressText->leftPos = m_leftPos3BlocksTexts[indexOnScreen];
+
+                    glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
+                    m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos3BlocksTexts[indexOnScreen] * 100.0f, currentPos.y});
                     m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                     m_allAvailableGUIBlocks[i].progressText->text += "/";
                     m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);

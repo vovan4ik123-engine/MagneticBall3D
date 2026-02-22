@@ -34,6 +34,6 @@ namespace MagneticBall3D
         std::vector<glm::vec3> m_hitPoint;
 
         glm::mat4 m_modelMatrix{1.0f};
-        std::shared_ptr<Beryll::Shader> m_shader;
+        std::shared_ptr<Beryll::Shader> m_internalShader;
     };
 }

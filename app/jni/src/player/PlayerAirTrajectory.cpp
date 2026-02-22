@@ -7,10 +7,11 @@ namespace MagneticBall3D
         m_trajectoryPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryPoint.fbx", Beryll::SceneObjectGroups::NONE);
         m_trajectoryHitPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryHitPoint.fbx", Beryll::SceneObjectGroups::NONE);
 
-        m_shader = Beryll::Renderer::createShader("shaders/GLES/PlayerAirTrajectory.vert",
-                                                  "shaders/GLES/PlayerAirTrajectory.frag");
-        m_shader->bind();
-        m_shader->activateDiffuseTextureMat1();
+        m_internalShader = Beryll::Renderer::createShader("shaders/GLES/PlayerAirTrajectory.vert",
+                                                          "shaders/GLES/PlayerAirTrajectory.frag");
+        m_internalShader->bind();
+        m_internalShader->activateDiffuseTextureMat1();
+        m_internalShader->unBind();
 
         m_allTrajectoryPoints.reserve(30);
         m_hitPoint.reserve(1);
@@ -88,11 +89,11 @@ namespace MagneticBall3D
         // Draw.
         Beryll::Renderer::setDepthFunctionAlways();
 
-        m_shader->bind();
-        m_shader->set3Float("sunLightDir", sunLightDir);
-        m_shader->set3Float("cameraPos", Beryll::Camera::getCameraPos());
-        m_shader->set1Float("ambientLight", 0.8f);
-        m_shader->set1Float("specularLightStrength", 2.0f);
+        m_internalShader->bind();
+        m_internalShader->set3Float("sunLightDir", sunLightDir);
+        m_internalShader->set3Float("cameraPos", Beryll::Camera::getCameraPos());
+        m_internalShader->set1Float("ambientLight", 0.8f);
+        m_internalShader->set1Float("specularLightStrength", 2.0f);
 
         if(!m_hitPoint.empty())
         {
@@ -100,9 +101,9 @@ namespace MagneticBall3D
 
             float scaleFactor = 1.0f + glm::distance(startPosition, m_hitPoint[0]) / 350.0f; // Scale to + 100% size every 350m.
             m_modelMatrix = m_trajectoryHitPoint->getModelMatrix() * glm::scale(glm::mat4{1.0f}, glm::vec3{scaleFactor});
-            m_shader->setMatrix4x4Float("modelMatrix", m_modelMatrix);
-            m_shader->setMatrix3x3Float("normalMatrix", glm::mat3(m_modelMatrix));
-            Beryll::Renderer::drawObject(m_trajectoryHitPoint, m_modelMatrix, m_shader);
+            m_internalShader->setMatrix4x4Float("modelMatrix", m_modelMatrix);
+            m_internalShader->setMatrix3x3Float("normalMatrix", glm::mat3(m_modelMatrix));
+            Beryll::Renderer::drawObject(m_trajectoryHitPoint, m_modelMatrix, m_internalShader);
         }
 
         std::reverse(m_allTrajectoryPoints.begin(), m_allTrajectoryPoints.end());
@@ -111,9 +112,9 @@ namespace MagneticBall3D
             m_trajectoryPoint->setOrigin(point);
 
             m_modelMatrix = m_trajectoryPoint->getModelMatrix();
-            m_shader->setMatrix4x4Float("modelMatrix", m_modelMatrix);
-            m_shader->setMatrix3x3Float("normalMatrix", glm::mat3(m_modelMatrix));
-            Beryll::Renderer::drawObject(m_trajectoryPoint, m_modelMatrix, m_shader);
+            m_internalShader->setMatrix4x4Float("modelMatrix", m_modelMatrix);
+            m_internalShader->setMatrix3x3Float("normalMatrix", glm::mat3(m_modelMatrix));
+            Beryll::Renderer::drawObject(m_trajectoryPoint, m_modelMatrix, m_internalShader);
         }
 
         Beryll::Renderer::setDepthFunctionLess();

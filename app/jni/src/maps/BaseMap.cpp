@@ -133,6 +133,7 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadows->bind();
         m_simpleObjSunLightShadows->activateDiffuseTextureMat1();
         m_simpleObjSunLightShadows->activateShadowMapTexture();
+        m_simpleObjSunLightShadows->unBind();
 
         m_simpleObjSunLightShadowsNormals = Beryll::Renderer::createShader("shaders/GLES/SimpleObjectSunLightShadowsNormals.vert",
                                                                            "shaders/GLES/SimpleObjectSunLightShadowsNormals.frag");
@@ -140,17 +141,20 @@ namespace MagneticBall3D
         m_simpleObjSunLightShadowsNormals->activateDiffuseTextureMat1();
         m_simpleObjSunLightShadowsNormals->activateNormalMapTextureMat1();
         m_simpleObjSunLightShadowsNormals->activateShadowMapTexture();
+        m_simpleObjSunLightShadowsNormals->unBind();
 
         m_animatedObjSunLightShadows = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLightShadows.vert",
                                                                       "shaders/GLES/AnimatedObjectSunLightShadows.frag");
         m_animatedObjSunLightShadows->bind();
         m_animatedObjSunLightShadows->activateDiffuseTextureMat1();
         m_animatedObjSunLightShadows->activateShadowMapTexture();
+        m_animatedObjSunLightShadows->unBind();
 
         m_animatedObjSunLight = Beryll::Renderer::createShader("shaders/GLES/AnimatedObjectSunLight.vert",
                                                                "shaders/GLES/AnimatedObjectSunLight.frag");
         m_animatedObjSunLight->bind();
         m_animatedObjSunLight->activateDiffuseTextureMat1();
+        m_animatedObjSunLight->unBind();
 
         m_shadowMap = Beryll::Renderer::createShadowMap(3500, 3500);
     }
