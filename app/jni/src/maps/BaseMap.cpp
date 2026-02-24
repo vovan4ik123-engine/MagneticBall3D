@@ -6,7 +6,7 @@ namespace MagneticBall3D
 {
     BaseMap::BaseMap(std::shared_ptr<PlayStateGUILayer> gui) : m_gui(std::move(gui))
     {
-        Beryll::LoadingScreen::showProgress(100.0f);
+        Beryll::LoadingScreen::show();
 
         // Allocate enough spase for all vectors to avoid vector reallocation.
         m_allGarbage.reserve(m_maxGarbageCount);

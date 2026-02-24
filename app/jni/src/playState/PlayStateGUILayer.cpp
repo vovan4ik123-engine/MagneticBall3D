@@ -46,7 +46,7 @@ namespace MagneticBall3D
         playerJoystick->disable();
 
         m_shotButton = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
-                                                                   0.77f, 0.33f, 0.19f / screenAR, 0.19f);
+                                                                   glm::vec3{76.5f, 48.0f, 1.0f}, glm::vec2{20.0f / screenAR, 20.0f});
 
         m_countersFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.032f);
 

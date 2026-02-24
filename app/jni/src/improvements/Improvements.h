@@ -116,18 +116,12 @@ namespace MagneticBall3D
                                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
                                     ImGuiWindowFlags_NoScrollbar;
 
-        // Positions of GUI block in range 0...1.
-        // To create blocks.
-        float m_leftDefault = 0.0f;
-        float m_buttonWidth = 0.1362f;
-        float m_buttonTop = 0.25f;
-        float m_buttonHeight = 0.537f;
-        // To position before show on screen. Only left-right pos should be changed.
-        float m_leftPos1BlockButton = 0.4319f;
-        float m_leftPos1BlockText = 0.4648f;
-        glm::vec2 m_leftPos2BlocksButtons{0.3338f, 0.53f};
-        glm::vec2 m_leftPos2BlocksTexts{0.3667f, 0.5629f};
-        glm::vec3 m_leftPos3BlocksButtons{0.2357f, 0.4319f, 0.6281f};
-        glm::vec3 m_leftPos3BlocksTexts{0.2686f, 0.4648f, 0.661f};
+        // To position before show on screen. Only pos X should be changed.
+        float m_leftPos1BlockButton = 43.19f;
+        float m_leftPos1BlockText = 45.9f;
+        glm::vec2 m_leftPos2BlocksButtons{33.38f, 53.0f};
+        glm::vec2 m_leftPos2BlocksTexts{36.09f, 55.71f};
+        glm::vec3 m_leftPos3BlocksButtons{23.57f, 43.19f, 62.81f};
+        glm::vec3 m_leftPos3BlocksTexts{26.28f, 45.9f, 65.52f};
     };
 }

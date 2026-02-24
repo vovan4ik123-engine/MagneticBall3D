@@ -274,11 +274,11 @@ namespace MagneticBall3D
                 continue;
 
             auto button = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
-                                                                 m_leftDefault, m_buttonTop, m_buttonWidth, m_buttonHeight);
+                                                                                    glm::vec3{0.0f, 21.3f, 0.9f}, glm::vec2{13.62f, 53.7f});
 
             auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
 
-            std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("", glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 13.0f, 1.0f}, 1.0f);
+            std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("", glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 1.0f);
 
             ImprovementGUIBlock guiBlock(info, button, selected, progressText);
             m_allAvailableGUIBlocks.push_back(guiBlock);
@@ -300,7 +300,8 @@ namespace MagneticBall3D
             m_selectedImprovements.push_back(selected);
         }
 
-        m_buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.png", "", 0.43f, 0.83f, 0.14f, 0.1f);
+        m_buttonReroll= std::make_shared<Beryll::ButtonWithTexture>("GUI/improvements/Reroll.png", "",
+                                                                    glm::vec3{43.0f, 7.0f, 1.0f}, glm::vec2{14.0f, 10.0f});
         m_buttonReroll->disable();
 
         m_buttonPiggyBank = std::make_shared<Beryll::ButtonWithAnimation>("GUI/improvements/piggyBankAnim",
@@ -558,10 +559,11 @@ namespace MagneticBall3D
         }
         else if(m_allAvailableGUIBlocks.size() == 1)
         {
-            m_allAvailableGUIBlocks[0].button->leftPos = m_leftPos1BlockButton;
+            const glm::vec3& currentPosB = m_allAvailableGUIBlocks[0].button->getPositionInPercents();
+            m_allAvailableGUIBlocks[0].button->updatePositionInPercents(glm::vec3{m_leftPos1BlockButton, currentPosB.y, currentPosB.z});
 
-            glm::vec2 currentPos = m_allAvailableGUIBlocks[0].progressText->getLeftBottomPosInPercents();
-            m_allAvailableGUIBlocks[0].progressText->setLeftBottomPosInPercents({m_leftPos1BlockText * 100.0f, currentPos.y});
+            const glm::vec3& currentPosT = m_allAvailableGUIBlocks[0].progressText->getPositionInPercents();
+            m_allAvailableGUIBlocks[0].progressText->updatePositionInPercents(glm::vec3{m_leftPos1BlockText, currentPosT.y, currentPosT.z});
             m_allAvailableGUIBlocks[0].progressText->text = std::to_string(m_allAvailableGUIBlocks[0].info.currentLevel);
             m_allAvailableGUIBlocks[0].progressText->text += "/";
             m_allAvailableGUIBlocks[0].progressText->text += std::to_string(m_allAvailableGUIBlocks[0].info.maxLevel);
@@ -571,10 +573,11 @@ namespace MagneticBall3D
         {
             for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
             {
-                m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos2BlocksButtons[i];
+                const glm::vec3& currentPosB = m_allAvailableGUIBlocks[i].button->getPositionInPercents();
+                m_allAvailableGUIBlocks[i].button->updatePositionInPercents(glm::vec3{m_leftPos2BlocksButtons[i], currentPosB.y, currentPosB.z});
 
-                glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
-                m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos2BlocksTexts[i] * 100.0f, currentPos.y});
+                const glm::vec3& currentPosT = m_allAvailableGUIBlocks[i].progressText->getPositionInPercents();
+                m_allAvailableGUIBlocks[i].progressText->updatePositionInPercents(glm::vec3{m_leftPos2BlocksTexts[i], currentPosT.y, currentPosT.z});
                 m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                 m_allAvailableGUIBlocks[i].progressText->text += "/";
                 m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
@@ -585,10 +588,11 @@ namespace MagneticBall3D
         {
             for(int i = 0; i < m_allAvailableGUIBlocks.size(); ++i)
             {
-                m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[i];
+                const glm::vec3& currentPosB = m_allAvailableGUIBlocks[i].button->getPositionInPercents();
+                m_allAvailableGUIBlocks[i].button->updatePositionInPercents(glm::vec3{m_leftPos3BlocksButtons[i], currentPosB.y, currentPosB.z});
 
-                glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
-                m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos3BlocksTexts[i] * 100.0f, currentPos.y});
+                const glm::vec3 currentPosT = m_allAvailableGUIBlocks[i].progressText->getPositionInPercents();
+                m_allAvailableGUIBlocks[i].progressText->updatePositionInPercents(glm::vec3{m_leftPos3BlocksTexts[i], currentPosT.y, currentPosT.z});
                 m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                 m_allAvailableGUIBlocks[i].progressText->text += "/";
                 m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
@@ -616,10 +620,11 @@ namespace MagneticBall3D
                 if(std::find(randomIndexes.begin(), randomIndexes.end(), i) != randomIndexes.end())
                 {
                     // Show block.
-                    m_allAvailableGUIBlocks[i].button->leftPos = m_leftPos3BlocksButtons[indexOnScreen];
+                    const glm::vec3& currentPosB = m_allAvailableGUIBlocks[i].button->getPositionInPercents();
+                    m_allAvailableGUIBlocks[i].button->updatePositionInPercents(glm::vec3{m_leftPos3BlocksButtons[indexOnScreen], currentPosB.y, currentPosB.z});
 
-                    glm::vec2 currentPos = m_allAvailableGUIBlocks[i].progressText->getLeftBottomPosInPercents();
-                    m_allAvailableGUIBlocks[i].progressText->setLeftBottomPosInPercents({m_leftPos3BlocksTexts[indexOnScreen] * 100.0f, currentPos.y});
+                    const glm::vec3 currentPosT = m_allAvailableGUIBlocks[i].progressText->getPositionInPercents();
+                    m_allAvailableGUIBlocks[i].progressText->updatePositionInPercents(glm::vec3{m_leftPos3BlocksTexts[indexOnScreen], currentPosT.y, currentPosT.z});
                     m_allAvailableGUIBlocks[i].progressText->text = std::to_string(m_allAvailableGUIBlocks[i].info.currentLevel);
                     m_allAvailableGUIBlocks[i].progressText->text += "/";
                     m_allAvailableGUIBlocks[i].progressText->text += std::to_string(m_allAvailableGUIBlocks[i].info.maxLevel);
