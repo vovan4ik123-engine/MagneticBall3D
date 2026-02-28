@@ -73,7 +73,6 @@ namespace MagneticBall3D
     void Map2::draw()
     {
         //BR_INFO("%s", "Scene draw call.");
-        m_improvements.draw();
 
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() +
@@ -82,10 +81,7 @@ namespace MagneticBall3D
         updateSunPosition(sunPos, m_shadowsCubeWidth, m_shadowsCubeHeight, m_shadowsCubeDepth);
 
         Beryll::Renderer::disableFaceCulling();
-        if(BaseEnemy::getActiveCount() < 250)
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
-        else
-            m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, {}, m_sunLightVPMatrix);
+        m_shadowMap->drawIntoShadowMap(m_simpleObjForShadowMap, m_animatedObjForShadowMap, m_sunLightVPMatrix);
         Beryll::Renderer::enableFaceCulling();
 
         // 2. Draw scene.
@@ -214,6 +210,7 @@ namespace MagneticBall3D
         }
 
         m_skyBox->draw();
+        m_improvements.draw();
         Beryll::ParticleSystem::draw();
     }
 

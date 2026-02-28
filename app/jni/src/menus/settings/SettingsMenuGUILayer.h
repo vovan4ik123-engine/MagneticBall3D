@@ -15,43 +15,15 @@ namespace MagneticBall3D
         void draw() override;
 
     private:
-        // GUI based on raw ImGUI.
-        // ImGUI flags.
-        int m_noBackgroundNoFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus;
+        std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        // Background.
-        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
+        std::shared_ptr<Beryll::CheckBox> m_checkBox30Fps;
+        std::shared_ptr<Beryll::CheckBox> m_checkBox60Fps;
+        std::shared_ptr<Beryll::CheckBox> m_checkBox120Fps;
+        std::shared_ptr<Beryll::CheckBox> m_checkBoxMusic;
+        std::shared_ptr<Beryll::CheckBox> m_checkBoxMeteorPart;
+        std::shared_ptr<Beryll::CheckBox> m_checkBoxInterface;
 
-        // Back.
-        std::unique_ptr<Beryll::Texture> m_backButtonTexture;
-        bool m_backButtonClicked = false;
-
-        ImFont* m_fontForAllCheckBoxes;
-
-        // FPS limit.
-        std::unique_ptr<Beryll::Texture> m_FPSLimitTexture;
-        bool m_30FPSChecked = false;
-        bool m_60FPSChecked = false;
-        bool m_120FPSChecked = false;
-        bool m_250FPSChecked = false;
-
-        void resetFPS(int fps);
-
-        // FPS tip.
-        std::unique_ptr<Beryll::Texture> m_FPSTipTexture;
-
-        // Background music.
-        std::unique_ptr<Beryll::Texture> m_musicTexture;
-        bool m_musicCheckBoxChecked;
-
-        // Meteor particles.
-        std::unique_ptr<Beryll::Texture> m_meteorParticlesTexture;
-        bool m_meteorParticlesCheckBoxChecked;
-
-        // Interface GUI.
-        std::unique_ptr<Beryll::Texture> m_interfaceGUITexture;
-        bool m_interfaceGUICheckBoxChecked;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonBack;
     };
 }

@@ -74,10 +74,6 @@ namespace MagneticBall3D
 
     struct SelectedImprovement
     {
-        float leftPos = 0.0f;
-        float topPos = 0.0f;
-        float width = 0.0f;
-        float height = 0.0f;
         std::shared_ptr<Beryll::GUITexture> texture;
         bool defaultTexture = true;
     };

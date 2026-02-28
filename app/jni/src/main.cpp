@@ -6,6 +6,17 @@
 
 // For static model in blender 36.6k triangles = 1mb FBX file size.
 
+// Release instruction:
+// 1. Reset global vars in EnumsAndVars.h
+// 2. New version in AndroidManifest.xml
+// 3. New version in build.gradle
+// 4. Uncomment -DCMAKE_BUILD_TYPE=Release in build.gradle
+// 5. Comment add_definitions(-DBR_DEBUG) in game CMake
+// 6. Comment add_definitions(-DBR_DEBUG) in engine CMake
+// 7. Real ad units in AdsManager.java
+// 8. Build variants -> release
+// 9. Clean, refresh, build
+
 int main(int argc, char* argv[])
 {
     BR_INFO("%s", "main() started.");

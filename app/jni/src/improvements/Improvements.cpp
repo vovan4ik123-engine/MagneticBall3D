@@ -276,27 +276,27 @@ namespace MagneticBall3D
             auto button = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
                                                                                     glm::vec3{0.0f, 21.3f, 0.9f}, glm::vec2{13.62f, 53.7f});
 
-            auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(), 0.1f, 0.1f, 0.1f, 0.1f);
+            auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(),
+                                                                                       glm::vec3{10.0f, 10.0f, 1.0f}, glm::vec2{10.0f, 10.0f});
 
-            std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("", glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 1.0f);
+            std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("",
+                                                                                            glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 1.0f);
 
             ImprovementGUIBlock guiBlock(info, button, selected, progressText);
             m_allAvailableGUIBlocks.push_back(guiBlock);
         }
 
-        const float screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
 
         for(int i = 0; i < m_maxImprovementsSelectedCount; ++i)
         {
             SelectedImprovement selected;
-            selected.leftPos = 0.295f + (i * 0.07f); // if m_maxImprovementsSelectedCount = 6.
-            selected.topPos = 0.07f;
-            selected.width = 0.06f;
-            selected.height = selected.width * screenAR;
+            const float left = 24.5f + (i * 9.0f); // if m_maxImprovementsSelectedCount = 6.
+            const float top = 80.0f;
+            const float width = 6.0f;
+            const float height = width * screenAR;
             selected.texture = std::make_shared<Beryll::GUITexture>("GUI/improvements/SELECTED_DEFAULT.jpg",
-                                                                    selected.leftPos, selected.topPos,
-                                                                    selected.width, selected.height);
-
+                                                                    glm::vec3{left, top, 1.0f}, glm::vec2{width, height});
             m_selectedImprovements.push_back(selected);
         }
 
@@ -305,9 +305,9 @@ namespace MagneticBall3D
         m_buttonReroll->disable();
 
         m_buttonPiggyBank = std::make_shared<Beryll::ButtonWithAnimation>("GUI/improvements/piggyBankAnim",
-                                                                          std::vector<std::string>{"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png",
-                                                                           "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png"},
-                                                                          1.0f, false, 0.912f, 0.24f, 0.084f, 0.182f);
+                                                                          std::vector<const char*>{"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png",
+                                                                          "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png"},
+                                                                          1.0f, false, glm::vec3{91.5f, 57.3f, 0.9f}, glm::vec2{18.4f / screenAR, 18.4f});
         m_buttonPiggyBank->disable();
 
         m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);
@@ -414,14 +414,11 @@ namespace MagneticBall3D
                         for(auto& selectedImpr : m_selectedImprovements)
                         {
                             if(selectedImpr.defaultTexture)
-                            {
-                                selectedImpr.defaultTexture = false;
-
+                            {   // By default selectedImpr has default texture(---). Replace it from selected block but keep position and size.
+                                block.selectedTexture->updatePositionInPercents(selectedImpr.texture->getPositionInPercents());
+                                block.selectedTexture->updateWidthHeightInPercents(selectedImpr.texture->getWidthHeightInPercents());
                                 selectedImpr.texture = block.selectedTexture;
-                                selectedImpr.texture->leftPos = selectedImpr.leftPos;
-                                selectedImpr.texture->topPos = selectedImpr.topPos;
-                                selectedImpr.texture->width = selectedImpr.width;
-                                selectedImpr.texture->height = selectedImpr.height;
+                                selectedImpr.defaultTexture = false;
 
                                 break;
                             }

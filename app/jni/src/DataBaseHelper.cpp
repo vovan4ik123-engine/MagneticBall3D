@@ -284,7 +284,7 @@ namespace DataBaseHelper
 
         BR_ASSERT((std::holds_alternative<long long int>(rows[0][1])), "%s", "LastScriptApplied contains wrong data.");
         int lastScriptAppliedIndex = 0;
-        if (std::holds_alternative<long long int>(rows[0][1]))
+        if(std::holds_alternative<long long int>(rows[0][1]))
             lastScriptAppliedIndex = std::get<long long int>(rows[0][1]);
         BR_INFO("DatabaseMigrations lastScriptAppliedIndex: %d", lastScriptAppliedIndex);
 

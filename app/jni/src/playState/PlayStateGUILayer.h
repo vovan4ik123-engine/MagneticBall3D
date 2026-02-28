@@ -21,10 +21,6 @@ namespace MagneticBall3D
         // Menus before specific bosses.
         void showMenuBossTankWithCommander();
 
-        std::shared_ptr<Beryll::SliderHorizontal> slider1;
-        std::shared_ptr<Beryll::SliderHorizontal> slider2;
-        std::shared_ptr<Beryll::SliderHorizontal> slider3;
-
         std::shared_ptr<Beryll::Joystick> playerJoystick;
         std::shared_ptr<Beryll::ButtonWithTexture> m_shotButton;
 

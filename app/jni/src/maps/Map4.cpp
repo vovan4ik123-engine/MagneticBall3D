@@ -79,7 +79,6 @@ namespace MagneticBall3D
     void Map4::draw()
     {
         //BR_INFO("%s", "Scene draw call.");
-        m_improvements.draw();
 
         // 1. Draw into shadow map.
         glm::vec3 sunPos = m_player->getObj()->getOrigin() +
@@ -200,6 +199,7 @@ namespace MagneticBall3D
         }
 
         m_skyBox->draw();
+        m_improvements.draw();
         Beryll::ParticleSystem::draw();
     }
 

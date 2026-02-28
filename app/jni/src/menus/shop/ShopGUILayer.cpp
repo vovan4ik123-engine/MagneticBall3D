@@ -53,7 +53,7 @@ namespace MagneticBall3D
 
     void ShopGUILayer::updateBeforePhysics()
     {
-        if (m_backButtonClicked)
+        if(m_backButtonClicked)
         {
             m_backButtonClicked = false;
             GameStateHelper::popState();

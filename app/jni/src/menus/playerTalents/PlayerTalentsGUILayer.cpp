@@ -12,8 +12,7 @@ namespace MagneticBall3D
 
     PlayerTalentsGUILayer::PlayerTalentsGUILayer()
     {
-        //float m_screenAR = Beryll::MainImGUI::getInstance()->getGUIScreenAspectRation();
-        //BR_ASSERT((m_screenAR > 0.0f), "%s", "m_screenAR = 0");
+        //const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
 
         m_transparentTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
         m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
@@ -59,7 +58,7 @@ namespace MagneticBall3D
 
     void PlayerTalentsGUILayer::updateBeforePhysics()
     {
-        if (m_backButtonClicked)
+        if(m_backButtonClicked)
         {
             m_backButtonClicked = false;
             GameStateHelper::popState();

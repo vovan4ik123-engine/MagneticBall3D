@@ -7,29 +7,63 @@ namespace MagneticBall3D
 {
     SettingsMenuGUILayer::SettingsMenuGUILayer()
     {
-        m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        // My GUI.
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
 
-        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/settings/SettingsBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_FPSLimitTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSLimit.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_FPSTipTexture = Beryll::Renderer::createTexture("GUI/menus/settings/FPSTip.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_musicTexture = Beryll::Renderer::createTexture("GUI/menus/settings/BackgroundMusic.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_meteorParticlesTexture = Beryll::Renderer::createTexture("GUI/menus/settings/MeteorParticles.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_interfaceGUITexture = Beryll::Renderer::createTexture("GUI/menus/settings/InterfaceGUI.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        auto background = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/SettingsBackground.jpg",
+                                                                                     glm::vec3{0.0f, 0.0f, 0.8f}, glm::vec2{100.0f, 100.0f});
+        m_guiObjects.push_back(background);
 
-        m_fontForAllCheckBoxes = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.07f);
+        auto FPSLimit = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSLimit.jpg",
+                                                                                   glm::vec3{25.0f, 65.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(FPSLimit);
+        auto FPSTip = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSTip.jpg",
+                                                                                 glm::vec3{25.0f, 53.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(FPSTip);
+        auto backMusic = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/BackgroundMusic.jpg",
+                                                                                    glm::vec3{25.0f, 41.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(backMusic);
+        auto meteorParticles = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/MeteorParticles.jpg",
+                                                                                          glm::vec3{25.0f, 29.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(meteorParticles);
+        auto interfaceGUI = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/InterfaceGUI.jpg",
+                                                                                       glm::vec3{25.0f, 17.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(interfaceGUI);
+
+        m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.png", "",
+                                                                   glm::vec3{3.0f, 5.0f, 1.0f}, glm::vec2{15.0f, 15.0f});
+        m_guiObjects.push_back(m_buttonBack);
+
+        m_checkBox30Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                             glm::vec3{40.1f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBox30Fps);
+        m_checkBox60Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                             glm::vec3{48.7f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBox60Fps);
+        m_checkBox120Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                              glm::vec3{57.4f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBox120Fps);
 
         if(EnumsAndVars::SettingsMenu::FPSLimit == 30)
-            m_30FPSChecked = true;
+            m_checkBox30Fps->marked = true;
         else if(EnumsAndVars::SettingsMenu::FPSLimit == 60)
-            m_60FPSChecked = true;
+            m_checkBox60Fps->marked = true;
         else if(EnumsAndVars::SettingsMenu::FPSLimit == 120)
-            m_120FPSChecked = true;
-        else if(EnumsAndVars::SettingsMenu::FPSLimit == 250)
-            m_250FPSChecked = true;
+            m_checkBox120Fps->marked = true;
 
-        m_musicCheckBoxChecked = EnumsAndVars::SettingsMenu::backgroundMusic;
-        m_meteorParticlesCheckBoxChecked = EnumsAndVars::SettingsMenu::meteorParticles;
-        m_interfaceGUICheckBoxChecked = EnumsAndVars::SettingsMenu::interfaceGUI;
+        m_checkBoxMusic = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                             glm::vec3{49.0f, 42.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBoxMusic);
+        m_checkBoxMeteorPart = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                                  glm::vec3{47.0f, 30.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBoxMeteorPart);
+        m_checkBoxInterface = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
+                                                                 glm::vec3{52.0f, 18.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+        m_guiObjects.push_back(m_checkBoxInterface);
+
+        m_checkBoxMusic->marked = EnumsAndVars::SettingsMenu::backgroundMusic;
+        m_checkBoxMeteorPart->marked = EnumsAndVars::SettingsMenu::meteorParticles;
+        m_checkBoxInterface->marked = EnumsAndVars::SettingsMenu::interfaceGUI;
     }
 
     SettingsMenuGUILayer::~SettingsMenuGUILayer()
@@ -39,31 +73,67 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::updateBeforePhysics()
     {
-        if(m_backButtonClicked)
+        // My GUI.
+        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
-            m_backButtonClicked = false;
+            if(go->getIsEnabled())
+            {
+                go->updateBeforePhysics();
+            }
+        }
+
+        if(m_buttonBack->getIsPressed())
+        {
             GameStateHelper::popState();
             return;
         }
-
-        if(m_musicCheckBoxChecked != EnumsAndVars::SettingsMenu::backgroundMusic)
+        else if(m_checkBox30Fps->getIsMarking() || m_checkBox30Fps->getIsUnMarking())
+        {
+            m_checkBox30Fps->marked = true;
+            m_checkBox60Fps->marked = false;
+            m_checkBox120Fps->marked = false;
+            EnumsAndVars::SettingsMenu::FPSLimit = 30;
+            BR_INFO("Set FPSLimit: %d", EnumsAndVars::SettingsMenu::FPSLimit);
+            Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+            DataBaseHelper::storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+        }
+        else if(m_checkBox60Fps->getIsMarking() || m_checkBox60Fps->getIsUnMarking())
+        {
+            m_checkBox30Fps->marked = false;
+            m_checkBox60Fps->marked = true;
+            m_checkBox120Fps->marked = false;
+            EnumsAndVars::SettingsMenu::FPSLimit = 60;
+            BR_INFO("Set FPSLimit: %d", EnumsAndVars::SettingsMenu::FPSLimit);
+            Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+            DataBaseHelper::storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+        }
+        else if(m_checkBox120Fps->getIsMarking() || m_checkBox120Fps->getIsUnMarking())
+        {
+            m_checkBox30Fps->marked = false;
+            m_checkBox60Fps->marked = false;
+            m_checkBox120Fps->marked = true;
+            EnumsAndVars::SettingsMenu::FPSLimit = 120;
+            BR_INFO("Set FPSLimit: %d", EnumsAndVars::SettingsMenu::FPSLimit);
+            Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+            DataBaseHelper::storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
+        }
+        else if(m_checkBoxMusic->getIsMarking() || m_checkBoxMusic->getIsUnMarking())
         {
             BR_INFO("%s", "Enable/disable background music.");
-            EnumsAndVars::SettingsMenu::backgroundMusic = m_musicCheckBoxChecked;
+            EnumsAndVars::SettingsMenu::backgroundMusic = m_checkBoxMusic->marked;
             DataBaseHelper::storeSettingsBackgroundMusic(EnumsAndVars::SettingsMenu::backgroundMusic);
         }
-
-        if(m_meteorParticlesCheckBoxChecked != EnumsAndVars::SettingsMenu::meteorParticles)
+        else if(m_checkBoxMeteorPart->getIsMarking() || m_checkBoxMeteorPart->getIsUnMarking())
         {
             BR_INFO("%s", "Enable/disable meteor particles.");
-            EnumsAndVars::SettingsMenu::meteorParticles = m_meteorParticlesCheckBoxChecked;
+            EnumsAndVars::SettingsMenu::meteorParticles = m_checkBoxMeteorPart->marked;
             DataBaseHelper::storeSettingsMeteorParticles(EnumsAndVars::SettingsMenu::meteorParticles);
         }
 
-        if(m_interfaceGUICheckBoxChecked != EnumsAndVars::SettingsMenu::interfaceGUI)
+        if(m_checkBoxInterface->getIsMarking() || m_checkBoxInterface->getIsUnMarking())
         {
             BR_INFO("%s", "Enable/disable interface GUI.");
-            EnumsAndVars::SettingsMenu::interfaceGUI = m_interfaceGUICheckBoxChecked;
+            EnumsAndVars::SettingsMenu::interfaceGUI = m_checkBoxInterface->marked;
             DataBaseHelper::storeSettingsInterfaceGUI(EnumsAndVars::SettingsMenu::interfaceGUI);
         }
     }
@@ -75,120 +145,13 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::draw()
     {
-        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-        ImGui::Begin("settingsMenu", nullptr, m_noBackgroundNoFrameNoFocus);
-
-        // Background.
-        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::Image(static_cast<ImTextureID>(m_backgroundTexture->getID()),
-                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-
-        // Back.
-        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));
-        m_backButtonClicked = ImGui::ImageButton("backButton", static_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
-
-        // FPS limit.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.245f * GUIHeight));
-        ImGui::Image(static_cast<ImTextureID>(m_FPSLimitTexture->getID()),
-                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
-
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4{1.0f, 1.0f, 1.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4{0.164f, 0.3047f, 0.195f, 1.0f});
-        ImGui::PushFont(m_fontForAllCheckBoxes);
-
-        // FPS check boxes.
-        ImGui::SetCursorPos(ImVec2(0.411f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("30", &m_30FPSChecked))
-            resetFPS(30);
-
-        ImGui::SetCursorPos(ImVec2(0.478f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("60", &m_60FPSChecked))
-            resetFPS(60);
-
-        ImGui::SetCursorPos(ImVec2(0.546f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("120", &m_120FPSChecked))
-            resetFPS(120);
-
-        ImGui::SetCursorPos(ImVec2(0.626f * GUIWidth, 0.26f * GUIHeight));
-        if(ImGui::Checkbox("250", &m_250FPSChecked))
-            resetFPS(250);
-
-        // FPS tip.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.365f * GUIHeight));
-        ImGui::Image(static_cast<ImTextureID>(m_FPSTipTexture->getID()),
-                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
-
-        // Background music.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.485f * GUIHeight));
-        ImGui::Image(static_cast<ImTextureID>(m_musicTexture->getID()),
-                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
-
-        ImGui::SetCursorPos(ImVec2(0.489f * GUIWidth, 0.5f * GUIHeight));
-        ImGui::Checkbox("music", &m_musicCheckBoxChecked);
-
-        // Meteor particles.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.605f * GUIHeight));
-        ImGui::Image(static_cast<ImTextureID>(m_meteorParticlesTexture->getID()),
-                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
-
-        ImGui::SetCursorPos(ImVec2(0.470f * GUIWidth, 0.62f * GUIHeight));
-        ImGui::Checkbox("meteor", &m_meteorParticlesCheckBoxChecked);
-
-        // Interface GUI.
-        ImGui::SetCursorPos(ImVec2(0.255f * GUIWidth, 0.725f * GUIHeight));
-        ImGui::Image(static_cast<ImTextureID>(m_interfaceGUITexture->getID()),
-                     ImVec2(0.5f * GUIWidth, 0.1f * GUIHeight));
-
-        ImGui::SetCursorPos(ImVec2(0.519f * GUIWidth, 0.74f * GUIHeight));
-        ImGui::Checkbox("interfaceGUI", &m_interfaceGUICheckBoxChecked);
-
-        ImGui::PopFont();
-        ImGui::PopStyleColor(8);
-        ImGui::End();
-    }
-
-    void SettingsMenuGUILayer::resetFPS(int fps)
-    {
-        m_30FPSChecked = false;
-        m_60FPSChecked = false;
-        m_120FPSChecked = false;
-        m_250FPSChecked = false;
-
-        if(fps == 30)
+        // My GUI.
+        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
-            m_30FPSChecked = true;
-            EnumsAndVars::SettingsMenu::FPSLimit = 30;
+            if(go->getIsEnabled())
+            {
+                go->draw();
+            }
         }
-        else if (fps == 60)
-        {
-            m_60FPSChecked = true;
-            EnumsAndVars::SettingsMenu::FPSLimit = 60;
-        }
-        else if (fps == 120)
-        {
-            m_120FPSChecked = true;
-            EnumsAndVars::SettingsMenu::FPSLimit = 120;
-        }
-        else if (fps == 250)
-        {
-            m_250FPSChecked = true;
-            EnumsAndVars::SettingsMenu::FPSLimit = 250;
-        }
-
-        BR_INFO("Set FPSLimit: %d", EnumsAndVars::SettingsMenu::FPSLimit);
-        Beryll::GameLoop::setFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
-
-        DataBaseHelper::storeSettingsFPSLimit(EnumsAndVars::SettingsMenu::FPSLimit);
     }
 }

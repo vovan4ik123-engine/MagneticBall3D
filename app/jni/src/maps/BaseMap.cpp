@@ -269,7 +269,10 @@ namespace MagneticBall3D
                     {
                         m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
                         m_gui->playerJoystick->enable();
-                        m_gui->playerJoystick->setOrigin(f.normalizedPos);
+                        // Flipper Y for opengl.
+                        glm::vec2 newPos = f.normalizedPos;
+                        newPos.y = 1.0f - newPos.y;
+                        m_gui->playerJoystick->setOrigin(newPos);
                         f.handled = true;
                         break;
                     }
