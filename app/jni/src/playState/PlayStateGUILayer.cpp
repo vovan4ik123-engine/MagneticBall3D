@@ -16,7 +16,7 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::PLAY_GUI;
 
-        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRatio();
 
         if(m_statisticsShow)
         {

@@ -286,7 +286,7 @@ namespace MagneticBall3D
             m_allAvailableGUIBlocks.push_back(guiBlock);
         }
 
-        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRatio();
 
         for(int i = 0; i < m_maxImprovementsSelectedCount; ++i)
         {

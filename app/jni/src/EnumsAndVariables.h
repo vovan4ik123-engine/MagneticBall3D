@@ -83,7 +83,8 @@ namespace EnumsAndVars
         const std::string name;
         int currentLevel = 0;
         // Not stored in DB.
-        const std::string description;
+        const std::string descriptionLine1;
+        const std::string descriptionLine2;
         const int maxLevel = 0;
         const float increasePerLevel = 0; // Percents in range 0...100 added per level.
         const std::string increasePerLevelText; // To show for user.
@@ -122,21 +123,21 @@ namespace EnumsAndVars
             return firstLevelPriceCrystals + currentLevel;
         }
     };
-    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase\nspeed limit.", 20,
+    inline std::vector<PlayerTalentData> allPlayerTalents{{"MaxSpeed", 0, "Increase", "speed limit.", 20,
                                                            5.0f, "+5%", true, 10},
-                                                          {"MagneticRadius", 0, "Increase\nmagnetic radius.", 80,
+                                                          {"MagneticRadius", 0, "Increase", "magnetic radius.", 80,
                                                            5.0f, "+5%", true, 1},
-                                                          {"GarbageAmount", 0, "Increase amount of\nmagnetized items.", 20,
+                                                          {"GarbageAmount", 0, "Increase amount of", "magnetized items.", 20,
                                                            5.0f, "+5%", true, 10},
-                                                          {"Accelerate", 0, "Increase\nacceleration.", 10,
+                                                          {"Accelerate", 0, "Increase", "acceleration.", 10,
                                                            3.0f, "+3%", true, 15},
-                                                          {"Protection", 0, "Increase ball and\nitems protection.", 100,
+                                                          {"Protection", 0, "Increase ball and", "items protection.", 100,
                                                            5.0f, "+5%", true, 1},
-                                                          {"Resurrection", 0, "Increase number\nof resurrections.", 3,
+                                                          {"Resurrection", 0, "Increase number", "of resurrections.", 3,
                                                            100.0f, "+1", false, 90},
-                                                          {"SmashDamage", 0, "Increase smash damage\nper one item.", 100,
+                                                          {"SmashDamage", 0, "Increase smash damage", "per one item.", 100,
                                                            5.0f, "+5%", true, 1},
-                                                          {"ShotDamage", 0, "Increase\nshot damage.", 100,
+                                                          {"ShotDamage", 0, "Increase", "shot damage.", 100,
                                                            5.0f, "+5%", true, 1}
                                                           };
     struct GameDifficulty

@@ -7,41 +7,39 @@ namespace MagneticBall3D
 {
     SettingsMenuGUILayer::SettingsMenuGUILayer()
     {
-        // My GUI.
-        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRation();
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRatio();
 
         auto background = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/SettingsBackground.jpg",
-                                                                                     glm::vec3{0.0f, 0.0f, 0.8f}, glm::vec2{100.0f, 100.0f});
+                                                                                     glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{100.0f, 100.0f});
         m_guiObjects.push_back(background);
-
-        auto FPSLimit = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSLimit.jpg",
-                                                                                   glm::vec3{25.0f, 65.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
-        m_guiObjects.push_back(FPSLimit);
-        auto FPSTip = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSTip.jpg",
-                                                                                 glm::vec3{25.0f, 53.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
-        m_guiObjects.push_back(FPSTip);
-        auto backMusic = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/BackgroundMusic.jpg",
-                                                                                    glm::vec3{25.0f, 41.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
-        m_guiObjects.push_back(backMusic);
-        auto meteorParticles = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/MeteorParticles.jpg",
-                                                                                          glm::vec3{25.0f, 29.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
-        m_guiObjects.push_back(meteorParticles);
-        auto interfaceGUI = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/InterfaceGUI.jpg",
-                                                                                       glm::vec3{25.0f, 17.0f, 0.9f}, glm::vec2{50.0f, 10.0f});
-        m_guiObjects.push_back(interfaceGUI);
-
         m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.png", "",
-                                                                   glm::vec3{3.0f, 5.0f, 1.0f}, glm::vec2{15.0f, 15.0f});
+                                                                   glm::vec3{3.0f, 5.0f, 0.1f}, glm::vec2{15.0f, 15.0f});
         m_guiObjects.push_back(m_buttonBack);
 
+        auto FPSLimit = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSLimit.jpg",
+                                                                                   glm::vec3{25.0f, 65.0f, 0.1f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(FPSLimit);
+        auto FPSTip = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/FPSTip.jpg",
+                                                                                 glm::vec3{25.0f, 53.0f, 0.1f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(FPSTip);
+        auto backMusic = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/BackgroundMusic.jpg",
+                                                                                    glm::vec3{25.0f, 41.0f, 0.1f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(backMusic);
+        auto meteorParticles = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/MeteorParticles.jpg",
+                                                                                          glm::vec3{25.0f, 29.0f, 0.1f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(meteorParticles);
+        auto interfaceGUI = std::make_shared<Beryll::GUITexture>("GUI/menus/settings/InterfaceGUI.jpg",
+                                                                                       glm::vec3{25.0f, 17.0f, 0.1f}, glm::vec2{50.0f, 10.0f});
+        m_guiObjects.push_back(interfaceGUI);
+
         m_checkBox30Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                             glm::vec3{40.1f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                             glm::vec3{40.1f, 66.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBox30Fps);
         m_checkBox60Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                             glm::vec3{48.7f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                             glm::vec3{48.7f, 66.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBox60Fps);
         m_checkBox120Fps = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                              glm::vec3{57.4f, 66.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                              glm::vec3{57.4f, 66.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBox120Fps);
 
         if(EnumsAndVars::SettingsMenu::FPSLimit == 30)
@@ -52,14 +50,20 @@ namespace MagneticBall3D
             m_checkBox120Fps->marked = true;
 
         m_checkBoxMusic = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                             glm::vec3{49.0f, 42.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                             glm::vec3{49.0f, 42.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBoxMusic);
         m_checkBoxMeteorPart = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                                  glm::vec3{47.0f, 30.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                                  glm::vec3{47.0f, 30.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBoxMeteorPart);
         m_checkBoxInterface = std::make_shared<Beryll::CheckBox>("GUI/CheckBoxUnMarked.png", "GUI/CheckBoxMarked.png",
-                                                                 glm::vec3{52.0f, 18.0f, 1.0f}, glm::vec2{8.0f / screenAR, 8.0f});
+                                                                 glm::vec3{52.0f, 18.0f, 0.2f}, glm::vec2{8.0f / screenAR, 8.0f});
         m_guiObjects.push_back(m_checkBoxInterface);
+
+        // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        {
+            return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
+        });
 
         m_checkBoxMusic->marked = EnumsAndVars::SettingsMenu::backgroundMusic;
         m_checkBoxMeteorPart->marked = EnumsAndVars::SettingsMenu::meteorParticles;
@@ -73,7 +77,6 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::updateBeforePhysics()
     {
-        // My GUI.
         for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
             if(go->getIsEnabled())
@@ -145,12 +148,11 @@ namespace MagneticBall3D
 
     void SettingsMenuGUILayer::draw()
     {
-        // My GUI.
-        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
+        for(auto it = m_guiObjects.rbegin(); it != m_guiObjects.rend(); ++it)
         {
-            if(go->getIsEnabled())
+            if((*it)->getIsEnabled())
             {
-                go->draw();
+                (*it)->draw();
             }
         }
     }
