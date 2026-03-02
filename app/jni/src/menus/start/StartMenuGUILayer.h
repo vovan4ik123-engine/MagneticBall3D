@@ -15,48 +15,19 @@ namespace MagneticBall3D
         void draw() override;
 
     private:
-        // GUI based on raw ImGUI.
-        // ImGUI flags.
-        int m_noBackgroundNoFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus;
+        std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonShop;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonTalents;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonSettings;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonMapSwipeLeft;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonMapSwipeRight;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonPlay;
 
-        int m_noFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                               ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus;
+        void enableDisableButtons();
 
-        // Background.
-        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
-        // Crystals text.
-        ImFont* m_crystalsFont;
+        std::vector<std::shared_ptr<Beryll::GUITexture>> m_mapsPreviews;
 
-        // Play.
-        std::unique_ptr<Beryll::Texture> m_playButtonTexture;
-        bool m_playButtonClicked = false;
-
-        // Shop.
-        std::unique_ptr<Beryll::Texture> m_shopButtonTexture;
-        bool m_shopButtonClicked = false;
-
-        // Talents.
-        std::unique_ptr<Beryll::Texture> m_talentsButtonTexture;
-        bool m_talentsButtonClicked = false;
-
-        // Settings.
-        std::unique_ptr<Beryll::Texture> m_settingsButtonTexture;
-        bool m_settingsButtonClicked = false;
-
-        // Map swipe left.
-        std::unique_ptr<Beryll::Texture> m_mapSwipeLeftButtonTexture;
-        bool m_mapSwipeLeftButtonClicked = false;
-
-        // Map swipe right.
-        std::unique_ptr<Beryll::Texture> m_mapSwipeRightButtonTexture;
-        bool m_mapSwipeRightButtonClicked = false;
-
-        // Map preview.
-        std::vector<std::unique_ptr<Beryll::Texture>> m_allMapsPreviewsTextures;
+        std::shared_ptr<Beryll::GUIText> m_crystalsCount;
     };
 }

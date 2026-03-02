@@ -10,22 +10,66 @@ namespace MagneticBall3D
     {
         m_ID = Beryll::LayerID::START_SCREEN_GUI;
 
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map0Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map3Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map4Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map5Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map2Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
-        m_allMapsPreviewsTextures.push_back(Beryll::Renderer::createTexture("GUI/menus/start/Map1Preview.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1));
+        auto background = std::make_shared<Beryll::GUITexture>("GUI/menus/start/StartBackground.jpg",
+                                                               glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{100.0f, 100.0f});
+        m_guiObjects.push_back(background);
 
-        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/start/StartBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_mapSwipeLeftButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeLeft.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_mapSwipeRightButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/MapSwipeRight.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_playButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Play.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_shopButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Shop.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_talentsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/PlayerTalents.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_settingsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/start/Settings.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "",
+                                                                   glm::vec3{0.0f, 66.6f, 0.1f}, glm::vec2{15.0f, 33.4f});
+        m_guiObjects.push_back(m_buttonShop);
+        m_buttonTalents = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/PlayerTalents.jpg", "",
+                                                                      glm::vec3{0.0f, 33.3f, 0.1f}, glm::vec2{15.0f, 33.3f});
+        m_guiObjects.push_back(m_buttonTalents);
+        m_buttonSettings = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Settings.jpg", "",
+                                                                       glm::vec3{0.0f, 0.0f, 0.1f}, glm::vec2{15.0f, 33.3f});
+        m_guiObjects.push_back(m_buttonSettings);
 
-        m_crystalsFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.05f);
+        m_buttonPlay = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Play.png", "",
+                                                                   glm::vec3{47.5f, 7.0f, 0.1f}, glm::vec2{20.0f, 20.0f});
+        m_guiObjects.push_back(m_buttonPlay);
+
+        m_buttonMapSwipeLeft = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeLeft.png", "",
+                                                                           glm::vec3{22.5f, 52.0f, 0.1f}, glm::vec2{10.0f, 14.0f});
+        m_guiObjects.push_back(m_buttonMapSwipeLeft);
+        m_buttonMapSwipeRight = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/MapSwipeRight.png", "",
+                                                                            glm::vec3{82.5f, 52.0f, 0.1f}, glm::vec2{10.0f, 14.0f});
+        m_guiObjects.push_back(m_buttonMapSwipeRight);
+
+        auto preview1 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map0Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview1);
+        m_mapsPreviews.push_back(preview1);
+        auto preview2 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map3Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview2);
+        m_mapsPreviews.push_back(preview2);
+        auto preview3 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map4Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview3);
+        m_mapsPreviews.push_back(preview3);
+        auto preview4 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map5Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview4);
+        m_mapsPreviews.push_back(preview4);
+        auto preview5 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map2Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview5);
+        m_mapsPreviews.push_back(preview5);
+        auto preview6 = std::make_shared<Beryll::GUITexture>("GUI/menus/start/Map1Preview.jpg",
+                                                                                   glm::vec3{32.5f, 34.0f, 0.1f}, glm::vec2{50.0f, 50.0f});
+        m_guiObjects.push_back(preview6);
+        m_mapsPreviews.push_back(preview6);
+
+        enableDisableButtons();
+
+        m_crystalsCount = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{88.0f, 91.0f, 0.1f}, 0.45f);
+        m_guiObjects.push_back(m_crystalsCount);
+
+        // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        {
+            return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
+        });
     }
 
     StartMenuGUILayer::~StartMenuGUILayer()
@@ -35,12 +79,20 @@ namespace MagneticBall3D
 
     void StartMenuGUILayer::updateBeforePhysics()
     {
+        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
+        {
+            if(go->getIsEnabled())
+            {
+                go->updateBeforePhysics();
+            }
+        }
+
+        m_crystalsCount->text = std::to_string(EnumsAndVars::CurrencyBalance::crystals);
+
         //EnergySystem::getInstance().update();
 
-        if(m_playButtonClicked)
+        if(m_buttonPlay->getIsPressed())
         {
-            m_playButtonClicked = false;
-
             //if(EnergySystem::getInstance().isEnoughForPlay())
             {
                 //EnergySystem::getInstance().handlePlay();
@@ -53,34 +105,32 @@ namespace MagneticBall3D
                 // Show menu for buy energy.
             //}
         }
-        else if(m_shopButtonClicked)
+        else if(m_buttonShop->getIsPressed())
         {
-            m_shopButtonClicked = false;
             GameStateHelper::pushShopState();
         }
-        else if(m_talentsButtonClicked)
+        else if(m_buttonTalents->getIsPressed())
         {
-            m_talentsButtonClicked = false;
             GameStateHelper::pushPlayerTalentsState();
         }
-        else if(m_settingsButtonClicked)
+        else if(m_buttonSettings->getIsPressed())
         {
-            m_settingsButtonClicked = false;
             GameStateHelper::pushSettingsState();
         }
-        else if(m_mapSwipeLeftButtonClicked && EnumsAndVars::MapsProgress::currentMapIndex > 0)
+        else if(m_buttonMapSwipeLeft->getIsPressed() && EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            m_mapSwipeLeftButtonClicked = false;
             --EnumsAndVars::MapsProgress::currentMapIndex;
+            enableDisableButtons();
+
             BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
         }
-        else if(m_mapSwipeRightButtonClicked &&
+        else if(m_buttonMapSwipeRight->getIsPressed() &&
                 EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
                 EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            m_mapSwipeRightButtonClicked = false;
             ++EnumsAndVars::MapsProgress::currentMapIndex;
+            enableDisableButtons();
             BR_INFO("currentMapIndex: %d", EnumsAndVars::MapsProgress::currentMapIndex);
             DataBaseHelper::storeMapsProgressCurrentMapIndex(EnumsAndVars::MapsProgress::currentMapIndex);
         }
@@ -93,74 +143,49 @@ namespace MagneticBall3D
 
     void StartMenuGUILayer::draw()
     {
+        for(auto it = m_guiObjects.rbegin(); it != m_guiObjects.rend(); ++it)
+        {
+            if((*it)->getIsEnabled())
+            {
+                (*it)->draw();
+            }
+        }
+
         //EnergySystem::getInstance().draw();
+    }
 
-        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-        ImGui::Begin("startMenu", nullptr, m_noBackgroundNoFrameNoFocus);
-
-        // Background.
-        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::Image(static_cast<ImTextureID>(m_backgroundTexture->getID()),
-                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-
-        // Crystals text.
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
-        ImGui::PushFont(m_crystalsFont);
-        ImGui::SetCursorPos(ImVec2(0.89f * GUIWidth, 0.047f * GUIHeight));
-        ImGui::Text("%d", EnumsAndVars::CurrencyBalance::crystals);
-        ImGui::PopFont();
-        ImGui::PopStyleColor(1);
-
-        // Play.
-        ImGui::SetCursorPos(ImVec2(0.48f * GUIWidth, 0.74f * GUIHeight));
-        m_playButtonClicked = ImGui::ImageButton("playButton", static_cast<ImTextureID>(m_playButtonTexture->getID()),
-                                                 ImVec2(0.2f * GUIWidth, 0.2f * GUIHeight));
-
-        // Shop.
-        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.0f * GUIHeight));
-        m_shopButtonClicked = ImGui::ImageButton("shopButton", static_cast<ImTextureID>(m_shopButtonTexture->getID()),
-                                                 ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
-
-        // Talents.
-        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.33667f * GUIHeight));
-        m_talentsButtonClicked = ImGui::ImageButton("talentButton", static_cast<ImTextureID>(m_talentsButtonTexture->getID()),
-                                                    ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
-
-        // Settings.
-        ImGui::SetCursorPos(ImVec2(0.0f * GUIWidth, 0.67334f * GUIHeight));
-        m_settingsButtonClicked = ImGui::ImageButton("settingsButton", static_cast<ImTextureID>(m_settingsButtonTexture->getID()),
-                                                     ImVec2(0.155f * GUIWidth, 0.33667f * GUIHeight));
-
-        // Map swipe left.
+    void StartMenuGUILayer::enableDisableButtons()
+    {
+        // Map swipe left enable.
         if(EnumsAndVars::MapsProgress::currentMapIndex > 0)
         {
-            ImGui::SetCursorPos(ImVec2(0.23f * GUIWidth, 0.355f * GUIHeight));
-            m_mapSwipeLeftButtonClicked = ImGui::ImageButton("mapSwipeLeftButton", static_cast<ImTextureID>(m_mapSwipeLeftButtonTexture->getID()),
-                                                             ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
+            m_buttonMapSwipeLeft->enable();
         }
-        // Map preview.
-        if(EnumsAndVars::MapsProgress::currentMapIndex < m_allMapsPreviewsTextures.size())
+        else
         {
-            ImGui::SetCursorPos(ImVec2(0.33f * GUIWidth, 0.175f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_allMapsPreviewsTextures[EnumsAndVars::MapsProgress::currentMapIndex]->getID()),
-                         ImVec2(0.5f * GUIWidth, 0.5f * GUIHeight));
+            m_buttonMapSwipeLeft->disable();
         }
-        // Map swipe right.
+
+        // Map swipe right enable.
         if(EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::lastOpenedMapIndex &&
            EnumsAndVars::MapsProgress::currentMapIndex < EnumsAndVars::MapsProgress::maxMapIndex)
         {
-            ImGui::SetCursorPos(ImVec2(0.83f * GUIWidth, 0.355f * GUIHeight));
-            m_mapSwipeRightButtonClicked = ImGui::ImageButton("mapSwipeRightButton", static_cast<ImTextureID>(m_mapSwipeRightButtonTexture->getID()),
-                                                              ImVec2(0.1f * GUIWidth, 0.14f * GUIHeight));
+            m_buttonMapSwipeRight->enable();
         }
-        ImGui::End();
-        ImGui::PopStyleColor(3);
+        else
+        {
+            m_buttonMapSwipeRight->disable();
+        }
+
+        // Preview.
+        for(const std::shared_ptr<Beryll::GUITexture>& prew : m_mapsPreviews)
+        {
+            prew->disable();
+        }
+
+        BR_ASSERT((EnumsAndVars::MapsProgress::currentMapIndex >= 0 && EnumsAndVars::MapsProgress::currentMapIndex < m_mapsPreviews.size()),
+                  "%s", "currentMapIndex must < m_mapsPreviews.size()");
+
+        m_mapsPreviews[EnumsAndVars::MapsProgress::currentMapIndex]->enable();
     }
 }
