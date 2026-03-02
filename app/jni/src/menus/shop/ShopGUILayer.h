@@ -15,55 +15,37 @@ namespace MagneticBall3D
         void draw() override;
 
     private:
-        // GUI based on raw ImGUI.
-        // ImGUI flags.
-        int m_noBackgroundNoFrameNoFocus = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus;
+        std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
-
-        // Background.
-        std::unique_ptr<Beryll::Texture> m_backgroundTexture;
-
-        // Back.
-        std::unique_ptr<Beryll::Texture> m_backButtonTexture;
-        bool m_backButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonBack;
 
         // Crystals item1.
-        std::unique_ptr<Beryll::Texture> m_item1ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item1FirstBuyButtonTexture;
-        bool m_item1ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem1FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem1;
         // Crystals item2.
-        std::unique_ptr<Beryll::Texture> m_item2ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item2FirstBuyButtonTexture;
-        bool m_item2ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem2FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem2;
         // Crystals item3.
-        std::unique_ptr<Beryll::Texture> m_item3ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item3FirstBuyButtonTexture;
-        bool m_item3ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem3FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem3;
         // Crystals item4.
-        std::unique_ptr<Beryll::Texture> m_item4ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item4FirstBuyButtonTexture;
-        bool m_item4ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem4FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem4;
         // Crystals item5.
-        std::unique_ptr<Beryll::Texture> m_item5ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item5FirstBuyButtonTexture;
-        bool m_item5ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem5FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem5;
         // Crystals item6.
-        std::unique_ptr<Beryll::Texture> m_item6ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_item6FirstBuyButtonTexture;
-        bool m_item6ButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem6FirstBuy;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonItem6;
         // Disable ads on maps.
-        std::unique_ptr<Beryll::Texture> m_disableAdsOnMapsButtonTexture;
-        bool m_disableAdsOnMapsButtonClicked = false;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonDisableAdsOnMaps;
+
+        void enableDisableButtons();
 
         // Purchase error.
-        std::unique_ptr<Beryll::Texture> m_errorTexture;
-        std::unique_ptr<Beryll::Texture> m_errorButtonOkTexture;
-        bool m_errorButtonOkClicked = false;
-        bool m_errorMenuShow = false;
+        std::shared_ptr<Beryll::GUITexture> m_textureBackgroundError;
+        std::shared_ptr<Beryll::GUITexture> m_textureError;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonCloseError;
 
         // Billing system callbacks. Can be called from different thread.
         std::function<void()> m_buyItem1SuccessCallback;

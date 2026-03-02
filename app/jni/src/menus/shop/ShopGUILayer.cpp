@@ -16,24 +16,82 @@ namespace MagneticBall3D
 
     ShopGUILayer::ShopGUILayer()
     {
-        m_backButtonTexture = Beryll::Renderer::createTexture("GUI/menus/LeftArrow.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        const float screenAR = Beryll::Window::getInstance()->getScreenAspectRatio();
 
-        m_backgroundTexture = Beryll::Renderer::createTexture("GUI/menus/shop/ShopBackground.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item1ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item1FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem1FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item2ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item2FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem2FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item3ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem3.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item3FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem3FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item4ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem4.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item4FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem4FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item5ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem5.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item5FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem5FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item6ButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem6.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_item6FirstBuyButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/CrystalsItem6FirstBuy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_disableAdsOnMapsButtonTexture = Beryll::Renderer::createTexture("GUI/menus/shop/DisableAdsOnMaps.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_errorTexture = Beryll::Renderer::createTexture("GUI/menus/shop/PurchaseError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_errorButtonOkTexture = Beryll::Renderer::createTexture("GUI/Ok.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        auto background = std::make_shared<Beryll::GUITexture>("GUI/menus/shop/ShopBackground.jpg",
+                                                               glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{100.0f, 100.0f});
+        m_guiObjects.push_back(background);
+        m_buttonBack = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/LeftArrow.png", "",
+                                                                   glm::vec3{3.0f, 5.0f, 0.1f}, glm::vec2{15.0f, 15.0f});
+        m_guiObjects.push_back(m_buttonBack);
+        // 1.
+        m_buttonItem1FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem1FirstBuy.jpg", "",
+                                                                            glm::vec3{3.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem1FirstBuy);
+        m_buttonItem1 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem1.jpg", "",
+                                                                    glm::vec3{3.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem1);
+        // 2.
+        m_buttonItem2FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem2FirstBuy.jpg", "",
+                                                                            glm::vec3{19.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem2FirstBuy);
+        m_buttonItem2 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem2.jpg", "",
+                                                                    glm::vec3{19.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem2);
+        // 3.
+        m_buttonItem3FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem3FirstBuy.jpg", "",
+                                                                            glm::vec3{35.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem3FirstBuy);
+        m_buttonItem3 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem3.jpg", "",
+                                                                    glm::vec3{35.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem3);
+        // 4.
+        m_buttonItem4FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem4FirstBuy.jpg", "",
+                                                                            glm::vec3{51.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem4FirstBuy);
+        m_buttonItem4 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem4.jpg", "",
+                                                                    glm::vec3{51.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem4);
+        // 5.
+        m_buttonItem5FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem5FirstBuy.jpg", "",
+                                                                            glm::vec3{67.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem5FirstBuy);
+        m_buttonItem5 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem5.jpg", "",
+                                                                    glm::vec3{67.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem5);
+        // 6.
+        m_buttonItem6FirstBuy = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem6FirstBuy.jpg", "",
+                                                                            glm::vec3{83.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem6FirstBuy);
+        m_buttonItem6 = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/CrystalsItem6.jpg", "",
+                                                                    glm::vec3{83.0f, 36.0f, 0.1f}, glm::vec2{14.0f, 40.0f});
+        m_guiObjects.push_back(m_buttonItem6);
+        // Ads on maps.
+        m_buttonDisableAdsOnMaps = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/shop/DisableAdsOnMaps.jpg", "",
+                                                                            glm::vec3{35.0f, 3.0f, 0.1f}, glm::vec2{30.0f, 30.0f});
+        m_guiObjects.push_back(m_buttonDisableAdsOnMaps);
+
+        enableDisableButtons();
+
+        // Error menu.
+        m_textureBackgroundError = std::make_shared<Beryll::GUITexture>("GUI/GrayTransparency10.png",
+                                                                        glm::vec3{0.0f, 0.0f, 0.9f}, glm::vec2{100.0f, 100.0f});
+        m_textureBackgroundError->disable();
+        m_guiObjects.push_back(m_textureBackgroundError);
+        m_textureError = std::make_shared<Beryll::GUITexture>("GUI/menus/shop/PurchaseError.jpg",
+                                                              glm::vec3{35.0f, 35.0f, 1.0f}, glm::vec2{30.0f, 50.0f});
+        m_textureError->disable();
+        m_guiObjects.push_back(m_textureError);
+        m_buttonCloseError = std::make_shared<Beryll::ButtonWithTexture>("GUI/Ok.png", "",
+                                                                         glm::vec3{43.0f, 15.0f, 1.0f}, glm::vec2{14.0f, 15.0f});
+        m_buttonCloseError->disable();
+        m_guiObjects.push_back(m_buttonCloseError);
+
+        // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        {
+            return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
+        });
 
         // These callbacks are called from different thread.
         m_buyItem1SuccessCallback = []() -> void { BR_INFO("%s", "m_buyItem1SuccessCallback()"); ShopGUILayer::m_item1Bought = true; };
@@ -53,63 +111,63 @@ namespace MagneticBall3D
 
     void ShopGUILayer::updateBeforePhysics()
     {
-        if(m_backButtonClicked)
+        for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
-            m_backButtonClicked = false;
+            if(go->getIsEnabled())
+            {
+                go->updateBeforePhysics();
+            }
+        }
+
+        if(m_buttonBack->getIsPressed())
+        {
             GameStateHelper::popState();
             return;
         }
-        else if(m_item1ButtonClicked)
+        else if(m_buttonItem1->getIsPressed() || m_buttonItem1FirstBuy->getIsPressed())
         {
-            m_item1ButtonClicked = false;
             BR_INFO("%s", "Item 1 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_0_99_dollar",
                                                                               m_buyItem1SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_item2ButtonClicked)
+        else if(m_buttonItem2->getIsPressed() || m_buttonItem2FirstBuy->getIsPressed())
         {
-            m_item2ButtonClicked = false;
             BR_INFO("%s", "Item 2 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_2_5_dollar",
                                                                               m_buyItem2SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_item3ButtonClicked)
+        else if(m_buttonItem3->getIsPressed() || m_buttonItem3FirstBuy->getIsPressed())
         {
-            m_item3ButtonClicked = false;
             BR_INFO("%s", "Item 3 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_5_99_dollar",
                                                                               m_buyItem3SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_item4ButtonClicked)
+        else if(m_buttonItem4->getIsPressed() || m_buttonItem4FirstBuy->getIsPressed())
         {
-            m_item4ButtonClicked = false;
             BR_INFO("%s", "Item 4 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_18_dollar",
                                                                               m_buyItem4SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_item5ButtonClicked)
+        else if(m_buttonItem5->getIsPressed() || m_buttonItem5FirstBuy->getIsPressed())
         {
-            m_item5ButtonClicked = false;
             BR_INFO("%s", "Item 5 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_49_dollar",
                                                                               m_buyItem5SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_item6ButtonClicked)
+        else if(m_buttonItem6->getIsPressed() || m_buttonItem6FirstBuy->getIsPressed())
         {
-            m_item6ButtonClicked = false;
             BR_INFO("%s", "Item 6 clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_99_dollar",
                                                                               m_buyItem6SuccessCallback,
                                                                               m_commonErrorCallback);
         }
-        else if(m_disableAdsOnMapsButtonClicked)
+        else if(m_buttonDisableAdsOnMaps->getIsPressed())
         {
-            m_disableAdsOnMapsButtonClicked = false;
             BR_INFO("%s", "Disable Ads On Maps clicked.");
             Beryll::BillingSystem::getInstance()->makeInAppPurchaseGooglePlay("purchase_8_99_dollar",
                                                                               m_buyDisableAdsOnMapsSuccessCallback,
@@ -131,6 +189,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -149,6 +208,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -167,6 +227,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -185,6 +246,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -203,6 +265,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -221,6 +284,7 @@ namespace MagneticBall3D
                 addCrystals *= 2;
             }
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += addCrystals;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -232,6 +296,7 @@ namespace MagneticBall3D
             EnumsAndVars::Shop::adsOnMapsDisabled = true;
             DataBaseHelper::storeShopAdsOnMapsDisabled(1);
 
+            enableDisableButtons();
             EnumsAndVars::CurrencyBalance::crystals += 1000;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
         }
@@ -239,13 +304,16 @@ namespace MagneticBall3D
         {
             ShopGUILayer::m_buyError = false;
             BR_INFO("%s", "Buy error.");
-            m_errorMenuShow = true;
+            m_textureBackgroundError->enable();
+            m_textureError->enable();
+            m_buttonCloseError->enable();
         }
 
-        if(m_errorButtonOkClicked)
+        if(m_buttonCloseError->getIsPressed())
         {
-            m_errorButtonOkClicked = false;
-            m_errorMenuShow = false;
+            m_textureBackgroundError->disable();
+            m_textureError->disable();
+            m_buttonCloseError->disable();
         }
     }
 
@@ -256,109 +324,86 @@ namespace MagneticBall3D
 
     void ShopGUILayer::draw()
     {
-        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-        ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-        ImGui::Begin("shopMenu", nullptr, m_noBackgroundNoFrameNoFocus);
-
-        // Background.
-        ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-        ImGui::Image(static_cast<ImTextureID>(m_backgroundTexture->getID()),
-                     ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-
-        // Back.
-        ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.855f * GUIHeight));
-        m_backButtonClicked = ImGui::ImageButton("backButton", static_cast<ImTextureID>(m_backButtonTexture->getID()),
-                                                 ImVec2(0.15f * GUIWidth, 0.15f * GUIHeight));
-
-        // Crystals item1.
-        ImGui::SetCursorPos(ImVec2(0.028f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item1FirstBuy)
-            m_item1ButtonClicked = ImGui::ImageButton("item1Button", static_cast<ImTextureID>(m_item1FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item1ButtonClicked = ImGui::ImageButton("item1Button", static_cast<ImTextureID>(m_item1ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Crystals item2.
-        ImGui::SetCursorPos(ImVec2(0.191f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item2FirstBuy)
-            m_item2ButtonClicked = ImGui::ImageButton("item2Button", static_cast<ImTextureID>(m_item2FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item2ButtonClicked = ImGui::ImageButton("item2Button", static_cast<ImTextureID>(m_item2ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Crystals item3.
-        ImGui::SetCursorPos(ImVec2(0.354f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item3FirstBuy)
-            m_item3ButtonClicked = ImGui::ImageButton("item3Button", static_cast<ImTextureID>(m_item3FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item3ButtonClicked = ImGui::ImageButton("item3Button", static_cast<ImTextureID>(m_item3ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Crystals item4.
-        ImGui::SetCursorPos(ImVec2(0.517f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item4FirstBuy)
-            m_item4ButtonClicked = ImGui::ImageButton("item4Button", static_cast<ImTextureID>(m_item4FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item4ButtonClicked = ImGui::ImageButton("item4Button", static_cast<ImTextureID>(m_item4ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Crystals item5.
-        ImGui::SetCursorPos(ImVec2(0.68f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item5FirstBuy)
-            m_item5ButtonClicked = ImGui::ImageButton("item5Button", static_cast<ImTextureID>(m_item5FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item5ButtonClicked = ImGui::ImageButton("item5Button", static_cast<ImTextureID>(m_item5ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Crystals item6.
-        ImGui::SetCursorPos(ImVec2(0.843f * GUIWidth, 0.245f * GUIHeight));
-        if(EnumsAndVars::Shop::item6FirstBuy)
-            m_item6ButtonClicked = ImGui::ImageButton("item6Button", static_cast<ImTextureID>(m_item6FirstBuyButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-        else
-            m_item6ButtonClicked = ImGui::ImageButton("item6Button", static_cast<ImTextureID>(m_item6ButtonTexture->getID()),
-                                                      ImVec2(0.14f * GUIWidth, 0.4f * GUIHeight));
-
-        // Disable ads on maps.
-        if(!EnumsAndVars::Shop::adsOnMapsDisabled)
+        for(auto it = m_guiObjects.rbegin(); it != m_guiObjects.rend(); ++it)
         {
-            ImGui::SetCursorPos(ImVec2(0.356f * GUIWidth, 0.675f * GUIHeight));
-            m_disableAdsOnMapsButtonClicked = ImGui::ImageButton("disableAdsOnMapsButton", static_cast<ImTextureID>(m_disableAdsOnMapsButtonTexture->getID()),
-                                                                 ImVec2(0.3f * GUIWidth, 0.3f * GUIHeight));
+            if((*it)->getIsEnabled())
+            {
+                (*it)->draw();
+            }
         }
-        ImGui::End();
-        ImGui::PopStyleColor(3);
+    }
 
-        if(m_errorMenuShow)
+    void ShopGUILayer::enableDisableButtons()
+    {
+        if(EnumsAndVars::Shop::item1FirstBuy)
         {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("purchaseErrorMenu", nullptr, m_noFrame);
+            m_buttonItem1FirstBuy->enable();
+            m_buttonItem1->disable();
+        }
+        else
+        {
+            m_buttonItem1FirstBuy->disable();
+            m_buttonItem1->enable();
+        }
 
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_errorTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
+        if(EnumsAndVars::Shop::item2FirstBuy)
+        {
+            m_buttonItem2FirstBuy->enable();
+            m_buttonItem2->disable();
+        }
+        else
+        {
+            m_buttonItem2FirstBuy->disable();
+            m_buttonItem2->enable();
+        }
 
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_errorButtonOkClicked = ImGui::ImageButton("purchaseErrorButtonOk",static_cast<ImTextureID>(m_errorButtonOkTexture->getID()),
-                                                        ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-            ImGui::PopStyleColor(4);
+        if(EnumsAndVars::Shop::item3FirstBuy)
+        {
+            m_buttonItem3FirstBuy->enable();
+            m_buttonItem3->disable();
+        }
+        else
+        {
+            m_buttonItem3FirstBuy->disable();
+            m_buttonItem3->enable();
+        }
+
+        if(EnumsAndVars::Shop::item4FirstBuy)
+        {
+            m_buttonItem4FirstBuy->enable();
+            m_buttonItem4->disable();
+        }
+        else
+        {
+            m_buttonItem4FirstBuy->disable();
+            m_buttonItem4->enable();
+        }
+
+        if(EnumsAndVars::Shop::item5FirstBuy)
+        {
+            m_buttonItem5FirstBuy->enable();
+            m_buttonItem5->disable();
+        }
+        else
+        {
+            m_buttonItem5FirstBuy->disable();
+            m_buttonItem5->enable();
+        }
+
+        if(EnumsAndVars::Shop::item6FirstBuy)
+        {
+            m_buttonItem6FirstBuy->enable();
+            m_buttonItem6->disable();
+        }
+        else
+        {
+            m_buttonItem6FirstBuy->disable();
+            m_buttonItem6->enable();
+        }
+
+        if(EnumsAndVars::Shop::adsOnMapsDisabled)
+        {
+            m_buttonDisableAdsOnMaps->disable();
         }
     }
 }
