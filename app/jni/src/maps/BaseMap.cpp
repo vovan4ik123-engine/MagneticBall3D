@@ -203,7 +203,7 @@ namespace MagneticBall3D
 
     void BaseMap::handleControls()
     {
-        if(m_gui->m_shotButton->getIsPressedFingerStillOnScreen() &&
+        if(m_gui->m_buttonShot->getIsPressedFingerStillOnScreen() &&
            EnumsAndVars::damageLastShotTime + EnumsAndVars::damageShotReloadTime < EnumsAndVars::mapPlayTimeSec)
         {
             // Shoot.

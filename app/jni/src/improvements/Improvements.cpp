@@ -307,7 +307,7 @@ namespace MagneticBall3D
         m_buttonPiggyBank = std::make_shared<Beryll::ButtonWithAnimation>("GUI/improvements/piggyBankAnim",
                                                                           std::vector<const char*>{"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png",
                                                                           "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png"},
-                                                                          1.0f, false, glm::vec3{91.5f, 57.3f, 0.9f}, glm::vec2{18.4f / screenAR, 18.4f});
+                                                                          1.0f, false, glm::vec3{91.5f, 57.3f, 0.5f}, glm::vec2{18.4f / screenAR, 18.4f});
         m_buttonPiggyBank->disable();
 
         m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);

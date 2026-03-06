@@ -98,7 +98,7 @@ namespace MagneticBall3D
 
     void Map0Tutorial::updateAfterPhysics()
     {
-        if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen)
+        if(EnumsAndVars::gameOnPause || EnumsAndVars::improvementSystemOnScreen || EnumsAndVars::mapPlayerWin)
         {
             m_gui->playerJoystick->disable();
             m_gui->tutorialMoveShow = false;

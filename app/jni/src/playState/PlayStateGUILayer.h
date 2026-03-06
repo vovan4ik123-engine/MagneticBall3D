@@ -22,7 +22,7 @@ namespace MagneticBall3D
         void showMenuBossTankWithCommander();
 
         std::shared_ptr<Beryll::Joystick> playerJoystick;
-        std::shared_ptr<Beryll::ButtonWithTexture> m_shotButton;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonShot;
 
         float progressBarHP = 1.0f;
         float progressBarXP = 0.0f;
@@ -34,89 +34,45 @@ namespace MagneticBall3D
     private:
         std::vector<std::shared_ptr<Beryll::GUIObject>> m_guiObjects;
 
-#if defined(BR_DEBUG)
-        bool m_statisticsShow = true;
-#else
-        bool m_statisticsShow = false;
-#endif
-
-        std::shared_ptr<Beryll::GUIText> m_statistics1;
-        std::shared_ptr<Beryll::GUIText> m_statistics2;
-        std::shared_ptr<Beryll::GUIText> m_statistics3;
-        uint64_t m_statisticsUpdateTime = 0;
-
-        // GUI based on raw ImGUI.
-        // ImGUI flags.
-        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-                                    ImGuiWindowFlags_NoScrollbar;
-
-        int m_noFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
-
-        // Common textures.
-        std::unique_ptr<Beryll::Texture> m_okTexture;
-        std::unique_ptr<Beryll::Texture> m_exitTexture;
-
-        // Play timer.
-        std::string m_mapPlayTimerText;
-
-        // Counters.
-        std::unique_ptr<Beryll::Texture> m_countersTexture;
-        ImFont* m_countersFont;
-
-        // Pause button.
-        std::unique_ptr<Beryll::Texture> m_pauseButtonTexture;
-        bool m_pauseButtonClicked = false;
-        // Pause menu.
-        std::unique_ptr<Beryll::Texture> m_resumeButtonTexture;
-        bool m_pauseMenuShow = false;
-        bool m_resumeButtonClicked = false;
-
-        // Exit.
-        bool m_exitButtonClicked = false;
-
-        // Map0Tutorial.
-        std::unique_ptr<Beryll::Texture> m_tutorialMoveTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialCameraTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialKillEnemiesTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialHealthTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialShotButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_tutorialCompletedTexture;
-        bool m_tutorialCompletedButtonClicked = false;
-
-        // Resurrect.
-        std::unique_ptr<Beryll::Texture> m_resurrectTexture;
-        std::unique_ptr<Beryll::Texture> m_resurrectByCrystalsButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_resurrectByAdButtonTexture;
-        bool m_resurrectMenuShow = false;
-        bool m_resurrectByCrystalsButtonClicked = false;
-        bool m_resurrectByAdButtonClicked = false;
-
-        // Not enough crystals menu.
-        std::unique_ptr<Beryll::Texture> m_noCrystalsTexture;
-        bool m_noCrystalsButtonOkClicked = false;
-        bool m_noCrystalsMenuShow = false;
-
-        // Ad error.
-        std::unique_ptr<Beryll::Texture> m_adErrorTexture;
-        bool m_adErrorButtonOkClicked = false;
-        bool m_adErrorMenuShow = false;
-
+        // Common button.
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonExit;
+        // Pause.
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonPause;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonResume;
         // Lose.
-        std::unique_ptr<Beryll::Texture> m_loseTexture;
-        bool m_loseMenuShow = false;
-
+        std::shared_ptr<Beryll::GUITexture> m_textureLose;
         // Win.
-        std::unique_ptr<Beryll::Texture> m_winTexture;
-        std::unique_ptr<Beryll::Texture> m_winPrize1ButtonTexture;
-        std::unique_ptr<Beryll::Texture> m_winPrize2ButtonTexture;
-        bool m_winMenuShow = false;
-        bool m_winPrize1ButtonClicked = false;
-        bool m_winPrize2ButtonClicked = false;
+        std::shared_ptr<Beryll::GUITexture> m_textureWin;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonWinPrize1;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonWinPrize2;
+        // Tutorial.
+        std::shared_ptr<Beryll::GUITexture> m_textureTutorialCompleted;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonOkTutorialCompleted;
+        // Counters.
+        std::shared_ptr<Beryll::GUITexture> m_textureCounters;
+        std::shared_ptr<Beryll::GUIText> m_textEnemiesKilled;
+        std::shared_ptr<Beryll::GUIText> m_textSpeed;
+        std::shared_ptr<Beryll::GUIText> m_textPlayTime;
+        // Map0Tutorial.
+        std::shared_ptr<Beryll::GUITexture> m_textureTutorialMove;
+        std::shared_ptr<Beryll::GUITexture> m_textureTutorialCamera;
+        std::shared_ptr<Beryll::GUITexture> m_textureTutorialKillEnemies;
+        std::shared_ptr<Beryll::GUITexture> m_textureTutorialHealth;
+        // Resurrect menu.
+        std::shared_ptr<Beryll::GUITexture> m_textureResurrect;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonResurrectByCrystals;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonResurrectByAd;
+        // Ad error + Not enough crystals error.
+        std::shared_ptr<Beryll::GUITexture> m_textureBackgroundError;
+        std::shared_ptr<Beryll::GUITexture> m_textureAdError;
+        std::shared_ptr<Beryll::GUITexture> m_textureCrystalsError;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonCloseError;
 
-        float m_m_interruptAdLastTimePlayed = 0.0f;
-        const float m_m_interruptAdDelaySec = 120.0f;
+        // Menus before specific bosses.
+        // Tank with commander.
+        std::shared_ptr<Beryll::GUITexture> m_textureTankWithCommander;
+        std::shared_ptr<Beryll::ButtonWithTexture> m_buttonCloseBossMessage;
+
         // Ad callbacks. Can be called from different thread.
         std::function<void()> m_resurrectAdSuccessCallback;
         std::function<void()> m_winPrize2AdSuccessCallback;
@@ -129,10 +85,15 @@ namespace MagneticBall3D
         static std::atomic<bool> m_commonAdError;
         static std::atomic<bool> m_interruptAdSuccessError;
 
-        // Menus before specific bosses.
-        // Tank with commander.
-        std::unique_ptr<Beryll::Texture> m_tankWithCommanderTexture;
-        bool m_tankWithCommanderMenuShow = false;
-        bool m_tankWithCommanderButtonClicked = false;
+#if defined(BR_DEBUG)
+        bool m_statisticsShow = true;
+#else
+        bool m_statisticsShow = false;
+#endif
+
+        std::shared_ptr<Beryll::GUIText> m_statistics1;
+        std::shared_ptr<Beryll::GUIText> m_statistics2;
+        std::shared_ptr<Beryll::GUIText> m_statistics3;
+        uint64_t m_statisticsUpdateTime = 0;
     };
 }

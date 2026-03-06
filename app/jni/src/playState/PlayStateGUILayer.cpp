@@ -20,50 +20,127 @@ namespace MagneticBall3D
 
         if(m_statisticsShow)
         {
-            m_statistics1 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 96.3f, 1.0f}, 0.28f);
+            m_statistics1 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 96.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 92.3f, 1.0f}, 0.28f);
+            m_statistics2 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 92.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics2);
-            m_statistics3 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 88.3f, 1.0f}, 0.28f);
+            m_statistics3 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 88.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics3);
         }
 
         playerJoystick = std::make_shared<Beryll::Joystick>("GUI/playState/Joystick.png","",
-                                                            glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec2{120.0f / screenAR, 120.0f});
+                                                            glm::vec3{0.0f, 0.0f, 0.1f}, glm::vec2{120.0f / screenAR, 120.0f});
         m_guiObjects.push_back(playerJoystick);
         playerJoystick->disable();
 
-        m_shotButton = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
-                                                                   glm::vec3{76.5f, 48.0f, 1.0f}, glm::vec2{20.0f / screenAR, 20.0f});
+        m_buttonShot = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
+                                                                   glm::vec3{76.5f, 48.0f, 0.5f}, glm::vec2{20.0f / screenAR, 20.0f});
 
-        m_countersFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.032f);
+        m_buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Pause.jpg", "",
+                                                                    glm::vec3{0.0f, 88.0f, 0.5f}, glm::vec2{6.0f, 12.0f});
+        m_guiObjects.push_back(m_buttonPause);
+        m_buttonResume = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Resume.png", "",
+                                                                     glm::vec3{38.0f, 41.0f, 0.5f}, glm::vec2{24.0f, 18.0f});
+        m_buttonResume->disable();
+        m_guiObjects.push_back(m_buttonResume);
 
-        // Common textures.
-        m_okTexture = Beryll::Renderer::createTexture("GUI/Ok.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_exitTexture = Beryll::Renderer::createTexture("GUI/Exit.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonExit = std::make_shared<Beryll::ButtonWithTexture>("GUI/Exit.png", "",
+                                                                   glm::vec3{43.0f, 15.0f, 0.5f}, glm::vec2{14.0f, 15.0f});
+        m_buttonExit->disable();
+        m_guiObjects.push_back(m_buttonExit);
 
-        m_countersTexture = Beryll::Renderer::createTexture("GUI/playState/Counters.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_pauseButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Pause.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_resumeButtonTexture = Beryll::Renderer::createTexture("GUI/playState/Resume.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialMoveTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialMove.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialCameraTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialCamera.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialKillEnemiesTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialKillEnemies.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialHealthTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialHealthExperience.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialShotButtonTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialShotButton.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tutorialCompletedTexture = Beryll::Renderer::createTexture("GUI/playState/TutorialCompleted.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_textureLose = std::make_shared<Beryll::GUITexture>("GUI/playState/Lose.jpg",
+                                                             glm::vec3{35.0f, 44.0f, 0.5f}, glm::vec2{30.0f, 34.0f});
+        m_textureLose->disable();
+        m_guiObjects.push_back(m_textureLose);
 
-        m_resurrectTexture = Beryll::Renderer::createTexture("GUI/playState/CanResurrect.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_resurrectByCrystalsButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByCrystals.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_resurrectByAdButtonTexture = Beryll::Renderer::createTexture("GUI/playState/ResurrectByAd.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_textureWin = std::make_shared<Beryll::GUITexture>("GUI/playState/Win.jpg",
+                                                            glm::vec3{35.0f, 44.0f, 0.5f}, glm::vec2{30.0f, 34.0f});
+        m_textureWin->disable();
+        m_guiObjects.push_back(m_textureWin);
 
-        m_noCrystalsTexture = Beryll::Renderer::createTexture("GUI/NotEnoughCrystals.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_adErrorTexture = Beryll::Renderer::createTexture("GUI/AdError.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+        m_buttonWinPrize1 = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/WinPrize1.png", "",
+                                                                        glm::vec3{35.0f, 25.0f, 0.5f}, glm::vec2{14.0f, 15.0f});
+        m_buttonWinPrize1->disable();
+        m_guiObjects.push_back(m_buttonWinPrize1);
+        m_buttonWinPrize2 = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/WinPrize2Ad.png", "",
+                                                                        glm::vec3{51.0f, 25.0f, 0.5f}, glm::vec2{14.0f, 15.0f});
+        m_buttonWinPrize2->disable();
+        m_guiObjects.push_back(m_buttonWinPrize2);
 
-        m_loseTexture = Beryll::Renderer::createTexture("GUI/playState/Lose.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_winTexture = Beryll::Renderer::createTexture("GUI/playState/Win.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_winPrize1ButtonTexture = Beryll::Renderer::createTexture("GUI/playState/WinPrize1.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_winPrize2ButtonTexture = Beryll::Renderer::createTexture("GUI/playState/WinPrize2Ad.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_tankWithCommanderTexture = Beryll::Renderer::createTexture("GUI/playState/BossTankWithCommander.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
+
+        m_textureTutorialCompleted = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialCompleted.jpg",
+                                                                          glm::vec3{35.0f, 44.0f, 0.5f}, glm::vec2{30.0f, 34.0f});
+        m_textureTutorialCompleted->disable();
+        m_guiObjects.push_back(m_textureTutorialCompleted);
+        m_buttonOkTutorialCompleted = std::make_shared<Beryll::ButtonWithTexture>("GUI/Ok.png", "",
+                                                                 glm::vec3{43.0f, 15.0f, 0.5f}, glm::vec2{14.0f, 15.0f});
+        m_buttonOkTutorialCompleted->disable();
+        m_guiObjects.push_back(m_buttonOkTutorialCompleted);
+
+        m_textureCounters = std::make_shared<Beryll::GUITexture>("GUI/playState/Counters.jpg",
+                                                                 glm::vec3{91.0f, 85.5f, 0.5f}, glm::vec2{9.0f, 14.5f});
+        m_guiObjects.push_back(m_textureCounters);
+        m_textEnemiesKilled = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 96.2f, 0.6f}, 0.28f);
+        m_guiObjects.push_back(m_textEnemiesKilled);
+        m_textSpeed = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 91.5f, 0.6f}, 0.28f);
+        m_guiObjects.push_back(m_textSpeed);
+        m_textPlayTime = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 86.9f, 0.6f}, 0.28f);
+        m_guiObjects.push_back(m_textPlayTime);
+
+        m_textureTutorialMove = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialMove.png",
+                                                                     glm::vec3{5.0f, 5.0f, 0.6f}, glm::vec2{30.0f, 50.0f}, false);
+        m_textureTutorialMove->disable();
+        m_guiObjects.push_back(m_textureTutorialMove);
+        m_textureTutorialCamera = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialCamera.png",
+                                                                       glm::vec3{65.0f, 5.0f, 0.6f}, glm::vec2{30.0f, 50.0f}, false);
+        m_textureTutorialCamera->disable();
+        m_guiObjects.push_back(m_textureTutorialCamera);
+        m_textureTutorialKillEnemies = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialKillEnemies.png",
+                                                                            glm::vec3{28.0f, 90.6f, 0.6f}, glm::vec2{44.0f, 9.4f});
+        m_textureTutorialKillEnemies->disable();
+        m_guiObjects.push_back(m_textureTutorialKillEnemies);
+        m_textureTutorialHealth = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialHealthExperience.png",
+                                                                       glm::vec3{78.0f, 79.0f, 0.6f}, glm::vec2{13.0f, 10.0f});
+        m_textureTutorialHealth->disable();
+        m_guiObjects.push_back(m_textureTutorialHealth);
+
+        // Next objects handled without m_guiObjects. Should be shown even if interface disabled.
+        m_textureResurrect = std::make_shared<Beryll::GUITexture>("GUI/playState/CanResurrect.jpg",
+                                                                  glm::vec3{35.0f, 49.0f, 0.6f}, glm::vec2{30.0f, 34.0f});
+        m_textureResurrect->disable();
+        m_buttonResurrectByCrystals = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ResurrectByCrystals.png", "",
+                                                                                  glm::vec3{35.0f, 32.0f, 0.6f}, glm::vec2{14.0f, 15.0f});
+        m_buttonResurrectByCrystals->disable();
+        m_buttonResurrectByAd = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ResurrectByAd.png", "",
+                                                                            glm::vec3{51.0f, 32.0f, 0.6f}, glm::vec2{14.0f, 15.0f});
+        m_buttonResurrectByAd->disable();
+
+        m_textureBackgroundError = std::make_shared<Beryll::GUITexture>("GUI/GrayTransparency10.png",
+                                                                        glm::vec3{0.0f, 0.0f, 0.9f}, glm::vec2{100.0f, 100.0f});
+        m_textureBackgroundError->disable();
+        m_textureAdError = std::make_shared<Beryll::GUITexture>("GUI/AdError.jpg",
+                                                                glm::vec3{35.0f, 35.0f, 1.0f}, glm::vec2{30.0f, 50.0f});
+        m_textureAdError->disable();
+        m_textureCrystalsError = std::make_shared<Beryll::GUITexture>("GUI/NotEnoughCrystals.jpg",
+                                                                      glm::vec3{35.0f, 35.0f, 1.0f}, glm::vec2{30.0f, 50.0f});
+        m_textureCrystalsError->disable();
+        m_buttonCloseError = std::make_shared<Beryll::ButtonWithTexture>("GUI/Ok.png", "",
+                                                                         glm::vec3{43.0f, 15.0f, 1.0f}, glm::vec2{14.0f, 15.0f});
+        m_buttonCloseError->disable();
+
+        m_textureTankWithCommander = std::make_shared<Beryll::GUITexture>("GUI/playState/BossTankWithCommander.jpg",
+                                                                          glm::vec3{35.0f, 35.0f, 0.6f}, glm::vec2{30.0f, 50.0f});
+        m_textureTankWithCommander->disable();
+        m_buttonCloseBossMessage = std::make_shared<Beryll::ButtonWithTexture>("GUI/Ok.png", "",
+                                                                               glm::vec3{43.0f, 15.0f, 0.6f}, glm::vec2{14.0f, 15.0f});
+        m_buttonCloseBossMessage->disable();
+
+        // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        {
+            return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
+        });
 
         PlayStateGUILayer::m_resurrectAdSuccess = false;
         PlayStateGUILayer::m_winPrize2AdSuccess = false;
@@ -87,6 +164,14 @@ namespace MagneticBall3D
         if(EnumsAndVars::improvementSystemOnScreen)
             return;
 
+        // Buttons first.
+        if(m_buttonCloseError->getIsEnabled()) { m_buttonCloseError->updateBeforePhysics(); }
+        if(m_buttonResurrectByCrystals->getIsEnabled()) { m_buttonResurrectByCrystals->updateBeforePhysics(); }
+        if(m_buttonResurrectByAd->getIsEnabled()) { m_buttonResurrectByAd->updateBeforePhysics(); }
+        if(m_buttonCloseBossMessage->getIsEnabled()) { m_buttonCloseBossMessage->updateBeforePhysics(); }
+        // Texture consume touch events.
+        if(m_textureBackgroundError->getIsEnabled()) { m_textureBackgroundError->updateBeforePhysics(); }
+
         for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
         {
             if(go->getIsEnabled())
@@ -95,9 +180,53 @@ namespace MagneticBall3D
             }
         }
 
+        m_textEnemiesKilled->text = std::to_string(EnumsAndVars::enemiesKilledCount);
+
+        m_textSpeed->text = std::to_string(int(std::roundf(EnumsAndVars::playerCurrentSpeed)));
+        m_textSpeed->text += '/';
+        m_textSpeed->text += std::to_string(int(std::roundf(EnumsAndVars::playerMaxSpeedXZ)));
+
+        m_textPlayTime->text = "";
+        const int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
+        const int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
+        if(min < 10)
+            m_textPlayTime->text += "0";
+
+        m_textPlayTime->text += std::to_string(min);
+        m_textPlayTime->text += ":";
+
+        if(sec < 10)
+            m_textPlayTime->text += "0";
+
+        m_textPlayTime->text += std::to_string(sec);
+
+        if(tutorialTextTipsShow)
+        {
+            m_textureTutorialKillEnemies->enable();
+            m_textureTutorialHealth->enable();
+
+            if(tutorialMoveShow)
+            {
+                m_textureTutorialMove->enable();
+                m_textureTutorialCamera->enable();
+            }
+            else
+            {
+                m_textureTutorialMove->disable();
+                m_textureTutorialCamera->disable();
+            }
+        }
+        else
+        {
+            m_textureTutorialKillEnemies->disable();
+            m_textureTutorialHealth->disable();
+            m_textureTutorialMove->disable();
+            m_textureTutorialCamera->disable();
+        }
+
         if(EnumsAndVars::SettingsMenu::interfaceGUI)
         {
-            m_shotButton->updateBeforePhysics();
+            m_buttonShot->updateBeforePhysics();
         }
 
         if(m_statisticsShow && Beryll::TimeStep::getMilliSecFromStart() > m_statisticsUpdateTime + 200) // Update every 200 ms.
@@ -121,53 +250,32 @@ namespace MagneticBall3D
             m_statisticsUpdateTime = Beryll::TimeStep::getMilliSecFromStart();
         }
 
-        // This just interrupt game and show interstitial ad. =)
-//        if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart > 0 && !EnumsAndVars::Shop::adsOnMapsDisabled &&
-//           m_m_interruptAdLastTimePlayed + m_m_interruptAdDelaySec < EnumsAndVars::mapPlayTimeSec)
-//        {
-//            m_m_interruptAdLastTimePlayed = EnumsAndVars::mapPlayTimeSec;
-//
-//            Sounds::pauseBackgroundMusic();
-//            GameStateHelper::pauseGame();
-//
-//            SendStatisticsHelper::sendCustomMessage("attempt_show_ad");
-//            Beryll::Ads::getInstance()->showInterstitialAd(m_interruptAdSuccessErrorCallback, m_interruptAdSuccessErrorCallback);
-//        }
-
-        if(m_pauseButtonClicked)
+        if(m_buttonPause->getIsPressed() && !EnumsAndVars::gameOnPause)
         {
-            m_pauseButtonClicked = false;
+            m_buttonResume->enable();
+            m_buttonExit->enable();
 
-            if(!EnumsAndVars::gameOnPause)
-            {
-                m_pauseMenuShow = true;
-
-                Sounds::pauseBackgroundMusic();
-                GameStateHelper::pauseGame();
-            }
+            Sounds::pauseBackgroundMusic();
+            GameStateHelper::pauseGame();
         }
-        else if(m_resumeButtonClicked)
+        else if(m_buttonResume->getIsPressed())
         {
-            m_resumeButtonClicked = false;
-            m_pauseMenuShow = false;
+            m_buttonResume->disable();
+            m_buttonExit->disable();
 
             Sounds::resumeBackgroundMusic();
             GameStateHelper::resumeGame();
         }
-        else if(m_exitButtonClicked)
+        else if(m_buttonExit->getIsPressed())
         {
-            m_exitButtonClicked = false;
             Sounds::stopBackgroundMusic();
 
             GameStateHelper::popState();
             GameStateHelper::pushStartMenuState();
             return;
         }
-        else if(m_winPrize1ButtonClicked)
+        else if(m_buttonWinPrize1->getIsPressed())
         {
-            m_winPrize1ButtonClicked = false;
-            m_winMenuShow = false;
-
             EnumsAndVars::CurrencyBalance::crystals += 25;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
 
@@ -175,10 +283,8 @@ namespace MagneticBall3D
             GameStateHelper::pushStartMenuState();
             return;
         }
-        else if(m_winPrize2ButtonClicked)
+        else if(m_buttonWinPrize2->getIsPressed())
         {
-            m_winPrize2ButtonClicked = false;
-
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
             {
                 m_winPrize2AdSuccessCallback();
@@ -189,26 +295,24 @@ namespace MagneticBall3D
                 Beryll::Ads::getInstance()->showInterstitialAd(m_winPrize2AdSuccessCallback, m_commonAdErrorCallback);
             }
         }
-        else if(m_tutorialCompletedButtonClicked)
+        else if(m_buttonOkTutorialCompleted->getIsPressed())
         {
-            m_tutorialCompletedButtonClicked = false;
             Sounds::stopBackgroundMusic();
 
             GameStateHelper::popState();
             GameStateHelper::pushStartMenuState();
             return;
         }
-        else if(m_tankWithCommanderButtonClicked)
+        else if(m_buttonCloseBossMessage->getIsPressed())
         {
-            m_tankWithCommanderButtonClicked = false;
-            m_tankWithCommanderMenuShow = false;
+            m_textureTankWithCommander->disable();
+            m_buttonCloseBossMessage->disable();
 
             GameStateHelper::resumeGame();
         }
-        else if(m_resurrectByAdButtonClicked)
+        else if(m_buttonResurrectByAd->getIsPressed())
         {
             BR_INFO("%s", "m_resurrectByAdButtonClicked");
-            m_resurrectByAdButtonClicked = false;
             Sounds::pauseBackgroundMusic();
 
             if(EnumsAndVars::Shop::adsOnMapsDisabled)
@@ -221,14 +325,16 @@ namespace MagneticBall3D
                 Beryll::Ads::getInstance()->showInterstitialAd(m_resurrectAdSuccessCallback, m_commonAdErrorCallback);
             }
         }
-        else if(m_resurrectByCrystalsButtonClicked)
+        else if(m_buttonResurrectByCrystals->getIsPressed())
         {
             BR_INFO("%s", "m_resurrectByCrystalsButtonClicked");
-            m_resurrectByCrystalsButtonClicked = false;
 
             if(EnumsAndVars::CurrencyBalance::crystals >= EnumsAndVars::playerCostOfResurrectionCrystals)
             {
-                m_resurrectMenuShow = false;
+                m_textureResurrect->disable();
+                m_buttonResurrectByCrystals->disable();
+                m_buttonResurrectByAd->disable();
+                m_buttonExit->disable();
 
                 EnumsAndVars::CurrencyBalance::crystals -= EnumsAndVars::playerCostOfResurrectionCrystals;
                 DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
@@ -237,20 +343,20 @@ namespace MagneticBall3D
             }
             else
             {
-                m_noCrystalsMenuShow = true;
+                m_textureBackgroundError->enable();
+                m_textureCrystalsError->enable();
+                m_buttonCloseError->enable();
             }
-        }
-
-        if(m_noCrystalsButtonOkClicked)
-        {
-            m_noCrystalsButtonOkClicked = false;
-            m_noCrystalsMenuShow = false;
         }
 
         if(PlayStateGUILayer::m_resurrectAdSuccess)
         {
             PlayStateGUILayer::m_resurrectAdSuccess = false;
-            m_resurrectMenuShow = false;
+
+            m_textureResurrect->disable();
+            m_buttonResurrectByCrystals->disable();
+            m_buttonResurrectByAd->disable();
+            m_buttonExit->disable();
 
             resurrectPlayer = true; // Will handled in BaseMap.cpp
             GameStateHelper::resumeGame();
@@ -268,7 +374,6 @@ namespace MagneticBall3D
         if(PlayStateGUILayer::m_winPrize2AdSuccess)
         {
             PlayStateGUILayer::m_winPrize2AdSuccess = false;
-            m_winMenuShow = false;
 
             EnumsAndVars::CurrencyBalance::crystals += 50;
             DataBaseHelper::storeCurrencyBalanceCrystals(EnumsAndVars::CurrencyBalance::crystals);
@@ -281,14 +386,19 @@ namespace MagneticBall3D
         if(PlayStateGUILayer::m_commonAdError)
         {
             PlayStateGUILayer::m_commonAdError = false;
-            m_adErrorMenuShow = true;
+
+            m_textureBackgroundError->enable();
+            m_textureAdError->enable();
+            m_buttonCloseError->enable();
         }
 
-        if(m_adErrorButtonOkClicked)
+        if(m_buttonCloseError->getIsPressed())
         {
-            m_adErrorButtonOkClicked = false;
-            m_adErrorMenuShow = false;
-            Sounds::resumeBackgroundMusic();
+            BR_INFO("%s", "_buttonCloseError->getIsPressed");
+            m_textureBackgroundError->disable();
+            m_textureAdError->disable();
+            m_textureCrystalsError->disable();
+            m_buttonCloseError->disable();
         }
     }
 
@@ -299,311 +409,67 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::draw()
     {
-        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Lost focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // On focus.
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Clicked.
-
         if(EnumsAndVars::SettingsMenu::interfaceGUI)
         {
-            for(const std::shared_ptr<Beryll::GUIObject>& go : m_guiObjects)
+            for(auto it = m_guiObjects.rbegin(); it != m_guiObjects.rend(); ++it)
             {
-                if(go->getIsEnabled())
+                if((*it)->getIsEnabled())
                 {
-                    go->draw();
+                    (*it)->draw();
                 }
             }
 
-            m_shotButton->draw();
+            m_buttonShot->draw();
 
-            // Counters texture.
-            ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, -0.002f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("smashedSpeedTexture", nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f));
-            ImGui::Image(static_cast<ImTextureID>(m_countersTexture->getID()),
-                         ImVec2(0.088f * GUIWidth, 0.144f * GUIHeight));
-            ImGui::End();
-
-            // Counters texts.
-            ImGui::SetNextWindowPos(ImVec2(0.94f * GUIWidth, 0.012f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
-            ImGui::Begin("smashedSpeedTexts", nullptr, m_noBackgroundNoFrame);
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0625f, 0.0586f, 0.0898f, 1.0f});
-            ImGui::PushFont(m_countersFont);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
-            ImGui::Text("%d", EnumsAndVars::enemiesKilledCount);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.046f * GUIHeight));
-            ImGui::Text("%d/%d", int(std::roundf(EnumsAndVars::playerCurrentSpeed)), int(std::roundf(EnumsAndVars::playerMaxSpeedXZ)));
-
-            m_mapPlayTimerText = "";
-            const int min = int(EnumsAndVars::mapPlayTimeSec / 60.0f);
-            const int sec = int(std::fmod(EnumsAndVars::mapPlayTimeSec, 60.0f));
-            if(min < 10)
-                m_mapPlayTimerText += "0";
-
-            m_mapPlayTimerText += std::to_string(min);
-            m_mapPlayTimerText += ":";
-
-            if(sec < 10)
-                m_mapPlayTimerText += "0";
-
-            m_mapPlayTimerText += std::to_string(sec);
-
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.092f * GUIHeight));
-            ImGui::Text("%s", m_mapPlayTimerText.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
-            ImGui::PopFont();
-            ImGui::PopStyleColor(1);
-            ImGui::End();
-
-            // HP XP.
-            ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.14f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
-            ImGui::Begin("HPXP", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.0f * GUIHeight));
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.6289f, 1.0f, 0.3086f, 1.0f});
-            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.8516f, 0.0859f, 0.1641f, 1.0f});
-            ImGui::ProgressBar(progressBarHP, ImVec2(0.084f * GUIWidth, 0.03f * GUIHeight));
-            ImGui::PopStyleColor(3);
-            ImGui::SetCursorPos(ImVec2(0.005f * GUIWidth, 0.03f * GUIHeight));
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.1367f, 0.6016f, 0.953f, 1.0f});
-            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.1953f, 0.1953f, 0.2422f, 1.0f});
-            ImGui::ProgressBar(progressBarXP, ImVec2(0.084f * GUIWidth, 0.03f * GUIHeight));
-            ImGui::PopStyleColor(3);
-            ImGui::End();
-
-            // Pause button.
-            ImGui::SetNextWindowPos(ImVec2(-0.003f * GUIWidth, -0.002f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-            ImGui::Begin("pauseButton", nullptr, m_noBackgroundNoFrame);
-            ImGui::SetCursorPos(ImVec2(0.0f, 0.0f));
-            m_pauseButtonClicked = ImGui::ImageButton("pauseButton", static_cast<ImTextureID>(m_pauseButtonTexture->getID()),
-                                                      ImVec2(0.06f * GUIWidth, 0.12f * GUIHeight));
-            ImGui::End();
-
-            // Pause menu.
-            if(m_pauseMenuShow)
-            {
-                ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-                ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-                ImGui::Begin("pauseMenu", nullptr, m_noBackgroundNoFrame);
-
-                ImGui::SetCursorPos(ImVec2(0.39f * GUIWidth, 0.417f * GUIHeight));
-                m_resumeButtonClicked = ImGui::ImageButton("pauseMenuResumeButton", static_cast<ImTextureID>(m_resumeButtonTexture->getID()),
-                                                           ImVec2(0.23f * GUIWidth, 0.176f * GUIHeight));
-                ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-                m_exitButtonClicked = ImGui::ImageButton("pauseMenuExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
-                                                         ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-                ImGui::End();
-            }
-
-            // Map0Tutorial.
-            if(tutorialTextTipsShow)
-            {
-                //ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.5f});
-                ImGui::SetNextWindowPos(ImVec2(0.085f * GUIWidth, 0.0f * GUIHeight));
-                ImGui::SetNextWindowSize(ImVec2(0.0f * GUIWidth, 0.0f * GUIHeight));
-                ImGui::Begin("tutorialTextTips", nullptr, m_noBackgroundNoFrame);
-
-                ImGui::SetCursorPos(ImVec2(0.198f * GUIWidth, 0.0f * GUIHeight));
-                ImGui::Image(static_cast<ImTextureID>(m_tutorialKillEnemiesTexture->getID()),
-                             ImVec2(0.434f * GUIWidth, 0.093f * GUIHeight));
-
-                ImGui::SetCursorPos(ImVec2(0.7f * GUIWidth, 0.106f * GUIHeight));
-                ImGui::Image(static_cast<ImTextureID>(m_tutorialHealthTexture->getID()),
-                             ImVec2(0.13f * GUIWidth, 0.1f * GUIHeight));
-
-                if(EnumsAndVars::garbageCountMagnetized > 0)
-                {
-                    ImGui::SetCursorPos(ImVec2(0.64f * GUIWidth, 0.238f * GUIHeight));
-                    ImGui::Image(static_cast<ImTextureID>(m_tutorialShotButtonTexture->getID()),
-                                 ImVec2(0.18f * GUIWidth, 0.1f * GUIHeight));
-                }
-
-                ImGui::End();
-                //ImGui::PopStyleColor(1);
-
-                if(tutorialMoveShow)
-                {
-                    ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, 0.45f * GUIHeight));
-                    ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 0.55f * GUIHeight));
-                    ImGui::Begin("tutorialMoveAndCamera", nullptr, m_noBackgroundNoFrame);
-
-                    ImGui::SetCursorPos(ImVec2(0.055f * GUIWidth, 0.0f * GUIHeight));
-                    ImGui::Image(static_cast<ImTextureID>(m_tutorialMoveTexture->getID()),
-                                 ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-
-                    ImGui::SetCursorPos(ImVec2(0.655f * GUIWidth, 0.0f * GUIHeight));
-                    ImGui::Image(static_cast<ImTextureID>(m_tutorialCameraTexture->getID()),
-                                 ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-                    ImGui::End();
-                }
-            }
+//            ImGui::ProgressBar(progressBarHP, ImVec2(0.09f * GUIWidth, 0.03f * GUIHeight));
+//            ImGui::ProgressBar(progressBarXP, ImVec2(0.09f * GUIWidth, 0.03f * GUIHeight));
         }
 
         // Messages about map progress / win / lose ... should be shown even if interface disabled.
 
-        if(m_resurrectMenuShow)
-        {
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("resurrectMenu", nullptr, m_noBackgroundNoFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_resurrectTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
-            m_resurrectByAdButtonClicked = ImGui::ImageButton("resurrectByAdButton",static_cast<ImTextureID>(m_resurrectByAdButtonTexture->getID()),
-                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
-            m_resurrectByCrystalsButtonClicked = ImGui::ImageButton("resurrectByCrystalsButton", static_cast<ImTextureID>(m_resurrectByCrystalsButtonTexture->getID()),
-                                                                    ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_exitButtonClicked = ImGui::ImageButton("resurrectExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
-                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-        }
-
-        if(m_noCrystalsMenuShow)
-        {
-            //ImGui::SetNextWindowFocus();
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("noCrystalsMenu", nullptr, m_noFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_noCrystalsTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_noCrystalsButtonOkClicked = ImGui::ImageButton("noCrystalsOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
-                                                             ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-            ImGui::PopStyleColor(1);
-        }
-
-        if(m_adErrorMenuShow)
-        {
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4{0.0f, 0.0f, 0.0f, 0.92f});
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("adErrorMenu", nullptr, m_noFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_adErrorTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_adErrorButtonOkClicked = ImGui::ImageButton("adErrorOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
-                                                          ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-
-            ImGui::End();
-            ImGui::PopStyleColor(1);
-        }
-
-        if(m_winMenuShow)
-        {
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("winMenu", nullptr, m_noBackgroundNoFrame);
-
-            if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart == 0) // Tutorial completed.
-            {
-                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-                ImGui::Image(static_cast<ImTextureID>(m_tutorialCompletedTexture->getID()),
-                             ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
-
-                ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
-                m_tutorialCompletedButtonClicked = ImGui::ImageButton("tutorialCompletedButton", static_cast<ImTextureID>(m_okTexture->getID()),
-                                                                      ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            }
-            else
-            {
-                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-                ImGui::Image(static_cast<ImTextureID>(m_winTexture->getID()),
-                             ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
-
-                ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.52f * GUIHeight));
-                m_winPrize1ButtonClicked = ImGui::ImageButton("winPrize1Button",static_cast<ImTextureID>(m_winPrize1ButtonTexture->getID()),
-                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-
-                ImGui::SetCursorPos(ImVec2(0.515f * GUIWidth, 0.52f * GUIHeight));
-                m_winPrize2ButtonClicked = ImGui::ImageButton("winPrize2Button", static_cast<ImTextureID>(m_winPrize2ButtonTexture->getID()),
-                                                              ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            }
-
-            ImGui::End();
-        }
-
-        if(m_loseMenuShow)
-        {
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("loseMenu", nullptr, m_noBackgroundNoFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_loseTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.34f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.52f * GUIHeight));
-            m_exitButtonClicked = ImGui::ImageButton("loseMenuExitButton", static_cast<ImTextureID>(m_exitTexture->getID()),
-                                                     ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-        }
-
-        if(m_tankWithCommanderMenuShow)
-        {
-            ImGui::SetNextWindowPos(ImVec2(-0.005f * GUIWidth, -0.005f * GUIHeight));
-            ImGui::SetNextWindowSize(ImVec2(1.01f * GUIWidth, 1.01f * GUIHeight));
-            ImGui::Begin("tankWithCommanderMenu", nullptr, m_noBackgroundNoFrame);
-
-            ImGui::SetCursorPos(ImVec2(0.355f * GUIWidth, 0.155f * GUIHeight));
-            ImGui::Image(static_cast<ImTextureID>(m_tankWithCommanderTexture->getID()),
-                         ImVec2(0.3f * GUIWidth, 0.5f * GUIHeight));
-
-            ImGui::SetCursorPos(ImVec2(0.435f * GUIWidth, 0.705f * GUIHeight));
-            m_tankWithCommanderButtonClicked = ImGui::ImageButton("tankWithCommanderOkButton",static_cast<ImTextureID>(m_okTexture->getID()),
-                                                                  ImVec2(0.14f * GUIWidth, 0.1528f * GUIHeight));
-            ImGui::End();
-        }
-
-        ImGui::PopStyleColor(3);
+        if(m_textureResurrect->getIsEnabled()) { m_textureResurrect->draw(); }
+        if(m_buttonResurrectByCrystals->getIsEnabled()) { m_buttonResurrectByCrystals->draw(); }
+        if(m_buttonResurrectByAd->getIsEnabled()) { m_buttonResurrectByAd->draw(); }
+        if(m_textureBackgroundError->getIsEnabled()) { m_textureBackgroundError->draw(); }
+        if(m_textureAdError->getIsEnabled()) { m_textureAdError->draw(); }
+        if(m_textureCrystalsError->getIsEnabled()) { m_textureCrystalsError->draw(); }
+        if(m_buttonCloseError->getIsEnabled()) { m_buttonCloseError->draw(); }
+        if(m_textureTankWithCommander->getIsEnabled()) { m_textureTankWithCommander->draw(); }
+        if(m_buttonCloseBossMessage->getIsEnabled()) { m_buttonCloseBossMessage->draw(); }
     }
 
     void PlayStateGUILayer::showMenuResurrect()
     {
-        if(m_resurrectMenuShow)
-            return;
-
-        m_resurrectMenuShow = true;
+        m_textureResurrect->enable();
+        m_buttonResurrectByCrystals->enable();
+        m_buttonResurrectByAd->enable();
+        m_buttonExit->enable();
 
         GameStateHelper::pauseGame();
     }
 
     void PlayStateGUILayer::showMenuLose()
     {
-        if(m_loseMenuShow)
-            return;
+        m_textureLose->enable();
+        m_buttonExit->enable();
 
-        m_loseMenuShow = true;
         Sounds::stopBackgroundMusic();
         GameStateHelper::pauseGame();
     }
 
     void PlayStateGUILayer::showMenuWin()
     {
-        if(m_winMenuShow)
-            return;
-
-        m_winMenuShow = true;
+        if(EnumsAndVars::MapsProgress::mapIndexWhenMapStart == 0) // Tutorial completed.
+        {
+            m_textureTutorialCompleted->enable();
+            m_buttonOkTutorialCompleted->enable();
+        }
+        else
+        {
+            m_textureWin->enable();
+            m_buttonWinPrize1->enable();
+            m_buttonWinPrize2->enable();
+        }
 
         Sounds::stopBackgroundMusic();
         GameStateHelper::pauseGame();
@@ -611,10 +477,8 @@ namespace MagneticBall3D
 
     void PlayStateGUILayer::showMenuBossTankWithCommander()
     {
-        if(m_tankWithCommanderMenuShow)
-            return;
-
-        m_tankWithCommanderMenuShow = true;
+        m_textureTankWithCommander->enable();
+        m_buttonCloseBossMessage->enable();
 
         GameStateHelper::pauseGame();
     }
