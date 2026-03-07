@@ -102,15 +102,12 @@ namespace MagneticBall3D
 
         // Piggy bank with available levels. Store player levels. Can be spent for improvements when user wants(button click).
         std::shared_ptr<Beryll::ButtonWithAnimation> m_buttonPiggyBank;
+        std::shared_ptr<Beryll::GUIText> m_textPiggyBankLvl;
 
         int m_piggyBankCurrentLevel = 0;
         int m_piggyBankLevelsCollectedCount = 0;
         const int m_piggyBankMaxLevel = m_maxImprovementsSelectedCount * m_maxLevel;
         bool m_selectImprovement = false;
-        ImFont* m_piggyBankLevelFont;
-        int m_noBackgroundNoFrame = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-                                    ImGuiWindowFlags_NoScrollbar;
 
         // To position before show on screen. Only pos X should be changed.
         float m_leftPos1BlockButton = 43.19f;

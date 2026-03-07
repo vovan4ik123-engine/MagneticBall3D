@@ -310,7 +310,7 @@ namespace MagneticBall3D
                                                                           1.0f, false, glm::vec3{91.5f, 57.3f, 0.5f}, glm::vec2{18.4f / screenAR, 18.4f});
         m_buttonPiggyBank->disable();
 
-        m_piggyBankLevelFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.06f);
+        m_textPiggyBankLvl = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{94.1f, 68.6f, 0.6f}, 0.5f);
     }
 
     Improvements::~Improvements()
@@ -519,23 +519,19 @@ namespace MagneticBall3D
 
             if(m_buttonPiggyBank->getIsAnimationFinished())
             {
-                // Show text over button.
-                const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-                const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
+                const glm::vec3 currentPos = m_textPiggyBankLvl->getPositionInPercents();
+                if(m_piggyBankCurrentLevel < 10 && currentPos.x != 94.9f)
+                {
+                    m_textPiggyBankLvl->updatePositionInPercents(glm::vec3{94.9f, 68.6f, 0.6f});
+                }
+                else if(m_piggyBankCurrentLevel >= 10 && currentPos.x != 94.1f)
+                {
+                    m_textPiggyBankLvl->updatePositionInPercents(glm::vec3{94.1f, 68.6f, 0.6f});
+                }
 
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.08f, 0.08f, 0.08f, 1.0f});
-                ImGui::PushFont(m_piggyBankLevelFont);
-                ImGui::SetNextWindowPos(ImVec2(0.912f * GUIWidth, 0.24f * GUIHeight));
-                ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
-                ImGui::Begin("piggyBankLevel", nullptr, m_noBackgroundNoFrame);
-                if(m_piggyBankCurrentLevel < 10)
-                    ImGui::SetCursorPos(ImVec2(0.039f * GUIWidth, 0.028f * GUIHeight));
-                else
-                    ImGui::SetCursorPos(ImVec2(0.033f * GUIWidth, 0.028f * GUIHeight));
-                ImGui::Text("%d", m_piggyBankCurrentLevel);
-                ImGui::PopFont();
-                ImGui::PopStyleColor(1);
-                ImGui::End();
+                m_textPiggyBankLvl->text = std::to_string(m_piggyBankCurrentLevel);
+                m_textPiggyBankLvl->draw();
+                // ImGui::Text("%d", m_piggyBankCurrentLevel);
             }
         }
     }

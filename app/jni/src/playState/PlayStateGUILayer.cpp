@@ -20,11 +20,11 @@ namespace MagneticBall3D
 
         if(m_statisticsShow)
         {
-            m_statistics1 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 96.3f, 0.0f}, 0.28f);
+            m_statistics1 = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{6.5f, 96.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics1);
-            m_statistics2 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 92.3f, 0.0f}, 0.28f);
+            m_statistics2 = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{6.5f, 92.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics2);
-            m_statistics3 = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{6.5f, 88.3f, 0.0f}, 0.28f);
+            m_statistics3 = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{6.5f, 88.3f, 0.0f}, 0.28f);
             m_guiObjects.push_back(m_statistics3);
         }
 
@@ -81,11 +81,11 @@ namespace MagneticBall3D
         m_textureCounters = std::make_shared<Beryll::GUITexture>("GUI/playState/Counters.jpg",
                                                                  glm::vec3{91.0f, 85.5f, 0.5f}, glm::vec2{9.0f, 14.5f});
         m_guiObjects.push_back(m_textureCounters);
-        m_textEnemiesKilled = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 96.2f, 0.6f}, 0.28f);
+        m_textEnemiesKilled = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{93.6f, 96.2f, 0.6f}, 0.28f);
         m_guiObjects.push_back(m_textEnemiesKilled);
-        m_textSpeed = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 91.5f, 0.6f}, 0.28f);
+        m_textSpeed = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{93.6f, 91.5f, 0.6f}, 0.28f);
         m_guiObjects.push_back(m_textSpeed);
-        m_textPlayTime = Beryll::Renderer::createGUIText("", glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{93.6f, 86.9f, 0.6f}, 0.28f);
+        m_textPlayTime = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{93.6f, 86.9f, 0.6f}, 0.28f);
         m_guiObjects.push_back(m_textPlayTime);
 
         m_textureTutorialMove = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialMove.png",

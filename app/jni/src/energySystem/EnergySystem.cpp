@@ -4,21 +4,10 @@
 
 namespace MagneticBall3D
 {
-    // All there IDs as strings required by ImGUI.
-    const std::string EnergySystem::m_energyTextureID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_energyAmountTextID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_restoreTimerTextID = std::to_string(BeryllUtils::Common::generateID());
-    const std::string EnergySystem::m_energyButtonID = std::to_string(BeryllUtils::Common::generateID());
-
     EnergySystem::EnergySystem()
     {
         BR_INFO("%s", "EnergySystem::EnergySystem()");
 
-        m_energyTexture = Beryll::Renderer::createTexture("GUI/menus/start/Energy.jpg", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-        m_energyButtonTexture = Beryll::Renderer::createTexture("GUI/FullTransparent.png", Beryll::TextureType::DIFFUSE_TEXTURE_MAT_1);
-
-        m_energyAmountFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.025f);
-        m_restoreTimerFont = Beryll::MainImGUI::getInstance()->createFont(EnumsAndVars::FontsPath::roboto, 0.015f);
     }
 
     EnergySystem::~EnergySystem()
@@ -66,30 +55,10 @@ namespace MagneticBall3D
                 DataBaseHelper::storeEnergySystemLastSecRestored(EnumsAndVars::EnergySystem::lastSecOneEnergyRestored);
             }
         }
-
-        if(m_energyButtonClicked)
-        {
-            BR_INFO("%s", "m_energyButtonClicked");
-        }
     }
 
     void EnergySystem::draw()
     {
-        const float GUIWidth = Beryll::MainImGUI::getInstance()->getGUIWidth();
-        const float GUIHeight = Beryll::MainImGUI::getInstance()->getGUIHeight();
-        // Text amount.
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(0.45f * GUIWidth, 0.008f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
-
-        ImGui::Begin(m_energyAmountTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
-
-        ImGui::PushFont(m_energyAmountFont);
-        ImGui::Text("%d/%d", EnumsAndVars::EnergySystem::currentAmount, EnumsAndVars::EnergySystem::maxLimitToRestore);
-        ImGui::PopFont();
-
-        ImGui::End();
-        ImGui::PopStyleColor(1);
 
         // Text restore timer.
         m_restoreTimerText = "";
@@ -115,44 +84,7 @@ namespace MagneticBall3D
 
             m_restoreTimerText += std::to_string(sec);
         }
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{0.0f, 0.0f, 0.0f, 1.0f});
-        ImGui::SetNextWindowPos(ImVec2(0.47f * GUIWidth, 0.033f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f));
 
-        ImGui::Begin(m_restoreTimerTextID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
-
-        ImGui::PushFont(m_restoreTimerFont);
-        ImGui::Text("%s", m_restoreTimerText.c_str()); // ImGUI ignores "%s". Modify void ImFormatStringToTempBufferV( to avoid that.
-        ImGui::PopFont();
-
-        ImGui::End();
-        ImGui::PopStyleColor(1);
-
-        // Texture energy.
-        ImGui::SetNextWindowPos(ImVec2(0.39f * GUIWidth, 0.0f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
-        ImGui::Begin(m_energyTextureID.c_str(), nullptr, m_noBackgroundNoFrame | ImGuiWindowFlags_NoBringToFrontOnFocus);
-
-        ImGui::Image(static_cast<ImTextureID>(m_energyTexture->getID()),
-                     ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
-
-        ImGui::End();
-
-        // Button energy. Transparent. On top of texture + texts.
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        ImGui::SetNextWindowPos(ImVec2(0.39f * GUIWidth, 0.0f * GUIHeight));
-        ImGui::SetNextWindowSize(ImVec2(0.0f, 0.0f)); // Set next window size. Set axis to 0.0f to force an auto-fit on this axis.
-
-        ImGui::Begin(m_energyButtonID.c_str(), nullptr, m_noBackgroundNoFrame);
-
-        m_energyButtonClicked = ImGui::ImageButton(m_energyButtonID.c_str(), static_cast<ImTextureID>(m_energyButtonTexture->getID()),
-                                                   ImVec2(0.2f * GUIWidth, 0.05f * GUIHeight));
-
-        ImGui::End();
-        ImGui::PopStyleColor(3);
     }
 
     bool EnergySystem::isEnoughForPlay()
