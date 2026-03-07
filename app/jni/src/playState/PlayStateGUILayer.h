@@ -53,6 +53,9 @@ namespace MagneticBall3D
         std::shared_ptr<Beryll::GUIText> m_textEnemiesKilled;
         std::shared_ptr<Beryll::GUIText> m_textSpeed;
         std::shared_ptr<Beryll::GUIText> m_textPlayTime;
+        // Progress bars.
+        std::shared_ptr<Beryll::GUIProgressBar> m_progressHP;
+        std::shared_ptr<Beryll::GUIProgressBar> m_progressXP;
         // Map0Tutorial.
         std::shared_ptr<Beryll::GUITexture> m_textureTutorialMove;
         std::shared_ptr<Beryll::GUITexture> m_textureTutorialCamera;

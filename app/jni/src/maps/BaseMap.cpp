@@ -263,16 +263,13 @@ namespace MagneticBall3D
                 if(f.handled)
                     continue;
 
-                if(f.normalizedPos.x < 0.3f && f.normalizedPos.y > 0.3f)
+                if(f.normalizedPos.x < 0.3f && f.normalizedPos.y < 0.7f)
                 {
                     if(f.downEvent)
                     {
                         m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
                         m_gui->playerJoystick->enable();
-                        // Flipper Y for opengl.
-                        glm::vec2 newPos = f.normalizedPos;
-                        newPos.y = 1.0f - newPos.y;
-                        m_gui->playerJoystick->setOrigin(newPos);
+                        m_gui->playerJoystick->setOrigin(f.normalizedPos);
                         f.handled = true;
                         break;
                     }
@@ -806,7 +803,7 @@ namespace MagneticBall3D
                 m_lastFingerMovePosY = f.normalizedPos.y;
 
                 m_eyesLookAngleXZ += deltaX;
-                m_eyesLookAngleY -= deltaY;
+                m_eyesLookAngleY += deltaY;
                 if(m_eyesLookAngleY > 10.0f) m_eyesLookAngleY = 10.0f; // Eye up.
                 if(m_eyesLookAngleY < -88.0f) m_eyesLookAngleY = -88.0f; // Eye down.
                 //BR_INFO("m_eyesLookAngleXZ %f m_eyesLookAngleY %f", m_eyesLookAngleXZ, m_eyesLookAngleY);

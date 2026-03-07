@@ -531,7 +531,6 @@ namespace MagneticBall3D
 
                 m_textPiggyBankLvl->text = std::to_string(m_piggyBankCurrentLevel);
                 m_textPiggyBankLvl->draw();
-                // ImGui::Text("%d", m_piggyBankCurrentLevel);
             }
         }
     }

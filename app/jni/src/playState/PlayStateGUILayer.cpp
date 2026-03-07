@@ -88,6 +88,13 @@ namespace MagneticBall3D
         m_textPlayTime = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{93.6f, 86.9f, 0.6f}, 0.28f);
         m_guiObjects.push_back(m_textPlayTime);
 
+        m_progressHP = std::make_shared<Beryll::GUIProgressBar>(glm::vec3{91.0f, 82.5f, 0.5f}, glm::vec2{9.0f, 3.0f},
+                                                                glm::vec3{0.6289f, 1.0f, 0.3086f}, glm::vec3{0.8516f, 0.0859f, 0.1641f});
+        m_guiObjects.push_back(m_progressHP);
+        m_progressXP = std::make_shared<Beryll::GUIProgressBar>(glm::vec3{91.0f, 79.5f, 0.5f}, glm::vec2{9.0f, 3.0f},
+                                                                glm::vec3{0.1367f, 0.6016f, 0.953f}, glm::vec3{0.1953f, 0.1953f, 0.2422f});
+        m_guiObjects.push_back(m_progressXP);
+
         m_textureTutorialMove = std::make_shared<Beryll::GUITexture>("GUI/playState/TutorialMove.png",
                                                                      glm::vec3{5.0f, 5.0f, 0.6f}, glm::vec2{30.0f, 50.0f}, false);
         m_textureTutorialMove->disable();
@@ -199,6 +206,9 @@ namespace MagneticBall3D
             m_textPlayTime->text += "0";
 
         m_textPlayTime->text += std::to_string(sec);
+
+        m_progressHP->setProgress(progressBarHP);
+        m_progressXP->setProgress(progressBarXP);
 
         if(tutorialTextTipsShow)
         {
@@ -420,9 +430,6 @@ namespace MagneticBall3D
             }
 
             m_buttonShot->draw();
-
-//            ImGui::ProgressBar(progressBarHP, ImVec2(0.09f * GUIWidth, 0.03f * GUIHeight));
-//            ImGui::ProgressBar(progressBarXP, ImVec2(0.09f * GUIWidth, 0.03f * GUIHeight));
         }
 
         // Messages about map progress / win / lose ... should be shown even if interface disabled.
