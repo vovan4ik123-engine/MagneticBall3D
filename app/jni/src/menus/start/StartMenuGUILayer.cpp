@@ -14,6 +14,12 @@ namespace MagneticBall3D
                                                                glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{100.0f, 100.0f});
         m_guiObjects.push_back(background);
 
+        // When we push some game state() over this and then pop it, one button appears without texture. Only first button.
+        // I dont know why texture disappears. That is fix for this. Invisible button will affected by this bug.
+        auto fixBug = std::make_shared<Beryll::ButtonWithTexture>("GUI/FullTransparent.png", "",
+                                                                  glm::vec3{20.0f, 90.0f, 0.1f}, glm::vec2{10.0f, 10.0f});
+        m_guiObjects.push_back(fixBug);
+
         m_buttonShop = std::make_shared<Beryll::ButtonWithTexture>("GUI/menus/start/Shop.jpg", "",
                                                                    glm::vec3{0.0f, 66.6f, 0.1f}, glm::vec2{15.0f, 33.4f});
         m_guiObjects.push_back(m_buttonShop);
@@ -62,7 +68,7 @@ namespace MagneticBall3D
 
         enableDisableButtons();
 
-        m_crystalsCount = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{88.0f, 91.0f, 0.1f}, 0.45f);
+        m_crystalsCount = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{88.0f, 91.0f, 0.01f}, 0.45f);
         m_guiObjects.push_back(m_crystalsCount);
 
         // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).

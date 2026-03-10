@@ -75,15 +75,15 @@ namespace MagneticBall3D
 
         // Error menu.
         m_textureBackgroundError = std::make_shared<Beryll::GUITexture>("GUI/GrayTransparency10.png",
-                                                                        glm::vec3{0.0f, 0.0f, 0.9f}, glm::vec2{100.0f, 100.0f});
+                                                                        glm::vec3{0.0f, 0.0f, 0.2f}, glm::vec2{100.0f, 100.0f});
         m_textureBackgroundError->disable();
         m_guiObjects.push_back(m_textureBackgroundError);
         m_textureError = std::make_shared<Beryll::GUITexture>("GUI/menus/shop/PurchaseError.jpg",
-                                                              glm::vec3{35.0f, 35.0f, 1.0f}, glm::vec2{30.0f, 50.0f});
+                                                              glm::vec3{35.0f, 35.0f, 0.3f}, glm::vec2{30.0f, 50.0f});
         m_textureError->disable();
         m_guiObjects.push_back(m_textureError);
         m_buttonCloseError = std::make_shared<Beryll::ButtonWithTexture>("GUI/Ok.png", "",
-                                                                         glm::vec3{43.0f, 15.0f, 1.0f}, glm::vec2{14.0f, 15.0f});
+                                                                         glm::vec3{43.0f, 15.0f, 0.3f}, glm::vec2{14.0f, 15.0f});
         m_buttonCloseError->disable();
         m_guiObjects.push_back(m_buttonCloseError);
 
