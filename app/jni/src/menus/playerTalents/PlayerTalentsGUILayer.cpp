@@ -62,19 +62,19 @@ namespace MagneticBall3D
                                                                         glm::vec3{53.0f, 15.0f, 0.2f}, glm::vec2{23.0f, 20.0f});
         m_guiObjects.push_back(m_textureMaxLevelReached);
 
-        m_textSelectedDescription1 = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 29.0f, 0.3f}, 0.4f);
+        m_textSelectedDescription1 = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 29.0f, 0.3f}, 4.5f);
         m_guiObjects.push_back(m_textSelectedDescription1);
-        m_textSelectedDescription2 = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 24.0f, 0.3f}, 0.4f);
+        m_textSelectedDescription2 = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 24.0f, 0.3f}, 4.5f);
         m_guiObjects.push_back(m_textSelectedDescription2);
-        m_textSelectedValue = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 16.0f, 0.2f}, 0.3f);
+        m_textSelectedValue = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{24.5f, 16.0f, 0.2f}, 3.5f);
         m_guiObjects.push_back(m_textSelectedValue);
-        m_textSelectedValueToAdd = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{47.5f, 23.0f, 0.3f}, 0.5f);
+        m_textSelectedValueToAdd = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{47.5f, 23.0f, 0.3f}, 6.0f);
         m_guiObjects.push_back(m_textSelectedValueToAdd);
-        m_textOr = Beryll::Renderer::createGUIText("OR", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{62.75f, 23.0f, 0.3f}, 0.5f);
+        m_textOr = Beryll::Renderer::createGUIText("OR", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{62.75f, 23.0f, 0.3f}, 5.5f);
         m_guiObjects.push_back(m_textOr);
-        m_textAdTimer = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{54.2f, 23.0f, 0.3f}, 0.5f);
+        m_textAdTimer = Beryll::Renderer::createGUIText("", glm::vec3{0.95f, 0.95f, 0.95f}, glm::vec3{54.2f, 23.0f, 0.3f}, 5.5f);
         m_guiObjects.push_back(m_textAdTimer);
-        m_textSelectedPriceCrystals = Beryll::Renderer::createGUIText("", glm::vec3{0.1f, 0.1f, 0.1f}, glm::vec3{69.0f, 17.0f, 0.3f}, 0.5f);
+        m_textSelectedPriceCrystals = Beryll::Renderer::createGUIText("", glm::vec3{0.1f, 0.1f, 0.1f}, glm::vec3{69.0f, 17.0f, 0.3f}, 6.0f);
         m_guiObjects.push_back(m_textSelectedPriceCrystals);
 
         m_buttonImproveTalentByAd = std::make_shared<Beryll::ButtonWithTexture>("GUI/FullTransparent.png", "GUI/GrayTransparency20.png",

@@ -68,7 +68,7 @@ namespace MagneticBall3D
 
         enableDisableButtons();
 
-        m_crystalsCount = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{88.0f, 91.0f, 0.01f}, 0.45f);
+        m_crystalsCount = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{88.0f, 91.0f, 0.01f}, 5.0f);
         m_guiObjects.push_back(m_crystalsCount);
 
         // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).

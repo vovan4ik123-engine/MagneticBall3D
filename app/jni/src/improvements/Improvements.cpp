@@ -280,7 +280,7 @@ namespace MagneticBall3D
                                                                                        glm::vec3{10.0f, 10.0f, 1.0f}, glm::vec2{10.0f, 10.0f});
 
             std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("",
-                                                                                            glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 1.0f);
+                                                                                            glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 12.0f);
 
             ImprovementGUIBlock guiBlock(info, button, selected, progressText);
             m_allAvailableGUIBlocks.push_back(guiBlock);
@@ -310,7 +310,7 @@ namespace MagneticBall3D
                                                                           1.0f, false, glm::vec3{91.5f, 57.3f, 0.5f}, glm::vec2{18.4f / screenAR, 18.4f});
         m_buttonPiggyBank->disable();
 
-        m_textPiggyBankLvl = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{94.1f, 68.6f, 0.6f}, 0.5f);
+        m_textPiggyBankLvl = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{94.1f, 68.6f, 0.6f}, 6.2f);
     }
 
     Improvements::~Improvements()
