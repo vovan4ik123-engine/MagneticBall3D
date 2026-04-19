@@ -29,12 +29,12 @@ namespace MagneticBall3D
         }
 
         playerJoystick = std::make_shared<Beryll::Joystick>("GUI/playState/Joystick.png","",
-                                                            glm::vec3{0.0f, 0.0f, 0.1f}, glm::vec2{120.0f / screenAR, 120.0f});
+                                                            glm::vec3{0.0f, 0.0f, 0.1f}, glm::vec2{120.0f / screenAR, 120.0f}, false);
         m_guiObjects.push_back(playerJoystick);
         playerJoystick->disable();
 
         m_buttonShot = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
-                                                                   glm::vec3{76.5f, 48.0f, 0.5f}, glm::vec2{20.0f / screenAR, 20.0f});
+                                                                   glm::vec3{76.5f, 48.0f, 0.5f}, glm::vec2{20.0f / screenAR, 20.0f}, false, false);
 
         m_buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Pause.jpg", "",
                                                                     glm::vec3{0.0f, 88.0f, 0.5f}, glm::vec2{6.0f, 12.0f});

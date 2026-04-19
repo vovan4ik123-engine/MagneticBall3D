@@ -239,6 +239,23 @@ namespace MagneticBall3D
             EnumsAndVars::damageLastShotTime = EnumsAndVars::mapPlayTimeSec;
         }
 
+        std::vector<Beryll::Finger>& fingers = Beryll::EventHandler::getFingers();
+        for(Beryll::Finger& f : fingers)
+        {
+            if(f.downEvent &&
+               f.pixelsPos.x > 100.0f && f.normalizedPos.x < 0.4f &&
+               f.pixelsPos.y > 100.0f && f.normalizedPos.y < 0.8f)
+            {
+                m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
+                m_gui->playerJoystick->enable();
+                m_gui->playerJoystick->setOrigin(f.normalizedPos);
+                m_gui->playerJoystick->pressedFingerID = f.ID;
+                f.downEvent = false;
+
+                return; // From method.
+            }
+        }
+
         if(m_gui->playerJoystick->getIsTouched())
         {
             const glm::vec2 joyDir2D = m_gui->playerJoystick->getDirection();
@@ -256,26 +273,6 @@ namespace MagneticBall3D
         else
         {
             m_gui->playerJoystick->disable();
-
-            std::vector<Beryll::Finger>& fingers = Beryll::EventHandler::getFingers();
-            for(Beryll::Finger& f : fingers)
-            {
-                if(f.handled)
-                    continue;
-
-                if(f.normalizedPos.x < 0.3f && f.normalizedPos.y < 0.7f)
-                {
-                    if(f.downEvent)
-                    {
-                        m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
-                        m_gui->playerJoystick->enable();
-                        m_gui->playerJoystick->setOrigin(f.normalizedPos);
-                        f.handled = true;
-                        break;
-                    }
-                }
-            }
-
             return;
         }
 
