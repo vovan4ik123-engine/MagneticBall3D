@@ -33,7 +33,7 @@ namespace MagneticBall3D
         m_touchGroundAfterFall = false;
         m_fallDistance = 0.0f;
 
-        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::JUMPPAD))
+        if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), EnumsAndVars::CollGr_JUMPPAD))
         {
             if(m_lastTimeOnJumpPad + 0.2f < EnumsAndVars::mapPlayTimeSec)
             {
@@ -46,9 +46,9 @@ namespace MagneticBall3D
             m_lastTimeOnJumpPad = EnumsAndVars::mapPlayTimeSec;
             m_timeOnAir = 0.0f;
         }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING))
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), EnumsAndVars::CollGr_BUILDING))
         {
-            std::vector<int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), Beryll::CollisionGroups::BUILDING);
+            std::vector<int> buildingsID = Beryll::Physics::getAllCollisionsForIDWithGroup(m_obj->getID(), EnumsAndVars::CollGr_BUILDING);
             m_buildingCollisionID = buildingsID.back();
 
             std::vector<std::pair<glm::vec3, glm::vec3>> allCollisionPoints = Beryll::Physics::getAllCollisionPoints(m_obj->getID(), buildingsID);
@@ -58,8 +58,8 @@ namespace MagneticBall3D
                 //m_buildingCollisionNormal = point.second; it has bug and sometime returns wrong direction. Find normal by ray.
                 Beryll::RayClosestHit rayBuilding = Beryll::Physics::castRayClosestHit(m_obj->getOrigin(),
                                                                                        m_obj->getOrigin() + ((point.first - m_obj->getOrigin()) * 2.0f),
-                                                                                       Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
-                                                                                       Beryll::CollisionGroups::BUILDING);
+                                                                                       EnumsAndVars::CollGr_RAY_FOR_ENVIRONMENT,
+                                                                                       EnumsAndVars::CollGr_BUILDING);
 
                 if(rayBuilding)
                     m_buildingCollisionNormal = rayBuilding.hitNormal;
@@ -97,7 +97,7 @@ namespace MagneticBall3D
             m_lastTimeOnBuilding = EnumsAndVars::mapPlayTimeSec;
             m_timeOnAir = 0.0f;
         }
-        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), Beryll::CollisionGroups::GROUND))
+        else if(Beryll::Physics::getIsCollisionWithGroup(m_obj->getID(), EnumsAndVars::CollGr_GROUND))
         {
             m_obj->setGravity(EnumsAndVars::playerGravityOnGround);
             m_obj->setDamping(EnumsAndVars::playerDamping, EnumsAndVars::playerDamping);

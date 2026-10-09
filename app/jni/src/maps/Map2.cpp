@@ -96,7 +96,7 @@ namespace MagneticBall3D
         {
             if(enemy->getIsEnabledDraw() && enemy->getIsNeedShowHPBar())
             {
-                if(enemy->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1)
+                if(enemy->getSceneObjectGroup() == EnumsAndVars::SceneGR_ENEMY_SIZE_1)
                 {
                     HPBarOrigin = enemy->getOrigin();
                     HPBarOrigin.y += enemy->getFromOriginToTop() * 1.5f;
@@ -221,10 +221,10 @@ namespace MagneticBall3D
                                                                                 0.0f,
                                                                                 false,
                                                                                 Beryll::CollisionFlags::STATIC,
-                                                                                Beryll::CollisionGroups::GROUND,
-                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                Beryll::CollisionGroups::MOVABLE_ENEMY | Beryll::CollisionGroups::CAMERA,
-                                                                                Beryll::SceneObjectGroups::GROUND);
+                                                                                EnumsAndVars::CollGr_GROUND,
+                                                                                EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                EnumsAndVars::CollGr_MOVABLE_ENEMY | EnumsAndVars::CollGr_CAMERA,
+                                                                                EnumsAndVars::SceneGR_GROUND);
 
         m_objWithNormalMap.push_back(mainGround);
         mainGround->setFriction(EnumsAndVars::staticEnvFriction);
@@ -233,11 +233,11 @@ namespace MagneticBall3D
                                                                                            0.0f,
                                                                                            false,
                                                                                            Beryll::CollisionFlags::STATIC,
-                                                                                           Beryll::CollisionGroups::GROUND,
-                                                                                           Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                           Beryll::CollisionGroups::CAMERA | Beryll::CollisionGroups::MOVABLE_ENEMY |
-                                                                                           Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
-                                                                                           Beryll::SceneObjectGroups::GROUND);
+                                                                                           EnumsAndVars::CollGr_GROUND,
+                                                                                           EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                           EnumsAndVars::CollGr_CAMERA | EnumsAndVars::CollGr_MOVABLE_ENEMY |
+                                                                                           EnumsAndVars::CollGr_RAY_FOR_ENVIRONMENT,
+                                                                                           EnumsAndVars::SceneGR_GROUND);
 
         for(const auto& obj : otherGrounds)
         {
@@ -250,10 +250,10 @@ namespace MagneticBall3D
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
-                                                                                       Beryll::CollisionGroups::BUILDING,
-                                                                                        Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                        Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT | Beryll::CollisionGroups::CAMERA,
-                                                                                       Beryll::SceneObjectGroups::BUILDING);
+                                                                                       EnumsAndVars::CollGr_BUILDING,
+                                                                                        EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                        EnumsAndVars::CollGr_RAY_FOR_ENVIRONMENT | EnumsAndVars::CollGr_CAMERA,
+                                                                                       EnumsAndVars::SceneGR_BUILDING);
 
         for(const auto& obj : buildings)
         {
@@ -266,16 +266,16 @@ namespace MagneticBall3D
                                                                                        0.0f,
                                                                                        false,
                                                                                        Beryll::CollisionFlags::STATIC,
-                                                                                       Beryll::CollisionGroups::JUMPPAD,
-                                                                                       Beryll::CollisionGroups::PLAYER,
-                                                                                       Beryll::SceneObjectGroups::JUMPPAD);
+                                                                                       EnumsAndVars::CollGr_JUMPPAD,
+                                                                                       EnumsAndVars::CollGr_PLAYER,
+                                                                                       EnumsAndVars::SceneGR_JUMPPAD);
 
         for(const auto& obj : jumpPads)
         {
             m_staticEnv.push_back(obj);
         }
 
-        const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map2/EnvNoColliders.fbx", Beryll::SceneObjectGroups::BUILDING);
+        const auto envNoColliders1 = Beryll::SimpleObject::loadManyModelsFromOneFile("models3D/map2/EnvNoColliders.fbx", EnumsAndVars::SceneGR_BUILDING);
 
         for(const auto& obj : envNoColliders1)
         {
@@ -294,11 +294,11 @@ namespace MagneticBall3D
                                                                                                 EnumsAndVars::garbageMass,
                                                                                                 false,
                                                                                                 Beryll::CollisionFlags::DYNAMIC,
-                                                                                                Beryll::CollisionGroups::GARBAGE,
-                                                                                                Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                                Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                                Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                                Beryll::SceneObjectGroups::GARBAGE);
+                                                                                                EnumsAndVars::CollGr_GARBAGE,
+                                                                                                EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                                EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                                EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                                EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageCommon)
             {
@@ -318,11 +318,11 @@ namespace MagneticBall3D
                                                                                                    EnumsAndVars::garbageMass,
                                                                                                    false,
                                                                                                    Beryll::CollisionFlags::DYNAMIC,
-                                                                                                   Beryll::CollisionGroups::GARBAGE,
-                                                                                                   Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                                   Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                                   Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                                   Beryll::SceneObjectGroups::GARBAGE);
+                                                                                                   EnumsAndVars::CollGr_GARBAGE,
+                                                                                                   EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                                   EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                                   EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                                   EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageEnemy)
             {
@@ -342,11 +342,11 @@ namespace MagneticBall3D
                                                                                                   EnumsAndVars::garbageMass,
                                                                                                   false,
                                                                                                   Beryll::CollisionFlags::DYNAMIC,
-                                                                                                  Beryll::CollisionGroups::GARBAGE,
-                                                                                                  Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                                  Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                                  Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                                  Beryll::SceneObjectGroups::GARBAGE);
+                                                                                                  EnumsAndVars::CollGr_GARBAGE,
+                                                                                                  EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                                  EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                                  EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                                  EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageEnemy)
             {
@@ -366,11 +366,11 @@ namespace MagneticBall3D
                                                                                                EnumsAndVars::garbageMass,
                                                                                                false,
                                                                                                Beryll::CollisionFlags::DYNAMIC,
-                                                                                               Beryll::CollisionGroups::GARBAGE,
-                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+                                                                                               EnumsAndVars::CollGr_GARBAGE,
+                                                                                               EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                               EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                               EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                               EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageEnemy)
             {
@@ -390,11 +390,11 @@ namespace MagneticBall3D
                                                                                                EnumsAndVars::garbageMass,
                                                                                                false,
                                                                                                Beryll::CollisionFlags::DYNAMIC,
-                                                                                               Beryll::CollisionGroups::GARBAGE,
-                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+                                                                                               EnumsAndVars::CollGr_GARBAGE,
+                                                                                               EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                               EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                               EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                               EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageEnemy)
             {
@@ -414,11 +414,11 @@ namespace MagneticBall3D
                                                                                                EnumsAndVars::garbageMass,
                                                                                                false,
                                                                                                Beryll::CollisionFlags::DYNAMIC,
-                                                                                               Beryll::CollisionGroups::GARBAGE,
-                                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                               Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE |
-                                                                                               Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                               Beryll::SceneObjectGroups::GARBAGE);
+                                                                                               EnumsAndVars::CollGr_GARBAGE,
+                                                                                               EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                               EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE |
+                                                                                               EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                               EnumsAndVars::SceneGR_GARBAGE);
 
             for(const auto& obj : garbageEnemy)
             {
@@ -443,9 +443,9 @@ namespace MagneticBall3D
                                                             0.0f,
                                                             false,
                                                             Beryll::CollisionFlags::STATIC,
-                                                            Beryll::CollisionGroups::NONE,
-                                                            Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                            EnumsAndVars::CollGr_NONE,
+                                                            EnumsAndVars::CollGr_NONE,
+                                                            EnumsAndVars::SceneGR_ENEMY_SIZE_1,
                                                             6.0f);
 
             rat->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
@@ -475,9 +475,9 @@ namespace MagneticBall3D
                                                         0.0f,
                                                         false,
                                                         Beryll::CollisionFlags::STATIC,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                        EnumsAndVars::CollGr_NONE,
+                                                        EnumsAndVars::CollGr_NONE,
+                                                        EnumsAndVars::SceneGR_ENEMY_SIZE_1,
                                                         13.0f);
 
             guard->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
@@ -510,9 +510,9 @@ namespace MagneticBall3D
                                                             0.0f,
                                                             false,
                                                             Beryll::CollisionFlags::STATIC,
-                                                            Beryll::CollisionGroups::NONE,
-                                                            Beryll::CollisionGroups::NONE,
-                                                            Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                            EnumsAndVars::CollGr_NONE,
+                                                            EnumsAndVars::CollGr_NONE,
+                                                            EnumsAndVars::SceneGR_ENEMY_SIZE_1,
                                                             13.0f);
 
             copShield->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
@@ -545,9 +545,9 @@ namespace MagneticBall3D
                                                         0.0f,
                                                         false,
                                                         Beryll::CollisionFlags::STATIC,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::CollisionGroups::NONE,
-                                                        Beryll::SceneObjectGroups::ENEMY_SIZE_1,
+                                                        EnumsAndVars::CollGr_NONE,
+                                                        EnumsAndVars::CollGr_NONE,
+                                                        EnumsAndVars::SceneGR_ENEMY_SIZE_1,
                                                         13.0f);
 
             sniper->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::stand, false, false, true);
@@ -578,9 +578,9 @@ namespace MagneticBall3D
                                                        0.0f,
                                                        false,
                                                        Beryll::CollisionFlags::STATIC,
-                                                       Beryll::CollisionGroups::NONE,
-                                                       Beryll::CollisionGroups::NONE,
-                                                       Beryll::SceneObjectGroups::ENEMY_SIZE_2,
+                                                       EnumsAndVars::CollGr_NONE,
+                                                       EnumsAndVars::CollGr_NONE,
+                                                       EnumsAndVars::SceneGR_ENEMY_SIZE_2,
                                                        26.0f);
 
             junkyardBusRocket->setCurrentAnimationByIndex(EnumsAndVars::AnimationIndexes::run, false, false, true);
@@ -1065,8 +1065,8 @@ namespace MagneticBall3D
 
             Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(glm::vec3{spawnPoint2D.x, 100.0f, spawnPoint2D.y},
                                                                               glm::vec3{spawnPoint2D.x, -10.0f, spawnPoint2D.y},
-                                                                              Beryll::CollisionGroups::GARBAGE,
-                                                                              Beryll::CollisionGroups::GROUND);
+                                                                              EnumsAndVars::CollGr_GARBAGE,
+                                                                              EnumsAndVars::CollGr_GROUND);
 
             if(rayHit)
             {

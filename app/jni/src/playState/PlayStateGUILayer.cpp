@@ -34,7 +34,7 @@ namespace MagneticBall3D
         playerJoystick->disable();
 
         m_buttonShot = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/ShotButton.png", "",
-                                                                   glm::vec3{76.5f, 48.0f, 0.5f}, glm::vec2{20.0f / screenAR, 20.0f}, false, false);
+                                                                   glm::vec3{76.5f, 48.0f, 0.5f}, glm::vec2{20.0f / screenAR, 20.0f}, true, true, false);
 
         m_buttonPause = std::make_shared<Beryll::ButtonWithTexture>("GUI/playState/Pause.jpg", "",
                                                                     glm::vec3{0.0f, 88.0f, 0.5f}, glm::vec2{6.0f, 12.0f});
@@ -144,7 +144,7 @@ namespace MagneticBall3D
         m_buttonCloseBossMessage->disable();
 
         // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
-        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](const std::shared_ptr<Beryll::GUIObject>& o1, const std::shared_ptr<Beryll::GUIObject>& o2)
         {
             return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
         });

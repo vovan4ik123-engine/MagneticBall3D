@@ -82,7 +82,7 @@ namespace MagneticBall3D
                 {
                     current = &node;
                 }
-                else if(node.nodeInOpenSet && node.F <= current->F)
+                else if(current != nullptr && node.nodeInOpenSet && node.F <= current->F)
                 {
                     current = &node;
                 }

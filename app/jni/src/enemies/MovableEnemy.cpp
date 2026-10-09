@@ -63,8 +63,8 @@ namespace MagneticBall3D
                 // Check if enemy see player.
                 Beryll::RayClosestHit rayEnv = Beryll::Physics::castRayClosestHit(m_origin,
                                                                                   playerOrigin,
-                                                                                  Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
-                                                                                  Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND);
+                                                                                  EnumsAndVars::CollGr_RAY_FOR_ENVIRONMENT,
+                                                                                  EnumsAndVars::CollGr_BUILDING | EnumsAndVars::CollGr_GROUND);
 
                 if(rayEnv)
                 {
@@ -122,8 +122,8 @@ namespace MagneticBall3D
                     rayTo.y = currentY - 100.0f;
                     Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(rayFrom,
                                                                                       rayTo,
-                                                                                      Beryll::CollisionGroups::MOVABLE_ENEMY,
-                                                                                      Beryll::CollisionGroups::GROUND);
+                                                                                      EnumsAndVars::CollGr_MOVABLE_ENEMY,
+                                                                                      EnumsAndVars::CollGr_GROUND);
 
                     if(rayHit)
                     {
@@ -164,8 +164,8 @@ namespace MagneticBall3D
             rayTo.y = -20.0f;
             Beryll::RayClosestHit rayHit = Beryll::Physics::castRayClosestHit(rayFrom,
                                                                               rayTo,
-                                                                              Beryll::CollisionGroups::MOVABLE_ENEMY,
-                                                                              Beryll::CollisionGroups::GROUND);
+                                                                              EnumsAndVars::CollGr_MOVABLE_ENEMY,
+                                                                              EnumsAndVars::CollGr_GROUND);
 
             if(rayHit)
             {
@@ -182,8 +182,8 @@ namespace MagneticBall3D
                 rayTo2.y = -20.0f;
                 Beryll::RayClosestHit rayHit2 = Beryll::Physics::castRayClosestHit(rayFrom2,
                                                                                    rayTo2,
-                                                                                   Beryll::CollisionGroups::MOVABLE_ENEMY,
-                                                                                   Beryll::CollisionGroups::GROUND);
+                                                                                   EnumsAndVars::CollGr_MOVABLE_ENEMY,
+                                                                                   EnumsAndVars::CollGr_GROUND);
 
                 if(rayHit2)
                 {

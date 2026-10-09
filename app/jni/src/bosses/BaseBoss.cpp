@@ -60,8 +60,8 @@ namespace MagneticBall3D
                 // Check if enemy see player.
                 Beryll::RayClosestHit rayEnv = Beryll::Physics::castRayClosestHit(m_origin,
                                                                                   playerOrigin,
-                                                                                  Beryll::CollisionGroups::RAY_FOR_ENVIRONMENT,
-                                                                                  Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND);
+                                                                                  EnumsAndVars::CollGr_RAY_FOR_ENVIRONMENT,
+                                                                                  EnumsAndVars::CollGr_BUILDING | EnumsAndVars::CollGr_GROUND);
 
                 if(rayEnv)
                 {

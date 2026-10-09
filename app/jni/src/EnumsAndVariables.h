@@ -42,7 +42,7 @@ namespace EnumsAndVars
     {
         // Stored in DB.
         static inline int currentMapIndex = 0; // Index of selected map on start screen.
-        static inline int lastOpenedMapIndex = 0; // Last index of map available for select and play.
+        static inline int lastOpenedMapIndex = 5; // Last index of map available for select and play.
         // Not stored in DB.
         static constexpr inline int maxMapIndex = 5; // Last possible map index (opened or not). Must be hardcoded before release.
         static inline int mapIndexWhenMapStart = 0;
@@ -165,6 +165,30 @@ namespace EnumsAndVars
     };
 
     // Database tables end.
+
+    // Game specific aliases for physics collision groups.
+    constexpr inline Beryll::CollisionGroups CollGr_NONE = Beryll::CollisionGroups::NONE;
+    constexpr inline Beryll::CollisionGroups CollGr_PLAYER = Beryll::CollisionGroups::GROUP_1;
+    constexpr inline Beryll::CollisionGroups CollGr_GROUND = Beryll::CollisionGroups::GROUP_2;
+    constexpr inline Beryll::CollisionGroups CollGr_GARBAGE = Beryll::CollisionGroups::GROUP_3;
+    constexpr inline Beryll::CollisionGroups CollGr_JUMPPAD = Beryll::CollisionGroups::GROUP_4;
+    constexpr inline Beryll::CollisionGroups CollGr_BUILDING = Beryll::CollisionGroups::GROUP_5;
+    constexpr inline Beryll::CollisionGroups CollGr_ENEMY_ATTACK = Beryll::CollisionGroups::GROUP_6;
+    constexpr inline Beryll::CollisionGroups CollGr_BOSS = Beryll::CollisionGroups::GROUP_7;
+    constexpr inline Beryll::CollisionGroups CollGr_CAMERA = Beryll::CollisionGroups::GROUP_8;
+    constexpr inline Beryll::CollisionGroups CollGr_MOVABLE_ENEMY = Beryll::CollisionGroups::GROUP_9;
+    constexpr inline Beryll::CollisionGroups CollGr_RAY_FOR_ENVIRONMENT = Beryll::CollisionGroups::GROUP_10;
+
+    // Game specific aliases for objects on scene.
+    constexpr inline Beryll::SceneObjectGroups SceneGR_NONE = Beryll::SceneObjectGroups::NONE;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_PLAYER = Beryll::SceneObjectGroups::GROUP_1;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_ENEMY_SIZE_1 = Beryll::SceneObjectGroups::GROUP_2;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_ENEMY_SIZE_2 = Beryll::SceneObjectGroups::GROUP_3;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_GARBAGE = Beryll::SceneObjectGroups::GROUP_4;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_GROUND = Beryll::SceneObjectGroups::GROUP_5;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_BUILDING = Beryll::SceneObjectGroups::GROUP_6;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_JUMPPAD = Beryll::SceneObjectGroups::GROUP_7;
+    constexpr inline Beryll::SceneObjectGroups SceneGR_BOSS = Beryll::SceneObjectGroups::GROUP_8;
 
     // Camera.
     constexpr inline float cameraZoomMaxSpeed = 14.0f; // Meters in sec.

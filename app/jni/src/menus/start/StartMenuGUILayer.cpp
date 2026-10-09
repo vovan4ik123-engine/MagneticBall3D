@@ -72,7 +72,7 @@ namespace MagneticBall3D
         m_guiObjects.push_back(m_crystalsCount);
 
         // Sort to update nearest objects first. But draw should starts from farest object(in reverse order).
-        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<Beryll::GUIObject> o1, std::shared_ptr<Beryll::GUIObject> o2)
+        std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](const std::shared_ptr<Beryll::GUIObject>& o1, const std::shared_ptr<Beryll::GUIObject>& o2)
         {
             return (o1->getPositionNormalized().z > o2->getPositionNormalized().z);
         });

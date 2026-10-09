@@ -1,11 +1,12 @@
 #include "PlayerAirTrajectory.h"
+#include "EnumsAndVariables.h"
 
 namespace MagneticBall3D
 {
     PlayerAirTrajectory::PlayerAirTrajectory()
     {
-        m_trajectoryPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryPoint.fbx", Beryll::SceneObjectGroups::NONE);
-        m_trajectoryHitPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryHitPoint.fbx", Beryll::SceneObjectGroups::NONE);
+        m_trajectoryPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryPoint.fbx", EnumsAndVars::SceneGR_NONE);
+        m_trajectoryHitPoint = std::make_shared<Beryll::SimpleObject>("models3D/player/PlayerTrajectoryHitPoint.fbx", EnumsAndVars::SceneGR_NONE);
 
         m_internalShader = Beryll::Renderer::createShader("shaders/GLES/PlayerAirTrajectory.vert",
                                                           "shaders/GLES/PlayerAirTrajectory.frag");
@@ -70,8 +71,8 @@ namespace MagneticBall3D
             {
                 Beryll::RayClosestHit hit = Beryll::Physics::castRayClosestHit(previousPoint, currentPoint,
                                                                                physicObj->getCollisionGroup(),
-                                                                               Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                               Beryll::CollisionGroups::JUMPPAD | Beryll::CollisionGroups::BOSS);
+                                                                               EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                               EnumsAndVars::CollGr_JUMPPAD | EnumsAndVars::CollGr_BOSS);
 
                 if(hit)
                 {

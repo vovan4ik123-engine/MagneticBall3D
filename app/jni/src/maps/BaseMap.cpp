@@ -88,9 +88,9 @@ namespace MagneticBall3D
             {
                 so->updateAfterPhysics();
 
-                if(so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_1 ||
-                   so->getSceneObjectGroup() == Beryll::SceneObjectGroups::ENEMY_SIZE_2 ||
-                   so->getSceneObjectGroup() == Beryll::SceneObjectGroups::GARBAGE)
+                if(so->getSceneObjectGroup() == EnumsAndVars::SceneGR_ENEMY_SIZE_1 ||
+                   so->getSceneObjectGroup() == EnumsAndVars::SceneGR_ENEMY_SIZE_2 ||
+                   so->getSceneObjectGroup() == EnumsAndVars::SceneGR_GARBAGE)
                 {
                     if(Beryll::Camera::getIsSeeObject(so->getOrigin(), 0.98f))
                         so->enableDraw();
@@ -165,11 +165,11 @@ namespace MagneticBall3D
                                                                                        EnumsAndVars::playerMass,
                                                                                        true,
                                                                                        Beryll::CollisionFlags::DYNAMIC,
-                                                                                       Beryll::CollisionGroups::PLAYER,
-                                                                                       Beryll::CollisionGroups::GROUND | Beryll::CollisionGroups::BUILDING |
-                                                                                       Beryll::CollisionGroups::GARBAGE | Beryll::CollisionGroups::ENEMY_ATTACK |
-                                                                                       Beryll::CollisionGroups::JUMPPAD | Beryll::CollisionGroups::BOSS,
-                                                                                       Beryll::SceneObjectGroups::PLAYER);
+                                                                                       EnumsAndVars::CollGr_PLAYER,
+                                                                                       EnumsAndVars::CollGr_GROUND | EnumsAndVars::CollGr_BUILDING |
+                                                                                       EnumsAndVars::CollGr_GARBAGE | EnumsAndVars::CollGr_ENEMY_ATTACK |
+                                                                                       EnumsAndVars::CollGr_JUMPPAD | EnumsAndVars::CollGr_BOSS,
+                                                                                       EnumsAndVars::SceneGR_PLAYER);
 
         // Sort by radius from small to large.
         std::sort(playerAllBalls.begin(), playerAllBalls.end(),
@@ -203,7 +203,7 @@ namespace MagneticBall3D
 
     void BaseMap::handleControls()
     {
-        if(m_gui->m_buttonShot->getIsPressedFingerStillOnScreen() &&
+        if(m_gui->m_buttonShot->getIsPressed() &&
            EnumsAndVars::damageLastShotTime + EnumsAndVars::damageShotReloadTime < EnumsAndVars::mapPlayTimeSec)
         {
             // Shoot.
@@ -249,7 +249,7 @@ namespace MagneticBall3D
                 m_joystickEnabledTime = EnumsAndVars::mapPlayTimeSec;
                 m_gui->playerJoystick->enable();
                 m_gui->playerJoystick->setOrigin(f.normalizedPos);
-                m_gui->playerJoystick->pressedFingerID = f.ID;
+                m_gui->playerJoystick->setTouchedFingerID(f.ID);
                 f.downEvent = false;
 
                 return; // From method.
@@ -264,7 +264,7 @@ namespace MagneticBall3D
                 return;
 
             // Default face direction is {1.0f, 0.0f, 0.0f}.
-            // needRotationToCamera = rotation between camera and default face dir.
+            // fromDefaultDirToCamera = rotation between camera and default face direction.
             const glm::quat fromDefaultDirToCamera = glm::rotation(glm::vec3{1.0f, 0.0f, 0.0f}, Beryll::Camera::getCameraFrontDirectionXZ());
             // Move on XZ plane.
             m_joystickDir3D = fromDefaultDirToCamera * glm::vec4(joyDir2D.y, 0.0f, joyDir2D.x, 1.0f);
@@ -661,8 +661,8 @@ namespace MagneticBall3D
             {
                 Beryll::RayClosestHit rayAttack = Beryll::Physics::castRayClosestHit(enemy->getOrigin(),
                                                                                      target,
-                                                                                     Beryll::CollisionGroups::ENEMY_ATTACK,
-                                                                                     Beryll::CollisionGroups::PLAYER | Beryll::CollisionGroups::GARBAGE);
+                                                                                     EnumsAndVars::CollGr_ENEMY_ATTACK,
+                                                                                     EnumsAndVars::CollGr_PLAYER | EnumsAndVars::CollGr_GARBAGE);
 
                 if(rayAttack)
                 {
@@ -698,14 +698,14 @@ namespace MagneticBall3D
                     enemy->attack(m_player->getObj()->getOrigin());
 
                     // Do damage.
-                    if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::PLAYER)
+                    if(rayAttack.hittedCollGroup == EnumsAndVars::CollGr_PLAYER)
                     {
                         // Player attacked.
                         //BR_INFO("%s", "Player attacked");
                         m_player->takeDamage(enemy->damage);
 
                     }
-                    else if(rayAttack.hittedCollGroup == Beryll::CollisionGroups::GARBAGE)
+                    else if(rayAttack.hittedCollGroup == EnumsAndVars::CollGr_GARBAGE)
                     {
                         // Garbage under attack =).
                         const int garbageIndex = rayAttack.hittedObjectID - m_idOfFirstGarbage;
@@ -852,10 +852,10 @@ namespace MagneticBall3D
         m_cameraHit = false;
         // Check camera ray collisions.
         Beryll::RayClosestHit rayCameraHit = Beryll::Physics::castRayClosestHit(m_cameraFront,
-                                                                                 cameraPosForRay,
-                                                                                 Beryll::CollisionGroups::CAMERA,
-                                                                                 Beryll::CollisionGroups::BUILDING | Beryll::CollisionGroups::GROUND |
-                                                                                 Beryll::CollisionGroups::BOSS);
+                                                                                cameraPosForRay,
+                                                                                EnumsAndVars::CollGr_CAMERA,
+                                                                                EnumsAndVars::CollGr_BUILDING | EnumsAndVars::CollGr_GROUND |
+                                                                                EnumsAndVars::CollGr_BOSS);
 
         if(rayCameraHit)
         {

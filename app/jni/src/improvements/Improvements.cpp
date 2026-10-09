@@ -274,10 +274,10 @@ namespace MagneticBall3D
                 continue;
 
             auto button = std::make_shared<Beryll::ButtonWithTexture>(mainTexturePath.c_str(), "",
-                                                                                    glm::vec3{0.0f, 21.3f, 0.9f}, glm::vec2{13.62f, 53.7f});
+                                                                      glm::vec3{0.0f, 21.3f, 0.9f}, glm::vec2{13.62f, 53.7f});
 
             auto selected = std::make_shared<Beryll::GUITexture>(selectedTexturePath.c_str(),
-                                                                                       glm::vec3{10.0f, 10.0f, 1.0f}, glm::vec2{10.0f, 10.0f});
+                                                                 glm::vec3{10.0f, 10.0f, 1.0f}, glm::vec2{10.0f, 10.0f});
 
             std::shared_ptr<Beryll::GUIText> progressText = Beryll::Renderer::createGUIText("",
                                                                                             glm::vec3{1.0f, 1.0f, 1.0f}, glm::vec3{0.0f, 23.5f, 1.0f}, 12.0f);
@@ -307,7 +307,7 @@ namespace MagneticBall3D
         m_buttonPiggyBank = std::make_shared<Beryll::ButtonWithAnimation>("GUI/improvements/piggyBankAnim",
                                                                           std::vector<const char*>{"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png",
                                                                           "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png"},
-                                                                          1.0f, false, glm::vec3{91.5f, 57.3f, 0.5f}, glm::vec2{18.4f / screenAR, 18.4f});
+                                                                          1.0f, false, glm::vec3{91.5f, 57.3f, 0.5f}, glm::vec2{18.4f / screenAR, 18.4f}, false, false, false);
         m_buttonPiggyBank->disable();
 
         m_textPiggyBankLvl = Beryll::Renderer::createGUIText("", glm::vec3{0.06f, 0.06f, 0.06f}, glm::vec3{94.1f, 68.6f, 0.6f}, 6.2f);
@@ -339,6 +339,8 @@ namespace MagneticBall3D
 
         if(m_buttonPiggyBank->getIsPressed())
         {
+            Beryll::EventHandler::resetFingers();
+
             m_selectImprovement = true;
             m_buttonPiggyBank->disable();
         }
@@ -368,6 +370,8 @@ namespace MagneticBall3D
 
                 if(m_buttonReroll->getIsPressed())
                 {
+                    Beryll::EventHandler::resetFingers();
+
                     --m_rerollAttempts;
 
                     selectImprovementsToShow();
@@ -388,6 +392,8 @@ namespace MagneticBall3D
 
                 if(block.button->getIsPressed())
                 {
+                    Beryll::EventHandler::resetFingers();
+
                     // Disable all.
                     for(auto& blockDisable : m_allAvailableGUIBlocks)
                         blockDisable.onScreen = false;
